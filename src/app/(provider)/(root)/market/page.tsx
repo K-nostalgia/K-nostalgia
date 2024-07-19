@@ -24,7 +24,6 @@ const MarketPage = () => {
       {markets.map((market) => {
         return <p key={market.시장코드}>{market.시장명}</p>;
       })}
-      {}
     </>
   );
 };
