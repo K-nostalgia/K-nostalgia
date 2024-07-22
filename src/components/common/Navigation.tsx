@@ -53,9 +53,7 @@ const Navigation = () => {
         <div
           key={index}
           className={`flex flex-col items-center cursor-pointer ${
-            pathname === item.path
-              ? 'text-primary-brownbrown-color'
-              : 'text-black'
+            pathname === item.path ? 'text-primary-strong' : 'text-black'
           }`}
           onClick={() => handleNavigationClick(item.path)}
         >
