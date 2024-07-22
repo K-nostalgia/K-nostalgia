@@ -16,6 +16,36 @@ const config = {
     },
     extend: {
       colors: {
+         //색 설정 
+
+        //배경색
+        'background-color': '#FAF8F5',
+
+        //label 색상
+        'label-dark-color': '#151515',
+        'label-darkgrey-color': '#3A3835',
+        'label-darkgreygrey-color': '#3A3835',
+        'label-darkgreygreygrey-color': '#A49F99',
+        'label-grey-color': '#DDDAD7',
+        'label-greywhite-color': '#F6F5F3',
+
+        //primary 색상 
+        'primary-brown-color': '#755428',
+        'primary-brownbrown-color': '#A87939',
+        'primary-brownbrownbrown-color': '#DB9D4A',
+        'primary-yellow-color': '#F5C584',
+
+        //secondary 색상 
+        'secondary-green-color': '#586452',
+        'secondary-greengreen-color': '#86957E',
+        'secondary-whitegreen-color': '#A6BB9C',
+        'secondary-whitegreengreen-color': '#DAE9D3',
+
+        //status 색상 
+        'status-red-color': '#ED1B18',
+        'status-blue-color': '#2A62F4',
+
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -49,6 +79,8 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
+
       },
       borderRadius: {
         lg: "var(--radius)",
