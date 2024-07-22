@@ -1,5 +1,13 @@
+import PayButton from '@/components/common/PayButton';
+
 const page = () => {
-  return <div>page</div>;
+  return (
+    <div>
+      <div>
+        <PayButton />
+      </div>
+    </div>
+  );
 };
 
 export default page;
