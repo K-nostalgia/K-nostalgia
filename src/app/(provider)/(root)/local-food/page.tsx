@@ -1,7 +1,12 @@
 import React from 'react';
+import LocalFoodView from './_components/LocalFoodView';
 
-const page = () => {
-  return <div>page</div>;
+const LocalFoodPage = () => {
+  return (
+    <div>
+      <LocalFoodView />
+    </div>
+  );
 };
 
-export default page;
+export default LocalFoodPage;
