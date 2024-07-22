@@ -18,6 +18,7 @@ const DefaultAppLayout = ({
     <div className="flex flex-col min-h-screen">
       {showHeader && <Header headerTitle={headerTitle} />}
       <main className="flex-grow overflow-y-hidden">{children}</main>
+      <button>채팅</button>
       {showNavigation && <Navigation />}
     </div>
   );

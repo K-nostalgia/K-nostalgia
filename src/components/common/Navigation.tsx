@@ -7,6 +7,8 @@ import { BsGrid1X2 } from 'react-icons/bs';
 import { BsGrid1X2Fill } from 'react-icons/bs';
 import { IconType } from 'react-icons/lib';
 import { usePathname, useRouter } from 'next/navigation';
+import KNostalgiaIcon2 from '../icons/KNostalgiaIcon2';
+import KNostalgiaIcon3 from '../icons/KNostalgiaIcon3';
 
 // TODO mic 모바일용 md: hidden 적용
 type NaviList = {
@@ -21,8 +23,8 @@ const naviList: NaviList[] = [
   {
     label: '홈',
     path: '/',
-    icon: CiHome,
-    activeIcon: CiHome
+    icon: KNostalgiaIcon3,
+    activeIcon: KNostalgiaIcon2
   },
   { label: '전통 시장', path: '/market', icon: CiHome, activeIcon: CiHome },
   {
