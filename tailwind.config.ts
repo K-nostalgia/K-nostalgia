@@ -102,7 +102,8 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       screens: {
-        'xs': {max: "375px"}
+        'xs': {max: "375px"},
+        '2xs': {'min': '376px', 'max': '639px'},
       },
     },
   },

@@ -5,4 +5,6 @@ export type LocalFood = {
     price: number;
     product_id: string;
     title_image:string;
+    location:string;
+    description:string;
 }

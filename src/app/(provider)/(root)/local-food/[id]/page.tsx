@@ -45,8 +45,14 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       ) : (
         <div>이미지가 없습니다.</div>
       )}
-      <h2>{food?.food_name}</h2>
-      <p>{food?.price}원</p>
+      <div className="m-4">
+        <h2 className="text-xl font-semibold">
+          {`[${food.location}] `}
+          {food?.food_name}
+        </h2>
+        <p className="text-[#AFACA7] text-sm">{food.description}</p>
+        <p className="text-[#1F1E1E] font-bold text-xl">{`${food?.price}원`}</p>
+      </div>
       {food.food_image ? (
         <Image
           src={food.food_image}
