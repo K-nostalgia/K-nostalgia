@@ -11,7 +11,7 @@ type HeaderProps = {
 const Header = ({ headerTitle }: HeaderProps) => {
   const router = useRouter();
   return (
-    //TODO mic md:hidden
+    //TODO mic md:hidden, <div>로고 대신 뒤로 가기 버튼? 상태 어떻게 전해줘야 한다.
     <div className="flex justify-between my-2 mx-3 md:hidden">
       <div onClick={() => router.push('/')} className="cursor-pointer">
         로고
