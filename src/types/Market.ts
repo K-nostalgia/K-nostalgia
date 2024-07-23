@@ -9,7 +9,27 @@ export type Market = {
   고객지원센터: string;
   외국인안내센터_보유여부: string;
   수유센터_보유여부: string;
-  유아놀이방_보유여부:string;
+  유아놀이방_보유여부: string;
   자전거보관함_보유여부: string;
   자동심장충격기_보유여부: string;
 };
+
+// export type Market = {
+//   mrktNm: string;
+//   mrktType: string;
+//   rdnmadr: string;
+//   lnmadr: string;
+//   mrktEstblCycle: string;
+//   latitude: string;
+//   longitude: string;
+//   storNumber: string;
+//   trtmntPrdlst: string;
+//   useGcct: string;
+//   homepageUrl: string;
+//   pblicToiletYn: string;
+//   prkplceYn: string;
+//   estblYear: string;
+//   phoneNumber: string;
+//   referenceDate: Date;
+//   insttCode: string;
+// };

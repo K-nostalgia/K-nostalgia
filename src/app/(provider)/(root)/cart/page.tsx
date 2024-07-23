@@ -1,6 +1,6 @@
 import PayButton from '@/components/common/PayButton';
 
-const page = () => {
+const CartPage = () => {
   return (
     <div>
       <div>
@@ -10,4 +10,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CartPage;

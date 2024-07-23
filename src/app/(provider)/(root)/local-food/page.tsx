@@ -1,4 +1,3 @@
-import React from 'react';
 import LocalFoodView from './_components/LocalFoodView';
 
 const LocalFoodPage = () => {
