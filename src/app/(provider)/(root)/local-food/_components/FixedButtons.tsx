@@ -1,6 +1,6 @@
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { PiShoppingCartSimpleThin } from 'react-icons/pi';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 const FixedButtons = ({ food }: Props) => {
-  console.log(food);
+  const router = useRouter();
   const onAddCart = async () => {
     // const {
     //   data: { user },
@@ -44,14 +44,25 @@ const FixedButtons = ({ food }: Props) => {
           return;
         }
       } else {
-        alert('이미 장바구니에 담긴 상품입니다.');
+        const isConfirmed = confirm(
+          '이미 장바구니에 담긴 상품입니다. 장바구니로 이동하시겠습니까?'
+        );
+        if (isConfirmed) {
+          router.push('/cart');
+        }
+        return;
       }
     } catch (error) {
       alert('장바구니 담기 중 오류가 발생했습니다.');
       console.error(error);
     }
 
-    confirm('장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?');
+    const isConfirmed = confirm(
+      '장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?'
+    );
+    if (isConfirmed) {
+      router.push('/cart');
+    }
   };
 
   return (
