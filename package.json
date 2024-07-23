@@ -14,10 +14,12 @@
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",
+    "@portone/browser-sdk": "^0.0.8",
     "@supabase/ssr": "^0.4.0",
     "@supabase/supabase-js": "^2.44.4",
     "@tanstack/react-query": "^5.51.3",
     "@tanstack/react-query-devtools": "^5.51.3",
+    "@team-mintc/portone-v2": "^0.7.9",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
@@ -28,6 +30,7 @@
     "react-spinners": "^0.14.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uuidv4": "^6.2.13",
     "zustand": "^4.5.4"
   },
   "devDependencies": {
