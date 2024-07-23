@@ -24,7 +24,7 @@ export function Chat() {
           <ChatIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="xs:max-w-[330px] bg-white rounded-xl">
+      <DialogContent className="xs:max-w-[330px] bg-normal rounded-xl">
         <div className="border-b-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
           <DialogHeader>
             <DialogTitle className="mb-2 px-2 py-3">향그리움</DialogTitle>
@@ -58,10 +58,10 @@ export function Chat() {
           {/* TODO UI 목업 */}
           <div className="flex flex-col gap-2">
             <div className="flex">
-              <div className="border-2 rounded-full p-2 w-fit">프로필</div>
+              <div className="border-2 rounded-full p-2 w-fit">플필</div>
               <div>닉네임</div>
             </div>
-            <div>말풍선 ㅎㅇ</div>
+            <div className="border-2">말풍선 ㅎㅇ</div>
           </div>
         </div>
         <div className="border-t-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
