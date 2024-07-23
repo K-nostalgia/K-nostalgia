@@ -4,6 +4,7 @@ import supabase from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import FixedButtons from '../_components/FixedButtons';
+import { DefaultImage } from '@/components/common/DefaultImage';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -44,7 +45,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           style={{ width: 'auto', height: 'auto' }}
         />
       ) : (
-        <div>이미지가 없습니다.</div>
+        <DefaultImage />
       )}
       <div className="m-4">
         <h2 className="text-xl font-semibold">
@@ -89,7 +90,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           alt="상세페이지"
         />
       ) : (
-        <div>이미지가 없습니다.</div>
+        <DefaultImage />
       )}
       <FixedButtons food={food} />
     </>
