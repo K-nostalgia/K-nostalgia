@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/common/Loading';
 import FilterButton from '@/components/ui/FilterButton';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
@@ -35,7 +36,7 @@ const LocalFoodView = () => {
     setSelectedCategory(category);
   };
 
-  if (isPending) return <div>로딩 중</div>;
+  if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
   return (
