@@ -1,7 +1,5 @@
-import React from 'react';
+import SignUpContainer from './_components/SignUpContainer';
 
-const page = () => {
-  return <div>page</div>;
-};
-
-export default page;
+export default function SignUp() {
+  return <SignUpContainer />;
+}
