@@ -7,9 +7,7 @@ const PayButton = () => {
   //TODO 로그인하지 않았을 경우 로그인 페이지로 유도
   const payRequest = async () => {
     const response = await PortOne.requestPayment({
-      // Store ID 설정
       storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
-      // 채널 키 설정
       channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
       paymentId: `${uuidv4()}`,
       orderName: '어쩌구 복숭아',
@@ -59,6 +57,14 @@ const PayButton = () => {
     const cancelData = await cancelResponse.json();
 
     console.log('cancel:', cancelData);
+
+    //내역 단건 조회
+    const getResponse = await fetch(
+      `/api/payment/pay-history?paymentId=${paymentId}`
+    );
+    const getData = await getResponse.json();
+
+    console.log('history', getData);
   };
 
   //TODO 결제 완료 후 서버에 확인 요청 (금액대조) => 추후 구현
@@ -73,7 +79,11 @@ const PayButton = () => {
   // });
   // console.log(response);
   // };
+
   //TODO 결제 단건 조회 후, DB에 추가
+  //1. 필요한 정보 뽑기
+  //2. supabase 업데이트 방법 생각(useState로 담아서 한번에 ? )
+
   return (
     <div>
       <button onClick={payRequest}>결제하기</button>
