@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react';
 import Header from './Header';
 import Navigation from './Navigation';
+import TopButton from '../icons/TopButton';
 
 interface DefaultAppLayoutProps {
   showNavigation: boolean;
@@ -18,7 +19,7 @@ const DefaultAppLayout = ({
     <div className="flex flex-col min-h-screen">
       {showHeader && <Header headerTitle={headerTitle} />}
       <main className="flex-grow overflow-y-hidden">{children}</main>
-      <button>채팅</button>
+        <TopButton />
       {showNavigation && <Navigation />}
     </div>
   );
