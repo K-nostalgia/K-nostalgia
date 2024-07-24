@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,11 +14,61 @@ import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
 import ChatIcon from '../icons/ChatIcon';
 import ChatSendIcon from '../icons/ChatSendIcon';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import Loading from '../common/Loading';
+import supabase from '@/utils/supabase/client';
+import { Tables } from '@/types/supabase';
 
 // 채팅 아이디 가져와서 본인 아이디랑 같으면 오른쪽에 조건부 스타일링 + 다르면 왼족에 스타일링
 // xs일 때 가정 sm:max-w-[425px]
 
 export function Chat() {
+  const [message, setMessage] = useState('');
+
+  const handleMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // TODO 빈 메세지 유효성 검사는 생각해보기. 만약 한다면 분리해야 할 듯?
+    // if (message.trim() === '') {
+    //   return;
+    // }
+    setMessage(event.target.value);
+  };
+
+  const fetchChatData = async () => {
+    const response = await fetch(`/api/chat`);
+    const { data } = await response.json();
+    return data;
+  };
+
+  const { data, isPending, error } = useQuery<
+    Tables<'chat'>[],
+    Error,
+    Tables<'chat'>[]
+  >({
+    queryKey: ['chatData'],
+    queryFn: fetchChatData
+  });
+
+  // console.log(data);
+
+  const roomId: string = 'K8uTq2XdYz5sPnL4rWj7B';
+
+  const channel = supabase.channel('room1');
+
+  channel
+    .on('broadcast', { event: 'input-event' }, (payload) => {
+      console.log('input-event received!', payload);
+    })
+    .subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        channel.send({
+          type: 'broadcast',
+          event: 'input-event',
+          payload: { roomId, message }
+        });
+      }
+    });
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -34,7 +86,7 @@ export function Chat() {
             </DialogDescription>
           </DialogHeader>
         </div>
-        <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] w-[87%]">
+        <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] overflow-y-auto">
           {/* <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="name" className="text-right">
               Name
@@ -56,22 +108,54 @@ export function Chat() {
             />
           </div> */}
           {/* TODO UI 목업 */}
-          <div className="flex flex-col gap-2">
-            <div className="flex">
-              <div className="border-2 rounded-full p-2 w-fit">플필</div>
-              <div>닉네임</div>
+          {data?.map((item) => (
+            <div key={item.id} className="flex flex-col gap-2">
+              <div className="flex gap-2">
+                <div className="border-2 rounded-full p-2 w-fit">플필</div>
+                <div className="flex items-center">닉네임</div>
+              </div>
+              {/* TODO userid === 세션 id랑 같을 때 우측 아니면 좌측 */}
+              <div className="border-2">{item.content}</div>
             </div>
-            <div className="border-2">말풍선 ㅎㅇ</div>
+          ))}
+
+          {/* 다른 사람 */}
+          <div className="flex flex-col gap-3 w-full">
+            <div className="flex gap-2">
+              <div className="border-2 rounded-full p-2 w-fit">플필</div>
+              <div className="flex items-center font-semibold">닉네임</div>
+            </div>
+            {/* TODO userid === 세션 id랑 같을 때 우측 아니면 좌측 */}
+            <div className="border-2 border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2">
+              조금말하기
+            </div>
+            <div className="text-xs text-label-assistive">2024.11.12 19:11</div>
           </div>
+
+          {/* 나일 떄 디자인 */}
+          <div className="flex flex-col gap-2">
+            <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
+              플필
+            </div>
+            <div className="border-2 border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
+              조금 말하려다 많이 말하기~~~~~~~
+            </div>
+            <div className="text-xs text-label-assistive ml-auto">
+              2024.11.12 19:11
+            </div>
+          </div>
+
+          {/* 절취선,,,,  */}
         </div>
         <div className="border-t-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
           <DialogFooter className="xs:flex relative items-center">
             <div className="relative w-[87%] pt-4">
               <Input
                 type="text"
-                id="message"
                 placeholder="메시지 보내기..."
-                className="pr-12 rounded-xl border-primary-strong placeholder:text-label-assistive"
+                className="pr-12 rounded-xl border-2 border-primary-strong placeholder:text-label-assistive"
+                value={message}
+                onChange={handleMessage}
               />
               <Button
                 type="submit"
