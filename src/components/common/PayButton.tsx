@@ -76,7 +76,12 @@ const PayButton = () => {
   //TODO 결제 단건 조회 후, DB에 추가
   return (
     <div>
-      <button onClick={payRequest}>결제하기</button>
+      <button
+        className="bg-label-disable py-3 px-4 rounded-xl text-normal"
+        onClick={payRequest}
+      >
+        바로 구매하기
+      </button>
     </div>
   );
 };

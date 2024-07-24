@@ -16,9 +16,9 @@ export type Database = {
           id: number;
           image: string | null;
           product_id: string | null;
-          user_id: string | null;
           product_name: string | null;
           product_price: number | null;
+          user_id: string | null;
         };
         Insert: {
           count?: number | null;
@@ -26,9 +26,9 @@ export type Database = {
           id?: number;
           image?: string | null;
           product_id?: string | null;
-          user_id?: string | null;
           product_name?: string | null;
           product_price?: number | null;
+          user_id?: string | null;
         };
         Update: {
           count?: number | null;
@@ -36,9 +36,9 @@ export type Database = {
           id?: number;
           image?: string | null;
           product_id?: string | null;
-          user_id?: string | null;
           product_name?: string | null;
           product_price?: number | null;
+          user_id?: string | null;
         };
         Relationships: [
           {
@@ -80,6 +80,13 @@ export type Database = {
           user_id?: string | null;
         };
         Relationships: [
+          {
+            foreignKeyName: 'chat_room_id_fkey';
+            columns: ['room_id'];
+            isOneToOne: false;
+            referencedRelation: 'rooms';
+            referencedColumns: ['room_id'];
+          },
           {
             foreignKeyName: 'chat_user_id_fkey';
             columns: ['user_id'];
@@ -159,43 +166,43 @@ export type Database = {
       local_food: {
         Row: {
           category: string | null;
+          count: number | null;
           created_at: string;
+          description: string | null;
           food_image: string | null;
           food_name: string | null;
+          location: string | null;
           price: number | null;
           product_id: string;
           title_image: string | null;
-          location: string | null;
-          description: string | null;
-          count: number | null;
         };
         Insert: {
           category?: string | null;
+          count?: number | null;
           created_at?: string;
+          description?: string | null;
           food_image?: string | null;
           food_name?: string | null;
+          location?: string | null;
           price?: number | null;
           product_id?: string;
           title_image?: string | null;
-          location?: string | null;
-          description?: string | null;
-          count?: number | null;
         };
         Update: {
           category?: string | null;
+          count?: number | null;
           created_at?: string;
+          description?: string | null;
           food_image?: string | null;
           food_name?: string | null;
+          location?: string | null;
           price?: number | null;
           product_id?: string;
           title_image?: string | null;
-          location?: string | null;
-          description?: string | null;
-          count?: number | null;
         };
         Relationships: [];
       };
-      order: {
+      orderd_list: {
         Row: {
           count: number | null;
           created_at: string;
@@ -240,19 +247,33 @@ export type Database = {
         Row: {
           chat_name: string | null;
           created_at: string;
-          id: number;
+          created_user_id: string | null;
+          id: string;
+          room_id: string | null;
         };
         Insert: {
           chat_name?: string | null;
           created_at?: string;
-          id?: number;
+          created_user_id?: string | null;
+          id: string;
+          room_id?: string | null;
         };
         Update: {
           chat_name?: string | null;
           created_at?: string;
-          id?: number;
+          created_user_id?: string | null;
+          id?: string;
+          room_id?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'rooms_created_user_id_fkey';
+            columns: ['created_user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
       };
       users: {
         Row: {

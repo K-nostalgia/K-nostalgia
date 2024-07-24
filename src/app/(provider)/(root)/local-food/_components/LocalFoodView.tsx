@@ -1,5 +1,6 @@
 'use client';
 
+import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import FilterButton from '@/components/ui/FilterButton';
 import { Tables } from '@/types/supabase';
@@ -69,12 +70,11 @@ const LocalFoodView = () => {
                       width={164}
                       height={120}
                       alt="특산물 이미지"
-                      className="w-full h-auto object-cover"
+                      priority
+                      style={{ width: 'auto', height: 'auto' }}
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-300">
-                      <p>이미지가 없습니다</p>
-                    </div>
+                    <DefaultImage />
                   )}
                 </div>
                 <div className="bg-[#D9D9D9] pt-2 pb-1 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">

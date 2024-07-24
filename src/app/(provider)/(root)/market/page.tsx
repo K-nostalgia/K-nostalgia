@@ -7,7 +7,7 @@ const MarketPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/market');
+        const response = await fetch('/api/marketList');
         const { data } = await response.json();
         setMarkets(data);
       } catch (error) {

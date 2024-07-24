@@ -10,14 +10,14 @@ interface Props {
 const FixedButtons = ({ food }: Props) => {
   const router = useRouter();
   const onAddCart = async () => {
-    // const {
-    //   data: { user },
-    //   error: userError
-    // } = await supabase.auth.getUser();
-    // if (userError || !user) {
-    //   alert('로그인을 해주세요.');
-    //   return;
-    // }
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+    if (userError || !user) {
+      alert('로그인을 해주세요.');
+      return;
+    }
 
     try {
       const { data: cartData, error: cartError } = await supabase
@@ -36,8 +36,8 @@ const FixedButtons = ({ food }: Props) => {
           product_id: food.product_id,
           image: food.title_image,
           product_name: food.food_name,
-          product_price: food.price
-          //user_id: user.id
+          product_price: food.price,
+          user_id: user.id
         });
         if (insertError) {
           alert('장바구니에 상품이 담기지 않았습니다.');
