@@ -14,3 +14,23 @@ export type Market = {
   자전거보관함_보유여부 : 'string';
   자동심장충격기_보유여부 : 'string';
 };
+
+// export type Market = {
+//   mrktNm: string;
+//   mrktType: string;
+//   rdnmadr: string;
+//   lnmadr: string;
+//   mrktEstblCycle: string;
+//   latitude: string;
+//   longitude: string;
+//   storNumber: string;
+//   trtmntPrdlst: string;
+//   useGcct: string;
+//   homepageUrl: string;
+//   pblicToiletYn: string;
+//   prkplceYn: string;
+//   estblYear: string;
+//   phoneNumber: string;
+//   referenceDate: Date;
+//   insttCode: string;
+// };
