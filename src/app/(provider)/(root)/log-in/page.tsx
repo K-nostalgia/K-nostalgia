@@ -3,9 +3,9 @@ import Link from 'next/link';
 import LoginHeader from './_components/LoginHeader';
 import LoginForm from './_components/LoginForm';
 
-export default function Login() {
+const LoginPage = () => {
   return (
-    <div className="w-full min-h-screen bg-normal p-8 rounded-md hidden xs:flex">
+    <div className="w-full min-h-screen bg-normal p-8 rounded-md flex xs:hidden">
       <div className="w-full max-w-md">
         <LoginHeader />
         <LoginForm />
@@ -18,4 +18,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default LoginPage;
