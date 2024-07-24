@@ -7,19 +7,21 @@ interface DefaultAppLayoutProps {
   showNavigation: boolean;
   showHeader: boolean;
   headerTitle?: string;
+  showTopButton?: boolean;
 }
 
 const DefaultAppLayout = ({
   children,
   showNavigation,
   showHeader,
-  headerTitle
+  headerTitle,
+  showTopButton
 }: PropsWithChildren<DefaultAppLayoutProps>) => {
   return (
     <div className="flex flex-col min-h-screen">
       {showHeader && <Header headerTitle={headerTitle} />}
       <main className="flex-grow overflow-y-hidden">{children}</main>
-        <TopButton />
+      {showTopButton && <TopButton />}
       {showNavigation && <Navigation />}
     </div>
   );

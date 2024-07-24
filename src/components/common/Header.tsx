@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { GoSearch } from 'react-icons/go';
 import { PiShoppingCartSimple } from 'react-icons/pi';
+import TitleLogo from '../icons/TitleLogo';
 
 type HeaderProps = {
   headerTitle?: string;
@@ -14,7 +15,7 @@ const Header = ({ headerTitle }: HeaderProps) => {
     //TODO mic md:hidden, <div>로고 대신 뒤로 가기 버튼? 상태 어떻게 전해줘야 한다.
     <div className="flex justify-between my-2 mx-3 md:hidden">
       <div onClick={() => router.push('/')} className="cursor-pointer">
-        로고
+        <TitleLogo />
       </div>
       <div>{headerTitle}</div>
       <div className="flex p-1 gap-1">
