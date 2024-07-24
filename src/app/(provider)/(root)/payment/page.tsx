@@ -1,7 +1,5 @@
-import React from 'react';
-
-const page = () => {
-  return <div>page</div>;
+const PaymentList = () => {
+  return <div>주문내역페이지</div>;
 };
 
-export default page;
+export default PaymentList;
