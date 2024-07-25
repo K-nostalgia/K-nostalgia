@@ -1,7 +1,8 @@
 import { Tables } from '@/types/supabase';
+import { User } from '@supabase/supabase-js';
 import { AxiosInstance } from 'axios';
 
-type UserType = Tables<'users'>
+type UserType = Tables<'users'> & User
 
 class AuthAPI {
   private axios: AxiosInstance;
@@ -26,8 +27,16 @@ class AuthAPI {
 
   async logOut() {
     const path = '/api/auth/log-out';
-
+ 
     const response = await this.axios.delete<UserType>(path);
+    return response.data;
+  }
+
+  async getUser() {
+    const path = '/api/auth/user';
+
+    const response = await this.axios.get<UserType>(path);
+
     return response.data;
   }
 }
