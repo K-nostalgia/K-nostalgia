@@ -1,43 +1,41 @@
 import { Tables } from '@/types/supabase';
 import { User } from '@supabase/supabase-js';
-import { AxiosInstance } from 'axios';
 
-type UserType = Tables<'users'> & User
+type UserType = Tables<'users'> & User;
 
 class AuthAPI {
-  private axios: AxiosInstance;
 
-  constructor(axios: AxiosInstance) {
-    this.axios = axios;
+  private async request<T>(url: string, method: string, body?: any): Promise<T> {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`message: ${error}`);
+    }
+
+    return response.json();
   }
 
-  async logIn(email: string, password: string) {
-    const path = '/api/auth/log-in';
-
-    const response = await this.axios.post<UserType>(path, { email, password });
-
-    return response.data;
+  async logIn(email: string, password: string): Promise<UserType> {
+    return this.request<UserType>('/api/auth/log-in', 'POST', { email, password });
   }
 
-  async signUp(email: string, password: string, nickname?: string) {
-    const path = '/api/auth/sign-up';
-    const response = await this.axios.post<UserType>(path, { email, password, nickname });
-    return response.data;
+  async signUp(email: string, password: string, nickname?: string): Promise<UserType> {
+    return this.request<UserType>('/api/auth/sign-up', 'POST', { email, password, nickname });
   }
 
-  async logOut() {
-    const path = '/api/auth/log-out';
- 
-    const response = await this.axios.delete<UserType>(path);
-    return response.data;
+  async logOut(): Promise<UserType> {
+    return this.request<UserType>('/api/auth/log-out', 'DELETE');
   }
 
-  async getUser() {
-    const path = '/api/auth/user';
-
-    const response = await this.axios.get<UserType>(path);
-
-    return response.data;
+  async getUser(): Promise<UserType> {
+    return this.request<UserType>('/api/auth/user', 'GET');
   }
 }
 
