@@ -213,7 +213,6 @@ export type Database = {
           phone_number: string | null
           price: number | null
           status: string | null
-          total_price: number | null
           user_id: string | null
           user_name: string | null
         }
@@ -227,7 +226,6 @@ export type Database = {
           phone_number?: string | null
           price?: number | null
           status?: string | null
-          total_price?: number | null
           user_id?: string | null
           user_name?: string | null
         }
@@ -241,7 +239,6 @@ export type Database = {
           phone_number?: string | null
           price?: number | null
           status?: string | null
-          total_price?: number | null
           user_id?: string | null
           user_name?: string | null
         }
