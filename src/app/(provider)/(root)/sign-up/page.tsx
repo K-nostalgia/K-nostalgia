@@ -1,5 +1,7 @@
 import SignUpContainer from './_components/SignUpContainer';
 
-export default function SignUp() {
+const SignUpPage = () => {
   return <SignUpContainer />;
-}
+};
+
+export default SignUpPage;

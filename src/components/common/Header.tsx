@@ -1,5 +1,6 @@
 'use client';
 
+import { useUser } from '@/hooks/useUser';
 import { useRouter } from 'next/navigation';
 import { GoSearch } from 'react-icons/go';
 import { PiShoppingCartSimple } from 'react-icons/pi';
