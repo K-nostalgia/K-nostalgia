@@ -1,5 +1,5 @@
-const Complete = () => {
+const CompletePayment = () => {
   return <div>complete</div>;
 };
 
-export default Complete;
+export default CompletePayment;
