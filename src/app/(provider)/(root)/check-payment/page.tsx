@@ -1,60 +1,74 @@
 'use client';
 
+import dayjs from 'dayjs';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
+import { v4 as uuidv4 } from 'uuid';
 
 // import { useRouter, useSearchParams } from 'next/navigation';
 // import { useState } from 'react';
 
 const CheckPayment = () => {
-  //결제 여부 확인(결제 후 리다이렉트 될 페이지)
-  //status 확인 => 결제 성공시 supabase에 저장 후 complete-payment 페이지로 이동
-  //결제 실패시 이 전 페이지로 이동
-
   const searchParams = useSearchParams();
   const router = useRouter();
-  //   const protocol = window.location.protocol;
-  //   const host = window.location.host;
-  // const [data, setData] = useState<any>([]);
+  const paymentId = searchParams.get('paymentId');
+  const pathName = searchParams.get('path_name');
+  const code = searchParams.get('code');
 
-  const insertPaymentHistory = async () => {
-    //supabase에 주문내역 저장 로직
-  };
+  const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 
-  useEffect(() => {
-    const status = searchParams.get('status');
-    const paymentId = searchParams.get('paymentId');
-    const pathName = searchParams.get('path_name');
-    const code = searchParams.get('code');
+  if (code === 'FAILURE_TYPE_PG') {
+    //TODO alert 2번씩 뜸 .. ㅎ ㅏ ,,,,,,,,,,,,
+    alert('결제 취소되었습니다.');
+    router.push(`${pathName}`);
+    return;
+  } else {
+    const postPaymentHistory = async () => {
+      //결제 내역 단건 조회
+      const getResponse = await fetch(
+        `/api/payment/transaction?paymentId=${paymentId}`
+      );
+      const getData = await getResponse.json();
 
-    // 모바일에서 결제 취소 (혹은 실패?)
-    if (code === 'FAILURE_TYPE_PG') {
-      //TODO alert 2번씩 뜸 .. ㅎ ㅏ ,,,,,,,,,,,,
-      alert('결제 취소되었습니다.');
-      router.push(`${pathName}`);
-      return;
-    } else {
-      alert('Payment successful');
-      // 여기에 결제 성공 후 처리 로직 추가
+      const { paidAt, status, orderName, amount, method, customer } = getData;
+      const newPaidAt = dayjs(paidAt).locale('ko').format('YYYY-MM-DD HH:MM');
 
-      //TODO 내역 단건 조회 => SUPABASE에 주문내역 저장.
-      const getPaymentResult = async () => {
-        const getResponse = await fetch(
-          `/api/payment/transaction?paymentId=${paymentId}`
-        );
-        const getData = await getResponse.json();
+      //supabase 결제 내역 저장
 
-        console.log('history', getData);
-      };
-      getPaymentResult();
-      // router.push(`complete-payment`);
-    }
+      await fetch('/api/payment/pay-supabase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: uuidv4(),
+          payment_date: newPaidAt,
+          status,
+          order_name: orderName,
+          amount: 0,
+          price: amount.total,
+          //user_id만 users 테이블이랑 연결
+          user_id: 'a8424195-b959-411e-b00e-f89c25eccf4f',
+          user_name: customer.name,
+          payment_id: paymentId,
+          pay_provider: method.provider,
+          phone_number: customer.phoneNumber
+        })
+      });
 
-    return () => {
-      //페이지 빠져나갈 때 초기화 할 거 있으면 여기에
+      return alert('결제 완료');
     };
-  }, []);
+
+    useEffect(() => {
+      if (paymentId && !hasUpdated) {
+        postPaymentHistory();
+        setHasUpdated(true);
+      }
+    }, []);
+
+    router.push(`complete-payment`);
+  }
 
   return (
     <div className="bg-normal">

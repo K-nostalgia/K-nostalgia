@@ -205,36 +205,42 @@ export type Database = {
       orderd_list: {
         Row: {
           amount: number | null
-          id: string | null
+          id: string
           order_name: string | null
+          pay_provider: string | null
           payment_date: string | null
           payment_id: string | null
+          phone_number: string | null
           price: number | null
           status: string | null
-          total_price: number | null
           user_id: string | null
+          user_name: string | null
         }
         Insert: {
           amount?: number | null
-          id?: string | null
+          id?: string
           order_name?: string | null
+          pay_provider?: string | null
           payment_date?: string | null
           payment_id?: string | null
+          phone_number?: string | null
           price?: number | null
           status?: string | null
-          total_price?: number | null
           user_id?: string | null
+          user_name?: string | null
         }
         Update: {
           amount?: number | null
-          id?: string | null
+          id?: string
           order_name?: string | null
+          pay_provider?: string | null
           payment_date?: string | null
           payment_id?: string | null
+          phone_number?: string | null
           price?: number | null
           status?: string | null
-          total_price?: number | null
           user_id?: string | null
+          user_name?: string | null
         }
         Relationships: [
           {
@@ -285,6 +291,7 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
+          name: string | null
           nickname: string | null
           password: string | null
         }
@@ -294,6 +301,7 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          name?: string | null
           nickname?: string | null
           password?: string | null
         }
@@ -303,6 +311,7 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          name?: string | null
           nickname?: string | null
           password?: string | null
         }
