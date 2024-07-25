@@ -35,8 +35,6 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-
-  //로그인 안했을때 로그인으로 가기
   // if (
   //   !user &&
   //   !request.nextUrl.pathname.startsWith('/log-in') &&

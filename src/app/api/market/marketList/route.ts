@@ -8,13 +8,13 @@ export const GET = async (request: NextRequest) => {
     const serviceKey = encodeURIComponent('serviceKey');
     const apiKey = process.env.NEXT_PUBLIC_MARKET_API_KEY;
     const response = await fetch(
-      `${MARKET_URL}?${serviceKey}=${apiKey}&page=1&perPage=1388`
+      `${MARKET_URL}?${serviceKey}=${apiKey}&page=1&perPage=10`
     );
     const data = await response.json();
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json(
-      { error: '데이터를 가져오지 못했습니다.' },
+      { error: '시장 목록 데이터를 가져오지 못했습니다.' },
       { status: 500 }
     );
   }
