@@ -9,6 +9,7 @@ interface Props {
 
 const FixedButtons = ({ food }: Props) => {
   const router = useRouter();
+
   const onAddCart = async () => {
     const {
       data: { user },
@@ -24,6 +25,7 @@ const FixedButtons = ({ food }: Props) => {
         .from('cart')
         .select('*')
         .eq('product_id', food.product_id)
+        .eq('user_id', user.id)
         .maybeSingle();
 
       if (cartError) {

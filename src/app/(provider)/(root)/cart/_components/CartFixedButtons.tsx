@@ -2,7 +2,7 @@ import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 
 type CartButtonProps = {
-  data: Tables<'cart'>;
+  data: Tables<'cart'>[];
 };
 
 export const CartFixedButtons = ({ data }: CartButtonProps) => {
@@ -19,7 +19,13 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
       ) : (
         <div className="bg-normal shadow-custom px-4 pt-3 pb-1 fixed bottom-0 left-0 right-0">
           <div className="flex gap-3 justify-between items-center">
-            <p>{`0 개 ${0} 원`}</p>
+            <p>{`${data.length} 개 ${data
+              .reduce(
+                (acc, item) =>
+                  acc + (item.product_price ?? 0) * (item.count ?? 0),
+                0
+              )
+              .toLocaleString()} 원`}</p>
             <PayButton />
           </div>
         </div>

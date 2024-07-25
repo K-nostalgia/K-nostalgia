@@ -77,7 +77,7 @@ const PayButton = () => {
   return (
     <div>
       <button
-        className="bg-label-disable py-3 px-4 rounded-xl text-normal"
+        className="bg-primary-heavy py-3 px-4 rounded-xl text-normal w-48"
         onClick={payRequest}
       >
         바로 구매하기

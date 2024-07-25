@@ -5,9 +5,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
+import { CgClose } from 'react-icons/cg';
 
 export type CartItem = {
-  id: string | null;
+  id: number | null;
   product_id: string | null;
   image: string | null;
   product_price: number | null;
@@ -15,7 +16,7 @@ export type CartItem = {
   count: number | null;
 };
 
-export async function fetchCartItems() {
+const fetchCartItems = async () => {
   const { data: cartItems, error } = await supabase.from('cart').select('*');
 
   if (error) {
@@ -32,7 +33,18 @@ export async function fetchCartItems() {
   }));
 
   return mappedCartItems;
-}
+};
+
+const handleDelete = async (productId: string) => {
+  const { error } = await supabase
+    .from('cart')
+    .delete()
+    .eq('product_id', productId);
+  if (error) {
+    console.error('상품을 삭제하는데 실패했습니다.', error);
+  } else {
+  }
+};
 
 export const columns: ColumnDef<CartItem>[] = [
   {
@@ -74,7 +86,12 @@ export const columns: ColumnDef<CartItem>[] = [
         height={96}
         priority
         alt={row.getValue('product_name')}
-        style={{ borderRadius: '8px' }}
+        style={{
+          borderRadius: '8px',
+          width: 96,
+          height: 96,
+          objectFit: 'cover'
+        }}
       />
     )
   },
@@ -94,13 +111,22 @@ export const columns: ColumnDef<CartItem>[] = [
   {
     accessorKey: 'product_price',
     header: '',
-    cell: ({ row }) => `${row.getValue('product_price')} 원`
+    cell: ({ row }) => `${row.getValue('product_price')?.toLocaleString()} 원`
   },
   {
     accessorKey: 'product_id',
     header: '',
     cell: ({ row }) => (
       <div style={{ display: 'none' }}>{row.getValue('product_id')}</div>
+    )
+  },
+  {
+    id: 'delete',
+    header: '',
+    cell: ({ row }) => (
+      <button onClick={() => handleDelete(row.getValue('product_id'))}>
+        <CgClose className="text-[#959595]" />
+      </button>
     )
   }
 ];

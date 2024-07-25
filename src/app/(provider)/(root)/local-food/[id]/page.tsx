@@ -43,7 +43,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           height={340}
           alt="특산물 디테일 페이지"
           priority
-          style={{ width: 'auto', height: 'auto' }}
+          style={{ width: 375, height: 340, objectFit: 'cover' }}
         />
       ) : (
         <DefaultImage />
@@ -54,7 +54,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           {food?.food_name}
         </h2>
         <p className="text-[#AFACA7] text-sm">{food.description}</p>
-        <p className="text-[#1F1E1E] font-bold text-xl mt-2">{`${food?.price}원`}</p>
+        <p className="text-[#1F1E1E] font-bold text-xl mt-2">{`${food?.price?.toLocaleString()}원`}</p>
       </div>
       <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full m-4 py-4 ">
         <table className="text-left text-sm">
@@ -72,7 +72,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
               </td>
             </tr>
             <tr>
-              <th className="text-primary-heavy font-medium">배송비</th>
+              <th className="text-primary-heavy font-medium py-2">배송비</th>
               <td>2,500원</td>
             </tr>
             <tr>

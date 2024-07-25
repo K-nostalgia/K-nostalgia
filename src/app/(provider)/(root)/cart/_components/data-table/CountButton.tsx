@@ -12,7 +12,7 @@ export const CountButton: React.FC<CountButtonProps> = ({
   product_id,
   counts
 }) => {
-  const [count, setCount] = useState(counts);
+  const [count, setCount] = useState(counts || 1);
 
   const onAddCount = async () => {
     setCount((prev) => prev + 1);
