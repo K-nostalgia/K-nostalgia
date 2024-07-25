@@ -1,5 +1,4 @@
 'use client';
-import { Tables } from '@/types/supabase';
 import { useEffect, useState } from 'react';
 
 interface CartProps {
@@ -9,7 +8,6 @@ const DELIVERY_FEE = 2500;
 const COUPON = 2000;
 
 export const CartPriceList = ({ data }: CartProps) => {
-  console.log('회원이 담은 장바구니 상품', data);
   const [totalAmount, setTotalAmount] = useState(0);
 
   if (!data || data.length === 0) {
@@ -23,7 +21,7 @@ export const CartPriceList = ({ data }: CartProps) => {
         const quantity = item.count ?? 0;
         return acc + price * quantity;
       }, 0);
-      setTotalAmount(amount); // 총 금액 업데이트
+      setTotalAmount(amount);
     }
   }, [data]);
 

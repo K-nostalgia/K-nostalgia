@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import { CartFixedButtons } from './CartFixedButtons';
 import { DefaultCart } from './DefaultCart';
 import { DataTable } from './data-table/DataTable';
@@ -32,7 +31,11 @@ export const CartList = () => {
 
       if (error) throw new Error(error.message);
 
-      return data;
+      return data.sort((a, b) => {
+        const idA = a.product_id ?? '';
+        const idB = b.product_id ?? '';
+        return idA.localeCompare(idB);
+      });
     }
   });
 

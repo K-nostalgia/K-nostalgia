@@ -99,7 +99,7 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out'
       },
       screens: {
-        xs: { max: '375px' }
+        xs: { min: '376px' }
       },
       boxShadow: {
         custom: '0px -2px 8px 0px rgba(31, 30, 30, 0.08)',

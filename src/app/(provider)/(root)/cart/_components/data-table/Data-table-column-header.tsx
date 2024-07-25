@@ -93,7 +93,9 @@ export const columns: ColumnDef<CartItem>[] = [
           objectFit: 'cover'
         }}
       />
-    )
+    ),
+    enableSorting: false,
+    enableHiding: false
   },
   { accessorKey: 'product_name', header: '' },
   {

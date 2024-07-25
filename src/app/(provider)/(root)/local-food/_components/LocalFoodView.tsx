@@ -53,7 +53,7 @@ const LocalFoodView = () => {
           </FilterButton>
         ))}
       </div>
-      <ul className="grid gap-4 xs:grid-cols-2 2xs:grid-cols-3">
+      <ul className="grid gap-4 xs:grid-cols-2">
         {localFoodData
           .filter((food) =>
             selectedCategory === '전체'
@@ -82,7 +82,7 @@ const LocalFoodView = () => {
                 </div>
                 <div className="bg-normal pt-2 pb-1 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
                   <h2 className="text-base font-semibold">{food.food_name}</h2>
-                  <p className="text-sm">{food.price}원</p>
+                  <p className="text-sm">{food.price?.toLocaleString()}원</p>
                 </div>
               </Link>
             </li>

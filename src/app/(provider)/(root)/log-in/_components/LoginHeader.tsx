@@ -1,7 +1,7 @@
 import React from 'react';
 import { GoArrowLeft } from 'react-icons/go';
 
-export default function LoginHeader() {
+const LoginHeader = () => {
   return (
     <div className="mb-4">
       <GoArrowLeft className="mb-4 text-2xl cursor-pointer" />
@@ -10,4 +10,6 @@ export default function LoginHeader() {
       </h3>
     </div>
   );
-}
+};
+
+export default LoginHeader;

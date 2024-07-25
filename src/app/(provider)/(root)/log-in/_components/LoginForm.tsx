@@ -3,10 +3,15 @@ import React, { useState } from 'react';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 
-export default function LoginForm() {
+const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const router = useRouter();
+  // const { data: user, isLoading, error } = useUser();
+
+  // console.log('user', user);
+  // if (!user) return;
+  // console.log('userid', user.id);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,4 +60,5 @@ export default function LoginForm() {
       </button>
     </form>
   );
-}
+};
+export default LoginForm;
