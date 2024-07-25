@@ -15,7 +15,7 @@ import { Input } from '@/components/ui/input';
 import ChatIcon from '../icons/ChatIcon';
 import ChatSendIcon from '../icons/ChatSendIcon';
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../common/Loading';
 import supabase from '@/utils/supabase/client';
 import { Tables } from '@/types/supabase';
@@ -24,16 +24,10 @@ import { Tables } from '@/types/supabase';
 // xs일 때 가정 sm:max-w-[425px]
 
 export function Chat() {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
+  const queryClient = useQueryClient();
 
-  const handleMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // TODO 빈 메세지 유효성 검사는 생각해보기. 만약 한다면 분리해야 할 듯?
-    // if (message.trim() === '') {
-    //   return;
-    // }
-    setMessage(event.target.value);
-  };
-
+  // chat 가져오기
   const fetchChatData = async () => {
     const response = await fetch(`/api/chat`);
     const { data } = await response.json();
@@ -49,25 +43,82 @@ export function Chat() {
     queryFn: fetchChatData
   });
 
+  // chat 입력
+  const handleMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+    setMessage(event.target.value);
+  };
+
+  //chat 전송
+  const sendMessage = async (newMessage: {
+    room_id: string;
+    user_id: string;
+    content: string | null;
+  }) => {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newMessage)
+    });
+
+    return response.json();
+  };
+
+  const sendMessageMutate = useMutation({
+    mutationFn: sendMessage,
+    onSuccess: () => {
+      setMessage('');
+      queryClient.invalidateQueries({ queryKey: ['chatData'] });
+    }
+  });
+
+  // 유효성 검사
+  const handleSendMessage = () => {
+    //TODO mic 임시값
+    const room_id: string = 'K8uTq2XdYz5sPnL4rWj7B';
+    const user_id: string = '27fbff7c-a3c3-4ec5-a55d-4f95fc7c8b34';
+
+    if (!message || message.trim() === '') {
+      // 토스트로 바꾸기
+      alert('메세지 입력해라어흥');
+      return;
+    }
+
+    const newMessage = {
+      room_id,
+      user_id,
+      content: message
+    };
+
+    sendMessageMutate.mutate(newMessage);
+  };
+
+  const handleKeyDownEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   // console.log(data);
 
-  const roomId: string = 'K8uTq2XdYz5sPnL4rWj7B';
-
-  const channel = supabase.channel('room1');
-
-  channel
-    .on('broadcast', { event: 'input-event' }, (payload) => {
-      console.log('input-event received!', payload);
-    })
-    .subscribe((status) => {
-      if (status === 'SUBSCRIBED') {
-        channel.send({
-          type: 'broadcast',
-          event: 'input-event',
-          payload: { roomId, message }
-        });
-      }
-    });
+  // const roomId: string = 'K8uTq2XdYz5sPnL4rWj7B';
+  // const channel = supabase.channel('room1');
+  // channel
+  //   .on('broadcast', { event: 'input-event' }, (payload) => {
+  //     console.log('input-event received!', payload);
+  //   })
+  //   .subscribe((status) => {
+  //     if (status === 'SUBSCRIBED') {
+  //       channel.send({
+  //         type: 'broadcast',
+  //         event: 'input-event',
+  //         payload: { roomId, message }
+  //       });
+  //     }
+  //   });
 
   return (
     <Dialog>
@@ -86,27 +137,7 @@ export function Chat() {
             </DialogDescription>
           </DialogHeader>
         </div>
-        <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] overflow-y-auto">
-          {/* <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
-          </div> */}
+        <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] scrollbar-hide">
           {/* TODO UI 목업 */}
           {data?.map((item) => (
             <div key={item.id} className="flex flex-col gap-2">
@@ -118,7 +149,6 @@ export function Chat() {
               <div className="border-2">{item.content}</div>
             </div>
           ))}
-
           {/* 다른 사람 */}
           <div className="flex flex-col gap-3 w-full">
             <div className="flex gap-2">
@@ -156,11 +186,13 @@ export function Chat() {
                 className="pr-12 rounded-xl border-2 border-primary-strong placeholder:text-label-assistive"
                 value={message}
                 onChange={handleMessage}
+                onKeyDown={handleKeyDownEnter}
               />
               <Button
                 type="submit"
                 size="icon"
                 className="absolute right-2 top-[64%] transform -translate-y-1/2"
+                onClick={handleSendMessage}
               >
                 <ChatSendIcon />
               </Button>

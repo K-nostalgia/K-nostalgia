@@ -18,6 +18,7 @@ const Header = ({ headerTitle }: HeaderProps) => {
       </div>
       <div>{headerTitle}</div>
       <div className="flex p-1 gap-1">
+        {/* TODO mic 크기 좀 키우기 */}
         <GoSearch />
         <PiShoppingCartSimple
           onClick={() => router.push('/cart')}
