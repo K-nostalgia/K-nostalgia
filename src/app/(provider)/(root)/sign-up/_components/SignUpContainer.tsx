@@ -7,7 +7,7 @@ import steps from './Step';
 import Stepper from './Stepper';
 import SignupForm from './SignUpForm';
 
-export default function SignUpContainer() {
+const SignUpContainer = () => {
   const [step, setStep] = useState(0);
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -67,7 +67,7 @@ export default function SignUpContainer() {
   };
 
   return (
-    <div className="hidden xs:flex">
+    <div className="flex xs:hidden">
       <div className="w-full min-h-screen bg-normal p-8 rounded-md">
         <div className="mb-4">
           <GoArrowLeft
@@ -97,4 +97,6 @@ export default function SignUpContainer() {
       </div>
     </div>
   );
-}
+};
+
+export default SignUpContainer;
