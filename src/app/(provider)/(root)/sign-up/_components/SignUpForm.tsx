@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface FormFieldProps {
+interface SignupFormProps {
   title: string;
   label: string;
   type: string;
@@ -9,7 +9,7 @@ interface FormFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const SignupForm: React.FC<FormFieldProps> = ({
+const SignupForm: React.FC<SignupFormProps> = ({
   title,
   label,
   type,

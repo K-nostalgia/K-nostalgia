@@ -7,7 +7,7 @@ import steps from './Step';
 import Stepper from './Stepper';
 import SignupForm from './SignUpForm';
 
-export default function SignUpContainer() {
+const SignUpContainer = () => {
   const [step, setStep] = useState(0);
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -18,6 +18,7 @@ export default function SignUpContainer() {
   });
   const router = useRouter();
 
+  //입력 필드의 변경 사항을 반영
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
@@ -41,11 +42,14 @@ export default function SignUpContainer() {
       return;
     }
 
+    console.log('userinfo 확인', userInfo);
+
     try {
       const response = await api.auth.signUp(
         userInfo.email,
         userInfo.password,
-        userInfo.nickname
+        userInfo.nickname,
+        userInfo.name
       );
 
       console.log('Response:', response);
@@ -67,7 +71,7 @@ export default function SignUpContainer() {
   };
 
   return (
-    <div className="hidden xs:flex">
+    <div className="flex xs:hidden">
       <div className="w-full min-h-screen bg-normal p-8 rounded-md">
         <div className="mb-4">
           <GoArrowLeft
@@ -97,4 +101,6 @@ export default function SignUpContainer() {
       </div>
     </div>
   );
-}
+};
+
+export default SignUpContainer;
