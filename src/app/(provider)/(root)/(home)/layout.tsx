@@ -7,6 +7,8 @@ function HomeLayout({ children }: PropsWithChildren) {
       showNavigation={true}
       showHeader={true}
       showTopButton={true}
+      showLogo={true}
+      showBackButton={false}
     >
       {children}
     </DefaultAppLayout>

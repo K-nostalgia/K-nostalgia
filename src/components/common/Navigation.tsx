@@ -2,13 +2,12 @@
 
 import { GoPerson } from 'react-icons/go';
 import { GoPersonFill } from 'react-icons/go';
-import { CiHome } from 'react-icons/ci';
 import { BsGrid1X2 } from 'react-icons/bs';
-import { BsGrid1X2Fill } from 'react-icons/bs';
 import { IconType } from 'react-icons/lib';
 import { usePathname, useRouter } from 'next/navigation';
 import KNostalgiaIcon2 from '../icons/KNostalgiaIcon2';
 import KNostalgiaIcon3 from '../icons/KNostalgiaIcon3';
+import { BsShopWindow } from 'react-icons/bs';
 
 // TODO mic 모바일용 md: hidden 적용
 type NaviList = {
@@ -26,12 +25,17 @@ const naviList: NaviList[] = [
     icon: KNostalgiaIcon3,
     activeIcon: KNostalgiaIcon2
   },
-  { label: '전통 시장', path: '/market', icon: CiHome, activeIcon: CiHome },
+  {
+    label: '전통 시장',
+    path: '/market',
+    icon: BsShopWindow,
+    activeIcon: BsShopWindow
+  },
   {
     label: '특산물',
     path: '/local-food',
     icon: BsGrid1X2,
-    activeIcon: BsGrid1X2Fill
+    activeIcon: BsGrid1X2
   },
   {
     label: '내 프로필',
@@ -50,7 +54,7 @@ const Navigation = () => {
   };
 
   return (
-    <div className="flex border-t-2 justify-between pt-[0.38rem] px-5 pb-[2.125rem] mt-auto md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex border-t-2 justify-between pt-[0.38rem] px-5 pb-[2.125rem] mt-auto bg-normal md:hidden">
       {naviList.map((item, index) => (
         <div
           key={index}
@@ -59,7 +63,11 @@ const Navigation = () => {
           }`}
           onClick={() => handleNavigationClick(item.path)}
         >
-          {pathname === item.path ? <item.activeIcon /> : <item.icon />}
+          {pathname === item.path ? (
+            <item.activeIcon className="w-7 h-7" width="28" height="28" />
+          ) : (
+            <item.icon className="w-7 h-7" width="28" height="28" />
+          )}
           {item.label}
         </div>
       ))}

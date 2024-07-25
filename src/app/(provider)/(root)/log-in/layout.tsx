@@ -3,7 +3,12 @@ import { PropsWithChildren } from 'react';
 
 function LoginLayout({ children }: PropsWithChildren) {
   return (
-    <DefaultAppLayout showHeader={false} showNavigation={false}>
+    <DefaultAppLayout
+      showHeader={true}
+      showSearch={false}
+      showCart={false}
+      showNavigation={false}
+    >
       {children}
     </DefaultAppLayout>
   );

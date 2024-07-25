@@ -14,6 +14,7 @@ function LocalFoodLayout({ children }: PropsWithChildren) {
   return (
     <DefaultAppLayout
       showHeader={true}
+      showBackButton={false}
       showNavigation={showLocalFoodNavigation}
       showTopButton={true}
       headerTitle="특산물"

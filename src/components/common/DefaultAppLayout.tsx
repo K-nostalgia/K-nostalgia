@@ -8,6 +8,10 @@ interface DefaultAppLayoutProps {
   showHeader: boolean;
   headerTitle?: string;
   showTopButton?: boolean;
+  showBackButton?: boolean;
+  showLogo?: boolean;
+  showSearch?: boolean;
+  showCart?: boolean;
 }
 
 const DefaultAppLayout = ({
@@ -15,12 +19,26 @@ const DefaultAppLayout = ({
   showNavigation,
   showHeader,
   headerTitle,
-  showTopButton
+  showTopButton,
+  showBackButton = true,
+  showLogo = false,
+  showSearch = true,
+  showCart = true
 }: PropsWithChildren<DefaultAppLayoutProps>) => {
   return (
     <div className="flex flex-col min-h-screen">
-      {showHeader && <Header headerTitle={headerTitle} />}
-      <main className="flex-grow overflow-y-hidden">{children}</main>
+      {showHeader && (
+        <Header
+          headerTitle={headerTitle}
+          showBackButton={showBackButton}
+          showLogo={showLogo}
+          showSearch={showSearch}
+          showCart={showCart}
+        />
+      )}
+      <main className="flex-grow overflow-y-hidden mt-[3.25rem]">
+        {children}
+      </main>
       {showTopButton && <TopButton />}
       {showNavigation && <Navigation />}
     </div>

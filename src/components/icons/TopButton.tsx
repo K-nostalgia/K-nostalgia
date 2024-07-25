@@ -9,7 +9,7 @@ const TopButton = () => {
   };
   return (
     <div
-      className="fixed bottom-[93px] right-3 flex items-center justify-center rounded-full bg-secondary-strong shadow w-8 h-8 p-2 cursor-pointer z-50"
+      className="fixed bottom-[97px] right-3 flex items-center justify-center rounded-full bg-secondary-strong shadow w-8 h-8 p-2 cursor-pointer z-50"
       onClick={scrollToTop}
     >
       <svg
