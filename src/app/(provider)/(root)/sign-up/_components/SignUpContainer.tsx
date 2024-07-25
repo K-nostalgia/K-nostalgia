@@ -67,7 +67,7 @@ const SignUpContainer = () => {
   };
 
   return (
-    <div className="hidden xs:flex">
+    <div className="flex xs:hidden">
       <div className="w-full min-h-screen bg-normal p-8 rounded-md">
         <div className="mb-4">
           <GoArrowLeft
