@@ -27,8 +27,11 @@ const Header = ({
   const showBackLogoIcon = () => {
     if (showBackButton && !showLogo) {
       return (
-        <div onClick={() => router.back()} className="cursor-pointer">
-          <GoArrowLeft className="flex w-7 h-7 items-center" />
+        <div
+          onClick={() => router.back()}
+          className="flex cursor-pointer items-center"
+        >
+          <GoArrowLeft className="w-7 h-7" />
         </div>
       );
     } else if (!showBackButton && showLogo) {
@@ -69,7 +72,7 @@ const Header = ({
     //TODO mic md:hidden, 빈 div justify-between 유지
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-between py-2 px-3 bg-normal md:hidden">
       {showBackLogoIcon()}
-      <div className="flex items-center ml-8">{headerTitle}</div>
+      <div className="flex items-center ml-6">{headerTitle}</div>
       {showSearchCartIcon()}
     </div>
   );

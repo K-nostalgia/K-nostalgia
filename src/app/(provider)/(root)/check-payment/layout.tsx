@@ -1,17 +1,16 @@
 import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { PropsWithChildren } from 'react';
 
-function SignUpLayout({ children }: PropsWithChildren) {
+function checkPaymentLayout({ children }: PropsWithChildren) {
   return (
     <DefaultAppLayout
+      showNavigation={true}
       showHeader={true}
       showSearch={false}
-      showCart={false}
-      showNavigation={false}
     >
       {children}
     </DefaultAppLayout>
   );
 }
 
-export default SignUpLayout;
+export default checkPaymentLayout;
