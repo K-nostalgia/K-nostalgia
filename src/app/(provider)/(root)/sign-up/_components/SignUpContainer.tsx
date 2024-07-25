@@ -7,7 +7,7 @@ import steps from './Step';
 import Stepper from './Stepper';
 import SignupForm from './SignUpForm';
 
-export default function SignUpContainer() {
+const SignUpContainer = () => {
   const [step, setStep] = useState(0);
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -97,4 +97,6 @@ export default function SignUpContainer() {
       </div>
     </div>
   );
-}
+};
+
+export default SignUpContainer;
