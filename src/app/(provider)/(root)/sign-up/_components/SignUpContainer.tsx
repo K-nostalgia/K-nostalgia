@@ -18,6 +18,7 @@ const SignUpContainer = () => {
   });
   const router = useRouter();
 
+  //입력 필드의 변경 사항을 반영
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
@@ -41,11 +42,14 @@ const SignUpContainer = () => {
       return;
     }
 
+    console.log('userinfo 확인', userInfo);
+
     try {
       const response = await api.auth.signUp(
         userInfo.email,
         userInfo.password,
-        userInfo.nickname
+        userInfo.nickname,
+        userInfo.name
       );
 
       console.log('Response:', response);

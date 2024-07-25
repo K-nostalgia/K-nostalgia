@@ -26,8 +26,8 @@ class AuthAPI {
     return this.request<UserType>('/api/auth/log-in', 'POST', { email, password });
   }
 
-  async signUp(email: string, password: string, nickname?: string): Promise<UserType> {
-    return this.request<UserType>('/api/auth/sign-up', 'POST', { email, password, nickname });
+  async signUp(email: string, password: string, nickname?: string, name?:string): Promise<UserType> {
+    return this.request<UserType>('/api/auth/sign-up', 'POST', { email, password, nickname, name});
   }
 
   async logOut(): Promise<UserType> {
