@@ -204,35 +204,44 @@ export type Database = {
       }
       orderd_list: {
         Row: {
-          count: number | null;
-          created_at: string;
-          id: number;
-          name: string | null;
-          order_num: string | null;
-          order_status: string | null;
-          price: number | null;
-          user_id: string | null;
-        };
+          amount: number | null
+          id: string
+          order_name: string | null
+          pay_provider: string | null
+          payment_date: string | null
+          payment_id: string | null
+          phone_number: string | null
+          price: number | null
+          status: string | null
+          user_id: string | null
+          user_name: string | null
+        }
         Insert: {
-          count?: number | null;
-          created_at?: string;
-          id?: number;
-          name?: string | null;
-          order_num?: string | null;
-          order_status?: string | null;
-          price?: number | null;
-          user_id?: string | null;
-        };
+          amount?: number | null
+          id?: string
+          order_name?: string | null
+          pay_provider?: string | null
+          payment_date?: string | null
+          payment_id?: string | null
+          phone_number?: string | null
+          price?: number | null
+          status?: string | null
+          user_id?: string | null
+          user_name?: string | null
+        }
         Update: {
-          count?: number | null;
-          created_at?: string;
-          id?: number;
-          name?: string | null;
-          order_num?: string | null;
-          order_status?: string | null;
-          price?: number | null;
-          user_id?: string | null;
-        };
+          amount?: number | null
+          id?: string
+          order_name?: string | null
+          pay_provider?: string | null
+          payment_date?: string | null
+          payment_id?: string | null
+          phone_number?: string | null
+          price?: number | null
+          status?: string | null
+          user_id?: string | null
+          user_name?: string | null
+        }
         Relationships: [
           {
             foreignKeyName: "order_user_id_fkey"
@@ -277,32 +286,35 @@ export type Database = {
       }
       users: {
         Row: {
-          avatar: string | null;
-          coupon: string | null;
-          created_at: string;
-          email: string | null;
-          id: string;
-          nickname: string | null;
-          password: string | null;
-        };
+          avatar: string | null
+          coupon: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          nickname: string | null
+          password: string | null
+        }
         Insert: {
-          avatar?: string | null;
-          coupon?: string | null;
-          created_at?: string;
-          email?: string | null;
-          id?: string;
-          nickname?: string | null;
-          password?: string | null;
-        };
+          avatar?: string | null
+          coupon?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          nickname?: string | null
+          password?: string | null
+        }
         Update: {
-          avatar?: string | null;
-          coupon?: string | null;
-          created_at?: string;
-          email?: string | null;
-          id?: string;
-          nickname?: string | null;
-          password?: string | null;
-        };
+          avatar?: string | null
+          coupon?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          nickname?: string | null
+          password?: string | null
+        }
         Relationships: [
           {
             foreignKeyName: "users_id_fkey"
