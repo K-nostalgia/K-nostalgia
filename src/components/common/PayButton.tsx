@@ -1,6 +1,7 @@
 'use client';
 
 import PortOne from '@portone/browser-sdk/v2';
+import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -8,34 +9,31 @@ const PayButton = () => {
   const router = useRouter();
   const pathName = usePathname();
 
-  //${protocol}//${host}${pathName}
+  const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
+  const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
 
   //TODO 로그인하지 않았을 경우 로그인 페이지로 유도
   const payRequest = async () => {
     const response = await PortOne.requestPayment({
       storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
       channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
-      //TODO 주문 번호 변경 (텍스트-숫자 형식)
-      paymentId: `${uuidv4()}`,
-      orderName: '어쩌구 복숭아',
+      paymentId: `${newPaymentId}`,
+      orderName: '옥천 복숭아, (배열 풀어서 문자로 넣기)',
       totalAmount: 1000,
       currency: 'CURRENCY_KRW',
       payMethod: 'CARD',
       redirectUrl:
         process.env.NODE_ENV === 'production'
           ? // TODO 배포 후 배포 주소 url로 변경
-            //encodeURIComponent : 문자 인코딩 메서드
-            `https://your-app-name.vercel.app/payment?status=success&path_name=${pathName}`
-          : `http://localhost:3000/payment?status=success&path_name=${pathName}`,
+            `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
+          : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       appScheme:
         process.env.NODE_ENV === 'production'
           ? // TODO 배포 후 배포 주소 url로 변경
-            //encodeURIComponent : 문자 인코딩 메서드
-            `https://your-app-name.vercel.app/payment?status=success&path_name=${pathName}`
-          : `http://localhost:3000/payment?status=success&path_name=${pathName}`,
-
-      //TODO products object[] 항목 추가?
+            `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
+          : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       customer: {
+        //user table에서 뽑아오기
         email: 'jonghoon7431@gmail.com',
         phoneNumber: '01000000000',
         fullName: '이종훈'
@@ -56,12 +54,13 @@ const PayButton = () => {
 
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
-      router.push('/pathName');
-      return alert(response?.message);
+      router.push(`${pathName}`);
+
+      return alert('결제에 실패했습니다. 다시 시도해주세요');
     }
 
     //즉시 환불
-    const cancelResponse = await fetch('/api/payment/cancellation', {
+    const cancelResponse = await fetch('/api/payment/transaction', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -70,6 +69,7 @@ const PayButton = () => {
     });
 
     if (!cancelResponse.ok) {
+      alert('즉시 환불 실패. 당일 자정 전까지 일괄 환불됩니다.');
       throw new Error(`Cancellation failed: ${cancelResponse.statusText}`);
     }
 
@@ -77,10 +77,8 @@ const PayButton = () => {
 
     console.log('cancel:', cancelData);
 
-    //TODO 값 DB에 저장
-
-    //결제 완료 페이지로 리다이렉션
-    router.push('/payment');
+    //결제 체크 페이지로 리다이렉션
+    router.push(`/check-payment?paymentId=${paymentId}`);
   };
 
   //TODO 결제 완료 후 서버에 확인 요청 (금액대조) => 추후 구현
@@ -96,13 +94,14 @@ const PayButton = () => {
   // console.log(response);
   // };
 
-  //TODO 결제 단건 조회 후, DB에 추가
-  //1. 필요한 정보 뽑기
-  //2. supabase 업데이트 방법 생각(useState로 담아서 한번에 ? )
-
   return (
     <div>
-      <button onClick={payRequest}>바로 구매하기</button>
+      <button
+        className="bg-primary-heavy py-3 px-4 rounded-xl text-normal w-48"
+        onClick={payRequest}
+      >
+        바로 구매하기
+      </button>
     </div>
   );
 };
