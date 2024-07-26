@@ -2,28 +2,14 @@ import supabase from "@/utils/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  //에러 처리 다시하셈 뭔 에러났는데 200이여
+  //에러 처리 다시하셈 뭔 에러나도 200이여
   const response = await request.json();
-  // const { 
-  //   id,
-  //   payment_date,
-  //   status,
-  //   order_name,
-  //   amount,
-  //   price,
-  //   user_id,
-  //   user_name,
-  //   payment_id,
-  //   pay_provider,
-  //   phone_number
-  // }: Tables<'orderd_list'> = response;
-  console.log(response)
 
   const { error } = await supabase.from('orderd_list').insert(response);
 
   if (error) {
     console.error(error);
-    return NextResponse.json({ status: '에러', message: error.message });
+    return NextResponse.json({ status: '500', message: error.message });
   }
   return NextResponse.json({ status: '200' });
 };

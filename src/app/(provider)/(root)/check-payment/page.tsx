@@ -6,9 +6,6 @@ import { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { v4 as uuidv4 } from 'uuid';
 
-// import { useRouter, useSearchParams } from 'next/navigation';
-// import { useState } from 'react';
-
 const CheckPayment = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -19,7 +16,6 @@ const CheckPayment = () => {
   const [hasUpdated, setHasUpdated] = useState<boolean>(false);
 
   if (code === 'FAILURE_TYPE_PG') {
-    //TODO alert 2번씩 뜸 .. ㅎ ㅏ ,,,,,,,,,,,,
     alert('결제 취소되었습니다.');
     router.push(`${pathName}`);
     return;
@@ -35,7 +31,6 @@ const CheckPayment = () => {
       const newPaidAt = dayjs(paidAt).locale('ko').format('YYYY-MM-DD HH:MM');
 
       //supabase 결제 내역 저장
-
       await fetch('/api/payment/pay-supabase', {
         method: 'POST',
         headers: {
@@ -48,7 +43,6 @@ const CheckPayment = () => {
           order_name: orderName,
           amount: 0,
           price: amount.total,
-          //user_id만 users 테이블이랑 연결
           user_id: 'a8424195-b959-411e-b00e-f89c25eccf4f',
           user_name: customer.name,
           payment_id: paymentId,
