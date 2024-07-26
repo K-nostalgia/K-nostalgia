@@ -182,6 +182,7 @@ export function Chat() {
                     height={36}
                     width={36}
                     className="rounded-full ml-auto"
+                    style={{ height: 'auto' }}
                   />
                 ) : (
                   <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
@@ -207,6 +208,7 @@ export function Chat() {
                       height={20}
                       width={20}
                       className="rounded-full mr-auto"
+                      style={{ height: 'auto' }}
                     />
                   ) : (
                     <div className="flex mr-auto border-2 rounded-full p-2 w-fit">
