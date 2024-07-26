@@ -20,6 +20,8 @@ import Loading from '../common/Loading';
 import supabase from '@/utils/supabase/client';
 import { Tables } from '@/types/supabase';
 import { useUser } from '@/hooks/useUser';
+import Image from 'next/image';
+import dayjs from 'dayjs';
 
 // 채팅 아이디 가져와서 본인 아이디랑 같으면 오른쪽에 조건부 스타일링 + 다르면 왼족에 스타일링
 // xs일 때 가정 sm:max-w-[425px]
@@ -57,7 +59,7 @@ export function Chat() {
 
     content: string | null;
   }) => {
-    const response = await fetch('/api/chat', {
+    const response = await fetch('/api/chat/chat-data', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -103,9 +105,6 @@ export function Chat() {
     }
   };
 
-  // console.log(user);
-  // console.log(data);
-
   useEffect(() => {
     const roomId: string = 'K8uTq2XdYz5sPnL4rWj7B';
 
@@ -126,7 +125,6 @@ export function Chat() {
   // 되는지 안 되는지 모르겠다!!!!!
 
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
-  // TODO 날짜 제대로 나오게 하기
   // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
 
   // user 정보 가져오기 - 프로필 널일 때 처리
@@ -144,6 +142,13 @@ export function Chat() {
     queryKey: ['chatUsers'],
     queryFn: () => featchUserData()
   });
+
+  // TODO 로그인한 대상만 할 수 있게 처리
+
+  // 날짜 포맷
+  const formatDate = (date: string) => {
+    return dayjs(date).locale('ko').format('YYYY.MM.DD HH:MM');
+  };
 
   return (
     <Dialog>
@@ -167,25 +172,47 @@ export function Chat() {
               (user) => user.id === item.user_id
             );
             return item.user_id === user?.id ? (
+              // 나일 경우
               <div key={item.id} className="flex flex-col gap-2">
-                {/* TODO 이미지 태그로 바꾸기 */}
-                <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
-                  {TheUserProfile?.avatar ? TheUserProfile?.avatar : '플필'}
-                </div>
+                {/* TODO null 일 경우 이미지 태그로 바꾸기 */}
+                {TheUserProfile?.avatar ? (
+                  <Image
+                    src={TheUserProfile.avatar}
+                    alt={`${TheUserProfile.nickname}의 프로필`}
+                    height={36}
+                    width={36}
+                    className="rounded-full ml-auto"
+                  />
+                ) : (
+                  <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
+                    플필
+                  </div>
+                )}
                 <div className="border-2 border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
                   {item.content}
                 </div>
                 <div className="text-xs text-label-assistive ml-auto">
-                  {item.created_at}
+                  {formatDate(item.created_at)}
                 </div>
               </div>
             ) : (
+              // 다른 사람일 경우
               <div key={item.id} className="flex flex-col gap-3 w-full">
                 <div className="flex gap-2">
-                  {/* TODO 이미지 태그로 바꾸기 */}
-                  <div className="border-2 rounded-full p-2 w-fit">
-                    {TheUserProfile?.avatar ? TheUserProfile?.avatar : '플필'}
-                  </div>
+                  {/* TODO null 일 경우 기본 이미지 태그로 바꾸기 */}
+                  {TheUserProfile?.avatar ? (
+                    <Image
+                      src={TheUserProfile.avatar}
+                      alt={`${TheUserProfile.nickname}의 프로필`}
+                      height={20}
+                      width={20}
+                      className="rounded-full mr-auto"
+                    />
+                  ) : (
+                    <div className="flex mr-auto border-2 rounded-full p-2 w-fit">
+                      플필
+                    </div>
+                  )}
                   <div className="flex items-center font-semibold">
                     {TheUserProfile?.nickname}
                   </div>
@@ -194,7 +221,7 @@ export function Chat() {
                   {item.content}
                 </div>
                 <div className="text-xs text-label-assistive">
-                  {item.created_at}
+                  {formatDate(item.created_at)}
                 </div>
               </div>
             );
