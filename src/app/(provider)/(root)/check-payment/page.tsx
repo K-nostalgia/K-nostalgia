@@ -24,9 +24,52 @@ const CheckPayment = () => {
       }
       if (paymentId) {
         try {
+          const postPaymentHistory = async () => {
+            //결제 내역 단건 조회
+            const getResponse = await fetch(
+              `/api/payment/transaction?paymentId=${paymentId}`
+            );
+            const getData = await getResponse.json();
+            console.log(getData);
+
+            const {
+              paidAt,
+              status,
+              orderName,
+              amount,
+              method,
+              customer,
+              products
+            } = getData;
+            const newPaidAt = dayjs(paidAt)
+              .locale('ko')
+              .format('YYYY-MM-DD HH:MM');
+
+            //supabase 결제 내역 저장
+            await fetch('/api/payment/pay-supabase', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                id: uuidv4(),
+                payment_date: newPaidAt,
+                status,
+                order_name: orderName,
+                amount: products[0].quantity,
+                price: amount.total,
+                user_id: customer.id,
+                user_name: customer.name,
+                payment_id: paymentId,
+                pay_provider: method.provider,
+                phone_number: customer.phoneNumber
+              })
+            });
+          };
+
           await postPaymentHistory();
           alert('결제 완료');
-          router.push(`complete-payment`);
+          router.push(`complete-payment?paymentId=${paymentId}`);
         } catch (error) {
           console.error(error);
           alert('결제 처리중 오류 발생');
@@ -35,40 +78,7 @@ const CheckPayment = () => {
       setIsLoading(false);
     };
     handlePayment();
-  }, [paymentId, code, pathName, router]);
-
-  const postPaymentHistory = async () => {
-    //결제 내역 단건 조회
-    const getResponse = await fetch(
-      `/api/payment/transaction?paymentId=${paymentId}`
-    );
-    const getData = await getResponse.json();
-    console.log(getData);
-
-    const { paidAt, status, orderName, amount, method, customer } = getData;
-    const newPaidAt = dayjs(paidAt).locale('ko').format('YYYY-MM-DD HH:MM');
-
-    //supabase 결제 내역 저장
-    await fetch('/api/payment/pay-supabase', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        id: uuidv4(),
-        payment_date: newPaidAt,
-        status,
-        order_name: orderName,
-        amount: 0,
-        price: amount.total,
-        user_id: customer.id,
-        user_name: customer.name,
-        payment_id: paymentId,
-        pay_provider: method.provider,
-        phone_number: customer.phoneNumber
-      })
-    });
-  };
+  }, [paymentId, router, pathName, code]);
 
   if (isLoading) {
     return (

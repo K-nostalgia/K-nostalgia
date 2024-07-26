@@ -7,14 +7,36 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
-import Loading from './Loading';
 
-const PayButton = () => {
+type OrderDetails = {
+  orderName: (string | null)[];
+  totalQuantity: number;
+  totalAmount: number;
+};
+const PayButton = ({ orderName, totalQuantity, totalAmount }: OrderDetails) => {
   const router = useRouter();
   const pathName = usePathname();
+  const requestOrderName = orderName.join(',');
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
+
+  const products = [
+    {
+      id: uuidv4(),
+      name: requestOrderName,
+      amount: totalAmount,
+      quantity: totalQuantity
+    }
+    // {
+    //   id: "PROD_2",
+    //   name: "청송 사과",
+    //   code: "APPLE_001",
+    //   amount: 8000,
+    //   quantity: 3,
+    //   tag: "과일"
+    // }
+  ];
 
   const { data: users, isPending: usersIsPending } = useQuery<
     Tables<'users'>,
@@ -25,25 +47,21 @@ const PayButton = () => {
     queryFn: () => api.auth.getUser()
   });
 
-  if (usersIsPending || !users) {
-    return <Loading />;
-  }
-
-  if (!users) {
-    return alert('로그인 후 이용 가능합니다');
-  }
-
   const payRequest = async () => {
+    if (!users) {
+      return alert('로그인 후 이용 가능합니다');
+    }
     const { name, email, id } = users;
 
     const response = await PortOne.requestPayment({
       storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
       channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
       paymentId: `${newPaymentId}`,
-      orderName: '옥천 복숭아, (배열 풀어서 문자로 넣기)',
-      totalAmount: 1000,
+      orderName: requestOrderName,
+      totalAmount: totalAmount,
       currency: 'CURRENCY_KRW',
       payMethod: 'CARD',
+      products: products,
       redirectUrl:
         process.env.NODE_ENV === 'production'
           ? // TODO 배포 후 배포 주소 url로 변경
