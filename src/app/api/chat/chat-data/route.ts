@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request:NextRequest) => {
     try{
-        const {data:chatData, error:chatError} = await supabase.from('chat').select('*');
+        const {data:chatData, error:chatError} = await supabase.from('chat').select('*').order('created_at', { ascending:true });
 
         if (chatError) {
             return NextResponse.json({error:chatError.message}, {status: 400});

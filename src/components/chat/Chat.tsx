@@ -121,11 +121,9 @@ export function Chat() {
       .subscribe();
   }, [queryClient]);
 
-  // 그래서 이 payload를 쿼리 업데이트.... ..... 하면 되나??
-  // 되는지 안 되는지 모르겠다!!!!!
-
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
   // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
+  // TODO 로그인한 대상만 할 수 있게 처리
 
   // user 정보 가져오기 - 프로필 널일 때 처리
   const featchUserData = async () => {
@@ -143,8 +141,6 @@ export function Chat() {
     queryFn: () => featchUserData()
   });
 
-  // TODO 로그인한 대상만 할 수 있게 처리
-
   // 날짜 포맷
   const formatDate = (date: string) => {
     return dayjs(date).locale('ko').format('YYYY.MM.DD HH:MM');
@@ -157,7 +153,8 @@ export function Chat() {
           <ChatIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="xs:max-w-[330px] bg-normal rounded-xl">
+      {/*TODO 최소 크기일 때 max-w-[330px] 반응형일 때 조절하기  */}
+      <DialogContent className="max-w-[330px] bg-normal rounded-xl">
         <div className="border-b-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
           <DialogHeader>
             <DialogTitle className="mb-2 px-2 py-3">향그리움</DialogTitle>
@@ -174,19 +171,17 @@ export function Chat() {
             return item.user_id === user?.id ? (
               // 나일 경우
               <div key={item.id} className="flex flex-col gap-2">
-                {/* TODO null 일 경우 이미지 태그로 바꾸기 */}
                 {TheUserProfile?.avatar ? (
                   <Image
-                    src={TheUserProfile.avatar}
-                    alt={`${TheUserProfile.nickname}의 프로필`}
+                    src={TheUserProfile?.avatar}
+                    alt={`${TheUserProfile?.nickname}의 프로필`}
                     height={36}
                     width={36}
-                    className="rounded-full ml-auto"
-                    style={{ height: 'auto' }}
+                    className="rounded-full ml-auto w-9 h-9"
                   />
                 ) : (
-                  <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
-                    플필
+                  <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
+                    X
                   </div>
                 )}
                 <div className="border-2 border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
@@ -205,17 +200,16 @@ export function Chat() {
                     <Image
                       src={TheUserProfile.avatar}
                       alt={`${TheUserProfile.nickname}의 프로필`}
-                      height={20}
-                      width={20}
-                      className="rounded-full mr-auto"
-                      style={{ height: 'auto' }}
+                      height={36}
+                      width={36}
+                      className="rounded-full w-9 h-9"
                     />
                   ) : (
-                    <div className="flex mr-auto border-2 rounded-full p-2 w-fit">
-                      플필
+                    <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
+                      X
                     </div>
                   )}
-                  <div className="flex items-center font-semibold">
+                  <div className="flex items-center font-semibold mr-auto">
                     {TheUserProfile?.nickname}
                   </div>
                 </div>
