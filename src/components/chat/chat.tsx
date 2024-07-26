@@ -172,7 +172,6 @@ export function Chat() {
                   <div className="border-2 rounded-full p-2 w-fit">플필</div>
                   <div className="flex items-center font-semibold">닉네임</div>
                 </div>
-                {/* TODO userid === 세션 id랑 같을 때 우측 아니면 좌측 */}
                 <div className="border-2 border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2">
                   {item.content}
                 </div>
