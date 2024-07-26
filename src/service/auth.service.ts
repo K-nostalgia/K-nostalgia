@@ -1,5 +1,5 @@
 import { Tables } from '@/types/supabase';
-import { User } from '@supabase/supabase-js';
+import { Provider, User } from '@supabase/supabase-js';
 
 type UserType = Tables<'users'> & User;
 
@@ -36,6 +36,12 @@ class AuthAPI {
 
   async getUser(): Promise<UserType> {
     return this.request<UserType>('/api/auth/user', 'GET');
+  }
+
+  async socialLogin(provider: Provider): Promise<void>{
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/social-login/?provider=${provider}`)
+    const data = await response.json();
+    window.location.href = data.url;
   }
 }
 

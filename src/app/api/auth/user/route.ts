@@ -10,13 +10,11 @@ export async function GET() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    console.log(2);
-    return NextResponse.json({ error: 'id가 없습니다.' }, { status: 400 });
+    return NextResponse.json(null);
   }
   const { data, error } = await supabase.from('users').select().eq('id', user.id).single()
 
   if (error) {
-    console.log(3);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
