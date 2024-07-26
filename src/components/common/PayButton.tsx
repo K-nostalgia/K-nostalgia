@@ -116,7 +116,12 @@ const PayButton = () => {
 
   return (
     <div>
-      <button onClick={payRequest}>바로 구매하기</button>
+      <button
+        className="bg-primary-heavy py-3 px-4 rounded-xl text-normal w-48"
+        onClick={payRequest}
+      >
+        바로 구매하기
+      </button>
     </div>
   );
 };
