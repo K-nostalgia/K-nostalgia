@@ -41,7 +41,7 @@ const LocalFoodView = () => {
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <div className="xs:mx-4">
+    <div className="mx-4">
       <div className="flex gap-2 items-center mt-3 mb-6">
         {categoryList.map((category) => (
           <FilterButton
@@ -53,7 +53,7 @@ const LocalFoodView = () => {
           </FilterButton>
         ))}
       </div>
-      <ul className="grid gap-4 xs:grid-cols-2">
+      <ul className="grid gap-4 grid-cols-2">
         {localFoodData
           .filter((food) =>
             selectedCategory === '전체'
