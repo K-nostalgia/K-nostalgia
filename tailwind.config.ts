@@ -99,10 +99,15 @@ const config = {
         'accordion-up': 'accordion-up 0.2s ease-out'
       },
       screens: {
-        xs: { min: '376px' },
+        xs: { min: '376px' }
       },
       boxShadow: {
-        custom: '0px -2px 8px 0px rgba(31, 30, 30, 0.08)'
+        custom: '0px -2px 8px 0px rgba(31, 30, 30, 0.08)',
+        custom2:
+          '0px 1px 2px 0px rgba(0, 0, 0, 0.24), 0px 0px 1px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.08)'
+      },
+      fontFamily: {
+        custom: ['"YeojuCeramic TTF"', 'sans-serif']
       }
     }
   },
