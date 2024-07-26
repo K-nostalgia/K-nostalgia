@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
 import ChatIcon from '../icons/ChatIcon';
 import ChatSendIcon from '../icons/ChatSendIcon';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../common/Loading';
 import supabase from '@/utils/supabase/client';
@@ -29,7 +29,7 @@ export function Chat() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
 
-  // user 정보 가져오기
+  // user 정보 가져오기 - 프로필 널일 때 처리
   // const featchUserData = async () => {
   //   const response = await fetch('/api/user');
   //   const { data: userData } = await response.json();
@@ -92,7 +92,7 @@ export function Chat() {
 
   // 유효성 검사 추가하기 비속어?
   const handleSendMessage = () => {
-    //TODO mic 임시값
+    //TODO mic 임시값 => 시간이 부족할 경우 룸 1개로 고정
     const room_id: string = 'K8uTq2XdYz5sPnL4rWj7B';
 
     if (!message || message.trim() === '') {
@@ -118,23 +118,31 @@ export function Chat() {
   };
 
   // console.log(user);
-  console.log(data);
+  // console.log(data);
 
-  // const roomId: string = 'K8uTq2XdYz5sPnL4rWj7B';
-  // const channel = supabase.channel('room1');
-  // channel
-  //   .on('broadcast', { event: 'input-event' }, (payload) => {
-  //     console.log('input-event received!', payload);
-  //   })
-  //   .subscribe((status) => {
-  //     if (status === 'SUBSCRIBED') {
-  //       channel.send({
-  //         type: 'broadcast',
-  //         event: 'input-event',
-  //         payload: { roomId, message }
-  //       });
-  //     }
-  //   });
+  useEffect(() => {
+    const roomId: string = 'K8uTq2XdYz5sPnL4rWj7B';
+
+    const channels = supabase
+      .channel(`room_${roomId}`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat' },
+        (payload) => {
+          console.log('Change received!', payload);
+          queryClient.invalidateQueries({ queryKey: ['chatData'] });
+        }
+      )
+      .subscribe();
+  }, [queryClient]);
+
+  // 그래서 이 payload를 쿼리 업데이트.... ..... 하면 되나??
+  // 되는지 안 되는지 모르겠다!!!!!
+
+  // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
+  // TODO 날짜 제대로 나오게 하기
+  // TODO user nickname & profile 가져오기 get? post? 차이점 더 찾아보기!
+  // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
 
   return (
     <Dialog>

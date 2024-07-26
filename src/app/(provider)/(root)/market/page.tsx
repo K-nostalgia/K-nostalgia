@@ -13,6 +13,7 @@ const MarketPage = () => {
     const fetchMarkets = async () => {
       try {
         const response = await fetch('/api/market/marketList');
+
         const { data } = await response.json();
         setMarkets(data);
       } catch (error) {

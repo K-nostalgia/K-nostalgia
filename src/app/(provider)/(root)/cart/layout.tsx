@@ -3,7 +3,11 @@ import { PropsWithChildren } from 'react';
 
 function CartLayout({ children }: PropsWithChildren) {
   return (
-    <DefaultAppLayout showHeader={true} showNavigation={false} headerTitle="장바구니">
+    <DefaultAppLayout
+      showHeader={true}
+      showNavigation={false}
+      headerTitle="장바구니"
+    >
       {children}
     </DefaultAppLayout>
   );
