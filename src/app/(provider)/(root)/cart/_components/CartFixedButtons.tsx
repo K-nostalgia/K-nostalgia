@@ -5,7 +5,26 @@ type CartButtonProps = {
   data: Tables<'cart'>[];
 };
 
+const DELIVERY_FEE = 2500;
+const COUPON = 2000;
+
 export const CartFixedButtons = ({ data }: CartButtonProps) => {
+  const totalAmount = data.reduce(
+    (acc, item) => acc + (item.product_price ?? 0) * (item.count ?? 0),
+    0
+  );
+
+  const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
+
+  const orderName = data.map((item) => item.product_name).filter(Boolean);
+  const totalQuantity = data.reduce((acc, item) => acc + (item.count ?? 0), 0);
+
+  const orderDetails = {
+    orderName,
+    totalQuantity: totalQuantity,
+    totalAmount: totalPrice
+  };
+
   return (
     <>
       {data?.length === 0 ? (
@@ -26,7 +45,7 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
                 0
               )
               .toLocaleString()} 원`}</p>
-            <PayButton />
+            <PayButton data={orderDetails} />
           </div>
         </div>
       )}

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/hooks/useUser';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -23,6 +24,17 @@ const LoginForm = () => {
     } catch (error) {
       console.error('로그인 실패', error);
       alert('로그인 실패 ');
+    }
+  };
+
+  const handleClickKaKaoLogin = async () => {
+    try {
+      const socialuser = await api.auth.socialLogin('kakao');
+
+      console.log('카카오 로그인 성공', socialuser);
+    } catch (error) {
+      console.error('카카오 로그인 실패', error);
+      alert('카카오 로그인 실패');
     }
   };
 
@@ -57,6 +69,13 @@ const LoginForm = () => {
         className="w-full py-2 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong"
       >
         입장하기
+      </button>
+      <button
+        type="button"
+        onClick={handleClickKaKaoLogin}
+        className="w-full py-2 px-4 bg-kakao text-black rounded-xl hover:bg-kakao-dark"
+      >
+        카카오 로그인
       </button>
     </form>
   );
