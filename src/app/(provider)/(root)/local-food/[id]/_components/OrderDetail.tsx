@@ -50,6 +50,7 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
               src={orderData.title_image}
               width={96}
               height={96}
+              priority
               alt={`${orderData.food_name}이미지`}
               style={{ width: 96, height: 96, objectFit: 'cover' }}
             />
@@ -66,13 +67,13 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
               {`${orderData.price?.toLocaleString()}원`}
             </span>
           </strong>
-          <CountButton />
+          <CountButton data={orderData.count} />
         </div>
         <button>
           <CgClose />
         </button>
       </div>
-      <TotalPriceList data={orderData} />
+      <TotalPriceList data={orderData} count={orderData.count} />
     </div>
   );
 };

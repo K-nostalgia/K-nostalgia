@@ -11,10 +11,6 @@ const COUPON = 2000;
 export const CartPriceList = ({ data }: CartProps) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
-  if (!data || data.length === 0) {
-    return null;
-  }
-
   useEffect(() => {
     if (data) {
       const amount = data.reduce((acc, item) => {
@@ -25,6 +21,10 @@ export const CartPriceList = ({ data }: CartProps) => {
       setTotalAmount(amount);
     }
   }, [data]);
+
+  if (!data || data.length === 0) {
+    return null;
+  }
 
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 

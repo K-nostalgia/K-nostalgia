@@ -1,7 +1,12 @@
+import { Tables } from '@/types/supabase';
 import { useState } from 'react';
 
-export const CountButton = () => {
-  const [count, setCount] = useState(1);
+interface CountProps {
+  data: number | null;
+}
+
+export const CountButton = ({ data }: CountProps) => {
+  const [count, setCount] = useState(data || 1);
 
   const onAddCount = () => {
     setCount((prev) => prev + 1);
