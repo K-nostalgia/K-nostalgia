@@ -1,9 +1,13 @@
 'use client';
 
+import api from '@/service/service';
+import { Tables } from '@/types/supabase';
 import PortOne from '@portone/browser-sdk/v2';
+import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import Loading from './Loading';
 
 const PayButton = () => {
   const router = useRouter();
@@ -12,8 +16,26 @@ const PayButton = () => {
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
 
-  //TODO 로그인하지 않았을 경우 로그인 페이지로 유도
+  const { data: users, isPending: usersIsPending } = useQuery<
+    Tables<'users'>,
+    Error,
+    Tables<'users'>
+  >({
+    queryKey: ['users'],
+    queryFn: () => api.auth.getUser()
+  });
+
+  if (usersIsPending || !users) {
+    return <Loading />;
+  }
+
+  if (!users) {
+    return alert('로그인 후 이용 가능합니다');
+  }
+
   const payRequest = async () => {
+    const { name, email, id } = users;
+
     const response = await PortOne.requestPayment({
       storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
       channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
@@ -33,10 +55,10 @@ const PayButton = () => {
             `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
           : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       customer: {
-        //user table에서 뽑아오기
-        email: 'jonghoon7431@gmail.com',
+        customerId: id,
+        email: email as string,
         phoneNumber: '01000000000',
-        fullName: '이종훈'
+        fullName: name as string
       },
       windowType: {
         pc: 'IFRAME',
@@ -50,7 +72,6 @@ const PayButton = () => {
     });
 
     const paymentId = response?.paymentId;
-    console.log('response:', response);
 
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
@@ -73,11 +94,10 @@ const PayButton = () => {
       throw new Error(`Cancellation failed: ${cancelResponse.statusText}`);
     }
 
-    const cancelData = await cancelResponse.json();
+    const { error: cancelError } = await cancelResponse.json();
+    //TODO 환불 에러시 조치 추가
+    console.log(cancelError);
 
-    console.log('cancel:', cancelData);
-
-    //결제 체크 페이지로 리다이렉션
     router.push(`/check-payment?paymentId=${paymentId}`);
   };
 

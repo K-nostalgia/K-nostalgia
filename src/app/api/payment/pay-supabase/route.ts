@@ -2,7 +2,9 @@ import supabase from "@/utils/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  //에러 처리 다시하셈 뭔 에러나도 200이여
+  //TODO 에러 처리 다시하셈 뭔 에러나도 200이여
+  // 결제 완료되지 않았어도 데이터 저장은 돼서 결제완료 ^^! 가 뜸
+  //결제쪽 라우트 핸들러랑 같이 보면서 처리해야함
   const response = await request.json();
 
   const { error } = await supabase.from('orderd_list').insert(response);
