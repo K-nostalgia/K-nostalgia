@@ -37,6 +37,7 @@ export async function updateSession(request: NextRequest) {
   //   data: { user }
   // } = await supabase.auth.getUser();
 
+  // TODO 39-49 잠깐 주석 처리
   // if (
   //   !user &&
   //   !request.nextUrl.pathname.startsWith('/log-in') &&
