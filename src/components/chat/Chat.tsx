@@ -29,23 +29,9 @@ export function Chat() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
 
-  // user 정보 가져오기 - 프로필 널일 때 처리
-  // const featchUserData = async () => {
-  //   const response = await fetch('/api/user');
-  //   const { data: userData } = await response.json();
-  //   return userData;
-  // };
-
-  // const { data: chatUserData } = useQuery({
-  //   queryKey: ['chatUser'],
-  //   queryFn: featchUserData
-  // });
-
-  // console.log(chatUserData);
-
   // chat 가져오기
   const fetchChatData = async () => {
-    const response = await fetch(`/api/chat`);
+    const response = await fetch(`/api/chat/chat-data`);
     const { data } = await response.json();
     return data;
   };
@@ -141,8 +127,23 @@ export function Chat() {
 
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
   // TODO 날짜 제대로 나오게 하기
-  // TODO user nickname & profile 가져오기 get? post? 차이점 더 찾아보기!
   // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
+
+  // user 정보 가져오기 - 프로필 널일 때 처리
+  const featchUserData = async () => {
+    const response = await fetch('/api/chat/chat-user');
+    const { data: userData } = await response.json();
+    return userData;
+  };
+
+  const { data: chatUserData } = useQuery<
+    Tables<'users'>[],
+    Error,
+    Tables<'users'>[]
+  >({
+    queryKey: ['chatUsers'],
+    queryFn: () => featchUserData()
+  });
 
   return (
     <Dialog>
@@ -161,11 +162,15 @@ export function Chat() {
           </DialogHeader>
         </div>
         <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] flex-1 overflow-y-auto scrollbar-hide">
-          {data?.map((item) =>
-            item.user_id === user?.id ? (
+          {data?.map((item) => {
+            const TheUserProfile = chatUserData?.find(
+              (user) => user.id === item.user_id
+            );
+            return item.user_id === user?.id ? (
               <div key={item.id} className="flex flex-col gap-2">
+                {/* TODO 이미지 태그로 바꾸기 */}
                 <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
-                  플필
+                  {TheUserProfile?.avatar ? TheUserProfile?.avatar : '플필'}
                 </div>
                 <div className="border-2 border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
                   {item.content}
@@ -177,8 +182,13 @@ export function Chat() {
             ) : (
               <div key={item.id} className="flex flex-col gap-3 w-full">
                 <div className="flex gap-2">
-                  <div className="border-2 rounded-full p-2 w-fit">플필</div>
-                  <div className="flex items-center font-semibold">닉네임</div>
+                  {/* TODO 이미지 태그로 바꾸기 */}
+                  <div className="border-2 rounded-full p-2 w-fit">
+                    {TheUserProfile?.avatar ? TheUserProfile?.avatar : '플필'}
+                  </div>
+                  <div className="flex items-center font-semibold">
+                    {TheUserProfile?.nickname}
+                  </div>
                 </div>
                 <div className="border-2 border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2">
                   {item.content}
@@ -187,8 +197,8 @@ export function Chat() {
                   {item.created_at}
                 </div>
               </div>
-            )
-          )}
+            );
+          })}
         </div>
 
         <div className="border-t-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
