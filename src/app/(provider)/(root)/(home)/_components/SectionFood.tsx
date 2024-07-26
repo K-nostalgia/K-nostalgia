@@ -9,7 +9,9 @@ export const SectionFood = async () => {
   return (
     <div className="bg-secondary-normal">
       <div className="flex flex-col justify-center items-center">
-        <h2 className="text-2xl text-label-light my-10 mx-">지역 특산물</h2>
+        <h2 className="text-2xl text-label-light my-10 mx-10 font-custom">
+          지역 특산물
+        </h2>
         <ul className="grid xs:grid-cols-2 gap-6 mx-[10px]">
           {data.slice(0, 4).map((item) => {
             return <FoodBox key={item.product_id} item={item}></FoodBox>;
