@@ -11,10 +11,15 @@ const Mypage = () => {
   const router = useRouter();
 
   const handleClickLogOut = async () => {
-    await api.auth.logOut();
-    // 캐시 무효화
-    queryClient.invalidateQueries();
-    router.push('/log-in');
+    try {
+      await api.auth.logOut();
+      // 캐시 무효화
+      queryClient.invalidateQueries();
+      console.log('로그아웃 완료');
+      router.push('/log-in');
+    } catch (err) {
+      console.log('로그아웃 에러');
+    }
   };
 
   if (isLoading) return <div>Loading...</div>;
