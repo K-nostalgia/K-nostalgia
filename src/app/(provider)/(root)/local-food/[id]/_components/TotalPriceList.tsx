@@ -4,16 +4,17 @@ import { useEffect, useState } from 'react';
 
 interface OrderProps {
   data: Tables<'local_food'>;
+  count: number | null;
 }
 const DELIVERY_FEE = 2500;
 const COUPON = 2000;
 
-export const TotalPriceList = ({ data }: OrderProps) => {
+export const TotalPriceList = ({ data, count }: OrderProps) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
-    if (data && data.price) {
-      setTotalAmount(data.price);
+    if (data && data.price && count) {
+      setTotalAmount(data.price * count);
     }
   }, [data]);
 
