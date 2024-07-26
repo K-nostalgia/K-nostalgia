@@ -6,6 +6,7 @@ import Image from 'next/image';
 import FixedButtons from '../_components/FixedButtons';
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
+import { OrderDetail } from './_components/OrderDetail';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -94,6 +95,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
         <DefaultImage />
       )}
       <FixedButtons food={food} />
+      <OrderDetail params={{ id }} />
     </>
   );
 };

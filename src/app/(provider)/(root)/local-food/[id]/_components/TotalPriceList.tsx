@@ -2,35 +2,26 @@
 import { Tables } from '@/types/supabase';
 import { useEffect, useState } from 'react';
 
-interface CartProps {
-  data: Tables<'cart'>[];
+interface OrderProps {
+  data: Tables<'local_food'>;
 }
 const DELIVERY_FEE = 2500;
 const COUPON = 2000;
 
-export const CartPriceList = ({ data }: CartProps) => {
+export const TotalPriceList = ({ data }: OrderProps) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
-  if (!data || data.length === 0) {
-    return null;
-  }
-
   useEffect(() => {
-    if (data) {
-      const amount = data.reduce((acc, item) => {
-        const price = item.product_price ?? 0;
-        const quantity = item.count ?? 0;
-        return acc + price * quantity;
-      }, 0);
-      setTotalAmount(amount);
+    if (data && data.price) {
+      setTotalAmount(data.price);
     }
   }, [data]);
 
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 
   return (
-    <div className="bg-white mt-2 pt-6 pb-20 ">
-      <ul className="flex flex-col mx-4 gap-2">
+    <div className="bg-normal mt-2 pt-6 pb-20 ">
+      <ul className="flex flex-col gap-2 px-4">
         <li className="flex justify-between">
           <p>총 상품 금액</p>
           <p>{`${totalAmount.toLocaleString()} 원`}</p>
