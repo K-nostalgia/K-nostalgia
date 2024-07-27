@@ -70,7 +70,7 @@ const MarketDetailPage = ({
   if (!images) return <div>로딩 중..</div>;
 
   return (
-    <div>
+    <>
       <h1>{market?.시장명}</h1>
       <div className="relative w-[140px] h-[140px]">
         <Image
@@ -86,8 +86,8 @@ const MarketDetailPage = ({
       {images.map((image, index) => {
         if (index === 0) return null; // 0번째 인덱스는 스킵
         return (
-          <>
-            <div key={image.link} className="relative w-[343px] h-[220px]">
+          <div key={index}>
+            <div className="relative w-[343px] h-[220px]">
               <Image
                 src={image.link}
                 alt={market?.시장명 ?? 'market name'}
@@ -98,10 +98,10 @@ const MarketDetailPage = ({
                 style={{ objectFit: 'cover' }}
               />
             </div>
-          </>
+          </div>
         );
       })}
-    </div>
+    </>
   );
 };
 
