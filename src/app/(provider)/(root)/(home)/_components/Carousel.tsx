@@ -1,52 +1,45 @@
 'use client';
 
-import { useRef } from 'react';
-import SwiperCore, { Navigation, Pagination } from 'swiper/modules';
+import SwiperCore, { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // import Swiper and modules styles
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { Market } from '@/types/Market';
+import Image from 'next/image';
 
-interface Props {
-  data: string[];
+interface marketProps {
+  data: Market[];
 }
 
-export const Carousel = ({ data }: Props) => {
-  SwiperCore.use([Navigation, Pagination]);
-  const swiperRef = useRef<SwiperCore>();
-  const breakpoints = {
-    768: {
-      slidesPerView: 1,
-      slidesPerGroup: 1
-    },
-    1024: {
-      slidesPerView: 1,
-      slidesPerGroup: 1
-    },
-    1200: {
-      slidesPerView: 1,
-      slidesPerGroup: 1
-    }
-  };
+export const Carousel = ({ data }: marketProps) => {
   return (
     <Swiper
-      onSwiper={(swiper) => {
-        swiperRef.current = swiper;
-      }}
-      spacebetween={spaceBetween} // 슬라이드 간격
-      slidesPerView={slidesPerView} // 화면에 보여줄 슬라이드 갯수
-      Loop={true} //슬라이드 무한 반복 여부
-      autoplay={false} //슬라이드 자동 재생 여부
-      navigation // prev, next button 73
+      // install Swiper modules
+      modules={[Pagination]}
+      spaceBetween={16}
+      slidesPerView={2}
+      centeredSlides={true}
       pagination={{ clickable: true }}
-      breakpoints={breakpoints}
-      className="w-80 h-64"
+      onSwiper={() => {}}
+      onSlideChange={() => {}}
     >
-      {data?.map((item, index) => (
+      {data.slice(0, 4).map((item, index) => (
         <SwiperSlide key={index}>
-          <p>{item}</p>
+          <div>
+            <Image
+              src="https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product2.jpg"
+              width={454}
+              height={340}
+              alt={`Slide ${index + 1}`}
+              style={{ border: '3px solid #9C6D2E' }}
+            />
+          </div>
+          <div className="bg-primary-strong text-label-light p-4 rounded-br-[12px] rounded-bl-[12px]">
+            <h2 className="text-lg">{item.시장명}</h2>
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>
