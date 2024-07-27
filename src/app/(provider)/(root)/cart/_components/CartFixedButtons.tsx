@@ -5,15 +5,7 @@ type CartButtonProps = {
   data: Tables<'cart'>[];
 };
 
-const DELIVERY_FEE = 2500;
-const COUPON = 2000;
-
 export const CartFixedButtons = ({ data }: CartButtonProps) => {
-  const totalAmount = data.reduce(
-    (acc, item) => acc + (item.product_price ?? 0) * (item.count ?? 0),
-    0
-  );
-
   const orderNameArr = data.map((item) => item.product_name).filter(Boolean);
 
   // 전달 데이터 형식
@@ -28,9 +20,6 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
     amount: (item.product_price ?? 0) * (item.count ?? 0),
     quantity: item.count ?? 0
   }));
-
-  console.log('product', product);
-  console.log('orderNameArr', orderNameArr);
 
   return (
     <>
