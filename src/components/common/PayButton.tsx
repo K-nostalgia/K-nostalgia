@@ -8,15 +8,18 @@ import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 
-type OrderDetails = {
-  orderName: (string | null)[];
-  totalQuantity: number;
-  totalAmount: number;
+type Props = {
+  orderNameArr: (string | null)[];
+  product: {
+    name: string | null;
+    amount: number;
+    quantity: number;
+  }[];
 };
-const PayButton = ({ orderName, totalQuantity, totalAmount }: OrderDetails) => {
+const PayButton = ({ orderNameArr, product }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
-  const requestOrderName = orderName.join(',');
+  const requestOrderName = orderNameArr.join(',');
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
@@ -25,8 +28,9 @@ const PayButton = ({ orderName, totalQuantity, totalAmount }: OrderDetails) => {
     {
       id: uuidv4(),
       name: requestOrderName,
-      amount: totalAmount,
-      quantity: totalQuantity
+      //TODO amount, quantity = product로 계산해서 넣기
+      amount: 0,
+      quantity: 0
     }
     // {
     //   id: "PROD_2",
@@ -58,10 +62,12 @@ const PayButton = ({ orderName, totalQuantity, totalAmount }: OrderDetails) => {
       channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
       paymentId: `${newPaymentId}`,
       orderName: requestOrderName,
-      totalAmount: totalAmount,
+      //TODO totalAmount = product로 계산해서 넣기
+      totalAmount: 0,
       currency: 'CURRENCY_KRW',
       payMethod: 'CARD',
-      products: products,
+      //TODO totalAmount = product로  넣기
+      products: [],
       redirectUrl:
         process.env.NODE_ENV === 'production'
           ? // TODO 배포 후 배포 주소 url로 변경
