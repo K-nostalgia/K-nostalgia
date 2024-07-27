@@ -8,6 +8,7 @@ import Loading from '@/components/common/Loading';
 import supabase from '@/utils/supabase/client';
 import { TotalPriceList } from './TotalPriceList';
 import { CountButton } from './CountButton';
+import FixedButtons from '../../_components/FixedButtons';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -74,6 +75,7 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
         </button>
       </div>
       <TotalPriceList data={orderData} count={orderData.count} />
+      {/* <FixedButtons /> */}
     </div>
   );
 };
