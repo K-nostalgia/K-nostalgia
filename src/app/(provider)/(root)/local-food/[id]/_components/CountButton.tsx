@@ -1,23 +1,21 @@
-import { Tables } from '@/types/supabase';
-import { useState } from 'react';
-
 interface CountProps {
-  data: number | null;
+  count: number | null;
+  onCountChange: (count: number) => void;
 }
 
-export const CountButton = ({ data }: CountProps) => {
-  const [count, setCount] = useState(data || 1);
-
+export const CountButton = ({ count, onCountChange }: CountProps) => {
   const onAddCount = () => {
-    setCount((prev) => prev + 1);
+    onCountChange((count ?? 0) + 1);
   };
 
   const onSubCount = () => {
-    setCount((prev) => prev - 1);
+    if ((count ?? 0) > 1) {
+      onCountChange((count ?? 0) - 1);
+    }
   };
 
   return (
-    <div className="flex gap-x-2 items-center">
+    <div className="flex gap-x-4 items-center justify-center border border-label-assistive p-[6px] rounded-[4px] w-24 mt-2">
       <button onClick={onSubCount} className="rounded-sm">
         -
       </button>

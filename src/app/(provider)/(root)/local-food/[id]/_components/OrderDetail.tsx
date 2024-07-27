@@ -8,12 +8,19 @@ import Loading from '@/components/common/Loading';
 import supabase from '@/utils/supabase/client';
 import { TotalPriceList } from './TotalPriceList';
 import { CountButton } from './CountButton';
+import { useState } from 'react';
+import FixedButtons from '../../_components/FixedButtons';
 
 type LocalDetailPageProps = {
   params: { id: string };
+  isModalOpen: boolean;
 };
 
-export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
+export const OrderDetail = ({
+  params: { id },
+  isModalOpen
+}: LocalDetailPageProps) => {
+  const [count, setCount] = useState(1);
   const {
     data: orderData,
     isPending,
@@ -37,7 +44,7 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <div className="bg-[#F2F2F2] rounded-tr-[16px] rounded-tl-[16px] w-full absolute bottom-0 left-0 right-0">
+    <div className="bg-[#F2F2F2] rounded-tr-[16px] rounded-tl-[16px] w-full fixed bottom-0 left-0 right-0">
       <div className="bg-normal px-4 py-6 rounded-tr-[16px] rounded-tl-[16px]">
         <p className="border border-label-normal text-label-normal px-4 py-3 rounded-[8px] flex-grow">
           구매할 상품
@@ -52,7 +59,12 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
               height={96}
               priority
               alt={`${orderData.food_name}이미지`}
-              style={{ width: 96, height: 96, objectFit: 'cover' }}
+              style={{
+                width: 96,
+                height: 96,
+                objectFit: 'cover',
+                borderRadius: 8
+              }}
             />
           ) : (
             <DefaultImage />
@@ -67,13 +79,14 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
               {`${orderData.price?.toLocaleString()}원`}
             </span>
           </strong>
-          <CountButton data={orderData.count} />
+          <CountButton count={count} onCountChange={setCount} />
         </div>
         <button>
           <CgClose />
         </button>
       </div>
-      <TotalPriceList data={orderData} count={orderData.count} />
+      <TotalPriceList data={orderData} count={count} />
+      <FixedButtons food={orderData} count={count} isModalOpen={isModalOpen} />
     </div>
   );
 };

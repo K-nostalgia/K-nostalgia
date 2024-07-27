@@ -1,6 +1,4 @@
-'use client';
 import { Tables } from '@/types/supabase';
-import { useEffect, useState } from 'react';
 
 interface OrderProps {
   data: Tables<'local_food'>;
@@ -10,14 +8,7 @@ const DELIVERY_FEE = 2500;
 const COUPON = 2000;
 
 export const TotalPriceList = ({ data, count }: OrderProps) => {
-  const [totalAmount, setTotalAmount] = useState(0);
-
-  useEffect(() => {
-    if (data && data.price && count) {
-      setTotalAmount(data.price * count);
-    }
-  }, [data]);
-
+  const totalAmount = (data.price ?? 0) * (count ?? 0);
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 
   return (

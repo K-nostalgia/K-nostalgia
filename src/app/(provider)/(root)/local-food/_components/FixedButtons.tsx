@@ -4,9 +4,12 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   food: Tables<'local_food'>;
+  count: number | null;
+  onPurchase: () => void;
+  isModalOpen: boolean;
 }
 
-const FixedButtons = ({ food }: Props) => {
+const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
   const router = useRouter();
 
   const onAddCart = async () => {
@@ -35,6 +38,7 @@ const FixedButtons = ({ food }: Props) => {
       if (!cartData) {
         const { error: insertError } = await supabase.from('cart').insert({
           product_id: food.product_id,
+          count,
           image: food.title_image,
           product_name: food.food_name,
           product_price: food.price,
@@ -76,8 +80,11 @@ const FixedButtons = ({ food }: Props) => {
           장바구니에 담기
         </button>
 
-        <button className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1">
-          구매하기
+        <button
+          onClick={onPurchase}
+          className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1"
+        >
+          {isModalOpen ? '바로 구매하기' : '구매하기'}
         </button>
       </div>
     </div>

@@ -7,12 +7,14 @@ import FixedButtons from '../_components/FixedButtons';
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
+import { useEffect, useState } from 'react';
 
 type LocalDetailPageProps = {
   params: { id: string };
 };
 
 const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
+  const [openModal, setOpenModal] = useState(false);
   const {
     data: food,
     isPending,
@@ -32,11 +34,23 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     }
   });
 
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = 'hidden'; // 모달이 열리면 스크롤 X
+    } else {
+      document.body.style.overflow = 'auto'; // 모달이 닫히면 스크롤 O
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [openModal]);
+
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <>
+    <div>
       {food?.title_image ? (
         <Image
           src={food.title_image}
@@ -94,9 +108,21 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       ) : (
         <DefaultImage />
       )}
-      <FixedButtons food={food} />
-      <OrderDetail params={{ id }} />
-    </>
+      <FixedButtons
+        food={food}
+        count={food.count}
+        onPurchase={() => setOpenModal(true)}
+        isModalOpen={openModal}
+      />
+      {openModal && (
+        <div
+          className="fixed inset-0 z-50 bg-[rgba(0,0,0,.5)]"
+          onClick={() => setOpenModal(false)}
+        >
+          <OrderDetail params={{ id }} isModalOpen={openModal} />
+        </div>
+      )}
+    </div>
   );
 };
 
