@@ -1,6 +1,6 @@
 export type Market = {
   시장명: 'string';
-  시장유형: 'string';
+  '시장 유형': 'string';
   시군구: 'string';
   시도: 'string';
   지번주소: 'string';

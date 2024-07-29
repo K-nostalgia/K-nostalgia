@@ -20,6 +20,7 @@ export const FoodBox = ({ item, index }: FoodProps) => {
             width={160}
             height={index === 1 || index === 2 ? 142 : 194}
             alt={`${food_name}이미지`}
+            priority
             style={{
               width: 160,
               height: index === 1 || index === 2 ? 142 : 194,
