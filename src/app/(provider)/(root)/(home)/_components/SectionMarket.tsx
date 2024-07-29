@@ -2,7 +2,7 @@ import { Carousel } from './Carousel';
 
 export const SectionMarket = async () => {
   const baseurl = process.env.NEXT_PUBLIC_BASE_URL;
-  const response = await fetch(`${baseurl}api/market/marketDetailList`);
+  const response = await fetch(`${baseurl}/api/market/marketDetailList`);
   const data = await response.json();
 
   return (
