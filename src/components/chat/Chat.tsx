@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
 import ChatIcon from '../icons/ChatIcon';
 import ChatSendIcon from '../icons/ChatSendIcon';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../common/Loading';
 import supabase from '@/utils/supabase/client';
@@ -45,10 +45,11 @@ export function Chat() {
   const [message, setMessage] = useState<string>('');
   const queryClient = useQueryClient();
   const { data: user } = useUser();
+  const scrollDown = useRef<HTMLDivElement | null>(null);
 
   // chat 가져오기
   const fetchChatData = async () => {
-    const response = await fetch(`/api/chat/chat-data`);
+    const response = await fetch(`/api/chat`);
     const { data } = await response.json();
     return data;
   };
@@ -71,10 +72,9 @@ export function Chat() {
   const sendMessage = async (newMessage: {
     room_id: string;
     user_id: string | undefined;
-
     content: string | null;
   }) => {
-    const response = await fetch('/api/chat/chat-data', {
+    const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -134,27 +134,15 @@ export function Chat() {
         }
       )
       .subscribe();
+
+    // return () => {
+    //   supabase.removeChannel(channels);
+    // };
   }, [queryClient]);
 
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
   // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
   // TODO 로그인한 대상만 할 수 있게 처리_로그인 로직 끝나면 쿠키에서 가져오기 ? 로그인 안한 유저가 말하면 토스트 알림 보내기! ?
-
-  // user 정보 가져오기 - 프로필 널일 때 처리
-  // const featchUserData = async () => {
-  //   const response = await fetch('/api/chat/chat-user');
-  //   const { data: userData } = await response.json();
-  //   return userData;
-  // };
-
-  // const { data: chatUserData } = useQuery<
-  //   Tables<'users'>[],
-  //   Error,
-  //   Tables<'users'>[]
-  // >({
-  //   queryKey: ['chatUsers'],
-  //   queryFn: () => featchUserData()
-  // });
 
   // 날짜 포맷
   const formatDate = (date: string) => {
@@ -163,8 +151,15 @@ export function Chat() {
 
   //TODO 스크롤 하단으로 유지
   useEffect(() => {
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-  }, [queryClient]);
+    scrollToBottom();
+  }, [data]);
+
+  const scrollToBottom = () => {
+    scrollDown.current?.scrollTo({
+      top: scrollDown.current.scrollHeight,
+      behavior: 'smooth'
+    });
+  };
 
   return (
     <Dialog>
@@ -183,7 +178,10 @@ export function Chat() {
             </DialogDescription>
           </DialogHeader>
         </div>
-        <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] flex-1 overflow-y-auto scrollbar-hide">
+        <div
+          className="grid gap-4 py-4 h-[400px] xs:h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+          ref={scrollDown}
+        >
           {data?.map((item) => {
             return item.user_id === user?.id ? (
               // 나일 경우
