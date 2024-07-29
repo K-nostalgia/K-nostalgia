@@ -46,6 +46,7 @@ export function Chat() {
   const queryClient = useQueryClient();
   const { data: user } = useUser();
   const scrollDown = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   // chat 가져오기
   const fetchChatData = async () => {
@@ -77,7 +78,7 @@ export function Chat() {
     const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=utf-8'
       },
       body: JSON.stringify(newMessage)
     });
@@ -113,11 +114,9 @@ export function Chat() {
     sendMessageMutate.mutate(newMessage);
   };
 
-  const handleKeyDownEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleSendMessage();
-    }
+  const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSendMessage();
   };
 
   useEffect(() => {
@@ -135,36 +134,41 @@ export function Chat() {
       )
       .subscribe();
 
-    // return () => {
-    //   supabase.removeChannel(channels);
-    // };
+    return () => {
+      supabase.removeChannel(channels);
+    };
   }, [queryClient]);
 
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
-  // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
   // TODO 로그인한 대상만 할 수 있게 처리_로그인 로직 끝나면 쿠키에서 가져오기 ? 로그인 안한 유저가 말하면 토스트 알림 보내기! ?
 
   // 날짜 포맷
   const formatDate = (date: string) => {
-    return dayjs(date).locale('ko').format('YYYY.MM.DD HH:MM');
+    return dayjs(date).locale('ko').format('YYYY.MM.DD HH:mm');
   };
 
-  //TODO 스크롤 하단으로 유지
+  // 스크롤 하단으로 유지
+  // TODO 버튼이 눌렸을 때로 할까? 맨 처음 데이터 로드 시 최하단으로 안 내려감! 버튼에다가 이벤트 주는 로직 다시 생각해보기...
   useEffect(() => {
-    scrollToBottom();
-  }, [data]);
+    console.log(isOpen);
+    if (isOpen && scrollDown.current) {
+      console.log(12311);
+      scrollDown.current.scrollTo({
+        top: scrollDown.current.scrollHeight
+        // behavior: 'smooth'
+      });
+    }
+  }, [isOpen, data]);
 
-  const scrollToBottom = () => {
-    scrollDown.current?.scrollTo({
-      top: scrollDown.current.scrollHeight,
-      behavior: 'smooth'
-    });
+  const handleDialogStateChange = (open: boolean) => {
+    console.log('Dialog state changed:', open);
+    setIsOpen(open);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={handleDialogStateChange}>
       <DialogTrigger asChild>
-        <Button size="icon">
+        <Button size="icon" onClick={() => setIsOpen(true)}>
           <ChatIcon />
         </Button>
       </DialogTrigger>
@@ -179,7 +183,7 @@ export function Chat() {
           </DialogHeader>
         </div>
         <div
-          className="grid gap-4 py-4 h-[400px] xs:h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+          className="grid gap-4 py-4 h-[400px] h-[400px] flex-1 overflow-y-auto scrollbar-hide"
           ref={scrollDown}
         >
           {data?.map((item) => {
@@ -241,24 +245,26 @@ export function Chat() {
 
         <div className="border-t-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
           <DialogFooter className="xs:flex relative items-center">
-            <div className="relative w-[87%] pt-4">
+            <form
+              className="relative w-[87%] pt-4"
+              onSubmit={handleSubmitMessage}
+            >
               <Input
                 type="text"
                 placeholder="메시지 보내기..."
                 className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive"
                 value={message}
                 onChange={handleMessage}
-                onKeyDown={handleKeyDownEnter}
               />
               <Button
                 type="submit"
                 size="icon"
                 className="absolute right-2 top-[64%] transform -translate-y-1/2"
-                onClick={handleSendMessage}
+                disabled={message.trim() === ''}
               >
                 <ChatSendIcon />
               </Button>
-            </div>
+            </form>
           </DialogFooter>
         </div>
       </DialogContent>

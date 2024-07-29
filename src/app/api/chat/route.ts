@@ -30,6 +30,4 @@ export const POST = async (request:NextRequest) => {
         return NextResponse.json({error:chatError.message}, {status:400});
     }
     return NextResponse.json({data:chatData});
-
-   
 }
