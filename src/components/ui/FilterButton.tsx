@@ -10,10 +10,10 @@ const FilterButton = ({ children, onClick, isActive }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className={`py-1.5 px-4 rounded-full border text-sm ${
+      className={`py-1.5 px-4 rounded-[4px] text-sm ${
         isActive
           ? 'bg-primary-strong text-white border-primary-strong'
-          : 'border-[#1F1E1E] text-[#1F1E1E]'
+          : 'text-label-strong  bg-[#F3D9B6]'
       }`}
     >
       {children}
