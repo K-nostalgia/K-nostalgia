@@ -65,12 +65,14 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       redirectUrl:
         process.env.NODE_ENV === 'production'
           ? // TODO 배포 후 배포 주소 url로 변경
-            `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
-          : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
+            ''
+          : // `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
+            `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       appScheme:
         process.env.NODE_ENV === 'production'
           ? // TODO 배포 후 배포 주소 url로 변경
-            `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
+            // `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
+            ''
           : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       customer: {
         customerId: id,
