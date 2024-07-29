@@ -26,7 +26,7 @@ export const Carousel = ({ data }: marketProps) => {
       pagination={{ clickable: true }}
       className="!pb-[100px]"
     >
-      {data.slice(0, 4).map((item, index) => (
+      {/* {data.slice(0, 4).map((item, index) => (
         <SwiperSlide key={index} className="!w-[311px]">
           <div>
             <Image
@@ -49,7 +49,7 @@ export const Carousel = ({ data }: marketProps) => {
             </div>
           </div>
         </SwiperSlide>
-      ))}
+      ))} */}
     </Swiper>
   );
 };

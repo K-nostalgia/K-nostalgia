@@ -1,8 +1,10 @@
 import { Carousel } from './Carousel';
 
 export const SectionMarket = async () => {
-  const response = await fetch('/api/market/marketDetailList');
-  const { data } = await response.json();
+  const response = await fetch(
+    'http://localhost:3000/api/market/marketDetailList'
+  );
+  const data = await response.json();
 
   return (
     <div className="bg-[#FFF8EF]">

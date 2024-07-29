@@ -1,5 +1,6 @@
 'use client';
-
+import { CgMathPlus } from 'react-icons/cg';
+import { CgMathMinus } from 'react-icons/cg';
 import supabase from '@/utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -98,11 +99,11 @@ export const CountButton: React.FC<CountButtonProps> = ({
   return (
     <div className="flex gap-x-2 items-center">
       <button onClick={() => subCountMutation.mutate()} className="rounded-sm">
-        -
+        <CgMathMinus />
       </button>
       <span>{counts}</span>
       <button onClick={() => addCountMutation.mutate()} className="rounded-sm">
-        +
+        <CgMathPlus />
       </button>
     </div>
   );

@@ -11,6 +11,8 @@ import { useState } from 'react';
 
 type LocalFood = Tables<'local_food'>;
 
+const COUPON = 2000;
+
 const LocalFoodView = () => {
   const text = '상품이 없습니다';
   const categoryList = ['전체', '과일', '야채', '고기', '채소', '곡물'];
@@ -82,9 +84,17 @@ const LocalFoodView = () => {
                     <DefaultImage text={text} />
                   )}
                 </div>
-                <div className="bg-normal pt-2 pb-1 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
+                <div className="bg-normal pt-2 pb-2 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
                   <h2 className="text-base font-semibold">{food.food_name}</h2>
-                  <p className="text-sm">{food.price?.toLocaleString()}원</p>
+                  <p className="text-xs text-label-assistive">
+                    {food.description}
+                  </p>
+                  <p className="text-sm mt-2">
+                    {food.price?.toLocaleString()}원{' '}
+                    <span className="text-sm text-label-assistive line-through">
+                      {((food.price ?? 0) + COUPON).toLocaleString()}
+                    </span>
+                  </p>
                 </div>
               </Link>
             </li>
