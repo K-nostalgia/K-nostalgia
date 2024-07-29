@@ -85,11 +85,7 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
           onClick={onPurchase}
           className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1 text-center text-base leading-7"
         >
-          {isModalOpen ? (
-            <PayButton orderNameArr={food} product={food} />
-          ) : (
-            '구매하기'
-          )}
+          {isModalOpen ? '바로 구매하기' : '구매하기'}
         </div>
       </div>
     </div>
