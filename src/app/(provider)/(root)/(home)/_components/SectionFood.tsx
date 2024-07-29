@@ -3,7 +3,8 @@ import Link from 'next/link';
 import { FoodBox } from './FoodBox';
 
 export const SectionFood = async () => {
-  const response = await fetch(`http://localhost:3000/api/localfood`);
+  const baseurl = process.env.NEXT_PUBLIC_BASE_URL;
+  const response = await fetch(`${baseurl}api/localfood`);
   const data: Tables<'local_food'>[] = await response.json();
 
   return (
