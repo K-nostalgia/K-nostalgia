@@ -18,8 +18,6 @@ export const SectionMarket = () => {
     fetchMarketData();
   }, []);
 
-  console.log(mainMarket);
-
   return (
     <div className="bg-[#FFF8EF]">
       <div className="flex flex-col justify-center items-center">

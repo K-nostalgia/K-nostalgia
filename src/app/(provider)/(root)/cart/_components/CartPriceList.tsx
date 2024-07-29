@@ -3,7 +3,7 @@ import { Tables } from '@/types/supabase';
 import { useEffect, useState } from 'react';
 
 interface CartProps {
-  data: Tables<'cart'>[];
+  data: Tables<'cart'>[] | null;
 }
 const DELIVERY_FEE = 2500;
 const COUPON = 2000;
