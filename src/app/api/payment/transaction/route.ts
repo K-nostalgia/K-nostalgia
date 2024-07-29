@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 //환불
 export const POST =async(request: NextRequest)=>{
-  //추가 에러처리 필요
   try {
     const {paymentId} = await request.json();
   
