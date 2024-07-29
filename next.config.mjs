@@ -16,7 +16,8 @@ const nextConfig = {
         hostname: 'kejbzqdwablccrontqrb.supabase.co'
       }
     ]
-  }
+  },
+  output: 'standalone'
 };
 
 export default nextConfig;
