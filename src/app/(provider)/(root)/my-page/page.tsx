@@ -1,33 +1,29 @@
 'use client';
 import { useUser } from '@/hooks/useUser';
-import api from '@/service/service';
-import { useQueryClient } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
 import React from 'react';
+import Profile from './_components/Profile';
+import LikeMarket from './_components/LikeMarket';
+import OrderList_mypage from './_components/OrderList_mypage';
+import Coupon_mypage from './_components/Coupon_mypage';
+import Logout from './_components/Logout';
 
 const Mypage = () => {
   const { data: user, isLoading, error } = useUser();
-  const queryClient = useQueryClient();
-  const router = useRouter();
-
-  const handleClickLogOut = async () => {
-    try {
-      await api.auth.logOut();
-      // 캐시 무효화
-      queryClient.invalidateQueries();
-      console.log('로그아웃 완료');
-      router.push('/log-in');
-    } catch (err) {
-      console.log('로그아웃 에러');
-    }
-  };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div> error ~ ^^ </div>;
 
   return (
     <div>
-      <div onClick={handleClickLogOut}>로그아웃</div>
+      <Profile />
+      <div className="border-4 border-[#F2F2F2]" />
+      <LikeMarket />
+      <div className="border-4 border-[#F2F2F2]" />
+      <OrderList_mypage />
+      <div className="border border-[#F2F2F2]" />
+      <Coupon_mypage />
+      <div className="border border-[#F2F2F2]" />
+      <Logout />
     </div>
   );
 };
