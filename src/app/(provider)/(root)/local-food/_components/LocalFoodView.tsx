@@ -19,7 +19,9 @@ const LocalFoodView = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const fetchLocalFoodData = async (category: string) => {
     try {
-      const response = await fetch(`/api/localfood?category=${category}`);
+      const response = await fetch(
+        `http://localhost:3000/api/localfood?category=${category}`
+      );
       const data = await response.json();
       return data;
     } catch (error) {

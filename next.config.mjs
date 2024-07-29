@@ -16,8 +16,8 @@ const nextConfig = {
         hostname: 'kejbzqdwablccrontqrb.supabase.co'
       }
     ]
-  },
-  unstable_excludeFiles: ['**/check-payment/**', '**/complete-payment/**']
+  }
+  // unstable_excludeFiles: ['**/check-payment/**', '**/complete-payment/**']
 };
 
 export default nextConfig;

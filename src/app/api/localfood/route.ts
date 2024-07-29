@@ -12,7 +12,7 @@ export const GET = async (request: NextRequest) => {
             return NextResponse.json({ error: localFoodError.message }, { status: 400 });
         }
         
-    return NextResponse.json(localFoodData);
+    return NextResponse.json({ localFoodData });
     } catch(error){
     return NextResponse.json({ error: "Server error" }, { status: 500 });
     }

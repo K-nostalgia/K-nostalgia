@@ -16,6 +16,7 @@ interface marketProps {
 }
 
 export const Carousel = ({ data }: marketProps) => {
+  console.log(data);
   return (
     <Swiper
       // install Swiper modules
