@@ -1,7 +1,7 @@
 import { Carousel } from './Carousel';
 
 export const SectionMarket = async () => {
-  const response = await fetch('http://localhost:3000//api/market/marketList');
+  const response = await fetch('/api/market/marketList');
   const { data } = await response.json();
 
   return (
