@@ -36,7 +36,7 @@ const MarketPage = () => {
   // 시장 데이터 불러오는 API
   const fetchMarkets = async (page: number) => {
     try {
-      const response = await fetch(`/api/market/marketList?page=${page}`);
+      const response = await fetch(`/api/market/marketDetailList?page=${page}`);
       const { data } = await response.json();
       setMarkets(data);
       setFilteredMarkets(data);
