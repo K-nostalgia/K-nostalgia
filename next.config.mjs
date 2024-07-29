@@ -17,7 +17,7 @@ const nextConfig = {
       }
     ]
   },
-  output: 'standalone'
+  unstable_excludeFiles: ['**/check-payment/**', '**/complete-payment/**']
 };
 
 export default nextConfig;
