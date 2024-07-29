@@ -9,9 +9,23 @@ interface Props {
   onPurchase: () => void;
   isModalOpen: boolean;
 }
-
+const COUPON = 2000;
 const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
   const router = useRouter();
+
+  // {
+  //   name: "청송 사과",
+  //   amount: 8000,
+  //   quantity: 3,
+  // }
+
+  const product = [
+    {
+      name: food.food_name,
+      amount: (food.price ?? 0) * (count ?? 0),
+      quantity: count ?? 0
+    }
+  ];
 
   const onAddCart = async () => {
     const {
@@ -85,7 +99,11 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
           onClick={onPurchase}
           className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1 text-center text-base leading-7"
         >
-          {isModalOpen ? '바로 구매하기' : '구매하기'}
+          {isModalOpen ? (
+            <PayButton product={product} orderNameArr={[food.food_name]} />
+          ) : (
+            '구매하기'
+          )}
         </div>
       </div>
     </div>
