@@ -1,8 +1,10 @@
+// 시장 이미지 가져오는 API(시장 메인, 시장 디테일에서 사용)
 import { NextRequest, NextResponse } from 'next/server';
 
 export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('query');
+    const display = searchParams.get('display')
     // console.log('이것은 query', query);
     // console.log('이것은 searchParams', searchParams);
     if (!query) {
@@ -18,7 +20,8 @@ export const GET = async (req: NextRequest) => {
     }
 
     try {
-        const response = await fetch(`https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=1`, {
+        
+        const response = await fetch(`https://openapi.naver.com/v1/search/image?query=${encodeURIComponent(query)}&display=${display}`, {
             headers: {
                 'X-Naver-Client-Id': clientId,
                 'X-Naver-Client-Secret': clientSecret,
@@ -27,6 +30,7 @@ export const GET = async (req: NextRequest) => {
         });
 
         if (!response.ok) {
+            
             const errorText = await response.text();
             console.error('네이버 API의 이미지 찾기를 실패함:', errorText);
             throw new Error(`네이버 API의 이미지 찾기를 실패함: ${response.statusText}`);
@@ -34,12 +38,15 @@ export const GET = async (req: NextRequest) => {
 
         const data = await response.json();
         // console.log('이것은 data', data)
-        if (data.items && data.items.length > 0) {
-            return NextResponse.json(data.items[0].link)
+        if (data.items && data.items.length > 0) {            
+            console.log('여기야 여기', data.items)
+            return NextResponse.json(data.items)
         } else {
+            
             return NextResponse.json({ error: '네이버 API의 이미지를 찾을 수 없음' }, { status: 404 });
         }
     } catch (error: any) {
+        
         console.error('네이버 API의 이미지를 찾을 수 없음:', error.message);
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
