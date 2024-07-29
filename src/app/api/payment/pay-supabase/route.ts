@@ -2,56 +2,46 @@ import supabase from "@/utils/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  //에러 처리 다시하셈 뭔 에러났는데 200이여
+  //TODO 에러 처리 다시하셈 뭔 에러나도 200이여
+  // 결제 완료되지 않았어도 데이터 저장은 돼서 결제완료 ^^! 가 뜸
+  //결제쪽 라우트 핸들러랑 같이 보면서 처리해야함
   const response = await request.json();
-  // const { 
-  //   id,
-  //   payment_date,
-  //   status,
-  //   order_name,
-  //   amount,
-  //   price,
-  //   user_id,
-  //   user_name,
-  //   payment_id,
-  //   pay_provider,
-  //   phone_number
-  // }: Tables<'orderd_list'> = response;
-  console.log(response)
 
   const { error } = await supabase.from('orderd_list').insert(response);
 
   if (error) {
     console.error(error);
-    return NextResponse.json({ status: '에러', message: error.message });
+    return NextResponse.json({ status: '500', message: error.message });
   }
   return NextResponse.json({ status: '200' });
 };
 
-// export const GET = async (request: NextRequest) => {
-//   try {
-//     const url = new URL(request.url);
-//     const postId = url.searchParams.get('post_id');
+export const GET = async (request: NextRequest) => {
+  try {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get('user_id');
 
-//     if (!postId) {
-//       return NextResponse.json({ message: 'post_id 가 필요합니다' }, { status: 400 });
-//     }
+    if (!userId) {
+      return NextResponse.json({ message: '유저 정보를 찾을 수 없습니다' }, { status: 400 });
+    }
 
-//     const response = await supabase
-//       .from('comments')
-//       .select('*', { count: 'exact' })
-//       .order('created_at', { ascending: false })
-//       .eq('post_id', postId);
+    const response = await supabase
+      .from('orderd_list')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .eq('user_id', userId);
 
-//     const { data, error } = response;
-//     if (error) {
-//       console.error(error);
-//       return NextResponse.json({ message: error.message }, { status: 500 });
-//     }
+      console.log(response)
+      
+    const { data, error } = response;
+    if (error) {
+      console.error(error);
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
 
-//     return NextResponse.json(data);
-//   } catch (error) {
-//     console.error(error);
-//     return NextResponse.json({ message: '예기치 않은 오류가 발생했습니다' }, { status: 500 });
-//   }
-// };
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: '예기치 않은 오류가 발생했습니다' }, { status: 500 });
+  }
+};
