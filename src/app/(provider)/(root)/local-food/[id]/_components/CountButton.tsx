@@ -1,4 +1,3 @@
-import { Tables } from '@/types/supabase';
 import { useState } from 'react';
 
 interface CountProps {

@@ -16,7 +16,7 @@ export const TotalPriceList = ({ data, count }: OrderProps) => {
     if (data && data.price && count) {
       setTotalAmount(data.price * count);
     }
-  }, [data]);
+  }, [data, count]);
 
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 

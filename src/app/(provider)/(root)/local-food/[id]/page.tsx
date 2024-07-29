@@ -13,6 +13,8 @@ type LocalDetailPageProps = {
 };
 
 const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
+  const text = '이미지가 없습니다.';
+
   const {
     data: food,
     isPending,
@@ -47,7 +49,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           style={{ width: 375, height: 340, objectFit: 'cover' }}
         />
       ) : (
-        <DefaultImage />
+        <DefaultImage text={text} />
       )}
       <div className="m-4">
         <h2 className="text-xl font-semibold">
@@ -92,7 +94,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           alt="상세페이지"
         />
       ) : (
-        <DefaultImage />
+        <DefaultImage text={text} />
       )}
       <FixedButtons food={food} />
       <OrderDetail params={{ id }} />
