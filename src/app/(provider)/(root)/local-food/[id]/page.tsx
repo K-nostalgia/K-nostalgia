@@ -51,6 +51,10 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
+  const onPurchase = () => {
+    setOpenModal(true);
+  };
+
   return (
     <div>
       {food?.title_image ? (
@@ -113,7 +117,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       <FixedButtons
         food={food}
         count={food.count}
-        onPurchase={() => setOpenModal(true)}
+        onPurchase={onPurchase}
         isModalOpen={openModal}
       />
       {openModal && (
@@ -124,7 +128,11 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           <div
             onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
           >
-            <OrderDetail params={{ id }} isModalOpen={openModal} />
+            <OrderDetail
+              params={{ id }}
+              isModalOpen={openModal}
+              onPurchase={onPurchase}
+            />
           </div>
         </div>
       )}

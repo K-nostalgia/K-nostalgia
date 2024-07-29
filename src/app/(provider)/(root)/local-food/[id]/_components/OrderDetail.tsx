@@ -13,11 +13,13 @@ import FixedButtons from '../../_components/FixedButtons';
 type LocalDetailPageProps = {
   params: { id: string };
   isModalOpen: boolean;
+  onPurchase: () => void;
 };
 
 export const OrderDetail = ({
   params: { id },
-  isModalOpen
+  isModalOpen,
+  onPurchase
 }: LocalDetailPageProps) => {
   const text = '이미지가 없습니다.';
   const [count, setCount] = useState(1);
@@ -81,7 +83,12 @@ export const OrderDetail = ({
         </div>
       </div>
       <TotalPriceList data={orderData} count={count} />
-      <FixedButtons food={orderData} count={count} isModalOpen={isModalOpen} />
+      <FixedButtons
+        food={orderData}
+        count={count}
+        isModalOpen={isModalOpen}
+        onPurchase={onPurchase}
+      />
     </div>
   );
 };
