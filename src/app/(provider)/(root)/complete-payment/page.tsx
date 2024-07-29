@@ -1,10 +1,12 @@
 'use client';
 import Loading from '@/components/common/Loading';
-import useGetPaymentHistory from '@/hooks/useGetPaymentHistory';
+import { imageSrc } from '@/hooks/payment/getProductImage';
+import useGetPaymentHistory from '@/hooks/payment/useGetPaymentHistory';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
+//TODO UI작업, 타입 지정
 const CompletePayment = () => {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get('paymentId');
@@ -13,15 +15,16 @@ const CompletePayment = () => {
   const { payHistory, payHistoryIsPending } = useGetPaymentHistory({
     paymentId
   });
-  //TODO 상품 이미지 넣을 방법....
-  //supabase 버킷에서 빼오기?
   console.log(payHistory);
   if (payHistoryIsPending || !payHistory) {
     return <Loading />;
   }
-  const { paidAt, orderName, products } = payHistory;
+  const { paidAt, orderName, products, amount } = payHistory;
+  const price: number = products.reduce(
+    (acc: number, item: any) => acc + item.amount,
+    0
+  );
 
-  // const buttonStyle
   return (
     <div>
       <Image
@@ -36,21 +39,34 @@ const CompletePayment = () => {
       <div>
         {/* 상품 이미지 */}
         <div>
-          <div>{orderName}</div>
           <div>
-            {products[0].amount} {products[0].quantity}
+            {products.map((product: any) => {
+              const { name, amount, quantity } = product;
+              const src = imageSrc(name);
+              return (
+                <div>
+                  <Image src={src} width={64} height={64} alt={name} />
+                  {name},{amount},{quantity}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
       <div>
         <div>
-          <p>총 상품금액</p> <p>{}</p>
+          <p>총 상품금액</p> <p>{price}</p>
         </div>
         <div>
           <p>배송비</p> <p>2,500</p>
         </div>
         <div>
-          <p>상품 할인 금액</p> <p>-2,000</p>
+          <p>쿠폰 할인 금액</p> <p>-2,000</p>
+        </div>
+        <br />
+        <div>
+          <p>총 결제 금액</p>
+          <p>{amount.total}</p>
         </div>
       </div>
       <div>

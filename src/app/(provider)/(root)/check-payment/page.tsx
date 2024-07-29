@@ -12,6 +12,7 @@ const CheckPayment = () => {
   const paymentId = searchParams.get('paymentId');
   const pathName = searchParams.get('path_name');
   const code = searchParams.get('code');
+  const totalQuantity = searchParams.get('totalQuantity');
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,20 +57,23 @@ const CheckPayment = () => {
                 payment_date: newPaidAt,
                 status,
                 order_name: orderName,
-                amount: products[0].quantity,
+                amount: totalQuantity,
                 price: amount.total,
                 user_id: customer.id,
                 user_name: customer.name,
                 payment_id: paymentId,
                 pay_provider: method.provider,
-                phone_number: customer.phoneNumber
+                phone_number: customer.phoneNumber,
+                products
               })
             });
           };
 
           await postPaymentHistory();
           alert('결제 완료');
-          router.push(`complete-payment?paymentId=${paymentId}`);
+          router.push(
+            `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
+          );
         } catch (error) {
           console.error(error);
           alert('결제 처리중 오류 발생');

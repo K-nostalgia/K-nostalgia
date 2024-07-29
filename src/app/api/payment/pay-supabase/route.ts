@@ -16,30 +16,32 @@ export const POST = async (request: NextRequest) => {
   return NextResponse.json({ status: '200' });
 };
 
-// export const GET = async (request: NextRequest) => {
-//   try {
-//     const url = new URL(request.url);
-//     const postId = url.searchParams.get('post_id');
+export const GET = async (request: NextRequest) => {
+  try {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get('user_id');
 
-//     if (!postId) {
-//       return NextResponse.json({ message: 'post_id 가 필요합니다' }, { status: 400 });
-//     }
+    if (!userId) {
+      return NextResponse.json({ message: '유저 정보를 찾을 수 없습니다' }, { status: 400 });
+    }
 
-//     const response = await supabase
-//       .from('comments')
-//       .select('*', { count: 'exact' })
-//       .order('created_at', { ascending: false })
-//       .eq('post_id', postId);
+    const response = await supabase
+      .from('orderd_list')
+      .select('*')
+      .order('payment_date', { ascending: false })
+      .eq('user_id', userId);
 
-//     const { data, error } = response;
-//     if (error) {
-//       console.error(error);
-//       return NextResponse.json({ message: error.message }, { status: 500 });
-//     }
+      console.log(response)
+      
+    const { data, error } = response;
+    if (error) {
+      console.error(error);
+      return NextResponse.json({ message: error.message }, { status: 500 });
+    }
 
-//     return NextResponse.json(data);
-//   } catch (error) {
-//     console.error(error);
-//     return NextResponse.json({ message: '예기치 않은 오류가 발생했습니다' }, { status: 500 });
-//   }
-// };
+    return NextResponse.json(data);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ message: '예기치 않은 오류가 발생했습니다' }, { status: 500 });
+  }
+};
