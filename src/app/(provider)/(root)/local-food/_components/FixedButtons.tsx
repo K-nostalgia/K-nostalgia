@@ -1,3 +1,4 @@
+import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -80,12 +81,12 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
           장바구니에 담기
         </button>
 
-        <button
+        <div
           onClick={onPurchase}
-          className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1"
+          className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1 text-center text-base leading-7"
         >
-          {isModalOpen ? '바로 구매하기' : '구매하기'}
-        </button>
+          {isModalOpen ? <PayButton /> : '구매하기'}
+        </div>
       </div>
     </div>
   );

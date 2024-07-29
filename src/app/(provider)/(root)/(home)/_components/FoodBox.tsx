@@ -5,9 +5,11 @@ import Link from 'next/link';
 
 interface FoodProps {
   item: Tables<'local_food'>;
+  index: number;
 }
 
-export const FoodBox = ({ item }: FoodProps) => {
+export const FoodBox = ({ item, index }: FoodProps) => {
+  const text = '상품이미지가 없습니다';
   const { title_image, food_name, description, price } = item;
   return (
     <Link href={`/local-food/${item.product_id}`}>
@@ -16,18 +18,19 @@ export const FoodBox = ({ item }: FoodProps) => {
           <Image
             src={title_image}
             width={160}
-            height={194}
+            height={index === 1 || index === 2 ? 142 : 194}
             alt={`${food_name}이미지`}
+            priority
             style={{
               width: 160,
-              height: 194,
+              height: index === 1 || index === 2 ? 142 : 194,
               objectFit: 'cover',
               borderRadius: '12px',
               border: '1px solid #FFF3E3'
             }}
           />
         ) : (
-          <DefaultImage />
+          <DefaultImage text={text} />
         )}
         <div>
           <h2 className="text-label-strong leading-7 mt-2">{food_name}</h2>

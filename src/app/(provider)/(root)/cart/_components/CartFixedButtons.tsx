@@ -45,6 +45,7 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
                 0
               )
               .toLocaleString()} 원`}</p>
+
             <PayButton data={orderDetails} />
           </div>
         </div>
