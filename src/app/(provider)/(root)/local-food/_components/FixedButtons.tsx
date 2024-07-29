@@ -71,8 +71,6 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
     }
   };
 
-  console.log(food);
-
   return (
     <div className="bg-normal shadow-custom px-4 pt-3 pb-1 fixed bottom-0 left-0 right-0">
       <div className="flex gap-3">
@@ -87,7 +85,11 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
           onClick={onPurchase}
           className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1 text-center text-base leading-7"
         >
-          {isModalOpen ? <PayButton orderNameArr={} /> : '구매하기'}
+          {isModalOpen ? (
+            <PayButton orderNameArr={food} product={food} />
+          ) : (
+            '구매하기'
+          )}
         </div>
       </div>
     </div>
