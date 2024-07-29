@@ -39,6 +39,7 @@ const MarketPage = () => {
       const response = await fetch(`/api/market/marketList?page=${page}`);
       const { data } = await response.json();
       setMarkets(data);
+      setFilteredMarkets(data);
     } catch (error) {
       console.error('데이터를 가져오지 못했습니다.', error);
     }
