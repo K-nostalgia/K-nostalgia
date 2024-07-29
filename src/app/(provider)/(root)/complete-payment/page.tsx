@@ -7,7 +7,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
-//TODO UI작업, 타입 지정
 const CompletePayment = () => {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get('paymentId');

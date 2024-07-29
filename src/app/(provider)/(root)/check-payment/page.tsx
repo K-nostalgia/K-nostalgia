@@ -82,7 +82,7 @@ const CheckPayment = () => {
       setIsLoading(false);
     };
     handlePayment();
-  }, [paymentId, router, pathName, code]);
+  }, [paymentId, router, pathName, code, totalQuantity]);
 
   if (isLoading) {
     return (

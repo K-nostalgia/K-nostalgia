@@ -28,7 +28,7 @@ export const GET = async (request: NextRequest) => {
     const response = await supabase
       .from('orderd_list')
       .select('*')
-      .order('payment_date', { ascending: false })
+      .order('created_at', { ascending: false })
       .eq('user_id', userId);
 
       console.log(response)
