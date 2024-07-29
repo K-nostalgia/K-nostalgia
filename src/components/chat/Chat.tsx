@@ -139,16 +139,13 @@ export function Chat() {
   }, [queryClient]);
 
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
-  // TODO 로그인한 대상만 할 수 있게 처리_로그인 로직 끝나면 쿠키에서 가져오기 ? 로그인 안한 유저가 말하면 토스트 알림 보내기! ?
 
   // 날짜 포맷
   const formatDate = (date: string) => {
     return dayjs(date).locale('ko').format('YYYY.MM.DD HH:mm');
   };
 
-  // 스크롤 하단으로 유지
-  // TODO 버튼이 눌렸을 때로 할까? 맨 처음 데이터 로드 시 최하단으로 안 내려감! 버튼에다가 이벤트 주는 로직 다시 생각해보기... ㅜㅜㅜㅜㅜ 왜 안 돼애애애ㅐ애~~~
-  // ref를 동적으로 넣는 방법 .....? -? .... ㅇㅁㅇ....... div가 생성이 안 된 상태에서 ref를 주는 문제....
+  // 1) 모달 켰을 때, 2) 채팅 메세지 쓸 때 스크롤 하단 유지
   useEffect(() => {
     if (isOpen) {
       const timeoutId = setTimeout(() => {
@@ -254,16 +251,21 @@ export function Chat() {
             >
               <Input
                 type="text"
-                placeholder="메시지 보내기..."
+                placeholder={
+                  user ? '메시지 보내기...' : '로그인 후에 이용해주세요.'
+                }
                 className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive"
                 value={message}
                 onChange={handleMessage}
+                disabled={!user}
+                aria-label="메시지 입력"
               />
               <Button
                 type="submit"
                 size="icon"
                 className="absolute right-2 top-[64%] transform -translate-y-1/2"
-                disabled={message.trim() === ''}
+                disabled={!user || message.trim() === ''}
+                aria-label="메시지 전송"
               >
                 <ChatSendIcon />
               </Button>
