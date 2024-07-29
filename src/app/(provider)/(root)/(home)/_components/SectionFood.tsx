@@ -4,7 +4,7 @@ import { FoodBox } from './FoodBox';
 
 export const SectionFood = async () => {
   const baseurl = process.env.NEXT_PUBLIC_BASE_URL;
-  const response = await fetch(`${baseurl}api/localfood`);
+  const response = await fetch(`${baseurl}/api/localfood`);
   const data: Tables<'local_food'>[] = await response.json();
 
   return (
