@@ -148,20 +148,24 @@ export function Chat() {
   };
 
   // 스크롤 하단으로 유지
-  // TODO 버튼이 눌렸을 때로 할까? 맨 처음 데이터 로드 시 최하단으로 안 내려감! 버튼에다가 이벤트 주는 로직 다시 생각해보기...
+  // TODO 버튼이 눌렸을 때로 할까? 맨 처음 데이터 로드 시 최하단으로 안 내려감! 버튼에다가 이벤트 주는 로직 다시 생각해보기... ㅜㅜㅜㅜㅜ 왜 안 돼애애애ㅐ애~~~
+  // ref를 동적으로 넣는 방법 .....? -? .... ㅇㅁㅇ....... div가 생성이 안 된 상태에서 ref를 주는 문제....
   useEffect(() => {
-    console.log(isOpen);
-    if (isOpen && scrollDown.current) {
-      console.log(12311);
-      scrollDown.current.scrollTo({
-        top: scrollDown.current.scrollHeight
-        // behavior: 'smooth'
-      });
+    if (isOpen) {
+      const timeoutId = setTimeout(() => {
+        if (scrollDown.current) {
+          scrollDown.current.scrollTo({
+            top: scrollDown.current.scrollHeight
+            // behavior: 'smooth'
+          });
+        }
+      }, 0);
+
+      return () => clearTimeout(timeoutId);
     }
   }, [isOpen, data]);
 
   const handleDialogStateChange = (open: boolean) => {
-    console.log('Dialog state changed:', open);
     setIsOpen(open);
   };
 
