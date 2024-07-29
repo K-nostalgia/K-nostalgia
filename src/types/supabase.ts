@@ -40,7 +40,6 @@ export type Database = {
           product_price?: number | null;
           user_id?: string | null;
         };
-
         Relationships: [
           {
             foreignKeyName: 'cart_product_id_fkey';
@@ -97,7 +96,6 @@ export type Database = {
           }
         ];
       };
-
       comments: {
         Row: {
           content: string | null;
@@ -204,10 +202,8 @@ export type Database = {
         };
         Relationships: [];
       };
-
       orderd_list: {
         Row: {
-<<<<<<< HEAD
           amount: number | null;
           id: string;
           order_name: string | null;
@@ -216,8 +212,8 @@ export type Database = {
           payment_id: string | null;
           phone_number: string | null;
           price: number | null;
+          products: Json | null;
           status: string | null;
-          total_price: number | null;
           user_id: string | null;
           user_name: string | null;
         };
@@ -230,8 +226,8 @@ export type Database = {
           payment_id?: string | null;
           phone_number?: string | null;
           price?: number | null;
+          products?: Json | null;
           status?: string | null;
-          total_price?: number | null;
           user_id?: string | null;
           user_name?: string | null;
         };
@@ -244,51 +240,11 @@ export type Database = {
           payment_id?: string | null;
           phone_number?: string | null;
           price?: number | null;
+          products?: Json | null;
           status?: string | null;
-          total_price?: number | null;
           user_id?: string | null;
           user_name?: string | null;
         };
-=======
-          amount: number | null
-          id: string
-          order_name: string | null
-          pay_provider: string | null
-          payment_date: string | null
-          payment_id: string | null
-          phone_number: string | null
-          price: number | null
-          status: string | null
-          user_id: string | null
-          user_name: string | null
-        }
-        Insert: {
-          amount?: number | null
-          id?: string
-          order_name?: string | null
-          pay_provider?: string | null
-          payment_date?: string | null
-          payment_id?: string | null
-          phone_number?: string | null
-          price?: number | null
-          status?: string | null
-          user_id?: string | null
-          user_name?: string | null
-        }
-        Update: {
-          amount?: number | null
-          id?: string
-          order_name?: string | null
-          pay_provider?: string | null
-          payment_date?: string | null
-          payment_id?: string | null
-          phone_number?: string | null
-          price?: number | null
-          status?: string | null
-          user_id?: string | null
-          user_name?: string | null
-        }
->>>>>>> b2ce574d942480178a87dbb7984abcc98babc582
         Relationships: [
           {
             foreignKeyName: 'order_user_id_fkey';
@@ -321,7 +277,6 @@ export type Database = {
           id?: string;
           room_id?: string | null;
         };
-
         Relationships: [
           {
             foreignKeyName: 'rooms_created_user_id_fkey';
@@ -348,7 +303,7 @@ export type Database = {
           coupon?: string | null;
           created_at?: string;
           email?: string | null;
-          id?: string;
+          id: string;
           name?: string | null;
           nickname?: string | null;
           password?: string | null;
