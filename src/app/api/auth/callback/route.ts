@@ -8,8 +8,18 @@ export async function GET(request: Request) {
 
   if (code) {
     const supabase = createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
+
+    const user = data.user; 
     if (!error) {
+      if(user){
+        const {error} = await createClient().from('users').upsert({
+          id: user.id,
+          email: user.email,
+          name: user.user_metadata.full_name,
+          nickname: user.user_metadata.user_name,
+        })
+      }
       return NextResponse.redirect(`${origin}${next}`)
     }
   }

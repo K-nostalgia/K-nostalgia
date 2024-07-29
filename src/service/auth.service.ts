@@ -38,7 +38,7 @@ class AuthAPI {
     return this.request<UserType>('/api/auth/user', 'GET');
   }
 
-  async socialLogin(provider: Provider): Promise<void>{
+  async socialLogin(provider: 'kakao' | 'google'): Promise<void>{
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/social-login/?provider=${provider}`)
     const data = await response.json();
     window.location.href = data.url;

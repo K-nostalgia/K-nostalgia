@@ -38,6 +38,16 @@ const LoginForm = () => {
     }
   };
 
+  const handleClickGoogleLogin = async () => {
+    try {
+      const socialuser = await api.auth.socialLogin('google');
+      console.log('구글 로그인 성공', socialuser);
+    } catch (error) {
+      console.error('구글 로그인 실패', error);
+      alert('구글 로그인 실패');
+    }
+  };
+
   return (
     <form onSubmit={handleLogin} className="space-y-6">
       <div>
@@ -76,6 +86,14 @@ const LoginForm = () => {
         className="w-full py-2 px-4 bg-kakao text-black rounded-xl hover:bg-kakao-dark"
       >
         카카오 로그인
+      </button>
+
+      <button
+        type="button"
+        onClick={handleClickGoogleLogin}
+        className="w-full py-2 px-4 bg-kakao text-black rounded-xl hover:bg-kakao-dark"
+      >
+        구글 로그인
       </button>
     </form>
   );
