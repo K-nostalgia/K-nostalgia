@@ -90,19 +90,18 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
       <div className="flex gap-3">
         <button
           onClick={onAddCart}
-          className="text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
+          className="min-w-[165px] text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
         >
           장바구니에 담기
         </button>
 
-        <div
-          onClick={onPurchase}
-          className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1 text-center text-base leading-7"
-        >
+        <div onClick={onPurchase} className="flex-1">
           {isModalOpen ? (
             <PayButton product={product} orderNameArr={[food.food_name]} />
           ) : (
-            '구매하기'
+            <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
+              구매하기
+            </button>
           )}
         </div>
       </div>
