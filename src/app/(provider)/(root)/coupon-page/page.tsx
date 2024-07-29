@@ -2,6 +2,7 @@
 import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { Autoplay } from 'swiper/modules';
 
 const CouponPage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -49,8 +50,9 @@ const CouponPage = () => {
             src={user?.coupon}
             alt="profile"
             width={343}
-            height={343}
-            className="w-{343px} h-{343px} mt-[15px]"
+            height={161}
+            priority
+            className="w-[343px] h-[161px] mt-[15px]"
           />
         )}
       </div>
@@ -63,7 +65,7 @@ const CouponPage = () => {
               alt="쿠폰없을때"
               width={100}
               height={100}
-              className="w-{100px} h-{100px} mx-auto"
+              className="w-[100px] h-[100px] mx-auto"
             />
             <p className="text-label-assistive mt-4">
               {' '}
