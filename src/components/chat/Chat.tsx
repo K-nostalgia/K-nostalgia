@@ -128,7 +128,6 @@ export function Chat() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'chat' },
         (payload) => {
-          console.log('Change received!', payload);
           queryClient.invalidateQueries({ queryKey: ['chatData'] });
         }
       )
