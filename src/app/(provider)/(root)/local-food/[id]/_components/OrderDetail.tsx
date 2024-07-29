@@ -55,7 +55,7 @@ export const OrderDetail = ({ params: { id } }: LocalDetailPageProps) => {
               style={{ width: 96, height: 96, objectFit: 'cover' }}
             />
           ) : (
-            <DefaultImage />
+            <DefaultImage text="text" />
           )}
         </div>
 
