@@ -205,6 +205,7 @@ export type Database = {
       orderd_list: {
         Row: {
           amount: number | null
+          created_at: string | null
           id: string
           order_name: string | null
           pay_provider: string | null
@@ -219,6 +220,7 @@ export type Database = {
         }
         Insert: {
           amount?: number | null
+          created_at?: string | null
           id?: string
           order_name?: string | null
           pay_provider?: string | null
@@ -233,6 +235,7 @@ export type Database = {
         }
         Update: {
           amount?: number | null
+          created_at?: string | null
           id?: string
           order_name?: string | null
           pay_provider?: string | null

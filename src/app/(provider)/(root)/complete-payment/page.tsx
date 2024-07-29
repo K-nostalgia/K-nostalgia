@@ -1,4 +1,5 @@
 'use client';
+
 import Loading from '@/components/common/Loading';
 import { imageSrc } from '@/hooks/payment/getProductImage';
 import useGetPaymentHistory from '@/hooks/payment/useGetPaymentHistory';
@@ -8,7 +9,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 
-const CompletePayment = () => {
+const CompletePaymentContent = () => {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get('paymentId');
   console.log(paymentId);
@@ -27,7 +28,7 @@ const CompletePayment = () => {
   );
 
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <div className="w-full m-auto max-xs:w-[375px] xs:w-[1000px]">
         <div>
           <div className="flex flex-col items-center px-[46.5px] pb-[15px] pt-[8px]">
@@ -120,6 +121,14 @@ const CompletePayment = () => {
           <button>계속 쇼핑하기</button>
         </div>
       </div>
+    </Suspense>
+  );
+};
+
+const CompletePayment = () => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <CompletePaymentContent />
     </Suspense>
   );
 };
