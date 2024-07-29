@@ -1,12 +1,13 @@
 'use client';
 
+import Loading from '@/components/common/Loading';
 import dayjs from 'dayjs';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import { v4 as uuidv4 } from 'uuid';
 
-const CheckPayment = () => {
+const CheckPaymentContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const paymentId = searchParams.get('paymentId');
@@ -84,17 +85,21 @@ const CheckPayment = () => {
     handlePayment();
   }, [paymentId, router, pathName, code, totalQuantity]);
 
-  if (isLoading) {
-    return (
-      <div className="bg-normal">
-        <div className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
-          <BeatLoader color="#A87939" />
-          <p className="my-5">결제 확인중</p>
-        </div>
+  return (
+    <div className="bg-normal">
+      <div className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
+        <BeatLoader color="#A87939" />
+        <p className="my-5">결제 확인중</p>
       </div>
-    );
-  }
-  return null;
+    </div>
+  );
+};
+const CheckPayment = () => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <CheckPaymentContent />
+    </Suspense>
+  );
 };
 
 export default CheckPayment;
