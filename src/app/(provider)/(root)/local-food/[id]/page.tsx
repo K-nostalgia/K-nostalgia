@@ -119,7 +119,11 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           className="fixed inset-0 z-50 bg-[rgba(0,0,0,.5)]"
           onClick={() => setOpenModal(false)}
         >
-          <OrderDetail params={{ id }} isModalOpen={openModal} />
+          <div
+            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
+          >
+            <OrderDetail params={{ id }} isModalOpen={openModal} />
+          </div>
         </div>
       )}
     </div>

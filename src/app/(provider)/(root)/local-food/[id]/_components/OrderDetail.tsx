@@ -81,9 +81,6 @@ export const OrderDetail = ({
           </strong>
           <CountButton count={count} onCountChange={setCount} />
         </div>
-        <button>
-          <CgClose />
-        </button>
       </div>
       <TotalPriceList data={orderData} count={count} />
       <FixedButtons food={orderData} count={count} isModalOpen={isModalOpen} />
