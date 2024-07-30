@@ -20,7 +20,6 @@ export const SectionFood = () => {
     fetchData();
   }, []);
 
-  console.log(localFood);
 
   return (
     <div className="bg-secondary-normal">

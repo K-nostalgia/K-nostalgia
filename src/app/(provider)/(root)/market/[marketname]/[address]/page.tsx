@@ -3,7 +3,6 @@
 import { Market } from '@/types/Market';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { GoHeart } from 'react-icons/go';
 export type ImagesType = {
   title: string;
   link: string;

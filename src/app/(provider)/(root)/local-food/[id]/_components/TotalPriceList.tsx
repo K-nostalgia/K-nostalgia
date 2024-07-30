@@ -1,4 +1,3 @@
-'use client';
 import { Tables } from '@/types/supabase';
 import { useEffect, useState } from 'react';
 
