@@ -58,6 +58,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
 
   return (
     <div>
+      {/* 슬라이드 */}
       <DetailSlide images={food.title_image} />
 
       <div className="m-4">
@@ -101,6 +102,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           width={375}
           height={100}
           priority
+          style={{ width: 375, height: 'auto', objectFit: 'cover' }}
           alt="상세페이지"
         />
       )}

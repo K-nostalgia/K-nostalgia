@@ -9,7 +9,7 @@ interface Props {
   onPurchase: () => void;
   isModalOpen: boolean;
 }
-const COUPON = 2000;
+
 const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
   const router = useRouter();
 

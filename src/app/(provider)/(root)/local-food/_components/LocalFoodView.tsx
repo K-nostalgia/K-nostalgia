@@ -104,7 +104,7 @@ const LocalFoodView = () => {
                   <p className="text-sm mt-2">
                     {food.price?.toLocaleString()}원{' '}
                     <span className="text-sm text-label-assistive line-through">
-                      {((food.price ?? 0) + COUPON).toLocaleString()}
+                      {`${((food.price ?? 0) + COUPON).toLocaleString()}원`}
                     </span>
                   </p>
                 </div>

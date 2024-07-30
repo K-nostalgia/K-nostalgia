@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Pagination } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Image from 'next/image';
 
@@ -15,11 +15,13 @@ export const DetailSlide = ({ images }: SlideProps) => {
   return (
     <Swiper
       // install Swiper modules
-      modules={[Pagination]}
+      modules={[Pagination, Autoplay]}
       spaceBetween={16}
       slidesPerView={'auto'}
       centeredSlides={true}
       pagination={{ clickable: true }}
+      // autoplay={{ delay: 2000, disableOnInteraction: false }}
+      // loop={true}
     >
       {images?.map((img, index) => (
         <SwiperSlide key={index}>
