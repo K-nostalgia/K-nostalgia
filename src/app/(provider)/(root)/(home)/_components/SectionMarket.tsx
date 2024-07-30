@@ -2,16 +2,15 @@
 
 import { Carousel } from './Carousel';
 import { useEffect, useState } from 'react';
+import { Market } from '@/types/Market';
 
 export const SectionMarket = () => {
-  const [mainMarket, setMainMarket] = useState<any[]>([]);
+  const [mainMarket, setMainMarket] = useState<Market[]>([]);
 
   useEffect(() => {
     const fetchMarketData = async () => {
       const response = await fetch('/api/market/marketDetailList');
       const result = await response.json();
-      setMainMarket(result.data);
-      console.log(result);
       setMainMarket(result.data);
     };
 
