@@ -1,6 +1,7 @@
 'use client';
 
 import Loading from '@/components/common/Loading';
+import { toast } from '@/components/ui/use-toast';
 import { imageSrc } from '@/hooks/payment/getProductImage';
 import { useGetPaymentHistoryWithSupabase } from '@/hooks/payment/useGetPaymentHistory';
 import api from '@/service/service';
@@ -109,7 +110,15 @@ const PayHistoryList = () => {
                 <button className="py-[10px] px-[16px] border-[1px] border-[#AFAFAF] text-[#79746D] w-[152px] h-[40px] rounded-[10px]">
                   주문취소
                 </button>
-                <button className="py-[10px] px-[16px] border-[1px] border-[#9C6D2E] text-[#9C6D2E] w-[152px] h-[40px] rounded-[10px]">
+                <button
+                  className="py-[10px] px-[16px] border-[1px] border-[#9C6D2E] text-[#9C6D2E] w-[152px] h-[40px] rounded-[10px]"
+                  onClick={() => {
+                    toast({
+                      variant: 'destructive',
+                      description: '서비스 준비 중이에요.'
+                    });
+                  }}
+                >
                   배송조회
                 </button>
               </div>
