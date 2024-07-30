@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { FoodBox } from './FoodBox';
 import { useEffect, useState } from 'react';
-import { Market } from '@/types/Market';
 
 export const SectionFood = () => {
   const [localFood, setLocalFood] = useState<any[]>([]);

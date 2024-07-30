@@ -3,6 +3,7 @@
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import FilterButton from '@/components/ui/FilterButton';
+import SITE_URL from '@/constant';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -11,13 +12,17 @@ import { useState } from 'react';
 
 type LocalFood = Tables<'local_food'>;
 
+const COUPON = 2000;
+
 const LocalFoodView = () => {
-  const text = '상품이 없습니다';
-  const categoryList = ['전체', '과일', '야채', '고기', '채소', '곡물'];
+  const text = '특산물을 준비하고 있어요';
+  const categoryList = ['전체', '과일', '야채', '고기', '곡물', '공예품'];
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const fetchLocalFoodData = async (category: string) => {
     try {
-      const response = await fetch(`/api/localfood?category=${category}`);
+      const response = await fetch(
+        `${SITE_URL}/api/localfood?category=${category}`
+      );
       const data = await response.json();
       return data;
     } catch (error) {
@@ -41,6 +46,10 @@ const LocalFoodView = () => {
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
+  const filteredFoodData = localFoodData.filter((food) =>
+    selectedCategory === '전체' ? true : food.category === selectedCategory
+  );
+
   return (
     <div className="mx-4">
       <div className="flex gap-2 items-center mt-3 mb-6 overflow-x-auto whitespace-nowrap filter-button-container">
@@ -55,21 +64,18 @@ const LocalFoodView = () => {
         ))}
       </div>
 
-      <ul className="grid gap-4 grid-cols-2">
-        {localFoodData
-          .filter((food) =>
-            selectedCategory === '전체'
-              ? true
-              : food.category === selectedCategory
-          )
-          .map((food) => (
+      {filteredFoodData.length === 0 ? (
+        <DefaultImage text={text} />
+      ) : (
+        <ul className="grid gap-4 grid-cols-2">
+          {filteredFoodData.map((food) => (
             <li
               key={food.product_id}
               className="rounded-[12px] mx-auto w-full shadow-custom2"
             >
               <Link href={`/local-food/${food.product_id}`}>
                 <div className="flex justify-center items-center h-[120px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
-                  {food.title_image ? (
+                  {food.title_image && (
                     <Image
                       src={food.title_image}
                       width={164}
@@ -78,18 +84,25 @@ const LocalFoodView = () => {
                       priority
                       style={{ width: 164, height: 120, objectFit: 'cover' }}
                     />
-                  ) : (
-                    <DefaultImage text={text} />
                   )}
                 </div>
-                <div className="bg-normal pt-2 pb-1 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
+                <div className="bg-normal pt-2 pb-2 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
                   <h2 className="text-base font-semibold">{food.food_name}</h2>
-                  <p className="text-sm">{food.price?.toLocaleString()}원</p>
+                  <p className="text-xs text-label-assistive">
+                    {food.description}
+                  </p>
+                  <p className="text-sm mt-2">
+                    {food.price?.toLocaleString()}원{' '}
+                    <span className="text-sm text-label-assistive line-through">
+                      {((food.price ?? 0) + COUPON).toLocaleString()}
+                    </span>
+                  </p>
                 </div>
               </Link>
             </li>
           ))}
-      </ul>
+        </ul>
+      )}
     </div>
   );
 };

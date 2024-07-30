@@ -5,25 +5,26 @@ type CartButtonProps = {
   data: Tables<'cart'>[];
 };
 
-const DELIVERY_FEE = 2500;
-const COUPON = 2000;
-
 export const CartFixedButtons = ({ data }: CartButtonProps) => {
   const totalAmount = data.reduce(
     (acc, item) => acc + (item.product_price ?? 0) * (item.count ?? 0),
     0
   );
 
-  const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
+  const orderNameArr = data.map((item) => item.product_name).filter(Boolean);
 
-  const orderName = data.map((item) => item.product_name).filter(Boolean);
-  const totalQuantity = data.reduce((acc, item) => acc + (item.count ?? 0), 0);
+  // 전달 데이터 형식
+  // {
+  //   name: "청송 사과",
+  //   amount: 8000,
+  //   quantity: 3,
+  // }
 
-  const orderDetails = {
-    orderName,
-    totalQuantity: totalQuantity,
-    totalAmount: totalPrice
-  };
+  const product = data.map((item) => ({
+    name: item.product_name,
+    amount: (item.product_price ?? 0) * (item.count ?? 0),
+    quantity: item.count ?? 0
+  }));
 
   return (
     <>
@@ -46,7 +47,7 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
               )
               .toLocaleString()} 원`}</p>
 
-            <PayButton data={orderDetails} />
+            <PayButton product={product} orderNameArr={orderNameArr} />
           </div>
         </div>
       )}

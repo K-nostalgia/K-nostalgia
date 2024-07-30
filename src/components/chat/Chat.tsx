@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 // import { Label } from '@/components/ui/label';
 import ChatIcon from '../icons/ChatIcon';
 import ChatSendIcon from '../icons/ChatSendIcon';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Loading from '../common/Loading';
 import supabase from '@/utils/supabase/client';
@@ -22,26 +22,43 @@ import { Tables } from '@/types/supabase';
 import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import dayjs from 'dayjs';
+import { StringToBoolean } from 'class-variance-authority/types';
 
 // 채팅 아이디 가져와서 본인 아이디랑 같으면 오른쪽에 조건부 스타일링 + 다르면 왼족에 스타일링
 // xs일 때 가정 sm:max-w-[425px]
+
+interface chatUserType {
+  avatar: string;
+  nickname: string;
+}
+
+interface chatMessageType {
+  id: number;
+  created_at: string;
+  room_id: string;
+  user_id: string;
+  content: string;
+  users: chatUserType;
+}
 
 export function Chat() {
   const [message, setMessage] = useState<string>('');
   const queryClient = useQueryClient();
   const { data: user } = useUser();
+  const scrollDown = useRef<HTMLDivElement | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   // chat 가져오기
   const fetchChatData = async () => {
-    const response = await fetch(`/api/chat/chat-data`);
+    const response = await fetch(`/api/chat`);
     const { data } = await response.json();
     return data;
   };
 
   const { data, isPending, error } = useQuery<
-    Tables<'chat'>[],
+    chatMessageType[],
     Error,
-    Tables<'chat'>[]
+    chatMessageType[]
   >({
     queryKey: ['chatData'],
     queryFn: fetchChatData
@@ -56,13 +73,12 @@ export function Chat() {
   const sendMessage = async (newMessage: {
     room_id: string;
     user_id: string | undefined;
-
     content: string | null;
   }) => {
-    const response = await fetch('/api/chat/chat-data', {
+    const response = await fetch('/api/chat', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json; charset=utf-8'
       },
       body: JSON.stringify(newMessage)
     });
@@ -98,11 +114,9 @@ export function Chat() {
     sendMessageMutate.mutate(newMessage);
   };
 
-  const handleKeyDownEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      handleSendMessage();
-    }
+  const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleSendMessage();
   };
 
   useEffect(() => {
@@ -114,51 +128,53 @@ export function Chat() {
         'postgres_changes',
         { event: '*', schema: 'public', table: 'chat' },
         (payload) => {
-          console.log('Change received!', payload);
           queryClient.invalidateQueries({ queryKey: ['chatData'] });
         }
       )
       .subscribe();
+
+    return () => {
+      supabase.removeChannel(channels);
+    };
   }, [queryClient]);
 
-  // 그래서 이 payload를 쿼리 업데이트.... ..... 하면 되나??
-  // 되는지 안 되는지 모르겠다!!!!!
-
   // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
-  // TODO 가끔 2개씩 전송되는 거 있는데 좀 더 확인해보기!
-
-  // user 정보 가져오기 - 프로필 널일 때 처리
-  const featchUserData = async () => {
-    const response = await fetch('/api/chat/chat-user');
-    const { data: userData } = await response.json();
-    return userData;
-  };
-
-  const { data: chatUserData } = useQuery<
-    Tables<'users'>[],
-    Error,
-    Tables<'users'>[]
-  >({
-    queryKey: ['chatUsers'],
-    queryFn: () => featchUserData()
-  });
-
-  // TODO 로그인한 대상만 할 수 있게 처리
 
   // 날짜 포맷
   const formatDate = (date: string) => {
-    return dayjs(date).locale('ko').format('YYYY.MM.DD HH:MM');
+    return dayjs(date).locale('ko').format('YYYY.MM.DD HH:mm');
+  };
+
+  // 1) 모달 켰을 때, 2) 채팅 메세지 쓸 때 스크롤 하단 유지
+  useEffect(() => {
+    if (isOpen) {
+      const timeoutId = setTimeout(() => {
+        if (scrollDown.current) {
+          scrollDown.current.scrollTo({
+            top: scrollDown.current.scrollHeight
+            // behavior: 'smooth'
+          });
+        }
+      }, 0);
+
+      return () => clearTimeout(timeoutId);
+    }
+  }, [isOpen, data]);
+
+  const handleDialogStateChange = (open: boolean) => {
+    setIsOpen(open);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={handleDialogStateChange}>
       <DialogTrigger asChild>
-        <Button size="icon">
+        <Button size="icon" onClick={() => setIsOpen(true)}>
           <ChatIcon />
         </Button>
       </DialogTrigger>
-      <DialogContent className="xs:max-w-[330px] bg-normal rounded-xl">
-        <div className="border-b-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
+      {/*TODO 최소 크기일 때 max-w-[330px] 반응형일 때 조절하기  */}
+      <DialogContent className="max-w-[330px] bg-normal rounded-xl">
+        <div className="border-b-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
           <DialogHeader>
             <DialogTitle className="mb-2 px-2 py-3">향그리움</DialogTitle>
             <DialogDescription>
@@ -166,30 +182,28 @@ export function Chat() {
             </DialogDescription>
           </DialogHeader>
         </div>
-        <div className="grid gap-4 py-4 h-[400px] xs:h-[400px] flex-1 overflow-y-auto scrollbar-hide">
+        <div
+          className="grid gap-4 py-4 h-[400px] h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+          ref={scrollDown}
+        >
           {data?.map((item) => {
-            const TheUserProfile = chatUserData?.find(
-              (user) => user.id === item.user_id
-            );
             return item.user_id === user?.id ? (
               // 나일 경우
               <div key={item.id} className="flex flex-col gap-2">
-                {/* TODO null 일 경우 이미지 태그로 바꾸기 */}
-                {TheUserProfile?.avatar ? (
+                {item.users?.avatar ? (
                   <Image
-                    src={TheUserProfile.avatar}
-                    alt={`${TheUserProfile.nickname}의 프로필`}
+                    src={item.users?.avatar}
+                    alt={`${item.users?.nickname}의 프로필`}
                     height={36}
                     width={36}
-                    className="rounded-full ml-auto"
-                    style={{ height: 'auto' }}
+                    className="rounded-full ml-auto w-9 h-9"
                   />
                 ) : (
-                  <div className="flex ml-auto border-2 rounded-full p-2 w-fit">
-                    플필
+                  <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
+                    X
                   </div>
                 )}
-                <div className="border-2 border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
+                <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
                   {item.content}
                 </div>
                 <div className="text-xs text-label-assistive ml-auto">
@@ -201,25 +215,24 @@ export function Chat() {
               <div key={item.id} className="flex flex-col gap-3 w-full">
                 <div className="flex gap-2">
                   {/* TODO null 일 경우 기본 이미지 태그로 바꾸기 */}
-                  {TheUserProfile?.avatar ? (
+                  {item.users?.avatar ? (
                     <Image
-                      src={TheUserProfile.avatar}
-                      alt={`${TheUserProfile.nickname}의 프로필`}
-                      height={20}
-                      width={20}
-                      className="rounded-full mr-auto"
-                      style={{ height: 'auto' }}
+                      src={item.users.avatar}
+                      alt={`${item.users.nickname}의 프로필`}
+                      height={36}
+                      width={36}
+                      className="rounded-full w-9 h-9"
                     />
                   ) : (
-                    <div className="flex mr-auto border-2 rounded-full p-2 w-fit">
-                      플필
+                    <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
+                      X
                     </div>
                   )}
-                  <div className="flex items-center font-semibold">
-                    {TheUserProfile?.nickname}
+                  <div className="flex items-center font-semibold mr-auto">
+                    {item.users?.nickname}
                   </div>
                 </div>
-                <div className="border-2 border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2">
+                <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2">
                   {item.content}
                 </div>
                 <div className="text-xs text-label-assistive">
@@ -230,26 +243,33 @@ export function Chat() {
           })}
         </div>
 
-        <div className="border-t-2 w-[calc(100%+48px)] -mx-6 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
+        <div className="border-t-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
           <DialogFooter className="xs:flex relative items-center">
-            <div className="relative w-[87%] pt-4">
+            <form
+              className="relative w-[87%] pt-4"
+              onSubmit={handleSubmitMessage}
+            >
               <Input
                 type="text"
-                placeholder="메시지 보내기..."
-                className="pr-12 rounded-xl border-2 border-primary-strong placeholder:text-label-assistive"
+                placeholder={
+                  user ? '메시지 보내기...' : '로그인 후에 이용해주세요.'
+                }
+                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive"
                 value={message}
                 onChange={handleMessage}
-                onKeyDown={handleKeyDownEnter}
+                disabled={!user}
+                aria-label="메시지 입력"
               />
               <Button
                 type="submit"
                 size="icon"
                 className="absolute right-2 top-[64%] transform -translate-y-1/2"
-                onClick={handleSendMessage}
+                disabled={!user || message.trim() === ''}
+                aria-label="메시지 전송"
               >
                 <ChatSendIcon />
               </Button>
-            </div>
+            </form>
           </DialogFooter>
         </div>
       </DialogContent>
