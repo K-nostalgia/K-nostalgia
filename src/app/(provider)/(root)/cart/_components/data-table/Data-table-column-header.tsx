@@ -36,7 +36,7 @@ const fetchCartItems = async () => {
   return mappedCartItems;
 };
 
-const deleteProduct = () => {
+const useDeleteProduct = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -47,7 +47,7 @@ const deleteProduct = () => {
         .eq('product_id', productId);
 
       if (error) {
-        throw new Error('상품을 삭제하는데 실패했습니다: ' + error.message);
+        throw new Error('상품을 삭제하지 못했습니다.' + error.message);
       }
     },
     // onSuccess: () => {
@@ -160,7 +160,7 @@ export const columns: ColumnDef<CartItem>[] = [
     id: 'delete',
     header: '',
     cell: ({ row }) => {
-      const mutation = deleteProduct();
+      const mutation = useDeleteProduct();
 
       return (
         <button onClick={() => mutation.mutate(row.getValue('product_id'))}>
