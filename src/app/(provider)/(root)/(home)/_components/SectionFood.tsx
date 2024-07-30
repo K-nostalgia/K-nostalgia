@@ -1,9 +1,10 @@
 import { Tables } from '@/types/supabase';
-import { FoodBox } from './FoodBox';
 import Link from 'next/link';
+import { FoodBox } from './FoodBox';
+import SITE_URL from '@/constant';
 
 export const SectionFood = async () => {
-  const response = await fetch(`http://localhost:3000/api/localfood`);
+  const response = await fetch(`${SITE_URL}api/localfood`);
   const data: Tables<'local_food'>[] = await response.json();
 
   return (
@@ -13,7 +14,7 @@ export const SectionFood = async () => {
           지역 특산물
         </h2>
         <ul className="grid grid-cols-2 gap-6 mx-[10px]">
-          {data.slice(0, 4).map((item, index) => {
+          {data?.slice(0, 4).map((item, index) => {
             return (
               <FoodBox
                 key={item.product_id}

@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
 import { CgClose } from 'react-icons/cg';
+import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
 
 export type CartItem = {
   id: number | null;
@@ -14,6 +15,22 @@ export type CartItem = {
   product_price: number | null;
   product_name: string | null;
   count: number | null;
+};
+
+const DeleteButton = ({ productId }: { productId: string }) => {
+  const mutation = useDeleteProduct();
+
+  const handleDelete = () => {
+    if (confirm('해당 제품을 삭제하시겠습니까?')) {
+      mutation.mutate(productId);
+    }
+  };
+
+  return (
+    <button onClick={handleDelete}>
+      <CgClose className="text-[#959595]" />
+    </button>
+  );
 };
 
 const fetchCartItems = async () => {
@@ -33,17 +50,6 @@ const fetchCartItems = async () => {
   }));
 
   return mappedCartItems;
-};
-
-const handleDelete = async (productId: string) => {
-  const { error } = await supabase
-    .from('cart')
-    .delete()
-    .eq('product_id', productId);
-  if (error) {
-    console.error('상품을 삭제하는데 실패했습니다.', error);
-  } else {
-  }
 };
 
 export const columns: ColumnDef<CartItem>[] = [
@@ -93,28 +99,39 @@ export const columns: ColumnDef<CartItem>[] = [
           objectFit: 'cover'
         }}
       />
-    ),
-    enableSorting: false,
-    enableHiding: false
+    )
   },
-  { accessorKey: 'product_name', header: '' },
   {
-    accessorKey: 'count',
+    accessorKey: 'product_name',
     header: '',
-    cell: ({ row }) => {
-      return (
-        <CountButton
-          product_id={row.getValue('product_id')}
-          counts={row.getValue('count')}
-        />
-      );
-    }
+    cell: ({ row }) => (
+      <div className="absolute left-[50%] translate-x-[-50%]">{`${row.getValue(
+        'product_name'
+      )}`}</div>
+    )
   },
   {
     accessorKey: 'product_price',
     header: '',
-    cell: ({ row }) => `${row.getValue('product_price')?.toLocaleString()} 원`
+    cell: ({ row }) => (
+      <div className="absolute">{`${row
+        .getValue('product_price')
+        ?.toLocaleString()} 원`}</div>
+    )
   },
+  {
+    accessorKey: 'count',
+    header: '',
+    cell: ({ row }) => (
+      <div className="absolute left-[50%] translate-x-[-50%]">
+        <CountButton
+          product_id={row.getValue('product_id')}
+          counts={row.getValue('count')}
+        />
+      </div>
+    )
+  },
+
   {
     accessorKey: 'product_id',
     header: '',
@@ -125,10 +142,6 @@ export const columns: ColumnDef<CartItem>[] = [
   {
     id: 'delete',
     header: '',
-    cell: ({ row }) => (
-      <button onClick={() => handleDelete(row.getValue('product_id'))}>
-        <CgClose className="text-[#959595]" />
-      </button>
-    )
+    cell: ({ row }) => <DeleteButton productId={row.getValue('product_id')} />
   }
 ];

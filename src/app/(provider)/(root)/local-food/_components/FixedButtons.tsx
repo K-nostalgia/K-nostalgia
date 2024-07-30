@@ -1,13 +1,31 @@
+import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 
 interface Props {
   food: Tables<'local_food'>;
+  count: number | null;
+  onPurchase: () => void;
+  isModalOpen: boolean;
 }
-
-const FixedButtons = ({ food }: Props) => {
+const COUPON = 2000;
+const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
   const router = useRouter();
+
+  // {
+  //   name: "청송 사과",
+  //   amount: 8000,
+  //   quantity: 3,
+  // }
+
+  const product = [
+    {
+      name: food.food_name,
+      amount: (food.price ?? 0) * (count ?? 0),
+      quantity: count ?? 0
+    }
+  ];
 
   const onAddCart = async () => {
     const {
@@ -35,6 +53,7 @@ const FixedButtons = ({ food }: Props) => {
       if (!cartData) {
         const { error: insertError } = await supabase.from('cart').insert({
           product_id: food.product_id,
+          count,
           image: food.title_image,
           product_name: food.food_name,
           product_price: food.price,
@@ -71,14 +90,20 @@ const FixedButtons = ({ food }: Props) => {
       <div className="flex gap-3">
         <button
           onClick={onAddCart}
-          className="text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
+          className="min-w-[165px] text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
         >
           장바구니에 담기
         </button>
 
-        <button className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1">
-          구매하기
-        </button>
+        <div onClick={onPurchase} className="flex-1">
+          {isModalOpen ? (
+            <PayButton product={product} orderNameArr={[food.food_name]} />
+          ) : (
+            <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
+              구매하기
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

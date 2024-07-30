@@ -2,7 +2,7 @@ import { createClient } from '@/utils/supabase/server';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
-  const data = await request.json();
+  const data = await request.json(); 
   const email = data.email as string;
   const password = data.password as string;
   const nickname = data.nickname as string;
@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
   }
 
   const userId = userData.user?.id;
+
+  if(!userId){
+    return;
+  }
 
    // 기본 프로필 이미지 넣기
    const { data: defaultimage} = supabase.storage.from('images').getPublicUrl('default_profile.png');
