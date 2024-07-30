@@ -1,5 +1,4 @@
 import { PropsWithChildren } from 'react';
-import Header from './Header';
 import Navigation from './Navigation';
 import { Chat } from '../chat/Chat';
 import TopButton from '../icons/TopButton';
