@@ -21,7 +21,6 @@ export const OrderDetail = ({
   isModalOpen,
   onPurchase
 }: LocalDetailPageProps) => {
-  const text = '이미지가 없습니다.';
   const [count, setCount] = useState(1);
   const {
     data: orderData,
@@ -52,7 +51,7 @@ export const OrderDetail = ({
       </div>
       <div className="flex px-4 justify-between bg-normal pb-6 pt-8">
         <div className="bg-normal mr-3">
-          {orderData.title_image ? (
+          {orderData.title_image && (
             <Image
               src={orderData.title_image}
               width={96}
@@ -66,8 +65,6 @@ export const OrderDetail = ({
                 borderRadius: 8
               }}
             />
-          ) : (
-            <DefaultImage text={text} />
           )}
         </div>
 

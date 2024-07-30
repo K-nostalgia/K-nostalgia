@@ -26,9 +26,6 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
     quantity: item.count ?? 0
   }));
 
-  console.log('product', product);
-  console.log('orderNameArr', orderNameArr);
-
   return (
     <>
       {data?.length === 0 ? (
