@@ -1,10 +1,22 @@
-import { Tables } from '@/types/supabase';
-import { FoodBox } from './FoodBox';
-import Link from 'next/link';
+'use client';
 
-export const SectionFood = async () => {
-  const response = await fetch(`http://localhost:3000/api/localfood`);
-  const data: Tables<'local_food'>[] = await response.json();
+import Link from 'next/link';
+import { FoodBox } from './FoodBox';
+import { useEffect, useState } from 'react';
+import { Market } from '@/types/Market';
+
+export const SectionFood = () => {
+  const [localFood, setLocalFood] = useState<any[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch('/api/localfood');
+      const data = await response.json();
+      setLocalFood(data);
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="bg-secondary-normal">
@@ -13,7 +25,7 @@ export const SectionFood = async () => {
           지역 특산물
         </h2>
         <ul className="grid grid-cols-2 gap-6 mx-[10px]">
-          {data.slice(0, 4).map((item, index) => {
+          {localFood.slice(0, 4).map((item, index) => {
             return (
               <FoodBox
                 key={item.product_id}
