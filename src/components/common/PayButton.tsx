@@ -139,7 +139,12 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
   return (
     <div>
-      <button onClick={payRequest}>바로 구매하기</button>
+      <button
+        onClick={payRequest}
+        className="bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
+      >
+        바로 구매하기
+      </button>
     </div>
   );
 };

@@ -7,6 +7,7 @@ function PaymentLayout({ children }: PropsWithChildren) {
       showHeader={true}
       showNavigation={true}
       headerTitle="주문 내역"
+      showChat={false}
     >
       {children}
     </DefaultAppLayout>

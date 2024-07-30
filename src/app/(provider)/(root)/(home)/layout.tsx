@@ -3,7 +3,13 @@ import { PropsWithChildren } from 'react';
 
 function HomeLayout({ children }: PropsWithChildren) {
   return (
-    <DefaultAppLayout showNavigation={true} showHeader={true} shwoChat={true}>
+    <DefaultAppLayout
+      showNavigation={true}
+      showHeader={true}
+      showTopButton={true}
+      showLogo={true}
+      showBackButton={false}
+    >
       {children}
     </DefaultAppLayout>
   );

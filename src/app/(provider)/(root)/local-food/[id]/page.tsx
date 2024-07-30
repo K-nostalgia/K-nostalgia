@@ -57,7 +57,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
 
   return (
     <div>
-      {food?.title_image ? (
+      {food?.title_image && (
         <Image
           src={food.title_image}
           width={375}
@@ -66,8 +66,6 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           priority
           style={{ width: 375, height: 340, objectFit: 'cover' }}
         />
-      ) : (
-        <DefaultImage text={text} />
       )}
       <div className="m-4">
         <h2 className="text-xl font-semibold">
@@ -104,15 +102,13 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
         </table>
       </div>
 
-      {food.food_image ? (
+      {food.food_image && (
         <Image
           src={food.food_image}
           width={375}
           height={100}
           alt="상세페이지"
         />
-      ) : (
-        <DefaultImage text={text} />
       )}
       <FixedButtons
         food={food}

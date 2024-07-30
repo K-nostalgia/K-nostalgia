@@ -3,7 +3,13 @@ import { PropsWithChildren } from 'react';
 
 function SignUpLayout({ children }: PropsWithChildren) {
   return (
-    <DefaultAppLayout showHeader={false} showNavigation={false}>
+    <DefaultAppLayout
+      showHeader={true}
+      showSearch={false}
+      showCart={false}
+      showNavigation={false}
+      showChat={false}
+    >
       {children}
     </DefaultAppLayout>
   );

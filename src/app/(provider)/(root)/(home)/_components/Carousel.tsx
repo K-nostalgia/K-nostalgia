@@ -8,15 +8,16 @@ import { GoHeart } from 'react-icons/go';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Market } from '@/types/Market';
 import Image from 'next/image';
+import { MainMarket } from './SectionMarket';
 
 interface marketProps {
-  data: Market[];
+  data: MainMarket[];
+  images: MainMarket[] | null;
 }
 
-export const Carousel = ({ data }: marketProps) => {
-  console.log(data);
+export const Carousel = ({ data, images }: marketProps) => {
+  console.log('images', images);
   return (
     <Swiper
       // install Swiper modules
@@ -27,7 +28,7 @@ export const Carousel = ({ data }: marketProps) => {
       pagination={{ clickable: true }}
       className="!pb-[100px]"
     >
-      {/* {data.slice(0, 4).map((item, index) => (
+      {data.slice(0, 4).map((item, index) => (
         <SwiperSlide key={index} className="!w-[311px]">
           <div>
             <Image
@@ -50,7 +51,7 @@ export const Carousel = ({ data }: marketProps) => {
             </div>
           </div>
         </SwiperSlide>
-      ))} */}
+      ))}
     </Swiper>
   );
 };
