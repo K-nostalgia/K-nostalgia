@@ -12,12 +12,10 @@ import Image from 'next/image';
 import { MainMarket } from './SectionMarket';
 
 interface marketProps {
-  data: MainMarket[];
-  images: MainMarket[] | null;
+  images: MainMarket | null;
 }
 
-export const Carousel = ({ data, images }: marketProps) => {
-  console.log('images', images);
+export const Carousel = ({ images }: marketProps) => {
   return (
     <Swiper
       // install Swiper modules
@@ -26,19 +24,28 @@ export const Carousel = ({ data, images }: marketProps) => {
       slidesPerView={'auto'}
       centeredSlides={true}
       pagination={{ clickable: true }}
-      className="!pb-[100px]"
+      className="!pb-[80px]"
     >
-      {data.slice(0, 4).map((item, index) => (
+      {images?.slice(0, 4).map((item, index) => (
         <SwiperSlide key={index} className="!w-[311px]">
           <div>
-            <Image
-              src="https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product2.jpg"
-              width={454}
-              height={340}
-              priority
-              alt={`Slide ${index + 1}`}
-              style={{ height: 340, border: '3px solid #9C6D2E' }}
-            />
+            {item.이미지 ? (
+              <Image
+                src={`${item.이미지[0]?.link}`}
+                width={454}
+                height={340}
+                priority
+                alt={`Slide ${index + 1}`}
+                style={{
+                  height: 340,
+                  border: '3px solid #9C6D2E',
+                  borderTopLeftRadius: '12px',
+                  borderTopRightRadius: '12px'
+                }}
+              />
+            ) : (
+              <>없음</>
+            )}
           </div>
           <div className="bg-primary-strong text-label-light p-4 rounded-br-[12px] rounded-bl-[12px]">
             <div className="flex justify-between">

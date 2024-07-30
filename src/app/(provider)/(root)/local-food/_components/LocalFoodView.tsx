@@ -20,9 +20,7 @@ const LocalFoodView = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const fetchLocalFoodData = async (category: string) => {
     try {
-      const response = await fetch(
-        `${SITE_URL}/api/localfood?category=${category}`
-      );
+      const response = await fetch(`/api/localfood?category=${category}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -52,7 +50,7 @@ const LocalFoodView = () => {
 
   return (
     <div className="mx-4">
-      <div className="flex gap-2 items-center mt-3 mb-6 overflow-x-auto whitespace-nowrap filter-button-container">
+      <div className="flex gap-2 items-center mt-3 overflow-x-auto whitespace-nowrap filter-button-container">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -62,6 +60,19 @@ const LocalFoodView = () => {
             {category}
           </FilterButton>
         ))}
+      </div>
+
+      <div className="my-4">
+        <Image
+          src={
+            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
+          }
+          width={343}
+          height={80}
+          priority
+          alt="배너이미지"
+          style={{ width: 343, height: 80, objectFit: 'cover' }}
+        />
       </div>
 
       {filteredFoodData.length === 0 ? (
@@ -77,7 +88,7 @@ const LocalFoodView = () => {
                 <div className="flex justify-center items-center h-[120px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
                   {food.title_image && (
                     <Image
-                      src={food.title_image}
+                      src={food.title_image[0]}
                       width={164}
                       height={120}
                       alt="특산물 이미지"

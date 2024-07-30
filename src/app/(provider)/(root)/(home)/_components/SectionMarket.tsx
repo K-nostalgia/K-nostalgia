@@ -1,5 +1,6 @@
 'use client';
 
+import { Market } from '@/types/Market';
 import { Carousel } from './Carousel';
 import { useEffect, useState } from 'react';
 
@@ -8,11 +9,11 @@ export type MainMarket = {
   '시장 유형': string;
   도로명주소: string;
   이미지: string | null;
-};
+}[];
 
 export const SectionMarket = () => {
-  const [mainMarket, setMainMarket] = useState<MainMarket[]>([]);
-  const [images, setImages] = useState<MainMarket[] | null>(null);
+  const [mainMarket, setMainMarket] = useState<Market[]>([]);
+  const [images, setImages] = useState<MainMarket | null>(null);
 
   useEffect(() => {
     const fetchMarketData = async () => {
@@ -26,7 +27,7 @@ export const SectionMarket = () => {
 
   useEffect(() => {
     const fetchMarketImages = async () => {
-      const results: MainMarket[] = [];
+      const results: MainMarket = [];
 
       for (const market of mainMarket) {
         try {
@@ -69,7 +70,7 @@ export const SectionMarket = () => {
           유명 전통시장
         </h2>
 
-        <Carousel data={mainMarket} images={images} />
+        <Carousel images={images} />
       </div>
     </div>
   );
