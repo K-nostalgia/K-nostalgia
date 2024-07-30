@@ -43,6 +43,12 @@ class AuthAPI {
     const data = await response.json();
     window.location.href = data.url;
   }
+
+  async updateUser(id: string, update: {nickname?: string, avatar?:string}): Promise<UserType> {
+    return this.request<UserType>('/api/auth/user-update', 'PATCH', {id, ...update});
+  }
+
+
 }
 
 export default AuthAPI;
