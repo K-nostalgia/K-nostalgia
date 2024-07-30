@@ -1,5 +1,7 @@
+'use client';
+
 import TitleLogo from '@/components/icons/TitleLogo';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { GoArrowLeft } from 'react-icons/go';
 
 interface ShowBackLogoProps {

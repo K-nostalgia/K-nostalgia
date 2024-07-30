@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 import Navigation from './Navigation';
 import { Chat } from '../chat/Chat';
 import TopButton from '../icons/TopButton';
+import Header from './header/Header';
 
 interface DefaultAppLayoutProps {
   showNavigation: boolean;
