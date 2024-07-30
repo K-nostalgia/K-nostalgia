@@ -8,6 +8,8 @@ function PaymentLayout({ children }: PropsWithChildren) {
       showNavigation={true}
       headerTitle="주문 내역"
       showChat={false}
+      showSearch={false}
+      showCart={false}
     >
       {children}
     </DefaultAppLayout>

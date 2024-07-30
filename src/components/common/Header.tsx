@@ -6,6 +6,8 @@ import { GoSearch } from 'react-icons/go';
 import { PiShoppingCartSimple } from 'react-icons/pi';
 import TitleLogo from '../icons/TitleLogo';
 import { GoArrowLeft } from 'react-icons/go';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 type HeaderProps = {
   headerTitle?: string;
@@ -60,14 +62,40 @@ const Header = ({
       );
     } else if (showSearch && !showCart) {
       return (
-        <div className="flex p-1 gap-1">
+        <div className="flex p-1">
           <GoSearch className="w-7 h-7" />
         </div>
       );
-    } else if (!showSearch && !showCart) {
+    } else if (!showSearch && showCart) {
+      return (
+        <div className="flex p-1">
+          <PiShoppingCartSimple
+            onClick={() => router.push('/cart')}
+            className="cursor-pointer w-7 h-7"
+          />
+        </div>
+      );
+    } else {
       return <div className="invisible w-7 h-7" />;
     }
   };
+
+  const fetchSearchMarketData = async (): Promise<any> => {
+    try {
+      const rs = await fetch('/api/search');
+      const data = await rs.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { data } = useQuery({
+    queryKey: ['searchMarketData'],
+    queryFn: fetchSearchMarketData
+  });
+
+  console.log(data);
 
   return (
     //TODO mic md:hidden, 빈 div justify-between 유지
