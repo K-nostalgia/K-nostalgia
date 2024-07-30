@@ -126,7 +126,8 @@ const config = {
           '0px 1px 2px 0px rgba(0, 0, 0, 0.24), 0px 0px 1px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.08)'
       },
       fontFamily: {
-        pretendard: ['var(--font-pretendard)']
+        pretendard: ['var(--font-pretendard)'],
+        custom: ['YeojuCeramic', 'sans-serif']
       }
     }
   },

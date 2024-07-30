@@ -52,7 +52,7 @@ export const OrderDetail = ({
         <div className="bg-normal mr-3">
           {orderData.title_image && (
             <Image
-              src={orderData.title_image}
+              src={orderData.title_image[0]}
               width={96}
               height={96}
               priority

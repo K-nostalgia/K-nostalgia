@@ -1,11 +1,23 @@
-import { Tables } from '@/types/supabase';
+'use client';
+
 import Link from 'next/link';
 import { FoodBox } from './FoodBox';
-import SITE_URL from '@/constant';
+import { useQuery } from '@tanstack/react-query';
+import { Tables } from '@/types/supabase';
 
-export const SectionFood = async () => {
-  const response = await fetch(`${SITE_URL}api/localfood`);
-  const data: Tables<'local_food'>[] = await response.json();
+export const SectionFood = () => {
+  const { data: localFood } = useQuery({
+    queryKey: ['localfood'],
+    queryFn: async () => {
+      try {
+        const response = await fetch('/api/localfood');
+        const data: Tables<'local_food'>[] = await response.json();
+        return data;
+      } catch (error) {
+        console.error('메인에 특산물 데이터를 가져오지 못했습니다.', error);
+      }
+    }
+  });
 
   return (
     <div className="bg-secondary-normal">
@@ -14,7 +26,7 @@ export const SectionFood = async () => {
           지역 특산물
         </h2>
         <ul className="grid grid-cols-2 gap-6 mx-[10px]">
-          {data?.slice(0, 4).map((item, index) => {
+          {localFood?.slice(0, 4).map((item, index) => {
             return (
               <FoodBox
                 key={item.product_id}

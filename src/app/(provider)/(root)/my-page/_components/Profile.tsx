@@ -1,9 +1,16 @@
+'use client';
 import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const Profile = () => {
   const { data: user, isLoading, error } = useUser();
+  const router = useRouter();
+
+  const handleEditMoveClick = () => {
+    router.push('/profile-edit');
+  };
 
   return (
     <div className="p-6 rounded-lg">
@@ -26,7 +33,10 @@ const Profile = () => {
         <h2 className="text-xl text-label-strong font-semibold my-4">
           {user?.nickname ?? '설정된 닉네임이 없습니다.'}
         </h2>
-        <button className="border text-[14px] border-primary-10 text-primary-20 px-4 py-[6px] rounded">
+        <button
+          className="border text-[14px] border-primary-10 text-primary-20 px-4 py-[6px] rounded"
+          onClick={handleEditMoveClick}
+        >
           프로필 수정
         </button>
       </div>

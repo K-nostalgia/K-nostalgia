@@ -16,7 +16,7 @@ export const FoodBox = ({ item, index }: FoodProps) => {
       <li>
         {title_image ? (
           <Image
-            src={title_image}
+            src={title_image[0]}
             width={160}
             height={index === 1 || index === 2 ? 142 : 194}
             alt={`${food_name}이미지`}

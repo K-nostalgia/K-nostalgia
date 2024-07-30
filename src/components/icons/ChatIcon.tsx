@@ -2,12 +2,13 @@ import React from 'react';
 
 const ChatIcon = () => {
   return (
-    <div className="absolute right-3 flex items-center justify-center rounded-full bg-primary-strong shadow w-8 h-8 p-2">
+    // <div className="absolute flex items-center justify-center rounded-full bg-primary-strong shadow w-8 h-8 p-2">
+    <div className="flex items-center justify-center rounded-full bg-primary-strong shadow w-8 h-8 p-2 z-50">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="28"
         height="28"
-        viewBox="0 0 24 24"
+        viewBox="0 0 22 22"
         fill="none"
         className="relative"
       >
