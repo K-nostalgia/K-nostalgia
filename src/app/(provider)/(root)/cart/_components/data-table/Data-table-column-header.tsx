@@ -5,8 +5,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
-import { CgClose } from 'react-icons/cg';
-import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
+import { DeleteButton } from './DeleteButton';
 
 export type CartItem = {
   id: number | null;
@@ -15,22 +14,6 @@ export type CartItem = {
   product_price: number | null;
   product_name: string | null;
   count: number | null;
-};
-
-const DeleteButton = ({ productId }: { productId: string }) => {
-  const mutation = useDeleteProduct();
-
-  const handleDelete = () => {
-    if (confirm('해당 제품을 삭제하시겠습니까?')) {
-      mutation.mutate(productId);
-    }
-  };
-
-  return (
-    <button onClick={handleDelete}>
-      <CgClose className="text-[#959595]" />
-    </button>
-  );
 };
 
 const fetchCartItems = async () => {
@@ -77,12 +60,14 @@ export const columns: ColumnDef<CartItem>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        style={{ transform: 'translate(0, -130%)' }}
       />
     ),
     enableSorting: false,
     enableHiding: false
   },
   {
+    //상품 이미지
     accessorKey: 'image',
     header: '',
     cell: ({ row }) => (
@@ -96,34 +81,38 @@ export const columns: ColumnDef<CartItem>[] = [
           borderRadius: '8px',
           width: 96,
           height: 96,
-          objectFit: 'cover'
+          objectFit: 'cover',
+          translate: '-10%'
         }}
       />
     )
   },
   {
+    //상품 이름
     accessorKey: 'product_name',
     header: '',
     cell: ({ row }) => (
-      <div className="absolute left-[50%] translate-x-[-50%]">{`${row.getValue(
+      <div className="text-label-strong text-base translate-x-[-60%] translate-y-[-150%]">{`${row.getValue(
         'product_name'
       )}`}</div>
     )
   },
   {
+    //상품 가격
     accessorKey: 'product_price',
     header: '',
     cell: ({ row }) => (
-      <div className="absolute">{`${row
-        .getValue('product_price')
-        ?.toLocaleString()} 원`}</div>
+      <div className="absolute left-[55%] translate-x-[-65%] translate-y-[-80%] text-lg text-primary-strong font-semibold">
+        {`${row.getValue('product_price')?.toLocaleString()} 원`}
+      </div>
     )
   },
   {
+    //수량 버튼
     accessorKey: 'count',
     header: '',
     cell: ({ row }) => (
-      <div className="absolute left-[50%] translate-x-[-50%]">
+      <div className="absolute left-[55%] translate-x-[-55%] translate-y-[10%] ">
         <CountButton
           product_id={row.getValue('product_id')}
           counts={row.getValue('count')}
@@ -140,8 +129,13 @@ export const columns: ColumnDef<CartItem>[] = [
     )
   },
   {
+    //삭제 버튼
     id: 'delete',
     header: '',
-    cell: ({ row }) => <DeleteButton productId={row.getValue('product_id')} />
+    cell: ({ row }) => (
+      <div className="translate-x-0 translate-y-[-100%]">
+        <DeleteButton productId={row.getValue('product_id')} />
+      </div>
+    )
   }
 ];
