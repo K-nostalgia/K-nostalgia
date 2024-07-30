@@ -26,7 +26,6 @@ const Header = ({
 
   // 뒤로가기 = true, showLogo = false 뒤로가기 보여주고 (기본 상태) / 뒤로가기가 false + showLogo True면 로고 보여주고 / 둘 다 false 하면 아무것도 안 보여주기
   const showBackLogoIcon = () => {
-
     if (showBackButton && !showLogo) {
       return (
         <div
