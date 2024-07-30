@@ -252,7 +252,9 @@ export function Chat() {
               <Input
                 type="text"
                 placeholder={
-                  user ? '메시지 보내기...' : '로그인 후에 이용해주세요.'
+                  user
+                    ? '메시지 보내기...'
+                    : '향그리움의 가족만 이용할 수 있어요.'
                 }
                 className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive"
                 value={message}
