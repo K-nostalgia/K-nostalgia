@@ -6,6 +6,7 @@ function CartLayout({ children }: PropsWithChildren) {
     <DefaultAppLayout
       showHeader={true}
       showNavigation={false}
+      showChat={false}
       headerTitle="장바구니"
     >
       {children}

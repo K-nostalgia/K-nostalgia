@@ -8,7 +8,7 @@ interface DefaultAppLayoutProps {
   showNavigation: boolean;
   showHeader: boolean;
   headerTitle?: string;
-  shwoChat?: boolean;
+  showChat?: boolean;
   showTopButton?: boolean;
   showBackButton?: boolean;
   showLogo?: boolean;
@@ -21,8 +21,8 @@ const DefaultAppLayout = ({
   showNavigation,
   showHeader,
   headerTitle,
-  shwoChat,
-  showTopButton,
+  showChat = true,
+  showTopButton = false,
   showBackButton = true,
   showLogo = false,
   showSearch = true,
@@ -42,10 +42,10 @@ const DefaultAppLayout = ({
       <main className="flex-grow overflow-y-hidden mt-[3.25rem]">
         {children}
       </main>
-      {shwoChat && <Chat />}
-      {showTopButton && <TopButton />}
-      {showHeader && <Header headerTitle={headerTitle} />}
-      <main className="flex-grow overflow-y-hidden">{children}</main>
+      <div className="flex flex-col fixed bottom-[97px] right-3">
+        {showChat && <Chat />}
+        {showTopButton && <TopButton />}
+      </div>
       {showNavigation && <Navigation />}
     </div>
   );

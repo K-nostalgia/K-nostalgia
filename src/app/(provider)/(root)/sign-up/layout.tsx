@@ -8,6 +8,7 @@ function SignUpLayout({ children }: PropsWithChildren) {
       showSearch={false}
       showCart={false}
       showNavigation={false}
+      showChat={false}
     >
       {children}
     </DefaultAppLayout>

@@ -15,6 +15,7 @@ function MarketLayout({ children }: PropsWithChildren) {
       showNavigation={showMarketLayout}
       showBackButton={!showMarketLayout}
       headerTitle={showMarketLayout ? "전통시장" : ""}
+      showTopButton={true}
     >
       {children}
     </DefaultAppLayout>
