@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { MainMarket } from './SectionMarket';
 
 interface marketProps {
-  images: MainMarket | null;
+  images: MainMarket | null | undefined;
 }
 
 export const Carousel = ({ images }: marketProps) => {
