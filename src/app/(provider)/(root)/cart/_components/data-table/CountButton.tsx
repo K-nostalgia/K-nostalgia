@@ -97,7 +97,7 @@ export const CountButton: React.FC<CountButtonProps> = ({
   });
 
   return (
-    <div className="flex gap-x-2 items-center">
+    <div className="flex gap-x-4 items-center justify-center border border-label-assistive p-[6px] rounded-[4px] w-24 mt-2">
       <button onClick={() => subCountMutation.mutate()} className="rounded-sm">
         <CgMathMinus />
       </button>

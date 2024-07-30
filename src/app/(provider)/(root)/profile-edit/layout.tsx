@@ -1,17 +1,16 @@
 import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { PropsWithChildren } from 'react';
 
-function CartLayout({ children }: PropsWithChildren) {
+function LocalFoodLayout({ children }: PropsWithChildren) {
   return (
     <DefaultAppLayout
       showHeader={true}
-      showNavigation={false}
-      showChat={false}
-      headerTitle="장바구니"
+      showNavigation={true}
+      headerTitle="프로필 수정"
     >
       {children}
     </DefaultAppLayout>
   );
 }
 
-export default CartLayout;
+export default LocalFoodLayout;

@@ -8,6 +8,7 @@ import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
 import { useEffect, useState } from 'react';
+import { DetailSlide } from './_components/DetailSlide';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -57,18 +58,8 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
 
   return (
     <div>
-      {food?.title_image ? (
-        <Image
-          src={food.title_image}
-          width={375}
-          height={340}
-          alt="특산물 디테일 페이지"
-          priority
-          style={{ width: 375, height: 340, objectFit: 'cover' }}
-        />
-      ) : (
-        <DefaultImage text={text} />
-      )}
+      <DetailSlide images={food.title_image} />
+
       <div className="m-4">
         <h2 className="text-xl font-semibold">
           {`[${food.location}] `}
@@ -104,15 +95,14 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
         </table>
       </div>
 
-      {food.food_image ? (
+      {food.food_image && (
         <Image
           src={food.food_image}
           width={375}
           height={100}
+          priority
           alt="상세페이지"
         />
-      ) : (
-        <DefaultImage text={text} />
       )}
       <FixedButtons
         food={food}

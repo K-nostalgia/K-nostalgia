@@ -1,14 +1,15 @@
 'use client';
 
 import { CartFixedButtons } from './CartFixedButtons';
-import { DefaultCart } from './DefaultCart';
 import { DataTable } from './data-table/DataTable';
 import { columns } from './data-table/Data-table-column-header';
 import { useQuery } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
 import Loading from '@/components/common/Loading';
+import { DefaultImage } from '@/components/common/DefaultImage';
 
 export const CartList = () => {
+  const text = '장바구니가 비었어요';
   const {
     data: cartData,
     isPending,
@@ -47,7 +48,7 @@ export const CartList = () => {
       {cartData?.length > 0 ? (
         <DataTable columns={columns} data={cartData} />
       ) : (
-        <DefaultCart />
+        <DefaultImage text={text} />
       )}
 
       <CartFixedButtons data={cartData} />

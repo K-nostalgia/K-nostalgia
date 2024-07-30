@@ -168,7 +168,11 @@ export function Chat() {
   return (
     <Dialog open={isOpen} onOpenChange={handleDialogStateChange}>
       <DialogTrigger asChild>
-        <Button size="icon" onClick={() => setIsOpen(true)}>
+        <Button
+          size="icon"
+          onClick={() => setIsOpen(true)}
+          className="flex justify-center items-center"
+        >
           <ChatIcon />
         </Button>
       </DialogTrigger>

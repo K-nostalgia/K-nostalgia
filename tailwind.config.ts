@@ -18,7 +18,7 @@ const config = {
       colors: {
         //색 설정
         //background
-        'normal': '#FAF8F5',
+        normal: '#FAF8F5',
 
         //label 색상
         'label-strong': '#151515',
@@ -28,7 +28,6 @@ const config = {
         'label-disable': '#DDDAD7',
         'label-light': '#F6F5F3',
 
-    
         //primary 색상
         'primary-heavy': '#755428',
         'primary-strong': '#A87939',
@@ -44,7 +43,6 @@ const config = {
         'primary-70': '#F6E5CE',
         'primary-80': '#FFF3E3',
         'primary-90': '#FFF8EF',
-       
 
         //secondary 색상
         'secondary-heavy': '#586452',
@@ -61,7 +59,6 @@ const config = {
         'secondary-70': '#E9F4E3',
         'secondary-80': '#EFF9EB',
         'secondary-90': '#F6FFF2',
-
 
         //status 색상
         'status-negative': '#ED1B18',
@@ -129,12 +126,12 @@ const config = {
           '0px 1px 2px 0px rgba(0, 0, 0, 0.24), 0px 0px 1px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.08)'
       },
       fontFamily: {
-        custom: ['"YeojuCeramic TTF"', 'sans-serif']
+        pretendard: ['var(--font-pretendard)'],
+        custom: ['YeojuCeramic', 'sans-serif']
       }
     }
   },
-  plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar-hide')],
+  plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar-hide')]
 } satisfies Config;
 
 export default config;
-
