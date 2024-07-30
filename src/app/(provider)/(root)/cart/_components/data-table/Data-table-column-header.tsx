@@ -6,9 +6,10 @@ import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
 import { DeleteButton } from './DeleteButton';
+import Link from 'next/link';
 
 export type CartItem = {
-  id: number | null;
+  id: string | null;
   product_id: string | null;
   image: string | null;
   product_price: number | null;
@@ -71,20 +72,22 @@ export const columns: ColumnDef<CartItem>[] = [
     accessorKey: 'image',
     header: '',
     cell: ({ row }) => (
-      <Image
-        src={row.getValue('image')}
-        width={96}
-        height={96}
-        priority
-        alt={row.getValue('product_name')}
-        style={{
-          borderRadius: '8px',
-          width: 96,
-          height: 96,
-          objectFit: 'cover',
-          translate: '-10%'
-        }}
-      />
+      <Link href={`/local-food/${row.getValue('product_id')}`}>
+        <Image
+          src={row.getValue('image')}
+          width={96}
+          height={96}
+          priority
+          alt={row.getValue('product_name')}
+          style={{
+            borderRadius: '8px',
+            width: 96,
+            height: 96,
+            objectFit: 'cover',
+            translate: '-10%'
+          }}
+        />
+      </Link>
     )
   },
   {
@@ -102,8 +105,13 @@ export const columns: ColumnDef<CartItem>[] = [
     accessorKey: 'product_price',
     header: '',
     cell: ({ row }) => (
-      <div className="absolute left-[55%] translate-x-[-65%] translate-y-[-80%] text-lg text-primary-strong font-semibold">
+      <div className="absolute left-[55%] translate-x-[-35%] translate-y-[-80%] text-lg text-primary-strong font-semibold">
         {`${row.getValue('product_price')?.toLocaleString()} 원`}
+        <span className="text-base font-normal text-label-assistive line-through pl-2 translate-x-[80%]">
+          {`${(
+            ((row.getValue('product_price') as number) || 0) + 2000
+          ).toLocaleString()}원`}
+        </span>
       </div>
     )
   },
