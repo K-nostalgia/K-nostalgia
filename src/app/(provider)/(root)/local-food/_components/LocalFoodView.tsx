@@ -48,8 +48,8 @@ const LocalFoodView = () => {
   );
 
   return (
-    <div className="mx-4">
-      <div className="flex gap-2 items-center mt-3 overflow-x-auto whitespace-nowrap filter-button-container">
+    <div className="mx-4 ">
+      <div className="flex gap-2 items-center pt-3 overflow-x-auto whitespace-nowrap filter-button-container ">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -77,7 +77,7 @@ const LocalFoodView = () => {
       {filteredFoodData.length === 0 ? (
         <DefaultImage text={text} />
       ) : (
-        <ul className="grid gap-4 grid-cols-2">
+        <ul className="grid gap-4 grid-cols-2 pb-32">
           {filteredFoodData.map((food) => (
             <li
               key={food.product_id}

@@ -42,6 +42,7 @@ export const CartList = () => {
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
+  alert(JSON.stringify(cartData));
 
   return (
     <div>

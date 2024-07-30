@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 export type CartItem = {
   id: number | null;
   product_id: string | null;
-  image: string | null;
+  image: string[] | null;
   product_price: number | null;
   product_name: string | null;
   count: number | null;
@@ -27,12 +27,12 @@ const fetchCartItems = async () => {
 
   const mappedCartItems = cartItems.map((item) => ({
     product_id: item.product_id,
-    image: item.image,
+    image: item.image ? item.image[0] : null,
     product_price: item.product_price,
     product_name: item.product_name,
     count: item.count
   }));
-
+  console.log('mappedCartItems', mappedCartItems);
   return mappedCartItems;
 };
 

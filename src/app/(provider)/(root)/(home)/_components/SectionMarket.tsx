@@ -13,9 +13,6 @@ export type MainMarket = {
 }[];
 
 export const SectionMarket = () => {
-  // const [mainMarket, setMainMarket] = useState<Market[]>([]);
-  //const [images, setImages] = useState<MainMarket | null>(null);
-
   const { data: mainMarket, error: mainMarketError } = useQuery({
     queryKey: ['market'],
     queryFn: async () => {
@@ -70,7 +67,7 @@ export const SectionMarket = () => {
   });
 
   return (
-    <div className="bg-[#FFF8EF]">
+    <div className="bg-[#FFF8EF] pb-40">
       <div className="flex flex-col justify-center items-center">
         <h2 className="text-2xl text-primary-heavy my-10 mx-10 font-custom">
           유명 전통시장
