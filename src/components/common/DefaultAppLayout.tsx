@@ -1,12 +1,14 @@
 import { PropsWithChildren } from 'react';
 import Header from './Header';
 import Navigation from './Navigation';
+import { Chat } from '../chat/Chat';
 import TopButton from '../icons/TopButton';
 
 interface DefaultAppLayoutProps {
   showNavigation: boolean;
   showHeader: boolean;
   headerTitle?: string;
+  shwoChat?: boolean;
   showTopButton?: boolean;
   showBackButton?: boolean;
   showLogo?: boolean;
@@ -19,6 +21,7 @@ const DefaultAppLayout = ({
   showNavigation,
   showHeader,
   headerTitle,
+  shwoChat,
   showTopButton,
   showBackButton = true,
   showLogo = false,
@@ -39,7 +42,10 @@ const DefaultAppLayout = ({
       <main className="flex-grow overflow-y-hidden mt-[3.25rem]">
         {children}
       </main>
+      {shwoChat && <Chat />}
       {showTopButton && <TopButton />}
+      {showHeader && <Header headerTitle={headerTitle} />}
+      <main className="flex-grow overflow-y-hidden">{children}</main>
       {showNavigation && <Navigation />}
     </div>
   );

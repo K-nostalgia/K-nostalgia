@@ -6,12 +6,17 @@ import Image from 'next/image';
 import FixedButtons from '../_components/FixedButtons';
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
+import { OrderDetail } from './_components/OrderDetail';
+import { useEffect, useState } from 'react';
 
 type LocalDetailPageProps = {
   params: { id: string };
 };
 
 const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
+  const [openModal, setOpenModal] = useState(false);
+  const text = '이미지가 없습니다.';
+
   const {
     data: food,
     isPending,
@@ -31,11 +36,27 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     }
   });
 
+  useEffect(() => {
+    if (openModal) {
+      document.body.style.overflow = 'hidden'; // 모달이 열리면 스크롤 X
+    } else {
+      document.body.style.overflow = 'auto'; // 모달이 닫히면 스크롤 O
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [openModal]);
+
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
+  const onPurchase = () => {
+    setOpenModal(true);
+  };
+
   return (
-    <>
+    <div>
       {food?.title_image ? (
         <Image
           src={food.title_image}
@@ -43,10 +64,10 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           height={340}
           alt="특산물 디테일 페이지"
           priority
-          style={{ width: 'auto', height: 'auto' }}
+          style={{ width: 375, height: 340, objectFit: 'cover' }}
         />
       ) : (
-        <DefaultImage />
+        <DefaultImage text={text} />
       )}
       <div className="m-4">
         <h2 className="text-xl font-semibold">
@@ -54,9 +75,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           {food?.food_name}
         </h2>
         <p className="text-[#AFACA7] text-sm">{food.description}</p>
-        <p className="text-[#1F1E1E] font-bold text-xl mt-2">{`${food?.price}원`}</p>
+        <p className="text-[#1F1E1E] font-bold text-xl mt-2">{`${food?.price?.toLocaleString()}원`}</p>
       </div>
-      <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full m-4 py-4 ">
+      <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full mt-4 p-4">
         <table className="text-left text-sm">
           <tbody>
             <tr>
@@ -72,7 +93,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
               </td>
             </tr>
             <tr>
-              <th className="text-primary-heavy font-medium">배송비</th>
+              <th className="text-primary-heavy font-medium py-2">배송비</th>
               <td>2,500원</td>
             </tr>
             <tr>
@@ -91,10 +112,31 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           alt="상세페이지"
         />
       ) : (
-        <DefaultImage />
+        <DefaultImage text={text} />
       )}
-      <FixedButtons food={food} />
-    </>
+      <FixedButtons
+        food={food}
+        count={food.count}
+        onPurchase={onPurchase}
+        isModalOpen={openModal}
+      />
+      {openModal && (
+        <div
+          className="fixed inset-0 z-50 bg-[rgba(0,0,0,.5)]"
+          onClick={() => setOpenModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
+          >
+            <OrderDetail
+              params={{ id }}
+              isModalOpen={openModal}
+              onPurchase={onPurchase}
+            />
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

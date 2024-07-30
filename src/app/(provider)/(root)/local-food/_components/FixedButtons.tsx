@@ -1,29 +1,34 @@
+import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-import { PiShoppingCartSimpleThin } from 'react-icons/pi';
 
 interface Props {
   food: Tables<'local_food'>;
+  count: number | null;
+  onPurchase: () => void;
+  isModalOpen: boolean;
 }
 
-const FixedButtons = ({ food }: Props) => {
+const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
   const router = useRouter();
+
   const onAddCart = async () => {
-    // const {
-    //   data: { user },
-    //   error: userError
-    // } = await supabase.auth.getUser();
-    // if (userError || !user) {
-    //   alert('로그인을 해주세요.');
-    //   return;
-    // }
+    const {
+      data: { user },
+      error: userError
+    } = await supabase.auth.getUser();
+    if (userError || !user) {
+      alert('로그인을 해주세요.');
+      return;
+    }
 
     try {
       const { data: cartData, error: cartError } = await supabase
         .from('cart')
         .select('*')
         .eq('product_id', food.product_id)
+        .eq('user_id', user.id)
         .maybeSingle();
 
       if (cartError) {
@@ -34,10 +39,11 @@ const FixedButtons = ({ food }: Props) => {
       if (!cartData) {
         const { error: insertError } = await supabase.from('cart').insert({
           product_id: food.product_id,
+          count,
           image: food.title_image,
           product_name: food.food_name,
-          product_price: food.price
-          //user_id: user.id
+          product_price: food.price,
+          user_id: user.id
         });
         if (insertError) {
           alert('장바구니에 상품이 담기지 않았습니다.');
@@ -70,15 +76,17 @@ const FixedButtons = ({ food }: Props) => {
       <div className="flex gap-3">
         <button
           onClick={onAddCart}
-          className="flex items-center gap-2 text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl"
+          className="text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
         >
-          <PiShoppingCartSimpleThin className="w-6 h-6" />
           장바구니에 담기
         </button>
 
-        <button className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-auto">
-          구매하기
-        </button>
+        <div
+          onClick={onPurchase}
+          className=" bg-primary-strong py-3 px-4 rounded-xl text-white flex-1 text-center text-base leading-7"
+        >
+          {isModalOpen ? '바로 구매하기' : '구매하기'}
+        </div>
       </div>
     </div>
   );

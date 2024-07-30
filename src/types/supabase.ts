@@ -205,6 +205,7 @@ export type Database = {
       orderd_list: {
         Row: {
           amount: number | null
+          created_at: string | null
           id: string
           order_name: string | null
           pay_provider: string | null
@@ -212,12 +213,14 @@ export type Database = {
           payment_id: string | null
           phone_number: string | null
           price: number | null
+          products: Json | null
           status: string | null
           user_id: string | null
           user_name: string | null
         }
         Insert: {
           amount?: number | null
+          created_at?: string | null
           id?: string
           order_name?: string | null
           pay_provider?: string | null
@@ -225,12 +228,14 @@ export type Database = {
           payment_id?: string | null
           phone_number?: string | null
           price?: number | null
+          products?: Json | null
           status?: string | null
           user_id?: string | null
           user_name?: string | null
         }
         Update: {
           amount?: number | null
+          created_at?: string | null
           id?: string
           order_name?: string | null
           pay_provider?: string | null
@@ -238,6 +243,7 @@ export type Database = {
           payment_id?: string | null
           phone_number?: string | null
           price?: number | null
+          products?: Json | null
           status?: string | null
           user_id?: string | null
           user_name?: string | null
@@ -300,7 +306,7 @@ export type Database = {
           coupon?: string | null
           created_at?: string
           email?: string | null
-          id?: string
+          id: string
           name?: string | null
           nickname?: string | null
           password?: string | null
