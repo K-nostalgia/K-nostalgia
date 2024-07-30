@@ -3,7 +3,6 @@
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import FilterButton from '@/components/ui/FilterButton';
-import SITE_URL from '@/constant';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
