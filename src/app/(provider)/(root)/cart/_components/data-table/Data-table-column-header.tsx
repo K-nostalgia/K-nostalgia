@@ -160,10 +160,11 @@ export const columns: ColumnDef<CartItem>[] = [
     id: 'delete',
     header: '',
     cell: ({ row }) => {
-      const mutation = useDeleteProduct();
+      //const mutation = useDeleteProduct();
 
       return (
-        <button onClick={() => mutation.mutate(row.getValue('product_id'))}>
+        // <button onClick={() => mutation.mutate(row.getValue('product_id'))}>
+        <button>
           <CgClose className="text-[#959595]" />
         </button>
       );
