@@ -92,7 +92,7 @@ const PayHistoryList = () => {
                   />
 
                   <div className="flex flex-col justify-center gap-[8px]">
-                    <p className="font-medium">{product.name}</p>
+                    <p className="font-medium text-[16px]">{product.name}</p>
                     <div className="flex text-[#79746D] gap-[4px]">
                       <p>{product.amount.toLocaleString()}원</p>
                       <p>·</p>
