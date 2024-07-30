@@ -33,7 +33,10 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
       error: userError
     } = await supabase.auth.getUser();
     if (userError || !user) {
-      alert('로그인을 해주세요.');
+      const isConfirmed = confirm('로그인 후 이용해주세요');
+      if (isConfirmed) {
+        router.replace('/log-in');
+      }
       return;
     }
 
@@ -54,11 +57,12 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
         const { error: insertError } = await supabase.from('cart').insert({
           product_id: food.product_id,
           count,
-          image: food.title_image,
+          image: food.title_image ? food.title_image[0] : null,
           product_name: food.food_name,
           product_price: food.price,
           user_id: user.id
         });
+
         if (insertError) {
           alert('장바구니에 상품이 담기지 않았습니다.');
           return;
