@@ -3,7 +3,6 @@
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import FilterButton from '@/components/ui/FilterButton';
-import SITE_URL from '@/constant';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -20,9 +19,7 @@ const LocalFoodView = () => {
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const fetchLocalFoodData = async (category: string) => {
     try {
-      const response = await fetch(
-        `${SITE_URL}/api/localfood?category=${category}`
-      );
+      const response = await fetch(`/api/localfood?category=${category}`);
       const data = await response.json();
       return data;
     } catch (error) {
