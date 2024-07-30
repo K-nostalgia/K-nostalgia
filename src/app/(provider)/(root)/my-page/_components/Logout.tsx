@@ -28,7 +28,7 @@ const Logout = () => {
 
   return (
     <div className="p-4">
-      <div className="flex items-center py-[3px] mb-[72px]">
+      <div className="flex items-center py-[3px] mb-[98px]">
         <IoIosLogOut className="mr-[8px] text-label-normal text-[20px]" />
         <div onClick={handleClickLogOut}>로그아웃</div>
       </div>
