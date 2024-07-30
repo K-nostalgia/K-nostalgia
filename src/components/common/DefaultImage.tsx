@@ -13,6 +13,7 @@ export const DefaultImage = ({ text }: textProps) => {
         width={100}
         height={92}
         alt={`${text}`}
+        style={{ width: 100, height: 92 }}
       />
       <p className="text-label-assistive text-lg mt-4">{text}</p>
     </div>
