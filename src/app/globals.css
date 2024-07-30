@@ -45,7 +45,7 @@
 
 .swiper-pagination {
   width: 164px !important;
-  background-color: #e8c18e;
+  background-color: rgba(232, 193, 142, 0.64) !important;
   border-radius: 8px;
   padding: 5px 20px;
 }
@@ -57,11 +57,11 @@
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #755428 !important;
+  background-color: rgb(117, 84, 40) !important;
   width: 64px !important;
   border-radius: 4px !important;
 }
 
 .swiper-pagination-bullet {
-  background-color: #bd873f !important;
+  background-color: rbg(189, 135, 63) !important;
 }
