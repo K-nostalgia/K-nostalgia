@@ -95,7 +95,7 @@ export const columns: ColumnDef<CartItem>[] = [
     accessorKey: 'product_name',
     header: '',
     cell: ({ row }) => (
-      <div className="text-label-strong text-base translate-x-[-60%] translate-y-[-150%]">{`${row.getValue(
+      <div className="text-label-strong text-base translate-x-[-43%] translate-y-[-150%]">{`${row.getValue(
         'product_name'
       )}`}</div>
     )
