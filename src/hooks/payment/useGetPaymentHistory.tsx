@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 interface Props {
   paymentId: string | null;
 }
+//포트원 내역 단건 조회
 export const useGetPaymentHistory = ({ paymentId }: Props) => {
   const { data: payHistory, isPending: payHistoryIsPending } = useQuery({
     queryKey: ['payHistory', paymentId],
@@ -19,6 +20,7 @@ export const useGetPaymentHistory = ({ paymentId }: Props) => {
   return { payHistory, payHistoryIsPending };
 };
 
+//supabase 주문내역 리스트 불러오기(특정유저)
 export const useGetPaymentHistoryWithSupabase = (
   userId: string | undefined
 ) => {

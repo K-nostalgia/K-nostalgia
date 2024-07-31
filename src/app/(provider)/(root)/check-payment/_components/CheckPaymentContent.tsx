@@ -11,24 +11,23 @@ const CheckPaymentContent = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const paymentId = searchParams.get('paymentId');
-  const pathName = searchParams.get('path_name');
   const code = searchParams.get('code');
   const totalQuantity = searchParams.get('totalQuantity');
 
   useEffect(() => {
     const handlePayment = async () => {
       if (code === 'FAILURE_TYPE_PG') {
+        //TODO 해당 토스트 안 뜨고있음
         toast({
           variant: 'destructive',
-          description: '결제 취소되었습니다.'
+          description: '결제가 취소되었습니다.'
         });
-        router.push(`${pathName}`);
-        return;
+        return router.replace(`local-food`);
       }
       if (paymentId) {
         try {
           const postPaymentHistory = async () => {
-            //환불
+            // 환불
             const cancelResponse = await fetch('/api/payment/transaction', {
               method: 'POST',
               headers: {
@@ -40,7 +39,8 @@ const CheckPaymentContent = () => {
             if (!cancelResponse.ok) {
               toast({
                 variant: 'destructive',
-                description: '마이페이지의 주문내역에서 환불 재시도 해주세요.'
+                description:
+                  '마이페이지의 주문내역에서 환불이 되었는지 확인해주세요'
               });
               throw new Error(
                 `Cancellation failed: ${cancelResponse.statusText}`
@@ -66,28 +66,19 @@ const CheckPaymentContent = () => {
               .locale('ko')
               .format('YYYY-MM-DD HH:MM');
 
-            // if (status === 'PAID') {
-            //   const cancelResponse = await fetch('/api/payment/transaction', {
-            //     method: 'POST',
-            //     headers: {
-            //       'Content-Type': 'application/json'
-            //     },
-            //     body: JSON.stringify({ paymentId })
-            //   });
-            //   console.log(cancelResponse);
-            //   if (!cancelResponse.ok) {
-            //     alert('마이페이지 > 주문내역에서 환불 재시도 해주세요.');
-            //     throw new Error(
-            //       `Cancellation failed: ${cancelResponse.statusText}`
-            //     );
-            //   }
-            // }
+            if (status === 'PAID') {
+              toast({
+                variant: 'destructive',
+                description: '마이페이지 > 주문내역에서 환불 재시도 해주세요.'
+              });
+            }
+
             if (status === 'FAILED') {
               toast({
                 variant: 'destructive',
                 description: '결제에 실패했습니다. 다시 시도해주세요.'
               });
-              router.push(`${pathName}`);
+              router.replace(`local-food`);
               return;
             }
 
@@ -116,7 +107,7 @@ const CheckPaymentContent = () => {
               })
             });
 
-            router.push(
+            router.replace(
               `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
             );
             toast({
@@ -130,7 +121,7 @@ const CheckPaymentContent = () => {
           toast({
             variant: 'destructive',
             description:
-              '결제 처리중 오류가 생긴 것 같아요. 주문 내역 페이지에서 확인해주세요.'
+              '즉시 환불 처리가 안 된 것 같아요. 주문 내역 페이지에서 확인해주세요.'
           });
         }
       }
