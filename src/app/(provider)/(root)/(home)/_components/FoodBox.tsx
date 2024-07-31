@@ -13,7 +13,12 @@ export const FoodBox = ({ item, index }: FoodProps) => {
   const { title_image, food_name, description, price } = item;
   return (
     <Link href={`/local-food/${item.product_id}`}>
-      <li>
+      <li
+        className={`${index === 0 ? 'translate-y-[10%]' : ''}
+        ${index === 1 ? 'translate-y-[12%]' : ''}
+        ${index === 2 ? 'absolute' : 'relative'}
+        bottom-0`}
+      >
         {title_image ? (
           <Image
             src={title_image[0]}
