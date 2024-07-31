@@ -1,6 +1,5 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +14,7 @@ import {
   SheetTitle
 } from '@/components/ui/sheet';
 import { useState } from 'react';
+import SearchMarketRecommendations from './SearchMarketRecommendations';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -24,18 +24,25 @@ interface SearchBarProps {
 const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const pathName = usePathname();
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [res, setRes] = useState<any[]>([]);
-  // const [tableValue, setTableValue] = useState<string>("")
+  const [response, setResponse] = useState<any[]>([]);
 
-  // console.log(pathName);
+  const marketSide = pathName === '/market' || pathName.startsWith('/market');
+  const localFoodSide =
+    pathName === '/local-food' || pathName.startsWith('/local-food/');
 
-  // const getTableName = () => {
-  //   if (pathName === '/market' || pathName.startsWith('/market')) {
-  //     setTableValue("market")
-  //   } else if (pathName === '/local-food' || pathName.startsWith('/local-food/')) {
-  //     setTableValue("local-food")
-  //   }
-  // }
+  // XSS 방지 및 공백 제거
+  const sanitizeInput = (str: string) => {
+    const trimmedStr = str.replace(/\s+/g, '').trim();
+
+    const encoded = trimmedStr
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    return encoded;
+  };
 
   // 검색어 입력
   const handleSearchTerm = async (
@@ -52,14 +59,11 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
 
     // 'markets' or 'local-food'
-    const tableValue =
-      pathName === '/market' || pathName.startsWith('/market')
-        ? 'markets'
-        : pathName === '/local-food' || pathName.startsWith('/local-food/')
-        ? 'local_food'
-        : '';
-
-    console.log(tableValue);
+    const tableValue = marketSide
+      ? 'markets'
+      : localFoodSide
+      ? 'local_food'
+      : '';
 
     try {
       const response = await fetch('/api/search', {
@@ -67,27 +71,20 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
         headers: {
           'Content-Type': 'application/json; charset=utf-8'
         },
-        body: JSON.stringify({ searchValue: searchTerm, tableValue })
+        // 공백 제거
+        body: JSON.stringify({
+          searchValue: sanitizeInput(searchTerm),
+          tableValue
+        })
       });
       const data = await response.json();
       console.log(data);
-
-      setRes(data);
+      setResponse(data);
+      setSearchTerm('');
     } catch (error) {
       console.log(error);
     }
   };
-
-  // const sendMessageMutate = useMutation({
-  //   mutationFn: sendMessage,
-  //   onSuccess: () => {
-  //     setMessage('');
-  //     queryClient.invalidateQueries({ queryKey: ['chatData'] });
-  //   }
-  // });
-
-  // 시장일 땐 시장 검색
-  // 특산물 페이지일 땐 특산물 검색
 
   // TODO Mic 장바구니랑 주문내역 서치 아이콘 잠깐 숨겼다가 다시 해보기 유저 테스트 동안
 
@@ -103,19 +100,32 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
         <form className="py-4" onSubmit={submitSearchTerm}>
           <Input
             placeholder={
-              pathName === '/market' || pathName.startsWith('/market')
-                ? '시장에 대해 검색하세요'
-                : pathName === '/local-food' ||
-                  pathName.startsWith('/local-food/')
-                ? '특산물에 대해 검색하세요'
+              marketSide
+                ? '시장을 검색해주세요'
+                : localFoodSide
+                ? '특산물을 검색해주세요'
                 : '이 페이지 검색은 준비 중이에요'
             }
             value={searchTerm}
             onChange={handleSearchTerm}
-            className="placeholder:text-label-assistive"
+            className="placeholder:text-label-assistive border-primary-30 rouded-[6px] py-[2px] pl-3 pr-2"
           />
           <Button type="submit">검색</Button>
         </form>
+        {marketSide
+          ? response?.map((item) => (
+              <div key={item.id} className="hover:bg-green">
+                {item.시장명}
+              </div>
+            ))
+          : localFoodSide
+          ? response?.map((item) => (
+              <div key={item.product_id} className="hover:bg-green">
+                {item.food_name}
+              </div>
+            ))
+          : ''}
+        <SearchMarketRecommendations setIsOpen={setIsOpen} />
       </SheetContent>
     </Sheet>
   );
