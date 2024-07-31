@@ -78,10 +78,6 @@ const SignUpContainer = () => {
     if (!validateStep()) {
       return;
     }
-    // if (userInfo.password !== userInfo.confirmPassword) {
-    //   alert('비밀번호가 일치하지 않습니다.');
-    //   return;
-    // }
 
     console.log('userinfo 확인', userInfo);
 
@@ -112,16 +108,24 @@ const SignUpContainer = () => {
   };
 
   return (
-    <div className="flex xs:hidden">
-      <div className="w-full min-h-screen bg-normal p-8 rounded-md">
-        <div className="mb-4">
-          <GoArrowLeft
-            className="mb-4 text-2xl cursor-pointer"
-            onClick={prevStep}
-          />
+    <div className="flex xs:hidden h-screen w-screen flex-col justify-between">
+      <div>
+        <div className="w-full bg-normal pt-[20px] px-[12px] pb-2 rounded-md flex justify-between">
+          <div className="w-[76px]">
+            <GoArrowLeft
+              className="flex mt-1 mb-1 ml-1 mr-1 text-[28px] text-[##545454] cursor-pointer"
+              onClick={prevStep}
+            />
+          </div>
+          <span className="w-1"></span>
+          <span className="w-1"></span>
+        </div>
+
+        <div>
           <Stepper steps={steps} currentStep={step} />
         </div>
-        <div className="mb-6">
+
+        <div>
           <SignupForm
             title={steps[step].title}
             label={steps[step].label}
@@ -132,14 +136,14 @@ const SignUpContainer = () => {
             error={errors[steps[step].key]}
           />
         </div>
-        <div className="flex justify-between">
-          <button
-            onClick={step === steps.length - 1 ? handleSubmit : nextStep}
-            className="w-full px-3 py-2 bg-primary-strong text-white rounded-xl"
-          >
-            {step === steps.length - 1 ? '제출' : '다음'}
-          </button>
-        </div>
+      </div>
+      <div className=" w-[320px] h-[48px]  ml-[27px] flex flex-col items-center mb-10">
+        <button
+          onClick={step === steps.length - 1 ? handleSubmit : nextStep}
+          className="w-[320px] h-[48px] py-[12px] px-[16px] bg-primary-strong text-white rounded-xl"
+        >
+          {step === steps.length - 1 ? '제출' : '확인'}
+        </button>
       </div>
     </div>
   );
