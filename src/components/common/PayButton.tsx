@@ -147,7 +147,13 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
   return (
     <div>
-      <button onClick={payRequest}>바로 구매하기</button>
+      <button
+        className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
+        // "bg-[#9C6D2E] flex justify-center items-center gap-[12px] w-[165px] h-[48px] px-[16px] py-[12px] font-semibold rounded-[12px] text-white text-[16px] leading-[140%]"
+        onClick={payRequest}
+      >
+        바로 구매하기
+      </button>
     </div>
   );
 };
