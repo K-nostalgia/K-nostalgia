@@ -21,6 +21,7 @@ type Props = {
 };
 
 const PayButton = ({ orderNameArr, product }: Props) => {
+  console.log(product);
   const router = useRouter();
   const pathName = usePathname();
   const requestOrderName = orderNameArr.join(',');
@@ -32,11 +33,14 @@ const PayButton = ({ orderNameArr, product }: Props) => {
   const deliveryCharge: number = 2500;
   const discount: number = 2000;
   const price: number = products.reduce(
-    (acc, item) => acc + item.amount * item.quantity,
+    (acc, item) => acc + item.amount,
+    // * item.quantity,
     0
   );
+  console.log(price);
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + deliveryCharge - discount;
+  console.log(totalAmount);
 
   const { data: users, isPending: usersIsPending } = useQuery<
     Tables<'users'>,
@@ -64,15 +68,11 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       products: products as any,
       redirectUrl:
         process.env.NODE_ENV === 'production'
-          ? // TODO 배포 후 배포 주소 url로 변경
-            ''
-          : // `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
-            `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
+          ? `https://k-nostalgia.vercel.app/check-payment?status=success&path_name=${pathName}`
+          : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       appScheme:
         process.env.NODE_ENV === 'production'
-          ? // TODO 배포 후 배포 주소 url로 변경
-            // `https://your-app-name.vercel.app/check-payment?status=success&path_name=${pathName}`
-            ''
+          ? `https://k-nostalgia.vercel.app/check-payment?status=success&path_name=${pathName}`
           : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
       customer: {
         customerId: id,
@@ -139,12 +139,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
   return (
     <div>
-      <button
-        onClick={payRequest}
-        className="bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
-      >
-        바로 구매하기
-      </button>
+      <button onClick={payRequest}>바로 구매하기</button>
     </div>
   );
 };
