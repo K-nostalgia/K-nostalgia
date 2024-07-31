@@ -1,5 +1,6 @@
 'use client';
 
+import { toast } from '@/components/ui/use-toast';
 import dayjs from 'dayjs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -16,15 +17,35 @@ const CheckPaymentContent = () => {
 
   useEffect(() => {
     const handlePayment = async () => {
-      console.log('실행 되는거야?');
       if (code === 'FAILURE_TYPE_PG') {
-        alert('결제 취소되었습니다.');
+        toast({
+          variant: 'destructive',
+          description: '결제 취소되었습니다.'
+        });
         router.push(`${pathName}`);
         return;
       }
       if (paymentId) {
         try {
           const postPaymentHistory = async () => {
+            //환불
+            const cancelResponse = await fetch('/api/payment/transaction', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ paymentId })
+            });
+            console.log(cancelResponse);
+            if (!cancelResponse.ok) {
+              toast({
+                variant: 'destructive',
+                description: '마이페이지의 주문내역에서 환불 재시도 해주세요.'
+              });
+              throw new Error(
+                `Cancellation failed: ${cancelResponse.statusText}`
+              );
+            }
             //결제 내역 단건 조회
             const getResponse = await fetch(
               `/api/payment/transaction?paymentId=${paymentId}`
@@ -45,24 +66,27 @@ const CheckPaymentContent = () => {
               .locale('ko')
               .format('YYYY-MM-DD HH:MM');
 
-            if (status === 'PAID') {
-              const cancelResponse = await fetch('/api/payment/transaction', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ paymentId })
-              });
-              console.log(cancelResponse);
-              if (!cancelResponse.ok) {
-                alert('마이페이지 > 주문내역에서 환불 재시도 해주세요.');
-                throw new Error(
-                  `Cancellation failed: ${cancelResponse.statusText}`
-                );
-              }
-            }
+            // if (status === 'PAID') {
+            //   const cancelResponse = await fetch('/api/payment/transaction', {
+            //     method: 'POST',
+            //     headers: {
+            //       'Content-Type': 'application/json'
+            //     },
+            //     body: JSON.stringify({ paymentId })
+            //   });
+            //   console.log(cancelResponse);
+            //   if (!cancelResponse.ok) {
+            //     alert('마이페이지 > 주문내역에서 환불 재시도 해주세요.');
+            //     throw new Error(
+            //       `Cancellation failed: ${cancelResponse.statusText}`
+            //     );
+            //   }
+            // }
             if (status === 'FAILED') {
-              alert('결제에 실패했습니다. 다시 시도해주세요');
+              toast({
+                variant: 'destructive',
+                description: '결제에 실패했습니다. 다시 시도해주세요.'
+              });
               router.push(`${pathName}`);
               return;
             }
@@ -83,7 +107,9 @@ const CheckPaymentContent = () => {
                 user_id: customer.id,
                 user_name: customer.name,
                 payment_id: paymentId,
-                pay_provider: method.provider,
+                pay_provider: method.provider
+                  ? method.provider
+                  : method.card.name,
                 phone_number: customer.phoneNumber,
                 products,
                 user_email: customer.email
@@ -93,12 +119,19 @@ const CheckPaymentContent = () => {
             router.push(
               `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
             );
-            alert('결제 완료');
+            toast({
+              variant: 'destructive',
+              description: '결제 완료.'
+            });
           };
           postPaymentHistory();
         } catch (error) {
           console.error(error);
-          alert('결제 처리중 오류 발생');
+          toast({
+            variant: 'destructive',
+            description:
+              '결제 처리중 오류가 생긴 것 같아요. 주문 내역 페이지에서 확인해주세요.'
+          });
         }
       }
     };
