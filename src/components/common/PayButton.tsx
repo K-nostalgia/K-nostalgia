@@ -7,6 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from '../ui/use-toast';
 
 export type Products = {
   name: string | null;
@@ -55,6 +56,10 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     if (!users) {
       return alert('로그인 후 이용 가능합니다');
     }
+    toast({
+      variant: 'destructive',
+      description: '가결제입니다. 즉시 환불 처리 됩니다.'
+    });
     const { name, email, id } = users;
 
     const response = await PortOne.requestPayment({
@@ -68,12 +73,12 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       products: products as any,
       redirectUrl:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?status=success&path_name=${pathName}`
-          : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
+          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       appScheme:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?status=success&path_name=${pathName}`
-          : `http://localhost:3000/check-payment?status=success&path_name=${pathName}`,
+          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       customer: {
         customerId: id,
         email: email as string,
@@ -98,26 +103,29 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       router.push(`${pathName}`);
       console.log(response);
 
-      return alert('결제에 실패했습니다. 다시 시도해주세요');
+      return toast({
+        variant: 'destructive',
+        description: '결제에 실패했습니다. 다시 시도해주세요.'
+      });
     }
 
     //즉시 환불
-    const cancelResponse = await fetch('/api/payment/transaction', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ paymentId })
-    });
-    console.log(cancelResponse);
-    if (!cancelResponse.ok) {
-      alert('즉시 환불 실패. 당일 자정 전까지 일괄 환불됩니다.');
-      throw new Error(`Cancellation failed: ${cancelResponse.statusText}`);
-    }
+    // const cancelResponse = await fetch('/api/payment/transaction', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({ paymentId })
+    // });
+    // console.log(cancelResponse);
+    // if (!cancelResponse.ok) {
+    //   alert('즉시 환불 실패. 당일 자정 전까지 일괄 환불됩니다.');
+    //   throw new Error(`Cancellation failed: ${cancelResponse.statusText}`);
+    // }
 
-    const { error: cancelError } = await cancelResponse.json();
-    //TODO 환불 에러시 조치 추가
-    console.log(cancelError);
+    // const { error: cancelError } = await cancelResponse.json();
+    // //TODO 환불 에러시 조치 추가
+    // console.log(cancelError);
 
     router.push(
       `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
@@ -139,7 +147,13 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
   return (
     <div>
-      <button onClick={payRequest}>바로 구매하기</button>
+      <button
+        className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
+        // "bg-[#9C6D2E] flex justify-center items-center gap-[12px] w-[165px] h-[48px] px-[16px] py-[12px] font-semibold rounded-[12px] text-white text-[16px] leading-[140%]"
+        onClick={payRequest}
+      >
+        바로 구매하기
+      </button>
     </div>
   );
 };
