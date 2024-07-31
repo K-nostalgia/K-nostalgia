@@ -1,7 +1,7 @@
 import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { PropsWithChildren } from 'react';
 
-function LocalFoodLayout({ children }: PropsWithChildren) {
+function ProfileEditLayout({ children }: PropsWithChildren) {
   return (
     <DefaultAppLayout
       showHeader={true}
@@ -13,4 +13,4 @@ function LocalFoodLayout({ children }: PropsWithChildren) {
   );
 }
 
-export default LocalFoodLayout;
+export default ProfileEditLayout;

@@ -23,7 +23,7 @@ const config = {
         //label 색상
         'label-strong': '#151515',
         'label-normal': '#3A3835',
-        'label-alternative': '#3A3835',
+        'label-alternative': '#79746D',
         'label-assistive': '#A49F99',
         'label-disable': '#DDDAD7',
         'label-light': '#F6F5F3',
