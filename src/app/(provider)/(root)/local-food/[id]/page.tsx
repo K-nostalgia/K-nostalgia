@@ -4,11 +4,11 @@ import supabase from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import FixedButtons from '../_components/FixedButtons';
-import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
 import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
+import { CartModal } from './_components/CartModal';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -16,7 +16,7 @@ type LocalDetailPageProps = {
 
 const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
   const [openModal, setOpenModal] = useState(false);
-  const text = '이미지가 없습니다.';
+  const [openCartModal, setOpenCartModal] = useState(false);
 
   const {
     data: food,
@@ -56,8 +56,17 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     setOpenModal(true);
   };
 
+  const handleCartModalOpen = () => {
+    setOpenCartModal(true);
+  };
+
+  const handleCartModalClose = () => {
+    setOpenCartModal(false);
+  };
+
   return (
     <div>
+      {/* 슬라이드 */}
       <DetailSlide images={food.title_image} />
 
       <div className="m-4">
@@ -101,14 +110,18 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           width={375}
           height={100}
           priority
+          style={{ width: 375, height: 'auto', objectFit: 'cover' }}
+          className="object-cover"
           alt="상세페이지"
         />
       )}
+
       <FixedButtons
         food={food}
         count={food.count}
         onPurchase={onPurchase}
         isModalOpen={openModal}
+        handleCartModalOpen={handleCartModalOpen}
       />
       {openModal && (
         <div
@@ -122,7 +135,20 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
               params={{ id }}
               isModalOpen={openModal}
               onPurchase={onPurchase}
+              handleCartModalOpen={handleCartModalOpen}
             />
+          </div>
+        </div>
+      )}
+      {openCartModal && (
+        <div
+          className="fixed inset-0 z-50 bg-[rgba(0,0,0,.5)]"
+          onClick={handleCartModalClose}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
+          >
+            <CartModal handleCartModalClose={handleCartModalClose} />
           </div>
         </div>
       )}
