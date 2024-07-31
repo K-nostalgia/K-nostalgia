@@ -26,6 +26,7 @@ export const SectionBanner = () => {
             src={img}
             width={375}
             height={315}
+            priority
             alt={`메인 배너 이미지 ${index + 1}`}
           />
         </SwiperSlide>
