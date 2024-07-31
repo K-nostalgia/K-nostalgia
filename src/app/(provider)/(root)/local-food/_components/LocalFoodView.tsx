@@ -94,8 +94,6 @@ const LocalFoodView = () => {
                         alt="특산물 이미지"
                         priority
                         style={{
-                          width: 164,
-                          height: '100%',
                           objectFit: 'cover'
                         }}
                         className="object-cover"

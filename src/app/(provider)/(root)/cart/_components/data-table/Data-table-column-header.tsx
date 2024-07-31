@@ -32,7 +32,7 @@ const fetchCartItems = async () => {
     product_name: item.product_name,
     count: item.count
   }));
-  console.log('mappedCartItems', mappedCartItems);
+
   return mappedCartItems;
 };
 
