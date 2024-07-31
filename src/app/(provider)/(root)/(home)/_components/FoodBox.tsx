@@ -14,10 +14,10 @@ export const FoodBox = ({ item, index }: FoodProps) => {
   return (
     <Link href={`/local-food/${item.product_id}`}>
       <li
-        style={{
-          position: index === 2 ? 'absolute' : 'relative',
-          bottom: index === 2 ? '0' : '0'
-        }}
+        className={`${index === 0 ? 'translate-y-[10%]' : ''}
+        ${index === 1 ? 'translate-y-[12%]' : ''}
+        ${index === 2 ? 'absolute' : 'relative'}
+        bottom-0`}
       >
         {title_image ? (
           <Image
