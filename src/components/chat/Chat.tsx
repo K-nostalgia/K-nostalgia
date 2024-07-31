@@ -94,7 +94,7 @@ export function Chat() {
     }
   });
 
-  // 유효성 검사 추가하기 비속어?
+  // 유효성 검사 추가하기
   const handleSendMessage = () => {
     const room_id: string = 'K8uTq2XdYz5sPnL4rWj7B';
 
@@ -130,8 +130,6 @@ export function Chat() {
       supabase.removeChannel(channels);
     };
   }, [queryClient]);
-
-  // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
 
   // 날짜 포맷
   const formatDate = (date: string) => {
