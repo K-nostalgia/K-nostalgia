@@ -15,16 +15,18 @@ export const SectionVideo = () => {
             제일 인기있는 4개의 시장을 소개합니다!
           </p>
         </div>
-        <Image
-          src={
-            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/youtube.png'
-          }
-          width={260}
-          height={180}
-          alt="시장 유튜브 이미지"
-          style={{ width: 260, height: 180, objectFit: 'cover' }}
-          className="my-4"
-        />
+        <Link href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}>
+          <Image
+            src={
+              'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/youtube.png'
+            }
+            width={260}
+            height={180}
+            alt="시장 유튜브 이미지"
+            style={{ width: 260, height: 180, objectFit: 'cover' }}
+            className="my-4"
+          />
+        </Link>
         <Link
           href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}
           className="flex items-center gap-1"

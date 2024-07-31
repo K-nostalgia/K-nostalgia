@@ -127,7 +127,7 @@ const config = {
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
-        custom: ['YeojuCeramic', 'sans-serif']
+        custom: ['YeojuCeramic']
       }
     }
   },
