@@ -7,6 +7,9 @@ export const GET = async (request:NextRequest) => {
         const {data:chatData, error:chatError} = await supabase
         .from('chat')
         .select(`*, users(nickname, avatar)`)
+        // 오늘만 가져오는 로직
+        .gte('created_at', new Date().toISOString().split('T')[0])
+        .lt('created_at', new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0])
         .order('created_at', { ascending: true })
 
         if (chatError) {

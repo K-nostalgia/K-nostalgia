@@ -96,14 +96,7 @@ export function Chat() {
 
   // 유효성 검사 추가하기 비속어?
   const handleSendMessage = () => {
-    //TODO mic 임시값 => 시간이 부족할 경우 룸 1개로 고정
     const room_id: string = 'K8uTq2XdYz5sPnL4rWj7B';
-
-    if (!message || message.trim() === '') {
-      // 토스트로 바꾸기
-      alert('메세지 입력해라어흥');
-      return;
-    }
 
     const newMessage = {
       room_id,
@@ -181,9 +174,7 @@ export function Chat() {
         <div className="border-b-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
           <DialogHeader>
             <DialogTitle className="mb-2 px-2 py-3">향그리움</DialogTitle>
-            <DialogDescription>
-              {/* TODO mic 채팅방 여러개면 여기다 할 수 있을 듯 */}
-            </DialogDescription>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
         </div>
         <div
