@@ -20,7 +20,7 @@ export const SectionFood = () => {
   });
 
   return (
-    <div className="bg-secondary-normal">
+    <div className="bg-secondary-30">
       <div className="flex flex-col justify-center items-center">
         <h2 className="text-2xl text-label-light my-10 mx-10 font-custom">
           지역 특산물

@@ -48,8 +48,8 @@ const LocalFoodView = () => {
   );
 
   return (
-    <div className="mx-4 ">
-      <div className="flex gap-2 items-center pt-3 overflow-x-auto whitespace-nowrap filter-button-container ">
+    <div className="mt-[16%]">
+      <div className="flex gap-2 items-center py-3 px-4 overflow-x-auto w-full whitespace-nowrap filter-button-container fixed top-[52px] bg-normal">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -61,58 +61,67 @@ const LocalFoodView = () => {
         ))}
       </div>
 
-      <div className="my-4">
-        <Image
-          src={
-            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
-          }
-          width={343}
-          height={80}
-          priority
-          alt="배너이미지"
-          style={{ width: 343, height: 80, objectFit: 'cover' }}
-        />
-      </div>
+      <div className="mx-4">
+        <div className="my-4">
+          <Image
+            src={
+              'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
+            }
+            width={343}
+            height={80}
+            priority
+            alt="배너이미지"
+            style={{ width: 343, height: 80, objectFit: 'cover' }}
+          />
+        </div>
 
-      {filteredFoodData.length === 0 ? (
-        <DefaultImage text={text} />
-      ) : (
-        <ul className="grid gap-4 grid-cols-2 pb-32">
-          {filteredFoodData.map((food) => (
-            <li
-              key={food.product_id}
-              className="rounded-[12px] mx-auto w-full shadow-custom2"
-            >
-              <Link href={`/local-food/${food.product_id}`}>
-                <div className="flex justify-center items-center h-[120px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
-                  {food.title_image && (
-                    <Image
-                      src={food.title_image[0]}
-                      width={164}
-                      height={120}
-                      alt="특산물 이미지"
-                      priority
-                      style={{ width: 164, height: 120, objectFit: 'cover' }}
-                    />
-                  )}
-                </div>
-                <div className="bg-normal pt-2 pb-2 pl-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
-                  <h2 className="text-base font-semibold">{food.food_name}</h2>
-                  <p className="text-xs text-label-assistive">
-                    {food.description}
-                  </p>
-                  <p className="text-sm mt-2">
-                    {food.price?.toLocaleString()}원{' '}
-                    <span className="text-sm text-label-assistive line-through">
-                      {`${((food.price ?? 0) + COUPON).toLocaleString()}원`}
-                    </span>
-                  </p>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      )}
+        {filteredFoodData.length === 0 ? (
+          <DefaultImage text={text} />
+        ) : (
+          <ul className="grid gap-4 grid-cols-2 pb-32">
+            {filteredFoodData.map((food) => (
+              <li
+                key={food.product_id}
+                className="rounded-[12px] mx-auto w-full border border-secondary-50"
+              >
+                <Link href={`/local-food/${food.product_id}`}>
+                  <div className="flex justify-center items-center w-auto h-[120px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
+                    {food.title_image && (
+                      <Image
+                        src={food.title_image[0]}
+                        width={164}
+                        height={120}
+                        alt="특산물 이미지"
+                        priority
+                        style={{
+                          width: 164,
+                          height: '100%',
+                          objectFit: 'cover'
+                        }}
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                  <div className="bg-normal py-2 px-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
+                    <h2 className="text-base font-semibold">
+                      {food.food_name}
+                    </h2>
+                    <p className="text-xs text-label-assistive">
+                      {food.description}
+                    </p>
+                    <p className="text-sm mt-2">
+                      {food.price?.toLocaleString()} 원{' '}
+                      <span className="text-sm text-label-assistive line-through">
+                        {`${((food.price ?? 0) + COUPON).toLocaleString()}원`}
+                      </span>
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };

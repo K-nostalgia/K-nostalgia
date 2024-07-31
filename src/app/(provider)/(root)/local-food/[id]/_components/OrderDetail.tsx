@@ -8,17 +8,20 @@ import supabase from '@/utils/supabase/client';
 import { TotalPriceList } from './TotalPriceList';
 import { CountButton } from './CountButton';
 import { useState } from 'react';
+import FixedButtons from '../../_components/FixedButtons';
 
 type LocalDetailPageProps = {
   params: { id: string };
   isModalOpen: boolean;
   onPurchase: () => void;
+  handleCartModalOpen: () => void;
 };
 
 export const OrderDetail = ({
   params: { id },
   isModalOpen,
-  onPurchase
+  onPurchase,
+  handleCartModalOpen
 }: LocalDetailPageProps) => {
   const [count, setCount] = useState(1);
   const {
@@ -78,7 +81,14 @@ export const OrderDetail = ({
           <CountButton count={count} onCountChange={setCount} />
         </div>
       </div>
-      <TotalPriceList data={orderData} count={orderData.count} />
+      <TotalPriceList data={orderData} count={count} />
+      <FixedButtons
+        food={orderData}
+        count={count}
+        isModalOpen={isModalOpen}
+        onPurchase={onPurchase}
+        handleCartModalOpen={handleCartModalOpen}
+      />
     </div>
   );
 };

@@ -8,9 +8,16 @@ interface Props {
   count: number | null;
   onPurchase: () => void;
   isModalOpen: boolean;
+  handleCartModalOpen: () => void;
 }
 
-const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
+const FixedButtons = ({
+  food,
+  count,
+  onPurchase,
+  isModalOpen,
+  handleCartModalOpen
+}: Props) => {
   const router = useRouter();
 
   // {
@@ -64,7 +71,7 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
         });
 
         if (insertError) {
-          alert('장바구니에 상품이 담기지 않았습니다.');
+          alert('장바구니에 상품이 담기지 못했습니다.');
           return;
         }
       } else {
@@ -77,16 +84,15 @@ const FixedButtons = ({ food, count, onPurchase, isModalOpen }: Props) => {
         return;
       }
     } catch (error) {
-      alert('장바구니 담기 중 오류가 발생했습니다.');
-      console.error(error);
+      console.error('장바구니 담기 중 오류가 발생했습니다.', error);
     }
-
-    const isConfirmed = confirm(
-      '장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?'
-    );
-    if (isConfirmed) {
-      router.push('/cart');
-    }
+    handleCartModalOpen();
+    // const isConfirmed = confirm(
+    //   '장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?'
+    // );
+    // if (isConfirmed) {
+    //   router.push('/cart');
+    // }
   };
 
   return (
