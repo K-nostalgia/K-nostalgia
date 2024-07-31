@@ -28,6 +28,7 @@ export const SectionBanner = () => {
             height={315}
             priority
             alt={`메인 배너 이미지 ${index + 1}`}
+            style={{ width: 375, height: 315, objectFit: 'cover' }}
           />
         </SwiperSlide>
       ))}
