@@ -43,11 +43,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
   const totalAmount = price + deliveryCharge - discount;
   console.log(totalAmount);
 
-  const { data: users, isPending: usersIsPending } = useQuery<
-    Tables<'users'>,
-    Error,
-    Tables<'users'>
-  >({
+  const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
     queryKey: ['users'],
     queryFn: () => api.auth.getUser()
   });
@@ -100,7 +96,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
-      router.push(`${pathName}`);
+      router.replace(`${pathName}`);
       console.log(response);
 
       return toast({
@@ -109,25 +105,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       });
     }
 
-    //즉시 환불
-    // const cancelResponse = await fetch('/api/payment/transaction', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({ paymentId })
-    // });
-    // console.log(cancelResponse);
-    // if (!cancelResponse.ok) {
-    //   alert('즉시 환불 실패. 당일 자정 전까지 일괄 환불됩니다.');
-    //   throw new Error(`Cancellation failed: ${cancelResponse.statusText}`);
-    // }
-
-    // const { error: cancelError } = await cancelResponse.json();
-    // //TODO 환불 에러시 조치 추가
-    // console.log(cancelError);
-
-    router.push(
+    router.replace(
       `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
     );
   };
@@ -149,7 +127,6 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     <div>
       <button
         className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
-        // "bg-[#9C6D2E] flex justify-center items-center gap-[12px] w-[165px] h-[48px] px-[16px] py-[12px] font-semibold rounded-[12px] text-white text-[16px] leading-[140%]"
         onClick={payRequest}
       >
         바로 구매하기
