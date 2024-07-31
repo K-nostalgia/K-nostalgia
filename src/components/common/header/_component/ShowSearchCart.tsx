@@ -13,17 +13,17 @@ interface ShowSearchCartProps {
 
 const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
   const router = useRouter();
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const handleSearchToggle = () => {
-    setIsSearchVisible((prev) => !prev);
+    setIsOpen((prev) => !prev);
   };
 
   // 검색, 카트 있다 = 기본 / 검색만 있음 / 검색, 카트 둘 다 없음 = false
   if (showSearch && showCart) {
     return (
       <div className="flex p-1 gap-1">
-        {isSearchVisible && <SearchBar />}
+        <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <GoSearch className="w-7 h-7" onClick={handleSearchToggle} />
         <PiShoppingCartSimple
           onClick={() => router.push('/cart')}
@@ -34,7 +34,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
   } else if (showSearch && !showCart) {
     return (
       <div className="flex p-1">
-        {isSearchVisible && <SearchBar />}
+        <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <GoSearch className="w-7 h-7" onClick={handleSearchToggle} />
       </div>
     );
