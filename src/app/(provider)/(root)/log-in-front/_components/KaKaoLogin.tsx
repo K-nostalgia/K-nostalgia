@@ -29,7 +29,7 @@ const KaKaoLogin = () => {
             className="w-[24px] h-[24px] mr-2"
           />
         </div>
-        <p className="text-label-strong text-center text-nowrap">
+        <p className="text-label-strong text-center text-nowrap cursor-pointer">
           {' '}
           카카오로 시작하기{' '}
         </p>
