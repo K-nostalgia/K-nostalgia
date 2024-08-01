@@ -44,11 +44,30 @@ class AuthAPI {
     window.location.href = data.url;
   }
 
-  async updateUser(id: string, update: {nickname?: string, avatar?:string}): Promise<UserType> {
-    return this.request<UserType>('/api/auth/user-update', 'PATCH', {id, ...update});
+  async updateUser(id: string, updates: {nickname?: string, avatar?:string}): Promise<UserType> {
+    return this.request<UserType>('/api/auth/user-update', 'PATCH', {id, ...updates});
   }
 
+  async imageUpload(editimage: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('editimage', editimage);
+     
+    try {
+      const response = await fetch('/api/auth/user-image', {
+        method: 'POST',
+        body:formData
 
+      })
+
+      const data = await response.json();
+    
+      return data.imageUrl;
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      throw error;
+    }
+  }
 }
 
 export default AuthAPI;
+

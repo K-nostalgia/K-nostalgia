@@ -94,16 +94,9 @@ export function Chat() {
     }
   });
 
-  // 유효성 검사 추가하기 비속어?
+  // 유효성 검사 추가하기
   const handleSendMessage = () => {
-    //TODO mic 임시값 => 시간이 부족할 경우 룸 1개로 고정
     const room_id: string = 'K8uTq2XdYz5sPnL4rWj7B';
-
-    if (!message || message.trim() === '') {
-      // 토스트로 바꾸기
-      alert('메세지 입력해라어흥');
-      return;
-    }
 
     const newMessage = {
       room_id,
@@ -137,8 +130,6 @@ export function Chat() {
       supabase.removeChannel(channels);
     };
   }, [queryClient]);
-
-  // TODO supabase DB 하루마다 삭제하는 로직? 이 있을지 찾아보기
 
   // 날짜 포맷
   const formatDate = (date: string) => {
@@ -178,22 +169,22 @@ export function Chat() {
       </DialogTrigger>
       {/*TODO 최소 크기일 때 max-w-[330px] 반응형일 때 조절하기  */}
       <DialogContent className="max-w-[330px] bg-normal rounded-xl">
-        <div className="border-b-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
+        <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
           <DialogHeader>
-            <DialogTitle className="mb-2 px-2 py-3">향그리움</DialogTitle>
-            <DialogDescription>
-              {/* TODO mic 채팅방 여러개면 여기다 할 수 있을 듯 */}
-            </DialogDescription>
+            <DialogTitle className="mb-2 pt-5 px-3 pb-2 font-semibold text-lg leading=[28.8px]">
+              향그리움
+            </DialogTitle>
+            <DialogDescription></DialogDescription>
           </DialogHeader>
         </div>
         <div
-          className="grid gap-4 py-4 h-[400px] h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+          className="grid gap-4 py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide"
           ref={scrollDown}
         >
           {data?.map((item) => {
             return item.user_id === user?.id ? (
               // 나일 경우
-              <div key={item.id} className="flex flex-col gap-2">
+              <div key={item.id} className="flex flex-col gap-1">
                 {item.users?.avatar ? (
                   <Image
                     src={item.users?.avatar}
@@ -216,7 +207,7 @@ export function Chat() {
               </div>
             ) : (
               // 다른 사람일 경우
-              <div key={item.id} className="flex flex-col gap-3 w-full">
+              <div key={item.id} className="flex flex-col gap-1 w-full">
                 <div className="flex gap-2">
                   {/* TODO null 일 경우 기본 이미지 태그로 바꾸기 */}
                   {item.users?.avatar ? (
@@ -236,7 +227,7 @@ export function Chat() {
                     {item.users?.nickname}
                   </div>
                 </div>
-                <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2">
+                <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-1">
                   {item.content}
                 </div>
                 <div className="text-xs text-label-assistive">
@@ -247,7 +238,7 @@ export function Chat() {
           })}
         </div>
 
-        <div className="border-t-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
+        <div className="border-t-2 w-[calc(100%+33px)] -mx-4">
           <DialogFooter className="xs:flex relative items-center">
             <form
               className="relative w-[87%] pt-4"
@@ -256,7 +247,9 @@ export function Chat() {
               <Input
                 type="text"
                 placeholder={
-                  user ? '메시지 보내기...' : '로그인 후에 이용해주세요.'
+                  user
+                    ? '메시지 보내기...'
+                    : '향그리움의 가족만 이용할 수 있어요.'
                 }
                 className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive"
                 value={message}
