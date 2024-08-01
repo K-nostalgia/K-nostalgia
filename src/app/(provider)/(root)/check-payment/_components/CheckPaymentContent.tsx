@@ -22,7 +22,7 @@ const CheckPaymentContent = () => {
           variant: 'destructive',
           description: '결제가 취소되었습니다.'
         });
-        return router.replace(`local-food`);
+        return router.replace(`/local-food`);
       }
       if (paymentId) {
         try {
@@ -78,7 +78,7 @@ const CheckPaymentContent = () => {
                 variant: 'destructive',
                 description: '결제에 실패했습니다. 다시 시도해주세요.'
               });
-              router.replace(`local-food`);
+              router.push(`/local-food`);
               return;
             }
 
@@ -107,13 +107,14 @@ const CheckPaymentContent = () => {
               })
             });
 
-            router.replace(
-              `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
-            );
             toast({
               variant: 'destructive',
               description: '결제 완료.'
             });
+
+            router.push(
+              `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
+            );
           };
           postPaymentHistory();
         } catch (error) {
