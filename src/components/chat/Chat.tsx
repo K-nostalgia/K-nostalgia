@@ -169,7 +169,7 @@ export function Chat() {
       </DialogTrigger>
       {/*TODO 최소 크기일 때 max-w-[330px] 반응형일 때 조절하기  */}
       <DialogContent className="max-w-[330px] bg-normal rounded-xl">
-        <div className="border-b-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(0,0,0,0.14)_0px_2px_4px_0px]">
+        <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
           <DialogHeader>
             <DialogTitle className="mb-2 pt-5 px-3 pb-2 font-semibold text-lg leading=[28.8px]">
               향그리움
@@ -238,7 +238,7 @@ export function Chat() {
           })}
         </div>
 
-        <div className="border-t-2 w-[calc(100%+33px)] -mx-4 shadow-[rgba(31,30,30,0.08)_0px_-2px_8px_0px]">
+        <div className="border-t-2 w-[calc(100%+33px)] -mx-4">
           <DialogFooter className="xs:flex relative items-center">
             <form
               className="relative w-[87%] pt-4"
