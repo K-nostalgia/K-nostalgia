@@ -91,13 +91,13 @@ const MarketPage = () => {
 
   return (
     <>
-      <div className="w-full p-4">
+      <div className="w-full p-4 mb-6">
         <div className="flex overflow-auto scrollbar-hide gap-2 border-b-[1px] border-[#E0E0E0]">
           {largeRegions.map((region) => (
             <button
               key={region}
               onClick={() => handleLargeRegionChange(region)}
-              className={`text-nowrap text-base font-medium pt-2 px-3 pb-3${
+              className={`text-nowrap text-base font-medium pt-2 px-3 pb-3 ${
                 activeFilter === region
                   ? 'text-primary-20 border-b-4 border-primary-20'
                   : 'text-label-alternative'
@@ -108,7 +108,7 @@ const MarketPage = () => {
           ))}
         </div>
         {regionWithSmall.includes(selectedLargeRegion) && (
-          <div className="flex overflow-auto scrollbar-hide px-4 pt-4 gap-2">
+          <div className="flex overflow-auto scrollbar-hide pt-4 gap-2">
             {regionData[selectedLargeRegion].map((small) => (
               <button
                 key={small}
