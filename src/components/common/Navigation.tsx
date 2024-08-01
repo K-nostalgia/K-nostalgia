@@ -57,7 +57,7 @@ const Navigation = () => {
       {naviList.map((item, index) => (
         <div
           key={index}
-          className={`flex flex-col items-center cursor-pointer gap-1 w-[44px] h-[48px] px-2 ${
+          className={`flex flex-col items-center cursor-pointer gap-1 w-[60px] h-[48px] px-2 ${
             pathname === item.path ? 'text-primary-strong' : 'text-black'
           }`}
           onClick={() => handleNavigationClick(item.path)}

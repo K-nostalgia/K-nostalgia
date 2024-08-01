@@ -97,8 +97,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
 
-      router.replace(`${pathName}`);
-      //console.log(response);
+      router.push(`${pathName}`);
 
       return toast({
         variant: 'destructive',
