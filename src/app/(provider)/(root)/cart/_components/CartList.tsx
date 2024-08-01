@@ -7,7 +7,7 @@ import { useQuery } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
 import Loading from '@/components/common/Loading';
 import { DefaultImage } from '@/components/common/DefaultImage';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const CartList = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -23,7 +23,6 @@ export const CartList = () => {
         data: { user },
         error: userError
       } = await supabase.auth.getUser();
-      // setSelectedItems(cartData?.map((item) => item.product_id));
 
       if (!user) return [];
       if (userError) console.error(userError.message);
@@ -43,19 +42,34 @@ export const CartList = () => {
     }
   });
 
+  useEffect(() => {
+    if (cartData) {
+      setSelectedItems(
+        //null인 경우 빈문자열로 대체, id가 빈문자열은 필터링
+        cartData.map((item) => item.product_id ?? '').filter((id) => id !== '')
+      );
+    }
+  }, [cartData]);
+
+  //console.log('상품아이디', selectedItems);
+
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
   return (
     <div>
       {cartData?.length > 0 ? (
-        <DataTable columns={columns} data={cartData} />
+        <DataTable
+          columns={columns}
+          data={cartData}
+          selectedItems={selectedItems}
+        />
       ) : (
         //장바구니 비어있을 경우 디폴트 이미지 표시
         <DefaultImage text={text} />
       )}
 
-      <CartFixedButtons data={cartData} />
+      <CartFixedButtons data={cartData} selectedItems={selectedItems} />
     </div>
   );
 };

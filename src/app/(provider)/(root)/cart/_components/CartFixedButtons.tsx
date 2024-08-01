@@ -3,11 +3,12 @@ import { Tables } from '@/types/supabase';
 
 type CartButtonProps = {
   data: Tables<'cart'>[];
+  selectedItems: string[];
 };
 const DELIVERY = 2500;
 const COUPON = 2000;
 
-export const CartFixedButtons = ({ data }: CartButtonProps) => {
+export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
   const totalPrice = data.reduce(
     (acc, item) => acc + (item.product_price ?? 0) * (item.count ?? 0),
     0

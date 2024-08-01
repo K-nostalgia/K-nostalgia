@@ -53,7 +53,7 @@ export const Carousel = ({ images }: marketProps) => {
               <LikeButton />
             </div>
             <div className="text-sm mt-2 leading-[22.4px]">
-              <p>{item['시장 유형']}</p>
+              <p>전통시장</p>
               <p>{item.도로명주소}</p>
             </div>
           </div>

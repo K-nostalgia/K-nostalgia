@@ -22,13 +22,15 @@ import { CartPriceList } from '../CartPriceList';
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: any[];
+  selectedItems: string[];
 }
 //   data: TData[];
 // }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  selectedItems
 }: DataTableProps<TData, TValue>) {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -98,7 +100,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <CartPriceList data={data} />
+      <CartPriceList data={data} selectedItems={selectedItems} />
     </div>
   );
 }
