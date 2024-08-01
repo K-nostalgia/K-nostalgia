@@ -69,11 +69,11 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       products: products as any,
       redirectUrl:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          ? `https://k-nostalgia-chaesus-projects.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
           : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       appScheme:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          ? `https://k-nostalgia-chaesus-projects.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
           : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       customer: {
         customerId: id,
