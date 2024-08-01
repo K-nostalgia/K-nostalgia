@@ -16,16 +16,24 @@ import {
 import { useState } from 'react';
 import SearchMarketRecommendations from './SearchMarketRecommendations';
 import { GoSearch } from 'react-icons/go';
+// import { Link } from 'lucide-react';
+import { Tables } from '@/types/supabase';
+import Link from 'next/link';
 
 interface SearchBarProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+type Market = Tables<'markets'>;
+type LocalFood = Tables<'local_food'>;
+
 const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const pathName = usePathname();
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [response, setResponse] = useState<any[]>([]);
+  const [response, setResponse] = useState<
+    (Tables<'local_food'> | Tables<'markets'>)[] | null
+  >(null);
 
   const marketSide = pathName === '/market' || pathName.startsWith('/market');
   const localFoodSide =
@@ -81,7 +89,6 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       const data = await response.json();
       console.log(data);
       setResponse(data);
-      setSearchTerm('');
     } catch (error) {
       console.log(error);
     }
@@ -91,7 +98,14 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="top" className="bg-white mx-4">
+      <SheetContent
+        side="top"
+        className="bg-white"
+        style={{
+          borderBottomLeftRadius: '12px',
+          borderBottomRightRadius: '12px'
+        }}
+      >
         {/* 헤더, 디스크립션 일단 없는 쪽 */}
         <SheetHeader>
           <SheetTitle></SheetTitle>
@@ -99,51 +113,79 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
         </SheetHeader>
         {/* 헤더, 디스크립션 일단 없는 쪽_끝*/}
         <form className="py-4" onSubmit={submitSearchTerm}>
-          <Input
-            placeholder={
-              marketSide
-                ? '시장을 검색해주세요'
-                : localFoodSide
-                ? '특산물을 검색해주세요'
-                : '이 페이지 검색은 준비 중이에요'
-            }
-            value={searchTerm}
-            onChange={handleSearchTerm}
-            className="border-primary-30 py-[2px] pl-3 pr-2 rouned-[6px] placeholder:text-label-assistive"
-            disabled={!marketSide && !localFoodSide}
-          />
-          <Button
-            type="submit"
-            size="icon"
-            className="absolute right-5 top-15 transform -translate-y-1/2"
-            disabled={!marketSide && !localFoodSide}
-            aria-label="검색"
-          >
-            <GoSearch />
-          </Button>
+          <div className="relative flex items-center">
+            <Input
+              type="text"
+              placeholder={
+                marketSide
+                  ? '시장을 검색해주세요'
+                  : localFoodSide
+                  ? '특산물을 검색해주세요'
+                  : '이 페이지 검색은 준비 중이에요'
+              }
+              value={searchTerm}
+              onChange={handleSearchTerm}
+              className="border-primary-30 py-[2px] pl-3 pr-10 rouned-md placeholder:text-label-assistive"
+              disabled={!marketSide && !localFoodSide}
+              style={{ borderRadius: '6px' }}
+            />
+            <Button
+              type="submit"
+              size="icon"
+              className="absolute right-2 flex items-center h-full"
+              disabled={!marketSide && !localFoodSide}
+              aria-label="검색"
+              style={{ border: 'none', background: 'none' }}
+            >
+              <GoSearch className="w-[22px] h-[22px]" />
+            </Button>
+          </div>
         </form>
         {/* pathName이 마켓쪽일 때는 시장 검색 / pathName이 특산물일 때는 특산물 검색 */}
-        {marketSide ? (
-          response.length > 0 ? (
-            response.map((item) => (
-              <div key={item.id} className="hover:bg-green">
-                {item.시장명}
+        <div className="mx-2 flex flex-col gap-1">
+          {marketSide &&
+            response &&
+            (response.length > 0 ? (
+              response.map((item) => (
+                <Link
+                  href={`/market/${(item as Market).id}`}
+                  key={(item as Market).id}
+                >
+                  <div
+                    className="cursor-pointer hover:bg-gray-100 p-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {(item as Market).시장명}
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="text-label-assistive m-5">
+                검색 결과가 없습니다.
               </div>
-            ))
-          ) : (
-            <div className="text-label-assistive">검색 결과가 없습니다.</div>
-          )
-        ) : localFoodSide ? (
-          response.length > 0 ? (
-            response.map((item) => (
-              <div key={item.product_id} className="hover:bg-green">
-                {item.food_name}
+            ))}
+          {localFoodSide &&
+            response &&
+            (response.length > 0 ? (
+              response.map((item) => (
+                <Link
+                  href={`/local-food/${(item as LocalFood).product_id}`}
+                  key={(item as LocalFood).product_id}
+                >
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {(item as LocalFood).food_name}
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <div className="text-label-assistive m-5">
+                검색 결과가 없습니다.
               </div>
-            ))
-          ) : (
-            <div className="text-label-assistive">검색 결과가 없습니다.</div>
-          )
-        ) : null}
+            ))}
+        </div>
         <SearchMarketRecommendations setIsOpen={setIsOpen} />
       </SheetContent>
     </Sheet>

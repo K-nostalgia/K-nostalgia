@@ -22,7 +22,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
   // 검색, 카트 있다 = 기본 / 검색만 있음 / 검색, 카트 둘 다 없음 = false
   if (showSearch && showCart) {
     return (
-      <div className="flex p-1 gap-1">
+      <div className="flex p-1 gap-1 w-[72px] h-9">
         <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <GoSearch className="w-7 h-7" onClick={handleSearchToggle} />
         <PiShoppingCartSimple
@@ -33,14 +33,14 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
     );
   } else if (showSearch && !showCart) {
     return (
-      <div className="flex p-1">
+      <div className="flex p-1 w-9 h-9">
         <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <GoSearch className="w-7 h-7" onClick={handleSearchToggle} />
       </div>
     );
   } else if (!showSearch && showCart) {
     return (
-      <div className="flex p-1">
+      <div className="flex p-1 w-9 h-9">
         <PiShoppingCartSimple
           onClick={() => router.push('/cart')}
           className="cursor-pointer w-7 h-7"
@@ -48,7 +48,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
       </div>
     );
   } else {
-    return <div className="invisible w-7 h-7" />;
+    return <div className="invisible w-9 h-9" />;
   }
 };
 

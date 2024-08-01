@@ -17,7 +17,6 @@ type NaviList = {
   activeIcon: IconType;
 };
 
-// TODO mic 아이콘 바꾸기
 const naviList: NaviList[] = [
   {
     label: '홈',
@@ -54,7 +53,7 @@ const Navigation = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex border-t-2 justify-between pt-3 px-5 pb-7 mt-auto bg-normal md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex border-t-2 justify-between pt-3 px-5 pb-7 mt-auto bg-normal">
       {naviList.map((item, index) => (
         <div
           key={index}
@@ -64,9 +63,21 @@ const Navigation = () => {
           onClick={() => handleNavigationClick(item.path)}
         >
           {pathname === item.path ? (
-            <item.activeIcon className="w-[28px] h-[28px]" />
+            <item.activeIcon
+              className={`${
+                item.path === '/local-food'
+                  ? 'w-[22px] h-[28px]'
+                  : 'w-[28px] h-[28px]'
+              }`}
+            />
           ) : (
-            <item.icon className="w-[28px] h-[28px]" />
+            <item.icon
+              className={`${
+                item.path === '/local-food'
+                  ? 'w-[22px] h-[28px]'
+                  : 'w-[28px] h-[28px]'
+              }`}
+            />
           )}
           <div className="text-[12px] text-nowrap flex items-center justify-center">
             {item.label}
