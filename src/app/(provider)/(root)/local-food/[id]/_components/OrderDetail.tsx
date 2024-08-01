@@ -47,7 +47,7 @@ export const OrderDetail = ({
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <div className="bg-[#F2F2F2] rounded-tr-[16px] rounded-tl-[16px] w-full fixed bottom-0 left-0 right-0">
+    <div className="bg-[#F2F2F2] pb-[10%] rounded-tr-[16px] rounded-tl-[16px] w-full fixed bottom-0 left-0 right-0">
       <div className="bg-normal px-4 pt-4 pb-2 rounded-tr-[16px] rounded-tl-[16px]">
         <p className="w-[60px] h-[6px] rounded-[3px] bg-[#E0E0E0] mx-auto"></p>
       </div>

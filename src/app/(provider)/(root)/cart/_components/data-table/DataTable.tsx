@@ -50,8 +50,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
-        <Table>
+      <div className="rounded-md border py-16px">
+        <Table className="bg-normal">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

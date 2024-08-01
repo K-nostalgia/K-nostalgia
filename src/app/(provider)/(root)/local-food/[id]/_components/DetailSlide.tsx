@@ -34,8 +34,6 @@ export const DetailSlide = ({ images }: SlideProps) => {
                 priority
                 alt={`상세 대표 이미지`}
                 style={{
-                  width: 375,
-                  height: 375,
                   objectFit: 'cover',
                   position: 'relative',
                   margin: '0 auto'

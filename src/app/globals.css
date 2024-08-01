@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: YeojuCeramic;
-  src: local('YeojuCeramic TTF');
+  src: url('../fonts/YeojuCeramic.ttf');
 }
 
 /* 시장, 특산물 페이지 필터 버튼 css */
