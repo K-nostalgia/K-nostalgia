@@ -6,6 +6,7 @@ function CouponLayout({ children }: PropsWithChildren) {
     <DefaultAppLayout
       showHeader={true}
       showNavigation={true}
+      showSearch={false}
       headerTitle="할인쿠폰"
     >
       {children}
