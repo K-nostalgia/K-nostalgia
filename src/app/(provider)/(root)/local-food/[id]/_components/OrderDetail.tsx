@@ -14,12 +14,14 @@ type LocalDetailPageProps = {
   params: { id: string };
   isModalOpen: boolean;
   onPurchase: () => void;
+  handleCartModalOpen: () => void;
 };
 
 export const OrderDetail = ({
   params: { id },
   isModalOpen,
-  onPurchase
+  onPurchase,
+  handleCartModalOpen
 }: LocalDetailPageProps) => {
   const [count, setCount] = useState(1);
   const {
@@ -85,6 +87,7 @@ export const OrderDetail = ({
         count={count}
         isModalOpen={isModalOpen}
         onPurchase={onPurchase}
+        handleCartModalOpen={handleCartModalOpen}
       />
     </div>
   );

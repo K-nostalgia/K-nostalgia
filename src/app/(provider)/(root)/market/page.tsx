@@ -1,222 +1,265 @@
 'use client';
 
 import FilterButton from '@/components/ui/FilterButton';
-import { Market } from '@/types/Market';
+import { MarketType, RegionData } from '@/types/Market';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
+import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { GoHeart } from 'react-icons/go';
 import { GoHeartFill } from 'react-icons/go';
-export type TotalMarketImagesType = {
-  image:
-    | {
-        title: string;
-        link: string;
-        thumbnail: string;
-        sizeheight: string;
-        sizewidth: string;
-      }[]
-    | null;
-  시장명: string;
-  도로명주소: string;
-  시도: string;
-  error: any;
-}[];
+import { RiMoreLine } from 'react-icons/ri';
 
 const MarketPage = () => {
-  const [markets, setMarkets] = useState<Market[]>([]);
+  const [markets, setMarkets] = useState<MarketType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [images, setImages] = useState<TotalMarketImagesType | null>(null);
   const [loading, setLoading] = useState(false);
   const [heart, setHeart] = useState<string[]>([]);
-  const [filteredMarkets, setFilteredMarkets] =
-    useState<TotalMarketImagesType | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>('전체');
+  const [activeSmallFilter, setActiveSmallFilter] = useState('전체');
+  const [totalPages, setTotalPages] = useState(0);
+  const [selectedLargeRegion, setSelectedLargeRegion] = useState('전체');
+  const [selectedSmallRegion, setSelectedSmallRegion] = useState('');
 
   // 시장 데이터 불러오는 API
   const fetchMarkets = async (page: number) => {
+    let url = '';
+    if (selectedLargeRegion === '전체') {
+      url = `/api/market/list?page=${page}`;
+    } else {
+      url = `/api/market/filter-list?page=${page}&largeRegion=${encodeURIComponent(
+        selectedLargeRegion
+      )}`;
+      if (selectedSmallRegion) {
+        url += `&smallRegion=${encodeURIComponent(selectedSmallRegion)}`;
+      }
+    }
     try {
-      const response = await fetch(`/api/market/marketDetailList?page=${page}`);
-      const { data } = await response.json();
+      const response = await fetch(url);
+      const { data, totalPages } = await response.json();
       setMarkets(data);
-      setFilteredMarkets(data);
+      setTotalPages(totalPages);
     } catch (error) {
       console.error('데이터를 가져오지 못했습니다.', error);
     }
   };
+  console.log('markets____', markets);
+  console.log('totalPages____', totalPages);
 
-  const marketFilterButtons = [
-    '전체',
-    '경기도',
-    '서울특별시',
-    '인천광역시',
-    '대전광역시',
-    '세종특별자치시',
-    '충청남도',
-    '충청북도',
-    '광주광역시',
-    '전라남도',
-    '전라북도',
-    '경상북도',
-    '대구광역시',
-    '경상남도',
-    '부산광역시',
-    '울산광역시',
-    '강원도',
-    '제주특별자치도'
-  ];
+  // 필터
+  const regionData: RegionData = {
+    전체: ['전체'],
+    서울: ['서울'],
+    경기: ['경기'],
+    인천: ['인천'],
+    강원: ['강원'],
+    충청: ['전체', '충북', '충남', '대전', '세종'],
+    경상: ['전체', '경북', '경남', '대구', '부산', '울산'],
+    전라: ['전체', '전북', '전남', '광주'],
+    제주: ['제주']
+  };
+
+  const largeRegions = Object.keys(regionData);
+  const regionWithSmall = ['충청', '경상', '전라'];
+
   useEffect(() => {
     fetchMarkets(currentPage);
-  }, [currentPage]);
+  }, [currentPage, selectedLargeRegion, selectedSmallRegion]);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      setLoading(true);
-      const results: TotalMarketImagesType = [];
-
-      for (const market of markets) {
-        try {
-          const response = await fetch(
-            `/api/market/marketImage?query=${encodeURIComponent(
-              market.시장명
-            )}&display=2`
-          );
-          const data = await response.json();
-          results.push({
-            시장명: market.시장명,
-            도로명주소: market.도로명주소,
-            시도: market.시도,
-            image: data,
-            error: null
-          });
-        } catch (error: any) {
-          results.push({
-            시장명: market.시장명,
-            도로명주소: market.도로명주소,
-            시도: market.시도,
-            image: null,
-            error: error.message
-          });
-        }
-
-        // 각 요청 사이에 0.15초 지연 추가(요청 속도가 너무 빨라서 이미지를 찾아올 수 가 없다는 에러발생)
-        await new Promise((resolve) => setTimeout(resolve, 150));
-      }
-
-      setImages(results); // 시장 데이터 초기값(전체 필터 버튼 눌렀을때 초기상태)
-      setFilteredMarkets(results);
-      setLoading(false);
-    };
-
-    if (markets.length > 0) {
-      fetchImages();
-    }
-  }, [markets]);
-
-  if (!images) return <div>로딩 중...</div>;
-
-  const handleHeart = (identity: string) => {
+  const handleHeart = (identity: string, event: React.MouseEvent) => {
+    event.preventDefault();
     if (!heart.includes(identity)) setHeart((prev) => [...prev, identity]);
     else setHeart((prev) => prev.filter((el) => el !== identity));
   };
 
-  const handleClickFilterButton = (region: string) => {
+  const handleLargeRegionChange = (region: string) => {
+    setSelectedLargeRegion(region);
     setActiveFilter(region);
-    if (region === '전체') setFilteredMarkets(images);
-    else setFilteredMarkets(images.filter((image) => image.시도 === region)); //images안에 item(시장정보)이 들어가있음
+    setSelectedSmallRegion('');
+    setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil(1388 / 10);
+  const handleSmallRegionChange = (region: string) => {
+    if (region === '전체') {
+      setSelectedSmallRegion('');
+    } else {
+      setSelectedSmallRegion(region);
+    }
+    setActiveSmallFilter(region);
+    setCurrentPage(1);
+  };
 
   return (
     <>
-      <div className="flex w-full">
-        {marketFilterButtons.map((region) => (
-          <div key={region} className="w-full">
-            <FilterButton
+      <div className="w-full p-4">
+        <div className="flex overflow-auto scrollbar-hide gap-2 border-b-[1px] border-[#E0E0E0]">
+          {largeRegions.map((region) => (
+            <button
               key={region}
-              onClick={() => handleClickFilterButton(region)}
-              isActive={activeFilter === region}
+              onClick={() => handleLargeRegionChange(region)}
+              className={`text-nowrap text-base font-medium pt-2 px-3 pb-3${
+                activeFilter === region
+                  ? 'text-primary-20 border-b-4 border-primary-20'
+                  : 'text-label-alternative'
+              }`}
             >
               {region}
-            </FilterButton>
-          </div>
-        ))}
-      </div>
-      <div>
-        {loading ? (
-          <p>로딩중...</p>
-        ) : (
-          filteredMarkets?.map((item, index) => (
-            <div key={index}>
-              <Link
-                href={`/market/${encodeURIComponent(
-                  item.시장명
-                )}/${encodeURIComponent(item.도로명주소)}?page=${currentPage}`}
+            </button>
+          ))}
+        </div>
+        {regionWithSmall.includes(selectedLargeRegion) && (
+          <div className="flex overflow-auto scrollbar-hide px-4 pt-4 gap-2">
+            {regionData[selectedLargeRegion].map((small) => (
+              <button
+                key={small}
+                onClick={() => handleSmallRegionChange(small)}
+                className={`text-nowrap text-base font-medium px-4 py-[6px] rounded-[4px] ${
+                  activeSmallFilter === small
+                    ? 'text-label-light bg-secondary-20'
+                    : 'text-label-strong bg-secondary-60'
+                }`}
               >
-                <h3>{item.시장명}</h3>
-                <h2>{item.도로명주소}</h2>
-                <div className="relative w-[140px] h-[140px]">
-                  {item.image ? (
-                    <Image
-                      src={item.image[0]?.link}
-                      alt={item.시장명}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 343px"
-                      priority
-                      className="absolute w-full h-full"
-                      style={{ objectFit: 'cover' }}
-                    />
-                  ) : (
-                    <p style={{ color: 'red' }}>Error: {item.error}</p>
-                  )}
-                </div>
-              </Link>
-              <button onClick={() => handleHeart(item.도로명주소)}>
-                {heart.includes(item.도로명주소) ? (
-                  <GoHeartFill style={{ color: 'red ' }} />
-                ) : (
-                  <GoHeart />
-                )}
+                {small}
               </button>
-            </div>
-          ))
+            ))}
+          </div>
         )}
+        <div className="justify-center place-content-center ">
+          <Image
+            src={
+              'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/markets/market-banner.png'
+            }
+            width={343}
+            height={80}
+            priority
+            alt="시장배너이미지"
+            style={{ width: 343, height: 80, objectFit: 'cover' }}
+            className="mt-4"
+          />
+
+          <div className="flex flex-col mt-4 gap-5 ">
+            {loading ? (
+              <p>로딩중...</p>
+            ) : (
+              markets?.map((item, index) => (
+                <div
+                  key={index}
+                  className="py-3 px-3 rounded-xl border border-solid border-secondary-50
+              bg-normal"
+                >
+                  <Link href={`/market/${item.id}`}>
+                    <div className="flex flex-col mb-2">
+                      <div className="flex justify-between">
+                        <p className="pl-1 text-base font-semibold text-label-strong">
+                          {item.시장명}
+                        </p>
+                        <div className="p-[2px]">
+                          <button
+                            onClick={(event) =>
+                              handleHeart(item.도로명주소, event)
+                            }
+                          >
+                            {heart.includes(item.도로명주소) ? (
+                              <GoHeartFill className="w-5 h-5 text-[#DB3B3B]" />
+                            ) : (
+                              <GoHeart className="w-5 h-5 text-[#545454]" />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                      <p className="pl-1 text-sm text-label-alternative">
+                        {item.도로명주소}
+                      </p>
+                    </div>
+                    {item.이미지 ? (
+                      <div className="relative flex gap-2">
+                        {item.이미지.slice(0, 2).map((imgSrc, index) => (
+                          <div
+                            key={index}
+                            className=" gap-2 rounded-[8px] relative w-[156px] h-[130px]"
+                          >
+                            <Image
+                              src={imgSrc}
+                              alt={`${item.시장명} - 이미지 ${index + 1}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 343px"
+                              priority
+                              className="absolute w-full h-full rounded-[8px]"
+                              style={{ objectFit: 'cover' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p style={{ color: 'red' }}>Error: {item.error}</p>
+                    )}
+                  </Link>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: '20px'
-        }}
-      >
+
+      <div className="flex justify-between items-center mb-64">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
+          className={`px-4 py-1 ${
+            currentPage === 1
+              ? 'text-label-assistive cursor-not-allowed'
+              : 'text-label-strong'
+          }`}
         >
-          prev
+          <div className="flex gap-[6px] place-items-center font-medium">
+            <BsChevronLeft className="w-4 h-4 text-color-[#0B0B0B]" />
+            이전
+          </div>
         </button>
-        <div>
-          {[...Array(totalPages)].map((_, index) => (
-            <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              style={{
-                fontWeight: currentPage === index + 1 ? 'bold' : 'normal',
-                margin: '0 5px'
-              }}
-            >
-              {index + 1}
-            </button>
-          ))}
+        <div className="flex space-x-2">
+          {[...Array(totalPages)].map((_, index) => {
+            const pageNumber = index + 1;
+            if (
+              (pageNumber >= currentPage - 1 &&
+                pageNumber <= currentPage + 1) ||
+              (currentPage === 1 && pageNumber <= 3)
+            ) {
+              return (
+                <button
+                  key={pageNumber}
+                  onClick={() => setCurrentPage(pageNumber)}
+                  className={`py-1 gap-[2px] text-primary-10 text-center w-10 h-10 ${
+                    currentPage === pageNumber &&
+                    'border border-solid rounded-[6px] border-primary-30'
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              );
+            }
+            return null;
+          })}
+          <div className="flex gap-[6px] place-items-center">
+            {currentPage < totalPages - 1 && (
+              <RiMoreLine className="w-4 h-4 text-primary-10" />
+            )}
+          </div>
         </div>
         <button
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
           }
           disabled={currentPage === totalPages}
+          className={`px-4 py-1 ${
+            currentPage === totalPages
+              ? 'text-label-assistive cursor-not-allowed'
+              : 'text-label-strong'
+          }`}
         >
-          next
+          <div className="flex gap-[6px] place-items-center font-medium">
+            다음
+            <BsChevronRight className="w-6 h-6 text-color-[#0B0B0B]" />
+          </div>
         </button>
       </div>
     </>

@@ -10,6 +10,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import Image from 'next/image';
 import { MainMarket } from './SectionMarket';
+import { LikeButton } from './LikeButton';
 
 interface marketProps {
   images: MainMarket | null | undefined;
@@ -47,10 +48,10 @@ export const Carousel = ({ images }: marketProps) => {
               <>없음</>
             )}
           </div>
-          <div className="bg-primary-strong text-label-light p-4 rounded-br-[12px] rounded-bl-[12px]">
-            <div className="flex justify-between">
+          <div className="bg-primary-20 text-label-light p-4 rounded-br-[12px] rounded-bl-[12px]">
+            <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold">{item.시장명}</h2>
-              <GoHeart className="w-[22px] h-[22px]" />
+              <LikeButton />
             </div>
             <div className="text-sm mt-2 leading-[22.4px]">
               <p>{item['시장 유형']}</p>

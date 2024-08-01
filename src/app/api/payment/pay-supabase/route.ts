@@ -2,9 +2,6 @@ import supabase from "@/utils/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  //TODO 에러 처리 다시하셈 뭔 에러나도 200이여
-  // 결제 완료되지 않았어도 데이터 저장은 돼서 결제완료 ^^! 가 뜸
-  //결제쪽 라우트 핸들러랑 같이 보면서 처리해야함
   const response = await request.json();
 
   const { error } = await supabase.from('orderd_list').insert(response);
@@ -30,8 +27,6 @@ export const GET = async (request: NextRequest) => {
       .select('*')
       .order('created_at', { ascending: false })
       .eq('user_id', userId);
-
-      console.log(response)
       
     const { data, error } = response;
     if (error) {
@@ -45,3 +40,23 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({ message: '예기치 않은 오류가 발생했습니다' }, { status: 500 });
   }
 };
+
+export const PUT = async(request: NextRequest)=>{
+  try {
+    const newHistory = await request.json()
+    const {payment_id} = newHistory
+
+    const {error} = await supabase
+    .from('orderd_list')
+    .update(newHistory)
+    .eq('payment_id',payment_id)
+
+    if (error) {
+      throw error;
+    }
+    return NextResponse.json({ message: '주문 내역 업데이트 완료' }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: '주문 내역 업데이트 중 오류 발생' }, { status: 500 });
+  }
+}
