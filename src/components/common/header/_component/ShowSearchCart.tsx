@@ -24,7 +24,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
     return (
       <div className="flex p-1 gap-1 w-[72px] h-9">
         <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <GoSearch className="w-7 h-7" onClick={handleSearchToggle} />
+        <GoSearch className="cursor-pointer w-7 h-7" onClick={handleSearchToggle} />
         <PiShoppingCartSimple
           onClick={() => router.push('/cart')}
           className="cursor-pointer w-7 h-7"
@@ -35,7 +35,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
     return (
       <div className="flex p-1 w-9 h-9">
         <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <GoSearch className="w-7 h-7" onClick={handleSearchToggle} />
+        <GoSearch className="cursor-pointer w-7 h-7" onClick={handleSearchToggle} />
       </div>
     );
   } else if (!showSearch && showCart) {

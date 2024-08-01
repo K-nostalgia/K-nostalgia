@@ -168,17 +168,20 @@ export function Chat() {
         </Button>
       </DialogTrigger>
       {/*TODO 최소 크기일 때 max-w-[330px] 반응형일 때 조절하기  */}
-      <DialogContent className="max-w-[330px] bg-normal rounded-xl">
+      <DialogContent
+        className="bg-normal w-[330px]"
+        style={{ borderRadius: '16px' }}
+      >
         <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
           <DialogHeader>
-            <DialogTitle className="mb-2 pt-5 px-3 pb-2 font-semibold text-lg leading=[28.8px]">
+            <DialogTitle className="flex mb-2 pt-5 px-3 pb-2 font-semibold text-lg leading=[28.8px] items-center justify-center">
               향그리움
             </DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
         </div>
         <div
-          className="grid gap-4 py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+          className="grid py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide"
           ref={scrollDown}
         >
           {data?.map((item) => {
@@ -239,33 +242,35 @@ export function Chat() {
         </div>
 
         <div className="border-t-2 w-[calc(100%+33px)] -mx-4">
-          <DialogFooter className="xs:flex relative items-center">
+          <DialogFooter className="flex relative items-center">
             <form
-              className="relative w-[87%] pt-4"
+              className="relative w-[90%] mx-auto items-center"
               onSubmit={handleSubmitMessage}
             >
-              <Input
-                type="text"
-                placeholder={
-                  user
-                    ? '메시지 보내기...'
-                    : '향그리움의 가족만 이용할 수 있어요.'
-                }
-                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive"
-                value={message}
-                onChange={handleMessage}
-                disabled={!user}
-                aria-label="메시지 입력"
-              />
-              <Button
-                type="submit"
-                size="icon"
-                className="absolute right-2 top-[64%] transform -translate-y-1/2"
-                disabled={!user || message.trim() === ''}
-                aria-label="메시지 전송"
-              >
-                <ChatSendIcon />
-              </Button>
+              <div className="relative">
+                <Input
+                  type="text"
+                  placeholder={
+                    user
+                      ? '메시지 보내기...'
+                      : '향그리움의 가족만 이용할 수 있어요'
+                  }
+                  className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1"
+                  value={message}
+                  onChange={handleMessage}
+                  disabled={!user}
+                  aria-label="메시지 입력"
+                />
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                  disabled={!user || message.trim() === ''}
+                  aria-label="메시지 전송"
+                >
+                  <ChatSendIcon />
+                </Button>
+              </div>
             </form>
           </DialogFooter>
         </div>
