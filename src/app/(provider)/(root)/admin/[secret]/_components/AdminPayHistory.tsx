@@ -36,6 +36,9 @@ const AdminPayHistory = () => {
   console.log(data);
   return (
     <div>
+      <p className="font-semibold text-[2rem]">
+        환불 버튼 누르기 전에. 반드시. 새로고침. 하고. 환불하기.
+      </p>
       <div>
         {data.map((data) => {
           const {

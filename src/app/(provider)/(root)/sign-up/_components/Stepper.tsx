@@ -14,11 +14,11 @@ interface StepperProps {
 
 const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
   return (
-    <div className="flex items-center mb-6">
+    <div className="flex w-[375px] items-center justify-between py-[8px] px-[32px]">
       {steps.map((_, index) => (
         <div
           key={index}
-          className={`flex-1 h-2 px-2 mx-1 rounded-full ${
+          className={`flex h-[8px] w-[58px] box-border border-l-6 border-t-6 rounded-full ${
             index < currentStep
               ? 'bg-primary-strong'
               : index === currentStep

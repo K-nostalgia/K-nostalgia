@@ -127,7 +127,7 @@ const CheckPaymentContent = () => {
       }
     };
     handlePayment();
-  }, []);
+  }, [code, paymentId, router, totalQuantity]);
 
   return (
     <div className="bg-normal">
