@@ -22,7 +22,7 @@ type Props = {
 };
 
 const PayButton = ({ orderNameArr, product }: Props) => {
-  console.log(product);
+  // console.log(product);
   const router = useRouter();
   const pathName = usePathname();
   const requestOrderName = orderNameArr.join(',');
@@ -38,10 +38,10 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     // * item.quantity,
     0
   );
-  console.log(price);
+  //console.log(price);
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + deliveryCharge - discount;
-  console.log(totalAmount);
+  //console.log(totalAmount);
 
   const { data: users, isPending: usersIsPending } = useQuery<
     Tables<'users'>,
@@ -101,7 +101,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
       router.push(`${pathName}`);
-      console.log(response);
+      // console.log(response);
 
       return toast({
         variant: 'destructive',

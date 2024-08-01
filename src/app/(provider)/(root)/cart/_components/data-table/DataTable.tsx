@@ -21,7 +21,7 @@ import { CartPriceList } from '../CartPriceList';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  data: any;
+  data: any[];
 }
 //   data: TData[];
 // }
