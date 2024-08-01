@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const NoPayHistory = () => {
   return (
-    <div className="bg-slate-400 w-full h-[80vh] flex flex-col justify-center items-center">
+    <div className="w-full h-[80vh] flex flex-col gap-[16px] justify-center items-center border-t-4 border-[#FFFFFF]">
       <Image
         src="/image/StateSad.png"
         alt="주문 내역 없음"
@@ -10,7 +10,12 @@ const NoPayHistory = () => {
         height={100}
         className="w-[100px] h-[100px] mx-auto"
       />
-      <p>여기 멘트 뭐라고쓸까요?</p>
+      <p className="text-[18px] text-[#AFACA7] font-medium">
+        주문 내역이 없어요
+      </p>
+      <button className="w-au h-[48px] px-[32px] py-[12px] rounded-[12px] text-white bg-[#9C6D2E] mt-[16px] font-semibold leading-[140%]">
+        특산물 보러 가기
+      </button>
     </div>
   );
 };

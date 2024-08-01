@@ -60,7 +60,7 @@ const PayHistoryList = () => {
       {Object.keys(ordersList).length === 0 ? (
         <NoPayHistory />
       ) : (
-        <div className="p-[16px] border-t-4 border-[#F2F2F2] mb-[70px]">
+        <div className="p-[16px] border-t-4 border-[#F2F2F2] mb-[80px] bg-normal">
           {sortedDates.map((date) => (
             <div key={date}>
               <div className="flex gap-[8px] ml-[4px]">
@@ -79,7 +79,9 @@ const PayHistoryList = () => {
                         ? '주문취소완료'
                         : '상품준비중'}
                     </p>
-                    <p className="text-[#AFAFAF]">·</p>
+                    <p className="text-[#AFAFAF]">
+                      {order.status === 'CANCELLED' ? null : '·'}
+                    </p>
                     <div className="flex">
                       {order.status === 'PAID' && (
                         <p className="text-[#9C6D2E] font-normal">
@@ -129,7 +131,7 @@ const PayHistoryList = () => {
                     </div>
                   ))}
                   <div
-                    className={`flex gap-[7px] text-[14px] font-semibold pt-[12px] ${
+                    className={`flex justify-center gap-[7px] text-[14px] font-semibold pt-[12px] ${
                       order.status !== 'CANCELLED' ? 'flex' : 'hidden'
                     }`}
                   >
