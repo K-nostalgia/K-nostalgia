@@ -69,11 +69,11 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       products: products as any,
       redirectUrl:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia-chaesus-projects.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
           : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       appScheme:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia-chaesus-projects.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
           : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       customer: {
         customerId: id,
@@ -97,8 +97,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
 
-      router.replace(`${pathName}`);
-      //console.log(response);
+      router.push(`${pathName}`);
 
       return toast({
         variant: 'destructive',
