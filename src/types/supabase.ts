@@ -189,60 +189,6 @@ export type Database = {
           title_image?: string[] | null
         }
         Update: {
-<<<<<<< HEAD
-          category?: string | null;
-          count?: number | null;
-          created_at?: string;
-          description?: string | null;
-          food_image?: string | null;
-          food_name?: string | null;
-          location?: string | null;
-          price?: number | null;
-          product_id?: string;
-          title_image?: string[] | null;
-        };
-        Relationships: [];
-      };
-      markets: {
-        Row: {
-          id: number;
-          고객휴게실_보유여부: string | null;
-          대권역: string | null;
-          도로명주소: string | null;
-          물품보관함_보유여부: string | null;
-          소권역: string | null;
-          시도: string | null;
-          시장명: string | null;
-          시장전용고객주차장_보유여부: string | null;
-          이미지: string[] | null;
-        };
-        Insert: {
-          id?: never;
-          고객휴게실_보유여부?: string | null;
-          대권역?: string | null;
-          도로명주소?: string | null;
-          물품보관함_보유여부?: string | null;
-          소권역?: string | null;
-          시도?: string | null;
-          시장명?: string | null;
-          시장전용고객주차장_보유여부?: string | null;
-          이미지?: string[] | null;
-        };
-        Update: {
-          id?: never;
-          고객휴게실_보유여부?: string | null;
-          대권역?: string | null;
-          도로명주소?: string | null;
-          물품보관함_보유여부?: string | null;
-          소권역?: string | null;
-          시도?: string | null;
-          시장명?: string | null;
-          시장전용고객주차장_보유여부?: string | null;
-          이미지?: string[] | null;
-        };
-        Relationships: [];
-      };
-=======
           category?: string | null
           count?: number | null
           created_at?: string
@@ -270,7 +216,7 @@ export type Database = {
           이미지: string[] | null
         }
         Insert: {
-          id?: number
+          id?: never
           고객휴게실_보유여부?: string | null
           대권역?: string | null
           도로명주소?: string | null
@@ -282,7 +228,7 @@ export type Database = {
           이미지?: string[] | null
         }
         Update: {
-          id?: number
+          id?: never
           고객휴게실_보유여부?: string | null
           대권역?: string | null
           도로명주소?: string | null
@@ -295,7 +241,6 @@ export type Database = {
         }
         Relationships: []
       }
->>>>>>> ce2cb39a1129470099027e08cfdc9c50b5ab8959
       orderd_list: {
         Row: {
           amount: number | null
