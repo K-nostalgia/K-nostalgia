@@ -1,8 +1,7 @@
 'use client';
 
-import SwiperCore, { Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { GoHeart } from 'react-icons/go';
 
 // import Swiper and modules styles
 import 'swiper/css';
@@ -54,7 +53,7 @@ export const Carousel = ({ images }: marketProps) => {
               <LikeButton />
             </div>
             <div className="text-sm mt-2 leading-[22.4px]">
-              <p>{item['시장 유형']}</p>
+              <p>전통시장</p>
               <p>{item.도로명주소}</p>
             </div>
           </div>

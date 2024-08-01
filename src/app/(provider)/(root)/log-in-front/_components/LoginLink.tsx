@@ -10,7 +10,7 @@ const LoginLink = () => {
   return (
     <div
       onClick={handleLoginMove}
-      className="text-center mt-[122px] text-label-normal p-2 underline text-nowrap"
+      className="text-center mt-[122px] text-label-normal p-2 underline text-nowrap cursor-pointer"
     >
       로그인해서 입장하기
     </div>

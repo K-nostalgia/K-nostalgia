@@ -20,10 +20,9 @@ export async function PATCH(request: NextRequest) {
   const { data: updateData, error } = await supabase.from('users').update({nickname, avatar}). eq('id', user.id).select().single();
 
   if (error) {
+    console.error(error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-
 
   return NextResponse.json(updateData);
 }

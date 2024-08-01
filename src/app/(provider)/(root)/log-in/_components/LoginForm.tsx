@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
-import { PiEye } from 'react-icons/pi';
+import { PiEye, PiEyeSlash } from 'react-icons/pi';
 import { validateEmail, validatePassword } from '@/utils/validate';
 
 const LoginForm = () => {
@@ -28,7 +28,7 @@ const LoginForm = () => {
     }
     if (!password) {
       checkErrors.password = '비밀번호를 입력해주세요.';
-    } else if (validatePassword(password)) {
+    } else if (!validatePassword(password)) {
       checkErrors.password =
         ' 영문 대문자, 소문자, 숫자와 !"?&@%$와 같은 특수문자를 포함하여 6글자 이상 입력하셔야해요. ';
     }
@@ -69,7 +69,7 @@ const LoginForm = () => {
           placeholder="이메일을 입력해 주세요"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`w-full px-3 py-2 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+          className={`w-full  pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
             errors.email || loginError
               ? 'border-status-negative'
               : 'border-label-assistive'
@@ -91,17 +91,21 @@ const LoginForm = () => {
             placeholder="비밀번호를 입력해 주세요"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={`w-full px-3 py-2 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+            className={`w-full pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20${
               errors.password || loginError
                 ? 'border-status-negative'
                 : 'border-label-assistive'
             }`}
           />
-          <span className="absolute right-3 cursor-pointer">
-            <PiEye
-              onClick={handleShowPassword}
-              className="text-gray-500 text-[24px]"
-            />
+          <span
+            onClick={handleShowPassword}
+            className="absolute right-3 cursor-pointer"
+          >
+            {showPassword ? (
+              <PiEyeSlash className="text-[#545454] text-2xl" />
+            ) : (
+              <PiEye className="text-[#545454] text-2xl" />
+            )}
           </span>
         </div>
 
@@ -119,12 +123,14 @@ const LoginForm = () => {
         )}
       </div>
 
-      <button
-        type="submit"
-        className="w-full py-2 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong"
-      >
-        입장하기
-      </button>
+      <div className="flex justify-center items-center">
+        <button
+          type="submit"
+          className="w-[320px] py-3 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong flex justify-center items-center"
+        >
+          입장하기
+        </button>
+      </div>
     </form>
   );
 };
