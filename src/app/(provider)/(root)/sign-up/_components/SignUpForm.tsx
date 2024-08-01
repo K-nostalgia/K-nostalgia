@@ -50,13 +50,13 @@ const SignupForm: React.FC<SignupFormProps> = ({
           />
           {type === 'password' && (
             <span
-              className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+              className="absolute inset-y-0 right-5 flex items-center cursor-pointer"
               onClick={handleShowPassword}
             >
               {showPassword ? (
-                <PiEyeSlash className="text-[#545454] text-2xl" />
+                <PiEyeSlash className="text-[#545454] text-xl" />
               ) : (
-                <PiEye className="text-[#545454] text-2xl" />
+                <PiEye className="text-[#545454] text-xl" />
               )}
             </span>
           )}
