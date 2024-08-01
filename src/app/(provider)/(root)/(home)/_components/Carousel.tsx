@@ -1,8 +1,7 @@
 'use client';
 
-import SwiperCore, { Pagination } from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { GoHeart } from 'react-icons/go';
 
 // import Swiper and modules styles
 import 'swiper/css';

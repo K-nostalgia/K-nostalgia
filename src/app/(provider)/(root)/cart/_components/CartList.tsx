@@ -48,6 +48,7 @@ export const CartList = () => {
       {cartData?.length > 0 ? (
         <DataTable columns={columns} data={cartData} />
       ) : (
+        //장바구니 비어있을 경우 디폴트 이미지 표시
         <DefaultImage text={text} />
       )}
 
