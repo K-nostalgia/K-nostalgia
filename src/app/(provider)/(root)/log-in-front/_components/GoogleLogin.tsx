@@ -19,7 +19,7 @@ const GoogleLogin = () => {
         className="flex items-center justify-center w-[323px] h-[48px] px-[88px] py-[12px] bg-[#FFFFFF] border-[#FEDF32] rounded-[12px]"
       >
         <FcGoogle className="text-[24px] mr-2" />
-        <p className="text-label-strong text-cente text-nowrap">
+        <p className="text-label-strong text-cente text-nowrap cursor-pointer">
           {' '}
           구글로 시작하기{' '}
         </p>

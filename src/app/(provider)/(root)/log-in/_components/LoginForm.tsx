@@ -123,12 +123,14 @@ const LoginForm = () => {
         )}
       </div>
 
-      <button
-        type="submit"
-        className="w-[320px] py-3 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong"
-      >
-        입장하기
-      </button>
+      <div className="flex justify-center items-center">
+        <button
+          type="submit"
+          className="w-[320px] py-3 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong flex justify-center items-center"
+        >
+          입장하기
+        </button>
+      </div>
     </form>
   );
 };
