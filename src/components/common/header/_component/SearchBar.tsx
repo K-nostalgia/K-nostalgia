@@ -160,7 +160,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                 </Link>
               ))
             ) : (
-              <div className="text-label-assistive m-5">
+              <div className="text-label-assistive my-3">
                 검색 결과가 없습니다.
               </div>
             ))}
@@ -181,7 +181,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                 </Link>
               ))
             ) : (
-              <div className="text-label-assistive m-5">
+              <div className="text-label-assistive my-3">
                 검색 결과가 없습니다.
               </div>
             ))}
