@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
-import { PiEye } from 'react-icons/pi';
+import { PiEye, PiEyeSlash } from 'react-icons/pi';
 import { validateEmail, validatePassword } from '@/utils/validate';
 
 const LoginForm = () => {
@@ -28,7 +28,7 @@ const LoginForm = () => {
     }
     if (!password) {
       checkErrors.password = '비밀번호를 입력해주세요.';
-    } else if (validatePassword(password)) {
+    } else if (!validatePassword(password)) {
       checkErrors.password =
         ' 영문 대문자, 소문자, 숫자와 !"?&@%$와 같은 특수문자를 포함하여 6글자 이상 입력하셔야해요. ';
     }
@@ -97,11 +97,15 @@ const LoginForm = () => {
                 : 'border-label-assistive'
             }`}
           />
-          <span className="absolute right-3 cursor-pointer">
-            <PiEye
-              onClick={handleShowPassword}
-              className="text-gray-500 text-[24px]"
-            />
+          <span
+            onClick={handleShowPassword}
+            className="absolute right-3 cursor-pointer"
+          >
+            {showPassword ? (
+              <PiEyeSlash className="text-[#545454] text-2xl" />
+            ) : (
+              <PiEye className="text-[#545454] text-2xl" />
+            )}
           </span>
         </div>
 
