@@ -69,7 +69,7 @@ const LoginForm = () => {
           placeholder="이메일을 입력해 주세요"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`w-full px-3 py-2 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+          className={`w-full  pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
             errors.email || loginError
               ? 'border-status-negative'
               : 'border-label-assistive'
@@ -91,7 +91,7 @@ const LoginForm = () => {
             placeholder="비밀번호를 입력해 주세요"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className={`w-full px-3 py-2 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+            className={`w-full pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20${
               errors.password || loginError
                 ? 'border-status-negative'
                 : 'border-label-assistive'
@@ -125,7 +125,7 @@ const LoginForm = () => {
 
       <button
         type="submit"
-        className="w-full py-2 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong"
+        className="w-[320px] py-3 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong"
       >
         입장하기
       </button>
