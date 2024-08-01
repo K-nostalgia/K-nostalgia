@@ -38,6 +38,7 @@ const fetchCartItems = async () => {
 
 export const columns: ColumnDef<CartItem>[] = [
   {
+    //전체선택
     id: 'select',
     header: ({ table }) => (
       <div className="flex items-center whitespace-nowrap">
@@ -56,6 +57,7 @@ export const columns: ColumnDef<CartItem>[] = [
         </div>
       </div>
     ),
+    //부분선택
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
@@ -95,7 +97,7 @@ export const columns: ColumnDef<CartItem>[] = [
     accessorKey: 'product_name',
     header: '',
     cell: ({ row }) => (
-      <div className="text-label-strong text-base translate-x-[-43%] translate-y-[-150%]">{`${row.getValue(
+      <div className="text-label-strong text-base translate-x-[-60%] translate-y-[-150%]">{`${row.getValue(
         'product_name'
       )}`}</div>
     )

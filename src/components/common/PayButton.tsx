@@ -22,7 +22,7 @@ type Props = {
 };
 
 const PayButton = ({ orderNameArr, product }: Props) => {
-  console.log(product);
+  // console.log(product);
   const router = useRouter();
   const pathName = usePathname();
   const requestOrderName = orderNameArr.join(',');
@@ -38,10 +38,10 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     // * item.quantity,
     0
   );
-  console.log(price);
+  //console.log(price);
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + deliveryCharge - discount;
-  console.log(totalAmount);
+  //console.log(totalAmount);
 
   const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
     queryKey: ['users'],
@@ -69,11 +69,11 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       products: products as any,
       redirectUrl:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          ? `https://k-nostalgia-chaesus-projects.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
           : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       appScheme:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
+          ? `https://k-nostalgia-chaesus-projects.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
           : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
       customer: {
         customerId: id,
@@ -96,8 +96,9 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
     if (response?.code != null) {
       // 결제 과정에서 오류 발생시 처리
+
       router.replace(`${pathName}`);
-      console.log(response);
+      //console.log(response);
 
       return toast({
         variant: 'destructive',
