@@ -1,9 +1,10 @@
 'use client';
-import { Pagination, Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay, EffectFade } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // import Swiper and modules styles
 import 'swiper/css';
+import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { banners } from '@/lib/banners';
@@ -13,14 +14,15 @@ export const SectionBanner = () => {
   return (
     <Swiper
       // install Swiper modules
-      modules={[Pagination, Autoplay]}
+      modules={[Pagination, Autoplay, EffectFade]}
       pagination={{
         type: 'fraction'
       }}
+      effect={'fade'}
       spaceBetween={16}
       slidesPerView={'auto'}
       centeredSlides={true}
-      autoplay={{ delay: 2000, disableOnInteraction: false }}
+      autoplay={{ delay: 4000, disableOnInteraction: false }}
       loop={true}
     >
       {banners.map((img, index) => (

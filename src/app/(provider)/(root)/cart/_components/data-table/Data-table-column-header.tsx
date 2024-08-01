@@ -38,6 +38,7 @@ const fetchCartItems = async () => {
 
 export const columns: ColumnDef<CartItem>[] = [
   {
+    //TODO : 체크된 상품만 결제금액 노출, 구매
     //전체선택
     id: 'select',
     header: ({ table }) => (

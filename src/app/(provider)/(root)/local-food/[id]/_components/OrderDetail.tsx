@@ -9,6 +9,15 @@ import { TotalPriceList } from './TotalPriceList';
 import { CountButton } from './CountButton';
 import { useState } from 'react';
 import FixedButtons from '../../_components/FixedButtons';
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle
+} from '@/components/ui/sheet';
 
 type LocalDetailPageProps = {
   params: { id: string };
