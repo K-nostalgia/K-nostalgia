@@ -216,7 +216,7 @@ export type Database = {
           이미지: string[] | null
         }
         Insert: {
-          id?: number
+          id?: never
           고객휴게실_보유여부?: string | null
           대권역?: string | null
           도로명주소?: string | null
@@ -228,7 +228,7 @@ export type Database = {
           이미지?: string[] | null
         }
         Update: {
-          id?: number
+          id?: never
           고객휴게실_보유여부?: string | null
           대권역?: string | null
           도로명주소?: string | null
