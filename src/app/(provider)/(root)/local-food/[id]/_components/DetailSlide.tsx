@@ -37,7 +37,8 @@ export const DetailSlide = ({ images }: SlideProps) => {
                   width: 375,
                   height: 375,
                   objectFit: 'cover',
-                  position: 'relative'
+                  position: 'relative',
+                  margin: '0 auto'
                 }}
               />
               <div className="bg-product-custom absolute z-10 inset-0 flex justify-center items-center text-center text-white text-xl font-semibold">
