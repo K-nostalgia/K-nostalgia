@@ -45,5 +45,10 @@ export const POST = async (request: NextRequest) => {
   if (searchError) {
     return NextResponse.json({ error: searchError.message }, { status: 400 });
   }
+
+  if (!searchData || searchData.length === 0 ) {
+    return NextResponse.json({ message: '검색 결과가 없습니다' });
+  }
+
   return NextResponse.json(searchData, { status: 200 });
 };

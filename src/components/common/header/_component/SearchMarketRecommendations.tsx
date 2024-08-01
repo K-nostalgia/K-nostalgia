@@ -64,7 +64,7 @@ const SearchMarketRecommendations = ({
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   return (
-    <div>
+    <div className="text-nowrap">
       <div className="px-6">
         <div className="text-base">향그리움이 추천하는 전통시장</div>
         <div className="text-xs text-label-alternative">

@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/sheet';
 import { useState } from 'react';
 import SearchMarketRecommendations from './SearchMarketRecommendations';
+import { GoSearch } from 'react-icons/go';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -90,7 +91,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="top" className="bg-white">
+      <SheetContent side="top" className="bg-white mx-4">
         {/* 헤더, 디스크립션 일단 없는 쪽 */}
         <SheetHeader>
           <SheetTitle></SheetTitle>
@@ -108,23 +109,41 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
             }
             value={searchTerm}
             onChange={handleSearchTerm}
-            className="placeholder:text-label-assistive border-primary-30 rouded-[6px] py-[2px] pl-3 pr-2"
+            className="border-primary-30 py-[2px] pl-3 pr-2 rouned-[6px] placeholder:text-label-assistive"
+            disabled={!marketSide && !localFoodSide}
           />
-          <Button type="submit">검색</Button>
+          <Button
+            type="submit"
+            size="icon"
+            className="absolute right-5 top-15 transform -translate-y-1/2"
+            disabled={!marketSide && !localFoodSide}
+            aria-label="검색"
+          >
+            <GoSearch />
+          </Button>
         </form>
-        {marketSide
-          ? response?.map((item) => (
+        {/* pathName이 마켓쪽일 때는 시장 검색 / pathName이 특산물일 때는 특산물 검색 */}
+        {marketSide ? (
+          response.length > 0 ? (
+            response.map((item) => (
               <div key={item.id} className="hover:bg-green">
                 {item.시장명}
               </div>
             ))
-          : localFoodSide
-          ? response?.map((item) => (
+          ) : (
+            <div className="text-label-assistive">검색 결과가 없습니다.</div>
+          )
+        ) : localFoodSide ? (
+          response.length > 0 ? (
+            response.map((item) => (
               <div key={item.product_id} className="hover:bg-green">
                 {item.food_name}
               </div>
             ))
-          : ''}
+          ) : (
+            <div className="text-label-assistive">검색 결과가 없습니다.</div>
+          )
+        ) : null}
         <SearchMarketRecommendations setIsOpen={setIsOpen} />
       </SheetContent>
     </Sheet>
