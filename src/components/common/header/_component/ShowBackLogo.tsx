@@ -28,6 +28,8 @@ const ShowBackLogo = ({ showBackButton, showLogo }: ShowBackLogoProps) => {
         <TitleLogo />
       </div>
     );
+  } else if (!showBackButton && !showLogo) {
+    return <div className="invisible w-[76px] h-7" />;
   }
 };
 

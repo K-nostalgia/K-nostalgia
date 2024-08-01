@@ -4,15 +4,15 @@ interface KNostalgiaIconProps {
 }
 
 const KNostalgiaIcon2 = ({
-  width = '20',
-  height = '22'
+  width = '28',
+  height = '28'
 }: KNostalgiaIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width}
       height={height}
-      viewBox="0 0 20 22"
+      viewBox="0 0 20 20"
       fill="none"
     >
       <path

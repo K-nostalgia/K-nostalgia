@@ -187,7 +187,7 @@ export function Chat() {
           </DialogHeader>
         </div>
         <div
-          className="grid gap-4 py-4 h-[400px] h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+          className="grid gap-4 py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide"
           ref={scrollDown}
         >
           {data?.map((item) => {
