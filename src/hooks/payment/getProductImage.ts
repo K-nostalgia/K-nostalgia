@@ -3,7 +3,7 @@ export const imageSrc = (name: string) => {
     case '옥천 복숭아':
       return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product1.jpg';
 
-    case '창원 단감':
+    case '순천 단감':
       return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product2.jpg';
 
     case '의성 마늘':
