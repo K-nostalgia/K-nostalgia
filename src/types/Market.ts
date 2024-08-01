@@ -10,6 +10,7 @@ export type MarketType = {
   대권역: string;
   소권역: string;
   error: any;
+  시장유형: string;
 };
 
 export type RegionData = {
