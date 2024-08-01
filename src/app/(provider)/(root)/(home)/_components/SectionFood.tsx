@@ -25,7 +25,7 @@ export const SectionFood = () => {
         <h2 className="text-2xl text-label-light mt-10 mb-3 font-custom">
           지역 특산물
         </h2>
-        <ul className="grid grid-cols-2 gap-x-4 mx-[10px] relative">
+        <ul className="grid grid-cols-2 gap-x-[23px] mx-[10px] relative">
           {localFood?.slice(0, 4).map((item, index) => {
             return (
               <FoodBox

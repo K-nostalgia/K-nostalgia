@@ -3,11 +3,12 @@ import { Tables } from '@/types/supabase';
 
 type CartButtonProps = {
   data: Tables<'cart'>[];
+  selectedItems: string[];
 };
 const DELIVERY = 2500;
 const COUPON = 2000;
 
-export const CartFixedButtons = ({ data }: CartButtonProps) => {
+export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
   const totalPrice = data.reduce(
     (acc, item) => acc + (item.product_price ?? 0) * (item.count ?? 0),
     0
@@ -33,7 +34,7 @@ export const CartFixedButtons = ({ data }: CartButtonProps) => {
   return (
     <>
       {data?.length === 0 ? (
-        <div className="bg-normal shadow-custom px-4 pt-3 pb-1 fixed bottom-0 left-0 right-0">
+        <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0">
           <div className="flex gap-3 ">
             <button className=" bg-label-disable py-3 px-4 rounded-xl text-normal flex-grow">
               상품을 담아주세요

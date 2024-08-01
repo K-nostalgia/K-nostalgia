@@ -4,28 +4,32 @@ import { useEffect, useState } from 'react';
 
 interface CartProps {
   data: Tables<'cart'>[] | null;
+  selectedItems: string[];
 }
 const DELIVERY_FEE = 2500;
 const COUPON = 2000;
 
-export const CartPriceList = ({ data }: CartProps) => {
+export const CartPriceList = ({ data, selectedItems }: CartProps) => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
-    if (data) {
-      const amount = data.reduce((acc, item) => {
-        const price = item.product_price ?? 0;
-        const quantity = item.count ?? 0;
-        return acc + price * quantity;
-      }, 0);
-      setTotalAmount(amount);
-    }
-  }, [data]);
+    const calculator =
+      data?.reduce((acc, item) => {
+        if (selectedItems.includes(item.product_id ?? '')) {
+          const price = item.product_price ?? 0;
+          const quantity = item.count ?? 0;
+          return acc + price * quantity;
+        }
+        return acc;
+      }, 0) || 0;
+    setTotalAmount(calculator);
+  }, [data, selectedItems]);
 
-  if (!data || data.length === 0) {
+  if (!data || (data.length === 0 && !selectedItems)) {
     return null;
   }
 
+  //총 결제금액
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 
   return (

@@ -1,13 +1,10 @@
 'use client';
 
-import { Market } from '@/types/Market';
 import { Carousel } from './Carousel';
-import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 export type MainMarket = {
   시장명: string;
-  '시장 유형': string;
   도로명주소: string;
   이미지: string | null;
 }[];
@@ -43,14 +40,12 @@ export const SectionMarket = () => {
         const data = await response.json();
         results.push({
           시장명: market.시장명,
-          '시장 유형': market['시장 유형'],
           도로명주소: market.도로명주소,
           이미지: data
         });
       } catch (error: any) {
         results.push({
           시장명: market.시장명,
-          '시장 유형': market['시장 유형'],
           도로명주소: market.도로명주소,
           이미지: null
         });

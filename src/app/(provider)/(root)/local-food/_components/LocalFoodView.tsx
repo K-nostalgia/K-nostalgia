@@ -71,7 +71,12 @@ const LocalFoodView = () => {
             height={80}
             priority
             alt="배너이미지"
-            style={{ width: 343, height: 80, objectFit: 'cover' }}
+            style={{
+              width: 343,
+              height: 80,
+              objectFit: 'cover',
+              margin: '0 auto'
+            }}
           />
         </div>
 
@@ -96,7 +101,7 @@ const LocalFoodView = () => {
                         style={{
                           objectFit: 'cover'
                         }}
-                        className="object-cover"
+                        className="object-cover w-full h-auto"
                       />
                     )}
                   </div>
