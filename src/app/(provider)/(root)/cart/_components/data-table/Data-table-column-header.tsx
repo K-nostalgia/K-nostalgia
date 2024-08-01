@@ -5,11 +5,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
-import { CgClose } from 'react-icons/cg';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { DeleteButton } from './DeleteButton';
+import Link from 'next/link';
 
 export type CartItem = {
-  id: number | null;
+  id: string | null;
   product_id: string | null;
   image: string[] | null;
   product_price: number | null;
@@ -32,52 +32,8 @@ const fetchCartItems = async () => {
     product_name: item.product_name,
     count: item.count
   }));
-  console.log('mappedCartItems', mappedCartItems);
+
   return mappedCartItems;
-};
-
-const useDeleteProduct = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: async (productId: string) => {
-      const { error } = await supabase
-        .from('cart')
-        .delete()
-        .eq('product_id', productId);
-
-      if (error) {
-        throw new Error('상품을 삭제하지 못했습니다.' + error.message);
-      }
-    },
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: ['cart']
-    //   });
-    // }
-    onMutate: async (productId: string) => {
-      await queryClient.cancelQueries({
-        queryKey: ['cart']
-      }); // 기존 쿼리 취소
-
-      const previousCart = queryClient.getQueryData(['cart']); // 기존 데이터 저장
-
-      // optimistic update
-      queryClient.setQueryData(['cart'], (oldData: CartItem[] = []) => {
-        return oldData.filter((item) => item.product_id !== productId);
-      });
-
-      return { previousCart }; // 롤백을 위한 이전 데이터 반환
-    },
-    onError: (err, variables, context) => {
-      queryClient.setQueryData(['cart'], context?.previousCart);
-    },
-    onSettled: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['cart']
-      }); // 쿼리 무효화
-    }
-  });
 };
 
 export const columns: ColumnDef<CartItem>[] = [
@@ -105,50 +61,74 @@ export const columns: ColumnDef<CartItem>[] = [
         checked={row.getIsSelected()}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
+        style={{ transform: 'translate(0, -130%)' }}
       />
     ),
     enableSorting: false,
     enableHiding: false
   },
   {
+    //상품 이미지
     accessorKey: 'image',
     header: '',
     cell: ({ row }) => (
-      <Image
-        src={row.getValue('image')}
-        width={96}
-        height={96}
-        priority
-        alt={row.getValue('product_name')}
-        style={{
-          borderRadius: '8px',
-          width: 96,
-          height: 96,
-          objectFit: 'cover'
-        }}
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false
+      <Link href={`/local-food/${row.getValue('product_id')}`}>
+        <Image
+          src={row.getValue('image')}
+          width={96}
+          height={96}
+          priority
+          alt={row.getValue('product_name')}
+          style={{
+            borderRadius: '8px',
+            width: 96,
+            height: 96,
+            objectFit: 'cover',
+            translate: '-10%'
+          }}
+        />
+      </Link>
+    )
   },
-  { accessorKey: 'product_name', header: '' },
   {
+    //상품 이름
+    accessorKey: 'product_name',
+    header: '',
+    cell: ({ row }) => (
+      <div className="text-label-strong text-base translate-x-[-43%] translate-y-[-150%]">{`${row.getValue(
+        'product_name'
+      )}`}</div>
+    )
+  },
+  {
+    //상품 가격
+    accessorKey: 'product_price',
+    header: '',
+    cell: ({ row }) => (
+      <div className="absolute left-[55%] translate-x-[-35%] translate-y-[-80%] text-lg text-primary-strong font-semibold">
+        {`${row.getValue('product_price')?.toLocaleString()} 원`}
+        <span className="text-base font-normal text-label-assistive line-through pl-2 translate-x-[80%]">
+          {`${(
+            ((row.getValue('product_price') as number) || 0) + 2000
+          ).toLocaleString()}원`}
+        </span>
+      </div>
+    )
+  },
+  {
+    //수량 버튼
     accessorKey: 'count',
     header: '',
-    cell: ({ row }) => {
-      return (
+    cell: ({ row }) => (
+      <div className="absolute left-[55%] translate-x-[-55%] translate-y-[10%] ">
         <CountButton
           product_id={row.getValue('product_id')}
           counts={row.getValue('count')}
         />
-      );
-    }
+      </div>
+    )
   },
-  {
-    accessorKey: 'product_price',
-    header: '',
-    cell: ({ row }) => `${row.getValue('product_price')?.toLocaleString()} 원`
-  },
+
   {
     accessorKey: 'product_id',
     header: '',
@@ -157,17 +137,13 @@ export const columns: ColumnDef<CartItem>[] = [
     )
   },
   {
+    //삭제 버튼
     id: 'delete',
     header: '',
-    cell: ({ row }) => {
-      //const mutation = useDeleteProduct();
-
-      return (
-        // <button onClick={() => mutation.mutate(row.getValue('product_id'))}>
-        <button>
-          <CgClose className="text-[#959595]" />
-        </button>
-      );
-    }
+    cell: ({ row }) => (
+      <div className="translate-x-0 translate-y-[-100%]">
+        <DeleteButton productId={row.getValue('product_id')} />
+      </div>
+    )
   }
 ];

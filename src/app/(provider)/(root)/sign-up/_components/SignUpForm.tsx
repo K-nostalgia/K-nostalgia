@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+import React, { useState } from 'react';
+import { PiEye, PiEyeSlash } from 'react-icons/pi';
 
 interface SignupFormProps {
   title: string;
@@ -7,6 +9,7 @@ interface SignupFormProps {
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: string;
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({
@@ -15,24 +18,52 @@ const SignupForm: React.FC<SignupFormProps> = ({
   type,
   name,
   value,
-  onChange
+  onChange,
+  error
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
-    <>
-      <label className="block text-label-normal text-20px text-border mb-6 text-left">
+    <div className="relative">
+      <label className="block text-label-normal text-xl mb-5 mt-[40px] ml-[32px] text-left">
         {title}
       </label>
-      <label className="block text-label-normal text-sm font-bold mb-2">
-        {label}
-      </label>
-      <input
-        type={type}
-        name={name}
-        value={value}
-        onChange={onChange}
-        className="w-full px-3 py-2 border border-primary-strong rounded-xl focus:outline-none focus:border-primary-strong"
-      />
-    </>
+      <div className="px-4 py-3 gap-2 w-[375px]">
+        <label className="block text-label-alternative mb-2 px-[16px]">
+          {label}
+        </label>
+        <div className="relative items-center">
+          <input
+            type={
+              type === 'password' ? (showPassword ? 'text' : 'password') : type
+            }
+            name={name}
+            value={value}
+            onChange={onChange}
+            className={`w-[322px] h-[52px] bg-normal flex pl-[16px] pr-[12px] pt-[12px] pb-[12px] m-[8px] border rounded-xl focus:outline-none text-primary-20 ${
+              error ? 'border-red-500' : 'border-primary-strong'
+            }`}
+          />
+          {type === 'password' && (
+            <span
+              className="absolute inset-y-0 right-5 flex items-center cursor-pointer"
+              onClick={handleShowPassword}
+            >
+              {showPassword ? (
+                <PiEyeSlash className="text-[#545454] text-xl" />
+              ) : (
+                <PiEye className="text-[#545454] text-xl" />
+              )}
+            </span>
+          )}
+        </div>
+        {error && <p className="text-red-500 text-sm px-4">{error}</p>}
+      </div>
+    </div>
   );
 };
 

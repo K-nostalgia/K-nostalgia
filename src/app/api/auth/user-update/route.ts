@@ -7,7 +7,7 @@ export async function PATCH(request: NextRequest) {
 
   const data = await request.json();
 
-  const { nickname, imageUrl } = data;
+  const { nickname, avatar } = data;
 
   const {
     data: { user },
@@ -17,13 +17,12 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ error: '인증 되지 않은 사용자' }, { status: 401 });
   }
 
-  const { data: updateData, error } = await supabase.from('users').update({nickname, avatar: imageUrl}). eq('id', user.id).select().returns<Tables<'users'>>();
+  const { data: updateData, error } = await supabase.from('users').update({nickname, avatar}). eq('id', user.id).select().single();
 
   if (error) {
+    console.error(error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
-
-
 
   return NextResponse.json(updateData);
 }

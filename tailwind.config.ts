@@ -23,7 +23,7 @@ const config = {
         //label 색상
         'label-strong': '#151515',
         'label-normal': '#3A3835',
-        'label-alternative': '#3A3835',
+        'label-alternative': '#79746D',
         'label-assistive': '#A49F99',
         'label-disable': '#DDDAD7',
         'label-light': '#F6F5F3',
@@ -64,6 +64,8 @@ const config = {
         'status-negative': '#ED1B18',
         'status-positive': '#2A62F4',
 
+        'product-custom': 'rgba(0, 0, 0, 0.20)',
+
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -99,9 +101,12 @@ const config = {
         }
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)'
+        sm: 'calc(var(--radius) - 2px)',
+        md: 'calc(var(--radius) - 4px)',
+        lg: 'calc(var(--radius) - 8px)',
+        // lg: 'var(--radius)',
+        // md: 'calc(var(--radius) - 2px)',
+        // sm: 'calc(var(--radius) - 4px)'
       },
       keyframes: {
         'accordion-down': {
@@ -121,13 +126,11 @@ const config = {
         xs: { min: '376px' }
       },
       boxShadow: {
-        custom: '0px -2px 8px 0px rgba(31, 30, 30, 0.08)',
-        custom2:
-          '0px 1px 2px 0px rgba(0, 0, 0, 0.24), 0px 0px 1px 0px rgba(0, 0, 0, 0.08), 0px 0px 1px 0px rgba(0, 0, 0, 0.08)'
+        custom: '0px -2px 8px 0px rgba(31, 30, 30, 0.08)'
       },
       fontFamily: {
         pretendard: ['var(--font-pretendard)'],
-        custom: ['YeojuCeramic', 'sans-serif']
+        custom: ['YeojuCeramic']
       }
     }
   },
