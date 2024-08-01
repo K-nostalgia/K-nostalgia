@@ -13,7 +13,7 @@ export const GET = async (request: NextRequest) => {
     }
     
     const {data, error: marketDataError} = await supabase.from('markets').select("*").eq('id',marketId).single()
-        console.log(data);
+    
     if (marketDataError) {
       return NextResponse.json({ error: marketDataError.message },{ status: 400 });
     }
