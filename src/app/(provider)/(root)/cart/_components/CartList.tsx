@@ -45,8 +45,8 @@ export const CartList = () => {
   useEffect(() => {
     if (cartData) {
       setSelectedItems(
-        //null인 경우 빈문자열로 대체, id가 빈문자열은 필터링
-        cartData.map((item) => item.product_id ?? '').filter((id) => id !== '')
+        //null인 경우 빈문자열로 대체
+        cartData.map((item) => item.product_id ?? '')
       );
     }
   }, [cartData]);

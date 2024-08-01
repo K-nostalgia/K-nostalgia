@@ -1,5 +1,5 @@
 'use client';
-import { Autoplay } from 'swiper/modules';
+import { Pagination, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // import Swiper and modules styles
@@ -13,7 +13,10 @@ export const SectionBanner = () => {
   return (
     <Swiper
       // install Swiper modules
-      modules={[Autoplay]}
+      modules={[Pagination, Autoplay]}
+      pagination={{
+        type: 'fraction'
+      }}
       spaceBetween={16}
       slidesPerView={'auto'}
       centeredSlides={true}
