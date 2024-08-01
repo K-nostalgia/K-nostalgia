@@ -108,7 +108,7 @@ const SignUpContainer = () => {
   };
 
   return (
-    <div className="flex xs:hidden h-screen w-screen flex-col justify-between">
+    <div className="flex-col items-center justify-center flex">
       <div>
         <div className="w-full bg-normal pt-[20px] px-[12px] pb-2 rounded-md flex justify-between">
           <div className="w-[76px]">
@@ -137,7 +137,7 @@ const SignUpContainer = () => {
           />
         </div>
       </div>
-      <div className=" w-[320px] h-[48px]  ml-[27px] flex flex-col items-center mb-10">
+      <div className=" w-[320px] h-[48px]  ml-[27px] mt-[440px] flex justify-between mb-10">
         <button
           onClick={step === steps.length - 1 ? handleSubmit : nextStep}
           className="w-[320px] h-[48px] py-[12px] px-[16px] bg-primary-strong text-white rounded-xl"
