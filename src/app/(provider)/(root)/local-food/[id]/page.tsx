@@ -108,10 +108,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
         <Image
           src={food.food_image}
           width={375}
-          height={100}
+          height={2451}
           priority
           style={{ width: 375, height: 'auto', objectFit: 'cover' }}
-          className="object-cover"
           alt="상세페이지"
         />
       )}
