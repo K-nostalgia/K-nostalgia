@@ -4,6 +4,7 @@ import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 import { PiEye, PiEyeSlash } from 'react-icons/pi';
 import { validateEmail, validatePassword } from '@/utils/validate';
+import Link from 'next/link';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -15,6 +16,7 @@ const LoginForm = () => {
     password?: string;
   }>({});
   const [loginError, setLoginError] = useState<string | null>(null);
+  const isFormFilled = email !== '' && password !== '';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,75 +63,92 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="space-y-6">
-      <div>
-        <label className="block text-sm text-label-normal mb-2">이메일</label>
-        <input
-          type="email"
-          placeholder="이메일을 입력해 주세요"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className={`w-full  pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
-            errors.email || loginError
-              ? 'border-status-negative'
-              : 'border-label-assistive'
-          }`}
-        />
-        {errors.email && (
-          <p className="text-status-negative mt-2 text-[14px]">
-            {' '}
-            {errors.email}{' '}
-          </p>
-        )}
-      </div>
-
-      <div className="relative">
-        <label className="block text-sm text-label-normal mb-2">비밀번호</label>
-        <div className="flex items-center">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="비밀번호를 입력해 주세요"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className={`w-full pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20${
-              errors.password || loginError
-                ? 'border-status-negative'
-                : 'border-label-assistive'
-            }`}
-          />
-          <span
-            onClick={handleShowPassword}
-            className="absolute right-3 cursor-pointer"
-          >
-            {showPassword ? (
-              <PiEyeSlash className="text-[#545454] text-2xl" />
-            ) : (
-              <PiEye className="text-[#545454] text-2xl" />
+    <form onSubmit={handleLogin} className="mx-auto">
+      <div className="w-full h-[660px] flex flex-col gap-2 justify-between">
+        <div>
+          <div className="mb-3 px-4 py-3">
+            <label className="block text-label-normal pl-4 mb-2">이메일</label>
+            <input
+              type="email"
+              placeholder="이메일을 입력해 주세요"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className={`w-[320px] mx-3 pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+                errors.email || loginError
+                  ? 'border-status-negative'
+                  : 'border-label-assistive'
+              }`}
+            />
+            {errors.email && (
+              <p className="text-status-negative mt-2 text-[14px]">
+                {' '}
+                {errors.email}{' '}
+              </p>
             )}
-          </span>
+          </div>
+
+          <div className="px-4 py-3">
+            <label className="block text-label-normal pl-4 mb-2 ">
+              비밀번호
+            </label>
+            <div className="relative w-[320px]">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="비밀번호를 입력해 주세요"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={` w-full mx-3 pl-4 pr-12 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+                  errors.password || loginError
+                    ? 'border-status-negative'
+                    : 'border-label-assistive'
+                }`}
+              />
+              <span
+                onClick={handleShowPassword}
+                className=" right-2 p-1 top-1/2 transform -translate-y-1/2 absolute cursor-pointer "
+              >
+                {showPassword ? (
+                  <PiEyeSlash className="text-[#545454] text-xl " />
+                ) : (
+                  <PiEye className="text-[#545454] text-xl" />
+                )}
+              </span>
+            </div>
+
+            {errors.password && (
+              <p className="text-status-negative mt-2 text-[14px]">
+                {' '}
+                {errors.password}{' '}
+              </p>
+            )}
+
+            {loginError && (
+              <p className="text-status-negative mt-2 border-status-negative text-[14px]">
+                {loginError}
+              </p>
+            )}
+          </div>
         </div>
 
-        {errors.password && (
-          <p className="text-status-negative mt-2 text-[14px]">
-            {' '}
-            {errors.password}{' '}
-          </p>
-        )}
+        <div className="flex flex-col px-4 py-3 ">
+          <button
+            type="submit"
+            className={`w-[320px] mx-4 py-3 px-4 rounded-xl text-white ${
+              isFormFilled
+                ? 'bg-primary-strong hover:bg-primary-strong'
+                : ' bg-label-disable hover:bg-primary-strong'
+            }`}
+          >
+            입장하기
+          </button>
 
-        {loginError && (
-          <p className="text-status-negative mt-2 border-status-negative text-[14px]">
-            {loginError}
+          <p className="mt-7 mb-10 text-center text-sm text-label-alternative">
+            아직 회원이 아니신가요?{' '}
+            <Link href="/sign-up" className="ml-1 text-label-normal">
+              회원가입
+            </Link>
           </p>
-        )}
-      </div>
-
-      <div className="flex justify-center items-center">
-        <button
-          type="submit"
-          className="w-[320px] py-3 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong flex justify-center items-center"
-        >
-          입장하기
-        </button>
+        </div>
       </div>
     </form>
   );

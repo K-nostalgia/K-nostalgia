@@ -16,7 +16,7 @@ const OrderList_mypage = () => {
         <BsListUl className="mr-[8px] text-label-normal text-[20px]" />
         <span className="text-[16px]"> 주문 내역</span>
         <BsChevronRight
-          className="ml-auto text-[#545454]"
+          className="ml-auto text-[#545454] cursor-pointer"
           onClick={gotoOrderlist}
         />
       </div>
