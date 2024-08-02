@@ -108,10 +108,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
         <Image
           src={food.food_image}
           width={375}
-          height={100}
+          height={2451}
           priority
-          style={{ width: 375, height: 'auto', objectFit: 'cover' }}
-          className="object-cover"
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           alt="상세페이지"
         />
       )}
@@ -125,7 +124,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       />
       {openModal && (
         <div
-          className="fixed inset-0 z-50 bg-[rgba(0,0,0,.24)]"
+          className="fixed inset-0 z-[999] bg-[rgba(0,0,0,.24)]"
           onClick={() => setOpenModal(false)}
         >
           <div

@@ -20,8 +20,6 @@ export const DetailSlide = ({ images }: SlideProps) => {
       slidesPerView={'auto'}
       centeredSlides={true}
       pagination={{ clickable: true }}
-      // autoplay={{ delay: 2000, disableOnInteraction: false }}
-      // loop={true}
     >
       {images?.map((img, index) => (
         <SwiperSlide key={index}>
@@ -34,8 +32,6 @@ export const DetailSlide = ({ images }: SlideProps) => {
                 priority
                 alt={`상세 대표 이미지`}
                 style={{
-                  width: 375,
-                  height: 375,
                   objectFit: 'cover',
                   position: 'relative',
                   margin: '0 auto'
