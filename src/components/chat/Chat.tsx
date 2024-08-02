@@ -266,7 +266,7 @@ export function Chat() {
                       ? '메시지 보내기...'
                       : '향그리움의 가족만 이용할 수 있어요'
                   }
-                  className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1"
+                  className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base"
                   value={message}
                   onChange={handleMessage}
                   disabled={!user}
