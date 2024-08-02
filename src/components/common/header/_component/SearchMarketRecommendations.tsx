@@ -12,17 +12,19 @@ interface TOP8Market {
 const TOP8Market = [
   {
     id: '1',
-    market_id: 1244,
-    marketName: '부평깡통시장'
+    market_id: 1260,
+    marketName: '재송한마음시장'
   },
-  // 거제도 안 예뻐 ㅇㅠㅇ
   {
     id: '2',
-    market_id: 1229,
-    marketName: '거제시장'
+    market_id: 2,
+    marketName: '가평잣고을시장'
   },
-  // 구암 시장은보류
-  { id: '3', market_id: 0, marketName: '구암시장', marketAddress: '' },
+  {
+    id: '3',
+    market_id: 457,
+    marketName: '예산시장'
+  },
   {
     id: '4',
     market_id: 1045,
@@ -30,8 +32,8 @@ const TOP8Market = [
   },
   {
     id: '5',
-    market_id: 114,
-    marketName: '양평물맑은시장'
+    market_id: 1311,
+    marketName: '주문진종합시장'
   },
   {
     id: '6',

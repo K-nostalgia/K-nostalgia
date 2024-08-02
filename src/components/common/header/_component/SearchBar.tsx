@@ -87,14 +87,14 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
         })
       });
       const data = await response.json();
-      console.log(data);
       setResponse(data);
+      setSearchTerm('');
     } catch (error) {
       console.log(error);
     }
   };
 
-  // TODO Mic 장바구니랑 주문내역 서치 아이콘 잠깐 숨겼다가 다시 해보기 유저 테스트 동안
+  // TODO 밑에 검색창 나오게 하기 입력 때 바로 ...
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -142,7 +142,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
           </div>
         </form>
         {/* pathName이 마켓쪽일 때는 시장 검색 / pathName이 특산물일 때는 특산물 검색 */}
-        <div className="mx-2 flex flex-col gap-1">
+        <div className="mx-2 flex flex-col gap-[2px]">
           {marketSide &&
             response &&
             (response.length > 0 ? (
@@ -152,7 +152,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                   key={(item as Market).id}
                 >
                   <div
-                    className="cursor-pointer hover:bg-gray-100 p-2"
+                    className="cursor-pointer hover:bg-gray-100 p-1"
                     onClick={() => setIsOpen(false)}
                   >
                     {(item as Market).시장명}
@@ -160,7 +160,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                 </Link>
               ))
             ) : (
-              <div className="text-label-assistive m-5">
+              <div className="text-label-assistive my-3">
                 검색 결과가 없습니다.
               </div>
             ))}
@@ -173,7 +173,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                   key={(item as LocalFood).product_id}
                 >
                   <div
-                    className="cursor-pointer"
+                    className="cursor-pointer hover:bg-gray-100 p-1"
                     onClick={() => setIsOpen(false)}
                   >
                     {(item as LocalFood).food_name}
@@ -181,7 +181,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                 </Link>
               ))
             ) : (
-              <div className="text-label-assistive m-5">
+              <div className="text-label-assistive my-3">
                 검색 결과가 없습니다.
               </div>
             ))}

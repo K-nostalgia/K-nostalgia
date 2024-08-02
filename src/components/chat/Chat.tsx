@@ -24,8 +24,9 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import { StringToBoolean } from 'class-variance-authority/types';
 
-// 채팅 아이디 가져와서 본인 아이디랑 같으면 오른쪽에 조건부 스타일링 + 다르면 왼족에 스타일링
+//
 // xs일 때 가정 sm:max-w-[425px]
+// TODO XSS 방지
 
 interface chatUserType {
   avatar: string;
@@ -47,6 +48,16 @@ export function Chat() {
   const { data: user } = useUser();
   const scrollDown = useRef<HTMLDivElement | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  // xss 공격 방지
+  const encoded = (str: string) => {
+    return str
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
 
   // chat 가져오기
   const fetchChatData = async () => {
@@ -167,14 +178,14 @@ export function Chat() {
           <ChatIcon />
         </Button>
       </DialogTrigger>
-      {/*TODO 최소 크기일 때 max-w-[330px] 반응형일 때 조절하기  */}
+      {/*TODO 현재 w-[330px] 반응형일 때 조절하기 */}
       <DialogContent
         className="bg-normal w-[330px]"
         style={{ borderRadius: '16px' }}
       >
         <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
           <DialogHeader>
-            <DialogTitle className="flex mb-2 pt-5 px-3 pb-2 font-semibold text-lg leading=[28.8px] items-center justify-center">
+            <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading=[28.8px] items-center justify-center">
               향그리움
             </DialogTitle>
             <DialogDescription></DialogDescription>
@@ -187,7 +198,7 @@ export function Chat() {
           {data?.map((item) => {
             return item.user_id === user?.id ? (
               // 나일 경우
-              <div key={item.id} className="flex flex-col gap-1">
+              <div key={item.id} className="flex flex-col mb-3 w-full">
                 {item.users?.avatar ? (
                   <Image
                     src={item.users?.avatar}
@@ -201,16 +212,16 @@ export function Chat() {
                     X
                   </div>
                 )}
-                <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto text-white bg-primary-strong w-fit px-3 py-2">
-                  {item.content}
+                <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-white bg-primary-strong w-fit px-3 py-2">
+                  {encoded(item.content)}
                 </div>
-                <div className="text-xs text-label-assistive ml-auto">
+                <div className="text-xs text-label-assistive ml-auto mt-1">
                   {formatDate(item.created_at)}
                 </div>
               </div>
             ) : (
               // 다른 사람일 경우
-              <div key={item.id} className="flex flex-col gap-1 w-full">
+              <div key={item.id} className="flex flex-col mb-3 w-full">
                 <div className="flex gap-2">
                   {/* TODO null 일 경우 기본 이미지 태그로 바꾸기 */}
                   {item.users?.avatar ? (
@@ -230,10 +241,10 @@ export function Chat() {
                     {item.users?.nickname}
                   </div>
                 </div>
-                <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-1">
-                  {item.content}
+                <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px]">
+                  {encoded(item.content)}
                 </div>
-                <div className="text-xs text-label-assistive">
+                <div className="text-xs text-label-assistive mt-1">
                   {formatDate(item.created_at)}
                 </div>
               </div>
