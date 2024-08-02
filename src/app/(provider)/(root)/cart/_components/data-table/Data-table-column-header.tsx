@@ -46,6 +46,7 @@ export const columns: ColumnDef<CartItem>[] = [
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
+            true ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -61,7 +62,7 @@ export const columns: ColumnDef<CartItem>[] = [
     //부분선택
     cell: ({ row }) => (
       <Checkbox
-        checked={row.getIsSelected()}
+        checked={row.getIsSelected() || true}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
         style={{ transform: 'translate(0, -130%)' }}
