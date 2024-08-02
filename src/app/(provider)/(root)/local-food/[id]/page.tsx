@@ -124,7 +124,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       />
       {openModal && (
         <div
-          className="fixed inset-0 z-50 bg-[rgba(0,0,0,.24)]"
+          className="fixed inset-0 z-[999] bg-[rgba(0,0,0,.24)]"
           onClick={() => setOpenModal(false)}
         >
           <div
