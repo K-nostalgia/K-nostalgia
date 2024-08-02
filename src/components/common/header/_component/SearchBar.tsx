@@ -39,20 +39,6 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const localFoodSide =
     pathName === '/local-food' || pathName.startsWith('/local-food/');
 
-  // XSS 방지 및 공백 제거
-  const sanitizeInput = (str: string) => {
-    const trimmedStr = str.replace(/\s+/g, '').trim();
-
-    const encoded = trimmedStr
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-
-    return encoded;
-  };
-
   // 검색어 입력
   const handleSearchTerm = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -82,7 +68,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
         },
         // 공백 제거
         body: JSON.stringify({
-          searchValue: sanitizeInput(searchTerm),
+          searchValue: searchTerm.replace(/\s+/g, '').trim(),
           tableValue
         })
       });
@@ -161,7 +147,11 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
               ))
             ) : (
               <div className="text-label-assistive my-3">
-                검색 결과가 없습니다.
+                검색 결과가 없습니다.{' '}
+                <p>
+                  <span className="font-semibold">시장</span>에 대해
+                  검색해주세요!
+                </p>
               </div>
             ))}
           {localFoodSide &&
@@ -183,6 +173,10 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
             ) : (
               <div className="text-label-assistive my-3">
                 검색 결과가 없습니다.
+                <p>
+                  <span className="font-semibold">특산물</span>에 대해
+                  검색해주세요!
+                </p>
               </div>
             ))}
         </div>
