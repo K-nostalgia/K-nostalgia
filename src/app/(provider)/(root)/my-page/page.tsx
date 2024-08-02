@@ -6,12 +6,13 @@ import LikeMarket from './_components/LikeMarket';
 import OrderList_mypage from './_components/OrderList_mypage';
 import Coupon_mypage from './_components/Coupon_mypage';
 import Logout from './_components/Logout';
+import Loading from '@/components/common/Loading';
 
 const Mypage = () => {
   const { data: user, isLoading, error } = useUser();
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div> error ~ ^^ </div>;
+  if (isLoading) return <Loading />;
+  if (error) return <div> 로딩 에러 </div>;
 
   return (
     <div>

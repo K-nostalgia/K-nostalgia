@@ -16,6 +16,7 @@ const LoginForm = () => {
     password?: string;
   }>({});
   const [loginError, setLoginError] = useState<string | null>(null);
+  const isFormFilled = email !== '' && password !== '';
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,7 +133,11 @@ const LoginForm = () => {
         <div className="flex flex-col px-4 py-3 ">
           <button
             type="submit"
-            className="w-[320px] mx-4 py-3 px-4 bg-label-disable text-white rounded-xl hover:bg-primary-strong"
+            className={`w-[320px] mx-4 py-3 px-4 rounded-xl text-white ${
+              isFormFilled
+                ? 'bg-primary-strong hover:bg-primary-strong'
+                : ' bg-label-disable hover:bg-primary-strong'
+            }`}
           >
             입장하기
           </button>
