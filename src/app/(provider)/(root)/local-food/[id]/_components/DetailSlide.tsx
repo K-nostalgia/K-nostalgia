@@ -20,8 +20,6 @@ export const DetailSlide = ({ images }: SlideProps) => {
       slidesPerView={'auto'}
       centeredSlides={true}
       pagination={{ clickable: true }}
-      // autoplay={{ delay: 2000, disableOnInteraction: false }}
-      // loop={true}
     >
       {images?.map((img, index) => (
         <SwiperSlide key={index}>

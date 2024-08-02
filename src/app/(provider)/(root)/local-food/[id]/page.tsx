@@ -110,7 +110,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
           width={375}
           height={2451}
           priority
-          style={{ width: 375, height: 'auto', objectFit: 'cover' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           alt="상세페이지"
         />
       )}
