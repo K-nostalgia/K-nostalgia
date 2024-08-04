@@ -22,6 +22,7 @@ export const SectionVideo = () => {
             }
             width={260}
             height={180}
+            priority
             alt="시장 유튜브 이미지"
             style={{ width: 260, height: 180, objectFit: 'cover' }}
             className="my-4"

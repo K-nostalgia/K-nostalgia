@@ -38,6 +38,7 @@ const fetchCartItems = async () => {
 
 export const columns: ColumnDef<CartItem>[] = [
   {
+    //TODO : 체크된 상품만 결제금액 노출, 구매
     //전체선택
     id: 'select',
     header: ({ table }) => (
@@ -45,6 +46,7 @@ export const columns: ColumnDef<CartItem>[] = [
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
+            true ||
             (table.getIsSomePageRowsSelected() && 'indeterminate')
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
@@ -60,7 +62,7 @@ export const columns: ColumnDef<CartItem>[] = [
     //부분선택
     cell: ({ row }) => (
       <Checkbox
-        checked={row.getIsSelected()}
+        checked={row.getIsSelected() || true}
         onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
         style={{ transform: 'translate(0, -130%)' }}
@@ -86,7 +88,8 @@ export const columns: ColumnDef<CartItem>[] = [
             width: 96,
             height: 96,
             objectFit: 'cover',
-            translate: '-10%'
+            translate: '-16%',
+            marginRight: '12px'
           }}
         />
       </Link>
@@ -97,7 +100,7 @@ export const columns: ColumnDef<CartItem>[] = [
     accessorKey: 'product_name',
     header: '',
     cell: ({ row }) => (
-      <div className="text-label-strong text-base translate-x-[-60%] translate-y-[-150%]">{`${row.getValue(
+      <div className="text-label-strong text-base translate-x-[-83%] translate-y-[-150%]">{`${row.getValue(
         'product_name'
       )}`}</div>
     )
