@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { MarketType } from '@/types/Market';
 import { PiMapPin } from 'react-icons/pi';
 import { LuDot } from 'react-icons/lu';
+import Loading from '@/components/common/Loading';
 export type ImagesType = {
   title: string;
   link: string;
@@ -40,7 +41,7 @@ const MarketDetailPage = ({ params }: { params: { id: string } }) => {
     fetchImage();
   }, [market]);
 
-  if (!market) return <div>로딩 중..</div>;
+  if (!market) return <Loading />;
 
   const images = market.이미지 ?? [];
 
