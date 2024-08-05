@@ -46,19 +46,10 @@ const fetchCartItems = async () => {
 };
 
 export const TableDataColumns = ({
-  selectedItems,
+  selectedItems = [],
   setSelectedItems
 }: TableProps) => {
   const { cartData, isPending, error } = useUserCartData();
-
-  useEffect(() => {
-    if (cartData) {
-      setSelectedItems(
-        //null인 경우 빈문자열로 대체
-        cartData.map((item) => item.product_id ?? '')
-      );
-    }
-  }, [cartData]);
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
