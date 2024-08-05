@@ -22,7 +22,6 @@ type Props = {
 };
 
 const PayButton = ({ orderNameArr, product }: Props) => {
-  // console.log(product);
   const router = useRouter();
   const pathName = usePathname();
   const requestOrderName = orderNameArr.join(',');
@@ -33,15 +32,10 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
   const deliveryCharge: number = 2500;
   const discount: number = 2000;
-  const price: number = products.reduce(
-    (acc, item) => acc + item.amount,
-    // * item.quantity,
-    0
-  );
-  //console.log(price);
+  const price: number = products.reduce((acc, item) => acc + item.amount, 0);
+
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + deliveryCharge - discount;
-  //console.log(totalAmount);
 
   const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
     queryKey: ['users'],
