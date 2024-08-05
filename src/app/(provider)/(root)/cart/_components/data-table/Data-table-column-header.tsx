@@ -52,7 +52,7 @@ export const TableDataColumns = ({
   const { cartData, isPending, error } = useUserCartData();
   // const { selectedItems, setSelectedItems } = useSelectedCartStore();
 
-  console.log('selectedItems:', selectedItems);
+  //console.log('selectedItems:', selectedItems);
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
