@@ -53,7 +53,7 @@ const EditProfilePage = () => {
         avatar: imageUrl
       });
 
-      console.log('프로필 업데이트 성공', updatedUser);
+      // console.log('프로필 업데이트 성공', updatedUser);
       router.push('/my-page');
     } catch (error) {
       console.error('프로필 업데이트 실패', error);

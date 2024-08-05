@@ -43,8 +43,8 @@ const MarketPage = () => {
       console.error('데이터를 가져오지 못했습니다.', error);
     }
   };
-  console.log('markets____', markets);
-  console.log('totalPages____', totalPages);
+  // console.log('markets____', markets);
+  // console.log('totalPages____', totalPages);
 
   // 필터
   const regionData: RegionData = {
