@@ -23,6 +23,7 @@ const PayHistoryList = () => {
 
   //해당 유저 주문내역 불러오기
   const { payHistoryList } = useGetPaymentHistoryWithSupabase(userId);
+
   const cancelPaymentMutation = usePaymentCancellation();
   if (!payHistoryList) {
     return <Loading />;
