@@ -6,9 +6,11 @@ import Loading from '@/components/common/Loading';
 import { DefaultImage } from '@/components/common/DefaultImage';
 import { useState } from 'react';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
+import useSelectedCartStore from '@/zustand/cart/cart.data';
 
 export const CartList = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  //const { selectedItems, setSelectedItems } = useSelectedCartStore();
   const { cartData, isPending, error } = useUserCartData();
   const text = '장바구니가 비었어요';
 

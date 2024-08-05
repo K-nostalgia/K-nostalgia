@@ -141,7 +141,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       )}
       {openCartModal && (
         <div
-          className="fixed inset-0 z-50 bg-[rgba(0,0,0,.24)] z-[9999]"
+          className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
           onClick={handleCartModalClose}
         >
           <div

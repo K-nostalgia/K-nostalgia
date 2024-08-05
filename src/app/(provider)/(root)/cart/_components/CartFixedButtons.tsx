@@ -46,12 +46,12 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
           quantity: item.count ?? 0
         };
       }
-      return [];
+      return null; //장바구니 선택 상품 외 null 처리
     })
     .filter(
       (
         item
-        //타입 축소
+        //타입 에러 : 타입 가드로 타입 축소
       ): item is { name: string | null; amount: number; quantity: number } =>
         item != undefined
     );
@@ -75,10 +75,15 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
       ) : (
         <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0">
           <div className="flex gap-3 justify-between items-center">
-            <p>{`${
-              selectedItems.length
-            } 개 ${totalAmount.toLocaleString()}원`}</p>
-
+            <p>
+              {`${selectedItems.length} 개`}{' '}
+              <span className="font-semibold">
+                {selectedItems.length > 0
+                  ? `${totalAmount.toLocaleString()} 원`
+                  : `0 원`}
+              </span>
+            </p>
+            {/* <button onClick={clickButton}>결제하기기기기기기기ㅣ</button> */}
             <PayButton product={product} orderNameArr={orderNameArr} />
           </div>
         </div>

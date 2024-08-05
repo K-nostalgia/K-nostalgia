@@ -8,9 +8,9 @@ import supabase from '@/utils/supabase/client';
 import { DeleteButton } from './DeleteButton';
 import Link from 'next/link';
 import { DataTable } from './DataTable';
-import { useEffect } from 'react';
 import Loading from '@/components/common/Loading';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
+import useSelectedCartStore from '@/zustand/cart/cart.data';
 
 export type CartItem = {
   id: string | null;
@@ -46,17 +46,19 @@ const fetchCartItems = async () => {
 };
 
 export const TableDataColumns = ({
-  selectedItems = [],
+  selectedItems,
   setSelectedItems
 }: TableProps) => {
   const { cartData, isPending, error } = useUserCartData();
+  // const { selectedItems, setSelectedItems } = useSelectedCartStore();
+
+  console.log('selectedItems:', selectedItems);
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
   const columns: ColumnDef<CartItem>[] = [
     {
-      //TODO : 체크된 상품만 결제금액 노출, 구매
       //전체선택
       id: 'select',
       header: ({ table }) => (
@@ -67,10 +69,11 @@ export const TableDataColumns = ({
               (table.getIsSomePageRowsSelected() && 'indeterminate')
             }
             onCheckedChange={(value) => {
-              const newSelectedItems = value
+              //console.log(value);
+              const allSelectedItems = value
                 ? cartData?.map((item) => item.product_id)
                 : [];
-              setSelectedItems(newSelectedItems as string[]);
+              setSelectedItems(allSelectedItems as string[]);
               table.toggleAllPageRowsSelected(!!value);
             }}
             aria-label="Select all"
@@ -85,7 +88,11 @@ export const TableDataColumns = ({
       //부분선택
       cell: ({ row }) => (
         <Checkbox
-          checked={selectedItems.includes(row.getValue('product_id'))}
+          checked={
+            selectedItems.length > 0
+              ? selectedItems.includes(row.getValue('product_id'))
+              : false
+          }
           onCheckedChange={(value) => {
             setSelectedItems((prev) => {
               if (value) {
