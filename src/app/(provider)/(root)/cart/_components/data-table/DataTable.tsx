@@ -18,6 +18,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { CartPriceList } from '../CartPriceList';
+import useSelectedCartStore from '@/zustand/cart/cart.data';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  //const { selectedItems, setSelectedItems } = useSelectedCartStore();
 
   const table = useReactTable({
     data,

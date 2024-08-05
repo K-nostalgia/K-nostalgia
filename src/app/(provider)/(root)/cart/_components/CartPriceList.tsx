@@ -41,15 +41,27 @@ export const CartPriceList = ({ data, selectedItems }: CartProps) => {
         </li>
         <li className="flex justify-between">
           <p>배송비</p>
-          <p>{`${DELIVERY_FEE.toLocaleString()} 원`}</p>
+          <p>
+            {selectedItems.length > 0
+              ? `${DELIVERY_FEE.toLocaleString()} 원`
+              : `0 원`}
+          </p>
         </li>
         <li className="flex justify-between mb-4">
           <p>상품 할인 금액</p>
-          <p>{`-${COUPON.toLocaleString()} 원`}</p>
+          <p>
+            {selectedItems.length > 0
+              ? `-${COUPON.toLocaleString()} 원`
+              : `0 원`}
+          </p>
         </li>
         <li className="flex justify-between text-lg text-label-strong font-semibold border-t-2 border-[#F2F2F2] pt-4">
           <p>결제 예정 금액</p>
-          <p>{`${totalPrice.toLocaleString()} 원`}</p>
+          <p>
+            {selectedItems.length > 0
+              ? `${totalPrice.toLocaleString()} 원`
+              : `0 원`}
+          </p>
         </li>
       </ul>
     </div>
