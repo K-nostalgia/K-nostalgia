@@ -83,12 +83,6 @@ const FixedButtons = ({
           return;
         }
       } else {
-        // const isConfirmed = confirm(
-        //   '이미 장바구니에 담긴 상품입니다. 장바구니로 이동하시겠습니까?'
-        // );
-        // if (isConfirmed) {
-        //   router.push('/cart');
-        // }
         setAlertVisible(true);
         return;
       }
@@ -96,12 +90,6 @@ const FixedButtons = ({
       console.error('장바구니 담기 중 오류가 발생했습니다.', error);
     }
     handleCartModalOpen();
-    // const isConfirmed = confirm(
-    //   '장바구니에 담겼습니다. 장바구니로 이동하시겠습니까?'
-    // );
-    // if (isConfirmed) {
-    //   router.push('/cart');
-    // }
   };
 
   return (
@@ -127,13 +115,18 @@ const FixedButtons = ({
         </div>
       </div>
       {isAlertVisible && (
-        <AlertPage
-          title="이미 담긴 상품입니다"
-          message="장바구니로 이동하시겠습니까?"
-          buttonText="이동"
-          onButtonClick={handlePageMove}
-          onClose={() => setAlertVisible(false)}
-        />
+        <div
+          className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
+          onClick={() => setAlertVisible(false)}
+        >
+          <AlertPage
+            title="이미 담긴 상품입니다"
+            message="장바구니로 이동하시겠습니까?"
+            buttonText="이동"
+            onButtonClick={handlePageMove}
+            onClose={() => setAlertVisible(false)}
+          />
+        </div>
       )}
     </>
   );

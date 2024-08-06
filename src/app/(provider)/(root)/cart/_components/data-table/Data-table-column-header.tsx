@@ -223,13 +223,18 @@ export const TableDataColumns = ({
         selectedItems={selectedItems}
       />
       {isAlertVisible && (
-        <AlertPage
-          title="잠깐!"
-          message="해당 제품을 삭제하시겠습니까?"
-          buttonText="삭제"
-          onButtonClick={() => handleDelete(productIdToDelete as string)}
-          onClose={() => setAlertVisible(false)}
-        />
+        <div
+          className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
+          onClick={() => setAlertVisible(false)}
+        >
+          <AlertPage
+            title="잠깐!"
+            message="해당 제품을 삭제하시겠습니까?"
+            buttonText="삭제"
+            onButtonClick={() => handleDelete(productIdToDelete as string)}
+            onClose={() => setAlertVisible(false)}
+          />
+        </div>
       )}
     </>
   );
