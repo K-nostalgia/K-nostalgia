@@ -17,7 +17,6 @@ const CheckPaymentContent = () => {
   useEffect(() => {
     const handlePayment = async () => {
       if (code === 'FAILURE_TYPE_PG') {
-        //TODO 해당 토스트 안 뜨고있음
         toast({
           variant: 'destructive',
           description: '결제가 취소되었습니다.'
@@ -35,7 +34,7 @@ const CheckPaymentContent = () => {
               },
               body: JSON.stringify({ paymentId })
             });
-            // console.log(cancelResponse);
+
             if (!cancelResponse.ok) {
               toast({
                 variant: 'destructive',
@@ -47,11 +46,10 @@ const CheckPaymentContent = () => {
               );
             }
             //결제 내역 단건 조회
-            const getResponse = await fetch(
+            const getPayHistory = await fetch(
               `/api/payment/transaction?paymentId=${paymentId}`
             );
-            const getData = await getResponse.json();
-            // console.log(getData);
+            const payHistory = await getPayHistory.json();
 
             const {
               paidAt,
@@ -61,7 +59,7 @@ const CheckPaymentContent = () => {
               method,
               customer,
               products
-            } = getData;
+            } = payHistory;
             const newPaidAt = dayjs(paidAt)
               .locale('ko')
               .format('YYYY-MM-DD HH:MM');
@@ -69,7 +67,7 @@ const CheckPaymentContent = () => {
             if (status === 'PAID') {
               toast({
                 variant: 'destructive',
-                description: '마이페이지 > 주문내역에서 환불 재시도 해주세요.'
+                description: '주문 내역 페이지에서 확인해주세요.'
               });
             }
 
@@ -112,17 +110,14 @@ const CheckPaymentContent = () => {
               description: '결제 완료.'
             });
 
-            router.push(
-              `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
-            );
+            router.push(`complete-payment?paymentId=${paymentId}`);
           };
           postPaymentHistory();
         } catch (error) {
           console.error(error);
           toast({
             variant: 'destructive',
-            description:
-              '즉시 환불 처리가 안 된 것 같아요. 주문 내역 페이지에서 확인해주세요.'
+            description: '주문 내역 페이지에서 확인해주세요.'
           });
         }
       }

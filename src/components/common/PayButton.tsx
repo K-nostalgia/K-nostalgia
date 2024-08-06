@@ -13,18 +13,17 @@ export type Products = {
   name: string | null;
   amount: number;
   quantity: number;
-  id?: string;
+  id?: string | undefined;
 }[];
 
-type Props = {
+interface Props {
   orderNameArr: (string | null)[];
   product: Products;
-};
+}
 
 const PayButton = ({ orderNameArr, product }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
-  const requestOrderName = orderNameArr.join(',');
   const products = product.map((prev) => ({ ...prev, id: uuidv4() }));
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
@@ -41,16 +40,24 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     queryKey: ['users'],
     queryFn: () => api.auth.getUser()
   });
-
   const payRequest = async () => {
     if (!users) {
-      return alert('로그인 후 이용 가능합니다');
+      return toast({
+        description: '로그인 후 이용 가능합니다.'
+      });
+    }
+    if (product.length === 0) {
+      return toast({
+        description: '구매할 상품을 선택 해 주세요.'
+      });
     }
     toast({
       variant: 'destructive',
       description: '가결제입니다. 즉시 환불 처리 됩니다.'
     });
     const { name, email, id } = users;
+
+    const requestOrderName = orderNameArr.join(',');
 
     const response = await PortOne.requestPayment({
       storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
@@ -63,12 +70,12 @@ const PayButton = ({ orderNameArr, product }: Props) => {
       products: products as any,
       redirectUrl:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
-          : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
+          ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+          : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
       appScheme:
         process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
-          : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
+          ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+          : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
       customer: {
         customerId: id,
         email: email as string,
@@ -89,33 +96,17 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     const paymentId = response?.paymentId;
 
     if (response?.code != null) {
-      // 결제 과정에서 오류 발생시 처리
-
-      router.push(`${pathName}`);
-
-      return toast({
+      toast({
         variant: 'destructive',
         description: '결제에 실패했습니다. 다시 시도해주세요.'
       });
+      return router.push(`${pathName}`);
     }
 
     router.replace(
       `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
     );
   };
-
-  //TODO 결제 완료 후 서버에 확인 요청 (금액대조) => 추후 구현
-  // const notified = await fetch(`api/payment/complete`, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   // paymentId와 주문 정보를 서버에 전달합니다
-  //   body: JSON.stringify({
-  //     paymentId: response.paymentId
-  //     // 주문 정보...
-  //   })
-  // });
-  // console.log(response);
-  // };
 
   return (
     <div>

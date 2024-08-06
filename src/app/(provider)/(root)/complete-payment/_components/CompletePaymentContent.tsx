@@ -16,11 +16,12 @@ const CompletePaymentContent = () => {
   const { payHistory, payHistoryIsPending } = useGetPaymentHistory({
     paymentId
   });
+  console.log(payHistory);
   if (payHistoryIsPending || !payHistory) {
     return <Loading />;
   }
-  const { paidAt, orderName, products, amount } = payHistory;
-  const price: number = products.reduce(
+  const { paidAt, products, amount } = payHistory;
+  const price = products?.reduce(
     (acc: number, item: any) => acc + item.amount,
     0
   );
@@ -63,7 +64,7 @@ const CompletePaymentContent = () => {
 
           <div className="border-t-4 border-[#F2F2F2] pt-[20px] pb-[16px]">
             <div className="flex flex-col gap-[16px]">
-              {products.map((product: any) => {
+              {products?.map((product: any) => {
                 const { id, name, amount, quantity } = product;
                 const src = imageSrc(name);
                 return (
@@ -100,7 +101,7 @@ const CompletePaymentContent = () => {
           <div className="px-[16px] flex flex-col gap-[8px]">
             <div className="flex justify-between">
               <p className="font-normal">총 상품금액</p>
-              <p className="font-semibold">{price.toLocaleString('ko-KR')}</p>
+              <p className="font-semibold">{price?.toLocaleString('ko-KR')}</p>
             </div>
             <div className="flex justify-between">
               <p className="font-normal">배송비</p>
