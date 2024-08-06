@@ -107,6 +107,9 @@ const SignUpContainer = () => {
     }
   };
 
+  const handleback = () => {
+    router.push('/log-in-front');
+  };
   return (
     <div className="flex-col items-center justify-center flex">
       <div>
