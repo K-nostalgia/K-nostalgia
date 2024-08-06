@@ -10,7 +10,7 @@ export default function Providers({ children }: React.PropsWithChildren) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       {children}
       <Toaster />
     </QueryClientProvider>

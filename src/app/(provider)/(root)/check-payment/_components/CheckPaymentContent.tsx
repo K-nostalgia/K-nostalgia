@@ -35,7 +35,7 @@ const CheckPaymentContent = () => {
               },
               body: JSON.stringify({ paymentId })
             });
-            console.log(cancelResponse);
+            // console.log(cancelResponse);
             if (!cancelResponse.ok) {
               toast({
                 variant: 'destructive',
@@ -51,7 +51,7 @@ const CheckPaymentContent = () => {
               `/api/payment/transaction?paymentId=${paymentId}`
             );
             const getData = await getResponse.json();
-            console.log(getData);
+            // console.log(getData);
 
             const {
               paidAt,

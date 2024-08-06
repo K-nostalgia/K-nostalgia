@@ -9,7 +9,10 @@ import localFont from 'next/font/local';
 export const metadata: Metadata = {
   title: '향그리움',
   description:
-    '전통이 있는, 그리운 곳으로 향하다(向). 향그리움에서 전국 각지에 위치한 시장 그리고 각 업체에서 올린 특산물을 확인해보세요.'
+    '전통이 있는, 그리운 곳으로 향하다(向). 향그리움에서 전국 각지에 위치한 시장 그리고 각 업체에서 올린 특산물을 확인해보세요.',
+  icons: {
+    icon: '/favicon.png'
+  }
 };
 
 const pretendard = localFont({
