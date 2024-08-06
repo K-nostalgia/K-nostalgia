@@ -5,13 +5,14 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
-import { DeleteButton } from './DeleteButton';
 import Link from 'next/link';
 import { DataTable } from './DataTable';
 import Loading from '@/components/common/Loading';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
-import useSelectedCartStore from '@/zustand/cart/cart.data';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
+import { CgClose } from 'react-icons/cg';
+import { AlertPage } from '@/components/common/Alert';
 
 export type CartItem = {
   id: string | null;
@@ -51,9 +52,21 @@ export const TableDataColumns = ({
   setSelectedItems
 }: TableProps) => {
   const { cartData, isPending, error } = useUserCartData();
-  // const { selectedItems, setSelectedItems } = useSelectedCartStore();
+  const mutation = useDeleteProduct();
+  const [isAlertVisible, setAlertVisible] = useState(false);
+  const [productIdToDelete, setProductIdToDelete] = useState<string | null>(
+    null
+  );
 
-  //console.log('selectedItems:', selectedItems);
+  const handleDelete = (productId: string) => {
+    mutation.mutate(productId);
+    setAlertVisible(false);
+  };
+
+  const openAlert = (productId: string) => {
+    setProductIdToDelete(productId);
+    setAlertVisible(true);
+  };
 
   useEffect(() => {
     if (cartData) {
@@ -78,10 +91,6 @@ export const TableDataColumns = ({
             checked={
               selectedItems.length === cartData?.length && cartData?.length > 0
             }
-            // checked={
-            //   table.getIsAllPageRowsSelected() ||
-            //   (table.getIsSomePageRowsSelected() && 'indeterminate')
-            // }
             onCheckedChange={(value) => {
               //console.log(value);
               const allSelectedItems = value
@@ -93,9 +102,6 @@ export const TableDataColumns = ({
             aria-label="Select all"
           />
           <div className="text-base text-label-strong ml-2 absolute left-10">
-            {/* {`전체 선택 (${table.getFilteredSelectedRowModel().rows.length}/${
-              table.getFilteredRowModel().rows.length
-            })`} */}
             {`전체 선택 (${selectedItems.length}/${cartData?.length || 0})`}
           </div>
         </div>
@@ -199,17 +205,32 @@ export const TableDataColumns = ({
       id: 'delete',
       header: '',
       cell: ({ row }) => (
-        <div className="translate-x-0 translate-y-[-100%]">
-          <DeleteButton productId={row.getValue('product_id')} />
-        </div>
+        <button
+          onClick={() => openAlert(row.getValue('product_id'))}
+          className="translate-x-0 translate-y-[-100%]"
+        >
+          {/* <DeleteButton productId={row.getValue('product_id')} /> */}
+          <CgClose className="text-[#959595] w-7 h-7" />
+        </button>
       )
     }
   ];
   return (
-    <DataTable
-      columns={columns}
-      data={cartData ?? []}
-      selectedItems={selectedItems}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={cartData ?? []}
+        selectedItems={selectedItems}
+      />
+      {isAlertVisible && (
+        <AlertPage
+          title="잠깐!"
+          message="해당 제품을 삭제하시겠습니까?"
+          buttonText="삭제"
+          onButtonClick={() => handleDelete(productIdToDelete as string)}
+          onClose={() => setAlertVisible(false)}
+        />
+      )}
+    </>
   );
 };

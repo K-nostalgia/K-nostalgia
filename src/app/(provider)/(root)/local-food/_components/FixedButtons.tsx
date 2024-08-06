@@ -1,7 +1,9 @@
+import { AlertPage } from '@/components/common/Alert';
 import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 interface Props {
   food: Tables<'local_food'>;
@@ -19,12 +21,18 @@ const FixedButtons = ({
   handleCartModalOpen
 }: Props) => {
   const router = useRouter();
+  const [isAlertVisible, setAlertVisible] = useState(false);
 
   // {
   //   name: "청송 사과",
   //   amount: 8000,
   //   quantity: 3,
   // }
+
+  const handlePageMove = () => {
+    router.push('/cart');
+    setAlertVisible(false);
+  };
 
   const product = [
     {
@@ -75,12 +83,13 @@ const FixedButtons = ({
           return;
         }
       } else {
-        const isConfirmed = confirm(
-          '이미 장바구니에 담긴 상품입니다. 장바구니로 이동하시겠습니까?'
-        );
-        if (isConfirmed) {
-          router.push('/cart');
-        }
+        // const isConfirmed = confirm(
+        //   '이미 장바구니에 담긴 상품입니다. 장바구니로 이동하시겠습니까?'
+        // );
+        // if (isConfirmed) {
+        //   router.push('/cart');
+        // }
+        setAlertVisible(true);
         return;
       }
     } catch (error) {
@@ -96,26 +105,37 @@ const FixedButtons = ({
   };
 
   return (
-    <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0">
-      <div className="flex gap-3">
-        <button
-          onClick={onAddCart}
-          className="min-w-[165px] text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
-        >
-          장바구니에 담기
-        </button>
+    <>
+      <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0">
+        <div className="flex gap-3">
+          <button
+            onClick={onAddCart}
+            className="min-w-[165px] text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
+          >
+            장바구니에 담기
+          </button>
 
-        <div onClick={onPurchase} className="flex-1">
-          {isModalOpen ? (
-            <PayButton product={product} orderNameArr={[food.food_name]} />
-          ) : (
-            <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
-              구매하기
-            </button>
-          )}
+          <div onClick={onPurchase} className="flex-1">
+            {isModalOpen ? (
+              <PayButton product={product} orderNameArr={[food.food_name]} />
+            ) : (
+              <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
+                구매하기
+              </button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+      {isAlertVisible && (
+        <AlertPage
+          title="이미 담긴 상품입니다"
+          message="장바구니로 이동하시겠습니까?"
+          buttonText="이동"
+          onButtonClick={handlePageMove}
+          onClose={() => setAlertVisible(false)}
+        />
+      )}
+    </>
   );
 };
 

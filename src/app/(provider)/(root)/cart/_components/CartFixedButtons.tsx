@@ -56,12 +56,6 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
         item != null
     );
 
-  // const clickButton = () => {
-  //   console.log('금액', totalAmount);
-  //   console.log('상품배열', orderNameArr);
-  //   console.log('상품', product);
-  // };
-
   return (
     <>
       {data?.length === 0 ? (
