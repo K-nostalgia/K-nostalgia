@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { FoodBox } from './FoodBox';
 import { useQuery } from '@tanstack/react-query';
 import { Tables } from '@/types/supabase';
+import Loading from '@/components/common/Loading';
+import { HashLoader } from 'react-spinners';
 
 export const SectionFood = () => {
-  const { data: localFood } = useQuery({
+  const { data: localFood, isPending } = useQuery({
     queryKey: ['localfood'],
     queryFn: async () => {
       try {
@@ -25,23 +27,31 @@ export const SectionFood = () => {
         <h2 className="text-2xl text-label-light mt-10 mb-3 font-custom">
           지역 특산물
         </h2>
-        <ul className="grid grid-cols-2 gap-x-[23px] mx-[10px] relative">
-          {localFood?.slice(0, 4).map((item, index) => {
-            return (
-              <FoodBox
-                key={item.product_id}
-                item={item}
-                index={index}
-              ></FoodBox>
-            );
-          })}
-        </ul>
+        {isPending ? (
+          <div className="flex-col justify-center mt-6">
+            <HashLoader color="#f2f2f2" className="mx-auto" />
+            <p className="my-5 text-label-light">데이터를 불러오고 있어요!</p>
+          </div>
+        ) : (
+          <ul className="grid grid-cols-2 gap-x-[23px] mx-[10px] relative">
+            {localFood?.slice(0, 4).map((item, index) => {
+              return (
+                <FoodBox
+                  key={item.product_id}
+                  item={item}
+                  index={index}
+                ></FoodBox>
+              );
+            })}
+          </ul>
+        )}
+
         <Link
           href="/local-food"
           className="border-label-disable border rounded-[12px] w-[95%] my-10"
         >
           <button className="w-full  transition-all duration-300 ease-in-out px-4 py-3 text-label-light active:border-primary-50 active:text-primary-50">
-            더 보기
+            특산물 보러가기
           </button>
         </Link>
       </div>
