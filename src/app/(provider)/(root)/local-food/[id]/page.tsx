@@ -9,14 +9,15 @@ import { OrderDetail } from './_components/OrderDetail';
 import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
+import { useGetProduct } from '@/hooks/localFood/useGetProduct';
 
 type LocalDetailPageProps = {
   params: { id: string };
 };
 
 const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [openCartModal, setOpenCartModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false); //바텀시트
+  const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
 
   const {
     data: food,
@@ -37,17 +38,17 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     }
   });
 
-  useEffect(() => {
-    if (openModal) {
-      document.body.style.overflow = 'hidden'; // 모달이 열리면 스크롤 X
-    } else {
-      document.body.style.overflow = 'auto'; // 모달이 닫히면 스크롤 O
-    }
+  // useEffect(() => {
+  //   if (openModal) {
+  //     document.body.style.overflow = 'hidden'; // 모달이 열리면 스크롤 X
+  //   } else {
+  //     document.body.style.overflow = 'auto'; // 모달이 닫히면 스크롤 O
+  //   }
 
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [openModal]);
+  //   return () => {
+  //     document.body.style.overflow = 'auto';
+  //   };
+  // }, [openModal]);
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;

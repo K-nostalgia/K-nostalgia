@@ -209,7 +209,6 @@ export const TableDataColumns = ({
           onClick={() => openAlert(row.getValue('product_id'))}
           className="translate-x-0 translate-y-[-100%]"
         >
-          {/* <DeleteButton productId={row.getValue('product_id')} /> */}
           <CgClose className="text-[#959595] w-7 h-7" />
         </button>
       )
