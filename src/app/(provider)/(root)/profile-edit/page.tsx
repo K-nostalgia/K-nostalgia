@@ -8,12 +8,14 @@ import { CgClose } from 'react-icons/cg';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 import Loading from '@/components/common/Loading';
+import { validateNickName } from '@/utils/validate';
 
 const EditProfilePage = () => {
   const { data: user, isLoading, error } = useUser();
   const [nickname, setNickname] = useState('');
   const [editImage, setEditImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -23,7 +25,14 @@ const EditProfilePage = () => {
   }, [user]);
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
+    const newNickname = e.target.value;
+
+    if (validateNickName(newNickname)) {
+      setNickname(newNickname);
+      setErrorMessage('');
+    } else {
+      setErrorMessage('닉네임은 12자 이내로 입력해주세요.');
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -103,17 +112,26 @@ const EditProfilePage = () => {
           value={nickname}
           onChange={handleNicknameChange}
         />
-        {nickname ? (
+        {nickname && !errorMessage ? (
           <BsCheck2
-            className="absolute right-3 top-[55%] text-[24px] text-[#755428] cursor-pointer"
+            className="absolute right-3 top-[52%] text-[24px] text-[#755428] cursor-pointer"
             onClick={handleEditClick}
           />
         ) : (
-          <CgClose className="absolute right-3 top-[55%] text-[24px] text-label-assistive" />
+          <CgClose
+            className={`absolute right-3 ${
+              errorMessage ? 'top-[42%]' : 'top-[52%]'
+            } text-[24px] ${
+              errorMessage ? 'text-red-500' : 'text-label-assistive'
+            }`}
+          />
+        )}
+        {errorMessage && (
+          <span className=" text-red-500 text-sm ml-2">{errorMessage}</span>
         )}
       </div>
+      {/* {errorMessage && <div className="text-red-500 mt-2">{errorMessage}</div>} */}
     </div>
   );
 };
-
 export default EditProfilePage;
