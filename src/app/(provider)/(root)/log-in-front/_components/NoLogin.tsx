@@ -21,7 +21,7 @@ const NoLogin = () => {
       </div>
       <div
         onClick={handleNouserMove}
-        className="text-center mt-[32px] mb-[56px] p-2 text-label-alternative underline text-nowrap cursor-pointer"
+        className="text-center mt-[32px] mb-[56px] p-2 text-label-alternative underline text-nowrap cursor-not-allowed"
       >
         비회원으로 입장하기
       </div>
