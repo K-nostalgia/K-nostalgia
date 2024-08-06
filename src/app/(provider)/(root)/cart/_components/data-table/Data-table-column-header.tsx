@@ -11,6 +11,7 @@ import { DataTable } from './DataTable';
 import Loading from '@/components/common/Loading';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
 import useSelectedCartStore from '@/zustand/cart/cart.data';
+import { useEffect } from 'react';
 
 export type CartItem = {
   id: string | null;
@@ -54,6 +55,16 @@ export const TableDataColumns = ({
 
   //console.log('selectedItems:', selectedItems);
 
+  useEffect(() => {
+    if (cartData) {
+      const allProductIds = cartData
+        .map((item) => item.product_id)
+        .filter((id): id is string => id !== null);
+
+      setSelectedItems(allProductIds);
+    }
+  }, [cartData]);
+
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
@@ -65,9 +76,12 @@ export const TableDataColumns = ({
         <div className="flex items-center whitespace-nowrap">
           <Checkbox
             checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
+              selectedItems.length === cartData?.length && cartData?.length > 0
             }
+            // checked={
+            //   table.getIsAllPageRowsSelected() ||
+            //   (table.getIsSomePageRowsSelected() && 'indeterminate')
+            // }
             onCheckedChange={(value) => {
               //console.log(value);
               const allSelectedItems = value
@@ -79,9 +93,10 @@ export const TableDataColumns = ({
             aria-label="Select all"
           />
           <div className="text-base text-label-strong ml-2 absolute left-10">
-            {`전체 선택 (${table.getFilteredSelectedRowModel().rows.length}/${
+            {/* {`전체 선택 (${table.getFilteredSelectedRowModel().rows.length}/${
               table.getFilteredRowModel().rows.length
-            })`}
+            })`} */}
+            {`전체 선택 (${selectedItems.length}/${cartData?.length || 0})`}
           </div>
         </div>
       ),

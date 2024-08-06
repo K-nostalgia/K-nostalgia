@@ -28,7 +28,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
       }
       return null;
     })
-    .filter(Boolean);
+    .filter((name): name is string => name !== null);
 
   // 전달 데이터 형식
   // {
@@ -53,7 +53,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
         item
         //타입 에러 : 타입 가드로 타입 축소
       ): item is { name: string | null; amount: number; quantity: number } =>
-        item != undefined
+        item != null
     );
 
   // const clickButton = () => {
