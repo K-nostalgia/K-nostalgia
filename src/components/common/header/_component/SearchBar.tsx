@@ -14,11 +14,21 @@ import {
   SheetTitle
 } from '@/components/ui/sheet';
 import { useState } from 'react';
-import SearchMarketRecommendations from './SearchMarketRecommendations';
+import SearchRecommendations from './SearchRecommendations';
 import { GoSearch } from 'react-icons/go';
-// import { Link } from 'lucide-react';
 import { Tables } from '@/types/supabase';
 import Link from 'next/link';
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut
+} from '@/components/ui/command';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -39,18 +49,17 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const localFoodSide =
     pathName === '/local-food' || pathName.startsWith('/local-food/');
 
-  // 검색어 입력
-  const handleSearchTerm = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setSearchTerm(event.target.value);
+  // 검색어 입력 CommandInput 내부 처리로 event 필요 없음
+  const handleSearchTerm = (value: string) => {
+    setSearchTerm(value);
   };
 
   //검색어 전송
   const submitSearchTerm = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (searchTerm.trim() === '') {
-      return;
+      return setResponse([]);
     }
 
     // 'markets' or 'local-food'
@@ -80,13 +89,13 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
   };
 
-  // TODO 밑에 검색창 나오게 하기 입력 때 바로 ...
+  // TODO 밑에 검색창 나오게 하기 입력 때 바로 ... 디바운싱 기능 결합
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent
         side="top"
-        className="bg-white"
+        className="bg-normal"
         style={{
           borderBottomLeftRadius: '12px',
           borderBottomRightRadius: '12px'
@@ -98,37 +107,73 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
           <SheetDescription></SheetDescription>
         </SheetHeader>
         {/* 헤더, 디스크립션 일단 없는 쪽_끝*/}
-        <form className="py-4" onSubmit={submitSearchTerm}>
-          <div className="relative flex items-center">
-            <Input
-              type="text"
-              placeholder={
-                marketSide
-                  ? '시장을 검색해주세요'
-                  : localFoodSide
-                  ? '특산물을 검색해주세요'
-                  : '이 페이지 검색은 준비 중이에요'
-              }
-              value={searchTerm}
-              onChange={handleSearchTerm}
-              className="border-primary-30 py-[2px] pl-3 pr-10 rouned-md placeholder:text-label-assistive"
-              disabled={!marketSide && !localFoodSide}
-              style={{ borderRadius: '6px' }}
-            />
-            <Button
-              type="submit"
-              size="icon"
-              className="absolute right-2 flex items-center h-full"
-              disabled={!marketSide && !localFoodSide}
-              aria-label="검색"
-              style={{ border: 'none', background: 'none' }}
-            >
-              <GoSearch className="w-[22px] h-[22px]" />
-            </Button>
-          </div>
+        <form className="pt-4" onSubmit={submitSearchTerm}>
+          <Command>
+            <div className="w-full relative flex items-center">
+              <CommandInput
+                placeholder={
+                  marketSide
+                    ? '시장을 검색해주세요'
+                    : localFoodSide
+                    ? '특산물을 검색해주세요'
+                    : '이 페이지 검색은 준비 중이에요'
+                }
+                value={searchTerm}
+                onValueChange={handleSearchTerm}
+                disabled={!marketSide && !localFoodSide}
+                style={{ borderRadius: '6px' }}
+              />
+              <Button
+                type="submit"
+                size="icon"
+                className="absolute right-2 flex items-center h-full"
+                disabled={!marketSide && !localFoodSide}
+                aria-label="검색"
+                style={{ border: 'none', background: 'none' }}
+              >
+                <GoSearch className="w-[22px] h-[22px]" />
+              </Button>
+            </div>
+            <CommandList>
+              {/* TODO 아예 없애도 되는지 확인 */}
+              {/* <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem>
+                  <CalendarIcon className="mr-2 h-4 w-4" />
+                  <span>Calendar</span>
+                </CommandItem>
+                <CommandItem>
+                  <FaceIcon className="mr-2 h-4 w-4" />
+                  <span>Search Emoji</span>
+                </CommandItem>
+                <CommandItem disabled>
+                  <RocketIcon className="mr-2 h-4 w-4" />
+                  <span>Launch</span>
+                </CommandItem>
+              </CommandGroup> */}
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem>
+                  {/* <PersonIcon className="mr-2 h-4 w-4" /> */}
+                  <span>Profile</span>
+                  <CommandShortcut>⌘P</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  {/* <EnvelopeClosedIcon className="mr-2 h-4 w-4" /> */}
+                  <span>Mail</span>
+                  <CommandShortcut>⌘B</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  {/* <GearIcon className="mr-2 h-4 w-4" /> */}
+                  <span>Settings</span>
+                  <CommandShortcut>⌘S</CommandShortcut>
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
         </form>
         {/* pathName이 마켓쪽일 때는 시장 검색 / pathName이 특산물일 때는 특산물 검색 */}
-        <div className="mx-2 flex flex-col gap-[2px]">
+        {/* <div className="mx-2 flex flex-col gap-[2px]">
           {marketSide &&
             response &&
             (response.length > 0 ? (
@@ -138,7 +183,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                   key={(item as Market).id}
                 >
                   <div
-                    className="cursor-pointer hover:bg-gray-100 p-1"
+                    className="cursor-pointer hover:bg-gray-100 pt-1"
                     onClick={() => setIsOpen(false)}
                   >
                     {(item as Market).시장명}
@@ -163,7 +208,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                   key={(item as LocalFood).product_id}
                 >
                   <div
-                    className="cursor-pointer hover:bg-gray-100 p-1"
+                    className="cursor-pointer hover:bg-gray-100 pt-1"
                     onClick={() => setIsOpen(false)}
                   >
                     {(item as LocalFood).food_name}
@@ -179,8 +224,8 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                 </p>
               </div>
             ))}
-        </div>
-        <SearchMarketRecommendations setIsOpen={setIsOpen} />
+        </div> */}
+        <SearchRecommendations setIsOpen={setIsOpen} />
       </SheetContent>
     </Sheet>
   );
