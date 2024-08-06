@@ -12,7 +12,7 @@ import { useUserCartData } from '@/hooks/cart/useUserCartData';
 import { useEffect, useState } from 'react';
 import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
 import { CgClose } from 'react-icons/cg';
-import { AlertPage } from '@/components/common/Alert';
+import Swal from 'sweetalert2';
 
 export type CartItem = {
   id: string | null;
@@ -54,18 +54,43 @@ export const TableDataColumns = ({
   const { cartData, isPending, error } = useUserCartData();
   const mutation = useDeleteProduct();
   const [isAlertVisible, setAlertVisible] = useState(false);
-  const [productIdToDelete, setProductIdToDelete] = useState<string | null>(
-    null
-  );
+  //const [productIdToDelete, setProductIdToDelete] = useState<string | null>(null);
 
   const handleDelete = (productId: string) => {
     mutation.mutate(productId);
     setAlertVisible(false);
   };
 
+  // const openAlert = (productId: string) => {
+  //   setProductIdToDelete(productId);
+  //   setAlertVisible(true);
+  // };
+
   const openAlert = (productId: string) => {
-    setProductIdToDelete(productId);
-    setAlertVisible(true);
+    Swal.fire({
+      text: '상품을 삭제하시겠습니까?',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonColor: '#E0DDD9',
+      confirmButtonColor: '#9C6D2E',
+      cancelButtonText: '취소',
+      confirmButtonText: '삭제',
+      customClass: {
+        popup: 'rounded-[16px]',
+        actions: 'flex gap-3 mt-8',
+        confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
+        cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete(productId);
+        Swal.fire(
+          '삭제되었습니다!',
+          '선택한 제품이 삭제되었습니다.',
+          'success'
+        );
+      }
+    });
   };
 
   useEffect(() => {
@@ -226,13 +251,13 @@ export const TableDataColumns = ({
           className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
           onClick={() => setAlertVisible(false)}
         >
-          <AlertPage
+          {/* <AlertPage
             title="잠깐!"
             message="해당 제품을 삭제하시겠습니까?"
             buttonText="삭제"
             onButtonClick={() => handleDelete(productIdToDelete as string)}
             onClose={() => setAlertVisible(false)}
-          />
+          /> */}
         </div>
       )}
     </>

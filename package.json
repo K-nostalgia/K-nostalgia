@@ -42,6 +42,7 @@
     "react-intersection-observer-ng": "^8.22.10",
     "react-spinners": "^0.14.1",
     "shadcn-ui": "^0.8.0",
+    "sweetalert2": "^11.12.4",
     "swiper": "^11.1.8",
     "tailwind-merge": "^2.4.0",
     "tailwind-scrollbar-hide": "^1.1.7",

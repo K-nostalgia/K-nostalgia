@@ -40,8 +40,6 @@ const LocalFoodView = () => {
     setSelectedCategory(category);
   };
 
-  // if (isPending)
-  //   return <div className="absolute left-[50%] top-[50%]">로딩중</div>;
   if (error) return <div>오류 {error.message}</div>;
 
   const filteredFoodData = localFoodData?.filter((food) =>
