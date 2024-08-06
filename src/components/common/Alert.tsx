@@ -5,7 +5,7 @@ type AlertProps = {
   title: string;
   buttonText: string; //버튼 텍스트 확인, 취소, 추가 등
   onButtonClick?: () => void; //버튼 클릭 시 실행 이벤트
-  onClose?: () => void;
+  onClose?: () => void; //버튼 취소
 };
 
 export const AlertPage = ({
