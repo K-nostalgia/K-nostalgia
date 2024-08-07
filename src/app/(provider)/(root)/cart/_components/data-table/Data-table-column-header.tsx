@@ -84,11 +84,6 @@ export const TableDataColumns = ({
     }).then((result) => {
       if (result.isConfirmed) {
         handleDelete(productId);
-        Swal.fire(
-          '삭제되었습니다!',
-          '선택한 제품이 삭제되었습니다.',
-          'success'
-        );
       }
     });
   };

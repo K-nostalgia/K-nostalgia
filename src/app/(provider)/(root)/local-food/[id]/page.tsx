@@ -38,18 +38,6 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     }
   });
 
-  // useEffect(() => {
-  //   if (openModal) {
-  //     document.body.style.overflow = 'hidden'; // 모달이 열리면 스크롤 X
-  //   } else {
-  //     document.body.style.overflow = 'auto'; // 모달이 닫히면 스크롤 O
-  //   }
-
-  //   return () => {
-  //     document.body.style.overflow = 'auto';
-  //   };
-  // }, [openModal]);
-
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 

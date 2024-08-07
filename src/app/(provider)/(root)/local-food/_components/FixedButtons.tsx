@@ -4,6 +4,7 @@ import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Swal from 'sweetalert2';
 
 interface Props {
   food: Tables<'local_food'>;
@@ -21,7 +22,7 @@ const FixedButtons = ({
   handleCartModalOpen
 }: Props) => {
   const router = useRouter();
-  const [isAlertVisible, setAlertVisible] = useState(false);
+  //const [isAlertVisible, setAlertVisible] = useState(false);
 
   // {
   //   name: "청송 사과",
@@ -31,7 +32,7 @@ const FixedButtons = ({
 
   const handlePageMove = () => {
     router.push('/cart');
-    setAlertVisible(false);
+    //setAlertVisible(false);
   };
 
   const product = [
@@ -83,7 +84,27 @@ const FixedButtons = ({
           return;
         }
       } else {
-        setAlertVisible(true);
+        //setAlertVisible(true);
+        Swal.fire({
+          title: '이미 담긴 상품입니다',
+          text: `장바구니로 이동하시겠습니까?`,
+          showCancelButton: true,
+          cancelButtonColor: '#E0DDD9',
+          confirmButtonColor: '#9C6D2E',
+          cancelButtonText: '취소',
+          confirmButtonText: '이동',
+          customClass: {
+            title: 'text-xl mt-10',
+            popup: 'rounded-[16px]',
+            actions: 'flex gap-3 mt-8',
+            confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
+            cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            handlePageMove();
+          }
+        });
         return;
       }
     } catch (error) {
@@ -114,7 +135,7 @@ const FixedButtons = ({
           </div>
         </div>
       </div>
-      {isAlertVisible && (
+      {/* {isAlertVisible && (
         <div
           className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
           onClick={() => setAlertVisible(false)}
@@ -127,7 +148,7 @@ const FixedButtons = ({
             onClose={() => setAlertVisible(false)}
           />
         </div>
-      )}
+      )} */}
     </>
   );
 };
