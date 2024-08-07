@@ -11,8 +11,6 @@ import { useState } from 'react';
 
 type LocalFood = Tables<'local_food'>;
 
-const COUPON = 2000;
-
 const LocalFoodView = () => {
   const text = '특산물을 준비하고 있어요';
   const categoryList = ['전체', '과일', '야채', '고기', '곡물', '공예품'];
@@ -133,13 +131,18 @@ const LocalFoodView = () => {
                         {food.description}
                       </p>
                       <div className="text-sm mt-2">
-                        17%
+                        20%
                         <span className="inline-block text-sm ml-1 text-label-assistive line-through">
-                          {`${((food.price ?? 0) + COUPON).toLocaleString()}원`}
+                          {/* {`${((food.price ?? 0) + COUPON).toLocaleString()}원`} */}
+                          {food.price?.toLocaleString()} 원
                         </span>
                       </div>
                       <p className="text-base text-primary-20 font-medium">
-                        {food.price?.toLocaleString()} 원{' '}
+                        {(
+                          (food.price ?? 0) -
+                          (food.price ?? 0) * 0.2
+                        )?.toLocaleString()}{' '}
+                        원
                       </p>
                     </div>
                   </Link>

@@ -55,6 +55,10 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
       ): item is { name: string | null; amount: number; quantity: number } =>
         item != null
     );
+  const dataCount = data.map((item) => item.count);
+  const totalCount = dataCount.reduce((acc, item) => {
+    return (acc ?? 0) + (item ?? 0);
+  }, 0);
 
   return (
     <>
@@ -70,7 +74,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
         <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0">
           <div className="flex gap-3 justify-between items-center">
             <p>
-              {`${selectedItems.length} 개`}{' '}
+              {`${totalCount} 개`}{' '}
               <span className="font-semibold">
                 {selectedItems.length > 0
                   ? `${totalAmount.toLocaleString()} 원`

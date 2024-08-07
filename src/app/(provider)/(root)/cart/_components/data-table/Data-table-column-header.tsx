@@ -69,14 +69,13 @@ export const TableDataColumns = ({
   const openAlert = (productId: string) => {
     Swal.fire({
       text: '상품을 삭제하시겠습니까?',
-      icon: 'warning',
       showCancelButton: true,
       cancelButtonColor: '#E0DDD9',
       confirmButtonColor: '#9C6D2E',
       cancelButtonText: '취소',
       confirmButtonText: '삭제',
       customClass: {
-        popup: 'rounded-[16px]',
+        popup: 'rounded-[16px] pt-10',
         actions: 'flex gap-3 mt-8',
         confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
         cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
@@ -179,7 +178,7 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-55%] translate-y-[-200%]">{`${row.getValue(
+        <div className="text-label-strong text-base translate-x-[-72%] translate-y-[-200%]">{`${row.getValue(
           'product_name'
         )}`}</div>
       )
@@ -189,16 +188,18 @@ export const TableDataColumns = ({
       accessorKey: 'product_price',
       header: '',
       cell: ({ row }) => (
-        <div className="absolute left-[62%] translate-x-[-62%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
-          <div className="text-base font-normal text-label-assistive">
-            17%
-            <span className="inline-block text-base font-normal text-label-assistive line-through">
+        <div className="absolute left-[65%] translate-x-[-65%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
+          <div className="font-normal text-label-normal text-sm">
+            20%
+            <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
               {`${(
-                ((row.getValue('product_price') as number) || 0) + 2000
+                row.getValue('product_price') as number
               ).toLocaleString()}원`}
             </span>
           </div>
-          {`${row.getValue('product_price')?.toLocaleString()} 원`}
+          {`${(
+            (row.getValue('product_price') as number) * 0.8
+          ).toLocaleString()} 원`}
         </div>
       )
     },
@@ -207,7 +208,7 @@ export const TableDataColumns = ({
       accessorKey: 'count',
       header: '',
       cell: ({ row }) => (
-        <div className="absolute left-[62%] translate-x-[-62%] translate-y-[30%] ">
+        <div className="absolute left-[62%] translate-x-[-62%] translate-y-[35%] ">
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
