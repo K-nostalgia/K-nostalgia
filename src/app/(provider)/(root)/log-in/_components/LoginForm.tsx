@@ -1,10 +1,11 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 import { PiEye, PiEyeSlash } from 'react-icons/pi';
 import { validateEmail, validatePassword } from '@/utils/validate';
 import Link from 'next/link';
+import { useLogin, useUser } from '@/hooks/useUser';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -17,6 +18,15 @@ const LoginForm = () => {
   }>({});
   const [loginError, setLoginError] = useState<string | null>(null);
   const isFormFilled = email !== '' && password !== '';
+  const { mutate: login } = useLogin();
+  const { data: user, isLoading, error } = useUser();
+
+  // useEffect(() => {
+  //   console.log(user);
+  //   // if (!user) {
+  //   //   router.push('/log-in-front');
+  //   // }
+  // }, [user]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,20 +50,21 @@ const LoginForm = () => {
     //에러 없을때만 로그인
     if (Object.keys(checkErrors).length === 0) {
       try {
-        const user = await api.auth.logIn(email, password);
+        login(
+          { email, password },
+          {
+            onSuccess: () => {
+              router.push('/');
+            },
 
-        if (user) {
-          router.push('/');
-        } else {
-          throw new Error();
-        }
+            onError: () => {
+              throw new Error();
+            }
+          }
+        );
       } catch (error) {
         console.error('로그인 실패', error);
         setLoginError('가입되지 않은 아이디거나 잘못된 비밀번호에요.');
-        // setErrors({
-        //   email: '이메일 또는 비밀번호가 올바르지 않습니다.',
-        //   password: '이메일 또는 비밀번호가 올바르지 않습니다.'
-        // });
       }
     }
   };

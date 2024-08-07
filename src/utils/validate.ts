@@ -13,4 +13,8 @@ export function validateEmail(email: string): boolean {
     const nameRegex = /^[a-zA-Z가-힣]+$/;
     return nameRegex.test(name);
   }
+
+  export function validateNickName(nickname: string): boolean {
+    return nickname.length >=0 && nickname.length <= 12; 
+  }
   
