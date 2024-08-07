@@ -1,6 +1,6 @@
 'use client';
 import supabase from '@/utils/supabase/client';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
