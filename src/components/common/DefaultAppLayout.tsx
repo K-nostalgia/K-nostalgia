@@ -14,6 +14,8 @@ interface DefaultAppLayoutProps {
   showLogo?: boolean;
   showSearch?: boolean;
   showCart?: boolean;
+  showComplete?: boolean;
+  onCompleteClick?: () => void;
 }
 
 const DefaultAppLayout = ({
@@ -26,7 +28,9 @@ const DefaultAppLayout = ({
   showBackButton = true,
   showLogo = false,
   showSearch = true,
-  showCart = true
+  showCart = true,
+  showComplete = false,
+  onCompleteClick
 }: PropsWithChildren<DefaultAppLayoutProps>) => {
   return (
     <div className="flex flex-col min-h-screen">
@@ -37,6 +41,8 @@ const DefaultAppLayout = ({
           showLogo={showLogo}
           showSearch={showSearch}
           showCart={showCart}
+          showComplete={showComplete}
+          onCompleteClick={onCompleteClick}
         />
       )}
       <main className="flex-grow overflow-y-hidden mt-[3.25rem]">

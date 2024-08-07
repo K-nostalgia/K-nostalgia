@@ -1,12 +1,21 @@
+'use client';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { GoArrowLeft } from 'react-icons/go';
 
 const LoginHeader = () => {
+  const router = useRouter();
+  const handleGoback = () => {
+    router.push('/log-in-front');
+  };
   return (
     <div>
       <div className="w-[375px] pt-5 px-3 pb-2">
         <div className="p-1">
-          <GoArrowLeft className="text-[28px]  cursor-pointer" />
+          <GoArrowLeft
+            className="text-[28px] cursor-pointer"
+            onClick={handleGoback}
+          />
         </div>
       </div>
       <div>
