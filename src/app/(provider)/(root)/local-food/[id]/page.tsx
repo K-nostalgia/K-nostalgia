@@ -77,7 +77,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
                 향신배송
                 <p className="text-[#76746d]">
                   23시 전 주문 시 내일 아침 8시 전 도착
-                  <span className="block">(제주 지역 향신배송 불가)</span>
+                  <span className="block">
+                    (제주도, 도서산간지역 향신배송 불가)
+                  </span>
                 </p>
               </td>
             </tr>

@@ -144,7 +144,7 @@ export const TableDataColumns = ({
             });
           }}
           aria-label="Select row"
-          style={{ transform: 'translate(0, -130%)' }}
+          style={{ transform: 'translate(0, -180%)' }}
         />
       ),
       enableSorting: false,
@@ -158,17 +158,17 @@ export const TableDataColumns = ({
         <Link href={`/local-food/${row.getValue('product_id')}`}>
           <Image
             src={row.getValue('image')}
-            width={96}
-            height={96}
+            width={115}
+            height={115}
             priority
             alt={row.getValue('product_name')}
             style={{
               borderRadius: '8px',
-              width: 96,
-              height: 96,
+              width: 115,
+              height: 115,
               objectFit: 'cover',
               translate: '-16%',
-              marginLeft: '5px'
+              marginLeft: '12px'
             }}
           />
         </Link>
@@ -179,7 +179,7 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-45%] translate-y-[-150%]">{`${row.getValue(
+        <div className="text-label-strong text-base translate-x-[-55%] translate-y-[-200%]">{`${row.getValue(
           'product_name'
         )}`}</div>
       )
@@ -189,13 +189,16 @@ export const TableDataColumns = ({
       accessorKey: 'product_price',
       header: '',
       cell: ({ row }) => (
-        <div className="absolute left-[58%] translate-x-[-35%] translate-y-[-80%] text-lg text-primary-strong font-semibold">
+        <div className="absolute left-[62%] translate-x-[-62%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
+          <div className="text-base font-normal text-label-assistive">
+            17%
+            <span className="inline-block text-base font-normal text-label-assistive line-through">
+              {`${(
+                ((row.getValue('product_price') as number) || 0) + 2000
+              ).toLocaleString()}원`}
+            </span>
+          </div>
           {`${row.getValue('product_price')?.toLocaleString()} 원`}
-          <span className="text-base font-normal text-label-assistive line-through pl-2 translate-x-[80%]">
-            {`${(
-              ((row.getValue('product_price') as number) || 0) + 2000
-            ).toLocaleString()}원`}
-          </span>
         </div>
       )
     },
@@ -204,7 +207,7 @@ export const TableDataColumns = ({
       accessorKey: 'count',
       header: '',
       cell: ({ row }) => (
-        <div className="absolute left-[58%] translate-x-[-55%] translate-y-[10%] ">
+        <div className="absolute left-[62%] translate-x-[-62%] translate-y-[30%] ">
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
@@ -227,7 +230,7 @@ export const TableDataColumns = ({
       cell: ({ row }) => (
         <button
           onClick={() => openAlert(row.getValue('product_id'))}
-          className="translate-x-0 translate-y-[-100%]"
+          className="translate-x-0 translate-y-[-150%]"
         >
           <CgClose className="text-[#959595] w-7 h-7" />
         </button>

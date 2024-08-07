@@ -35,7 +35,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
             onClick={() => router.push('/cart')}
             className="cursor-pointer w-7 h-7 "
           />
-          <span className="absolute top-[-5px] right-[-10px] w-5 h-5 flex items-center justify-center text-xs bg-primary-strong text-label-light rounded-full">
+          <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full">
             {cartData?.length}
           </span>
         </div>
