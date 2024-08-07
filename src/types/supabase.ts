@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           count: number | null
           created_at: string
+          discountRate: number | null
           id: number
           image: string | null
           product_id: string | null
@@ -23,6 +24,7 @@ export type Database = {
         Insert: {
           count?: number | null
           created_at?: string
+          discountRate?: number | null
           id?: number
           image?: string | null
           product_id?: string | null
@@ -33,6 +35,7 @@ export type Database = {
         Update: {
           count?: number | null
           created_at?: string
+          discountRate?: number | null
           id?: number
           image?: string | null
           product_id?: string | null

@@ -14,7 +14,9 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
       if (selectedItems.includes(item.product_id ?? '')) {
         const price = item.product_price ?? 0;
         const quantity = item.count ?? 0;
-        return acc + price * quantity;
+        const discountRate = (item.discountRate ?? 0) / 100;
+        const discountedPrice = price - price * discountRate;
+        return acc + discountedPrice * quantity;
       }
       return acc;
     }, 0) || 0;

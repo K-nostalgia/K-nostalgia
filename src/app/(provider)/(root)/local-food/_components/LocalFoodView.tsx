@@ -131,7 +131,7 @@ const LocalFoodView = () => {
                         {food.description}
                       </p>
                       <div className="text-sm mt-2">
-                        20%{food.discountRate}
+                        {`${food.discountRate}%`}
                         <span className="inline-block text-sm ml-1 text-label-assistive line-through">
                           {/* {`${((food.price ?? 0) + COUPON).toLocaleString()}원`} */}
                           {food.price?.toLocaleString()} 원
@@ -140,7 +140,7 @@ const LocalFoodView = () => {
                       <p className="text-base text-primary-20 font-medium">
                         {(
                           (food.price ?? 0) -
-                          (food.price ?? 0) * 0.2
+                          (food.price ?? 0) * ((food.discountRate ?? 0) / 100)
                         )?.toLocaleString()}{' '}
                         원
                       </p>

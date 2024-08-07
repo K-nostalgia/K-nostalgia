@@ -76,7 +76,8 @@ const FixedButtons = ({
           image: food.title_image ? food.title_image[0] : null,
           product_name: food.food_name,
           product_price: food.price,
-          user_id: user.id
+          user_id: user.id,
+          discountRate: food.discountRate
         });
 
         if (insertError) {

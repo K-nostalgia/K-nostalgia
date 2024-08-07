@@ -18,9 +18,10 @@ export type CartItem = {
   id: string | null;
   product_id: string | null;
   image: string[] | null;
-  product_price: number | null;
+  product_price: number | 0;
   product_name: string | null;
-  count: number | null;
+  count: number | 0;
+  discountRate: number | 0;
 };
 
 interface TableProps {
@@ -41,7 +42,8 @@ const fetchCartItems = async () => {
     image: item.image ? item.image[0] : null,
     product_price: item.product_price,
     product_name: item.product_name,
-    count: item.count
+    count: item.count,
+    discountRate: item.discountRate
   }));
 
   return mappedCartItems;
@@ -178,7 +180,7 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-72%] translate-y-[-200%]">{`${row.getValue(
+        <div className="text-label-strong text-base translate-x-[-50%] translate-y-[-200%]">{`${row.getValue(
           'product_name'
         )}`}</div>
       )
@@ -190,7 +192,7 @@ export const TableDataColumns = ({
       cell: ({ row }) => (
         <div className="absolute left-[65%] translate-x-[-65%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
           <div className="font-normal text-label-normal text-sm">
-            20%
+            {`${row.getValue('discountRate')}%`}
             <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
               {`${(
                 row.getValue('product_price') as number
@@ -198,7 +200,10 @@ export const TableDataColumns = ({
             </span>
           </div>
           {`${(
-            (row.getValue('product_price') as number) * 0.8
+            (row.getValue('product_price') as number) -
+            ((row.getValue('product_price') as number) *
+              (row.getValue('discountRate') as number)) /
+              100
           ).toLocaleString()} 원`}
         </div>
       )
@@ -222,6 +227,13 @@ export const TableDataColumns = ({
       header: '',
       cell: ({ row }) => (
         <div style={{ display: 'none' }}>{row.getValue('product_id')}</div>
+      )
+    },
+    {
+      accessorKey: 'discountRate',
+      header: '',
+      cell: ({ row }) => (
+        <div style={{ display: 'none' }}>{row.getValue('discountRate')}</div>
       )
     },
     {

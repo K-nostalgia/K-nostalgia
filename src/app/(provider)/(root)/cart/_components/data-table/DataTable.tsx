@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  장바구니가 비었어요.
                 </TableCell>
               </TableRow>
             )}
