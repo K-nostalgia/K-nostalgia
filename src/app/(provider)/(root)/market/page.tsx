@@ -6,15 +6,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import { GoHeart } from 'react-icons/go';
-import { GoHeartFill } from 'react-icons/go';
 import { RiMoreLine } from 'react-icons/ri';
+import MarketLikes from './_components/MarketLikes';
+import { useUser } from '@/hooks/useUser';
 
 const MarketPage = () => {
+  const { data: user, isLoading, error } = useUser();
   const [markets, setMarkets] = useState<MarketType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [heart, setHeart] = useState<string[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('전체');
   const [activeSmallFilter, setActiveSmallFilter] = useState('전체');
   const [totalPages, setTotalPages] = useState(0);
@@ -66,12 +66,6 @@ const MarketPage = () => {
     fetchMarkets(currentPage);
   }, [currentPage, selectedLargeRegion, selectedSmallRegion]);
 
-  const handleHeart = (identity: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    if (!heart.includes(identity)) setHeart((prev) => [...prev, identity]);
-    else setHeart((prev) => prev.filter((el) => el !== identity));
-  };
-
   const handleLargeRegionChange = (region: string) => {
     setSelectedLargeRegion(region);
     setActiveFilter(region);
@@ -88,6 +82,8 @@ const MarketPage = () => {
     setActiveSmallFilter(region);
     setCurrentPage(1);
   };
+
+  if (isLoading) return <div>유저 데이터 받아오는 중..</div>;
 
   return (
     <>
@@ -153,18 +149,7 @@ const MarketPage = () => {
                         <p className="pl-1 text-base font-semibold text-label-strong">
                           {item.시장명}
                         </p>
-
-                        <button
-                          onClick={(event) =>
-                            handleHeart(item.도로명주소, event)
-                          }
-                        >
-                          {heart.includes(item.도로명주소) ? (
-                            <GoHeartFill className="w-5 h-5 text-[#DB3B3B]" />
-                          ) : (
-                            <GoHeart className="w-5 h-5 text-[#545454]" />
-                          )}
-                        </button>
+                        <MarketLikes userId={user?.id} marketId={item.id} />
                       </div>
                       <p className="pl-1 text-sm text-label-alternative">
                         {item.도로명주소}
@@ -200,7 +185,7 @@ const MarketPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center mb-64">
+      <div className="flex justify-between items-center mb-56">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
