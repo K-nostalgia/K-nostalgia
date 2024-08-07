@@ -41,10 +41,13 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
 
   const product = data
     .map((item) => {
+      const discountAmount =
+        (item.product_price ?? 0) -
+        (item.product_price ?? 0) * ((item.discountRate ?? 0) / 100);
       if (selectedItems.includes(item.product_id as string)) {
         return {
           name: item.product_name,
-          amount: (item.product_price ?? 0) * (item.count ?? 0),
+          amount: discountAmount * (item.count ?? 0),
           quantity: item.count ?? 0
         };
       }
@@ -57,6 +60,8 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
       ): item is { name: string | null; amount: number; quantity: number } =>
         item != null
     );
+
+  //총 상품 갯수(수량)
   const dataCount = data.map((item) => item.count);
   const totalCount = dataCount.reduce((acc, item) => {
     return (acc ?? 0) + (item ?? 0);

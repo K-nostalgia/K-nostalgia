@@ -1,9 +1,8 @@
-import { AlertPage } from '@/components/common/Alert';
 import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import Swal from 'sweetalert2';
 
 interface Props {
@@ -22,7 +21,7 @@ const FixedButtons = ({
   handleCartModalOpen
 }: Props) => {
   const router = useRouter();
-  //const [isAlertVisible, setAlertVisible] = useState(false);
+  const queryClient = useQueryClient();
 
   // {
   //   name: "청송 사과",
@@ -30,30 +29,89 @@ const FixedButtons = ({
   //   quantity: 3,
   // }
 
-  const handlePageMove = () => {
-    router.push('/cart');
-    //setAlertVisible(false);
-  };
+  //할인된 금액
+  const discountAmount =
+    (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
 
   const product = [
     {
       name: food.food_name,
-      amount: (food.price ?? 0) * (count ?? 0),
+      amount: discountAmount * (count ?? 0),
       quantity: count ?? 0
     }
   ];
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      const { data, error } = await supabase.from('cart').insert({
+        product_id: food.product_id,
+        count,
+        image: food.title_image ? food.title_image[0] : null,
+        product_name: food.food_name,
+        product_price: food.price,
+        user_id: user?.id,
+        discountRate: food.discountRate
+      });
+      if (error) throw new Error(error.message);
+      return data;
+    },
+    onMutate: async (newCartItem) => {
+      await queryClient.cancelQueries({
+        queryKey: ['cart']
+      });
+
+      const previousCart = queryClient.getQueryData(['cart']);
+
+      queryClient.setQueryData(['cart'], (oldData: any) => [
+        ...oldData,
+        newCartItem
+      ]);
+
+      return { previousCart };
+    },
+    onError: (err, newCartItem, context) => {
+      queryClient.setQueryData(['cart'], context?.previousCart);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['cart']
+      });
+    }
+  });
 
   const onAddCart = async () => {
     const {
       data: { user },
       error: userError
     } = await supabase.auth.getUser();
-    if (userError || !user) {
-      const isConfirmed = confirm('로그인 후 이용해주세요');
-      if (isConfirmed) {
-        router.replace('/log-in');
-      }
+    if (!user) {
+      Swal.fire({
+        title: '로그인 후 이용해주세요',
+        text: '로그인 페이지로 이동할까요?',
+        cancelButtonColor: '#E0DDD9',
+        confirmButtonColor: '#9C6D2E',
+        cancelButtonText: '취소',
+        confirmButtonText: '이동',
+        customClass: {
+          title: 'text-xl mt-10',
+          popup: 'rounded-[16px]',
+          actions: 'flex gap-3 mt-8',
+          confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
+          cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push('/log-in');
+        }
+      });
       return;
+    }
+
+    if (userError) {
+      console.error('사용자 정보를 가져오지 못했습니다.', userError.message);
     }
 
     try {
@@ -70,22 +128,8 @@ const FixedButtons = ({
       }
 
       if (!cartData) {
-        const { error: insertError } = await supabase.from('cart').insert({
-          product_id: food.product_id,
-          count,
-          image: food.title_image ? food.title_image[0] : null,
-          product_name: food.food_name,
-          product_price: food.price,
-          user_id: user.id,
-          discountRate: food.discountRate
-        });
-
-        if (insertError) {
-          alert('장바구니에 상품이 담기지 못했습니다.');
-          return;
-        }
+        mutation.mutate();
       } else {
-        //setAlertVisible(true);
         Swal.fire({
           title: '이미 담긴 상품입니다',
           text: `장바구니로 이동하시겠습니까?`,
@@ -103,7 +147,7 @@ const FixedButtons = ({
           }
         }).then((result) => {
           if (result.isConfirmed) {
-            handlePageMove();
+            router.push('/cart');
           }
         });
         return;
@@ -136,20 +180,6 @@ const FixedButtons = ({
           </div>
         </div>
       </div>
-      {/* {isAlertVisible && (
-        <div
-          className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
-          onClick={() => setAlertVisible(false)}
-        >
-          <AlertPage
-            title="이미 담긴 상품입니다"
-            message="장바구니로 이동하시겠습니까?"
-            buttonText="이동"
-            onButtonClick={handlePageMove}
-            onClose={() => setAlertVisible(false)}
-          />
-        </div>
-      )} */}
     </>
   );
 };
