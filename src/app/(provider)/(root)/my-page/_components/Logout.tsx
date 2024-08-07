@@ -18,7 +18,7 @@ const Logout = () => {
       // 캐시 무효화
       queryClient.invalidateQueries();
       console.log('로그아웃 완료');
-      router.push('/log-in-front');
+      router.push('/log-in');
     } catch (err) {
       console.log('로그아웃 에러');
     }

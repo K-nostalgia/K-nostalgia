@@ -109,7 +109,7 @@ const SignUpContainer = () => {
 
   const handleback = () => {
     if (step === 0) {
-      router.push('/log-in-front');
+      router.push('/log-in');
     } else {
       prevStep();
     }
