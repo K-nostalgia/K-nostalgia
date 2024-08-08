@@ -36,13 +36,13 @@ export async function updateSession(request: NextRequest) {
   const guestCookie = request.cookies.get('guest');
   const isGuest = guestCookie?.value === 'true';
 
-  const publicRoutes = ['/log-in-front', '/sign-up', '/log-in']; // 누구나 접근 가능 
+  const publicRoutes = ['/sign-up', '/log-in']; // 누구나 접근 가능 
   const protectedRoutes = ['/my-page']; // 비회원 접근 불가능 
 
   const url = request.nextUrl.clone();
   // 비회원이 불가능 경로에 접근하려고 할 때 리다이렉트
   if (!user && !isGuest && protectedRoutes.includes(request.nextUrl.pathname)) {
-    url.pathname = '/log-in-front'; 
+    url.pathname = '/log-in'; 
     return NextResponse.redirect(url);
   }
 

@@ -16,10 +16,10 @@ const GoogleLogin = () => {
     <div className="flex items-center justify-center mt-3">
       <div
         onClick={handleClickGoogleLogin}
-        className="flex items-center justify-center w-[323px] h-[48px] px-[88px] py-[12px] bg-[#FFFFFF] border-[#FEDF32] rounded-[12px]"
+        className="flex items-center justify-center w-[320px] h-[48px] pl-[88px] pr-[102px] py-[12px] bg-[#FFFFFF] border-[#FEDF32] rounded-[12px] cursor-pointer"
       >
         <FcGoogle className="text-[24px] mr-2" />
-        <p className="text-label-strong text-cente text-nowrap cursor-pointer">
+        <p className="text-label-strong text-center text-nowrap cursor-pointer">
           {' '}
           구글로 시작하기{' '}
         </p>

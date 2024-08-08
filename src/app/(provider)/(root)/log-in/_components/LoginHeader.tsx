@@ -1,28 +1,18 @@
 'use client';
-import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import React from 'react';
-import { GoArrowLeft } from 'react-icons/go';
 
 const LoginHeader = () => {
-  const router = useRouter();
-  const handleGoback = () => {
-    router.push('/log-in-front');
-  };
   return (
-    <div>
-      <div className="w-[375px] pt-5 px-3 pb-2">
-        <div className="p-1">
-          <GoArrowLeft
-            className="text-[28px] cursor-pointer"
-            onClick={handleGoback}
-          />
-        </div>
-      </div>
-      <div>
-        <p className="text-xl font-semibold text-left text-primary-10 mt-10 ml-8 mb-5">
-          반갑습니다! 향그리움입니다 :)
-        </p>
-      </div>
+    <div className="mt-[63px]">
+      <Image
+        src="/image/TitleLogo.png"
+        alt="title logo"
+        priority
+        width={216}
+        height={60}
+        className="w-[216px] h-[60px] mx-auto"
+      />
     </div>
   );
 };
