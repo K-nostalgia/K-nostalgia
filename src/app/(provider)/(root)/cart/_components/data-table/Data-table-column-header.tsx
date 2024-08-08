@@ -55,18 +55,10 @@ export const TableDataColumns = ({
 }: TableProps) => {
   const { cartData, isPending, error } = useUserCartData();
   const mutation = useDeleteProduct();
-  const [isAlertVisible, setAlertVisible] = useState(false);
-  //const [productIdToDelete, setProductIdToDelete] = useState<string | null>(null);
 
   const handleDelete = (productId: string) => {
     mutation.mutate(productId);
-    setAlertVisible(false);
   };
-
-  // const openAlert = (productId: string) => {
-  //   setProductIdToDelete(productId);
-  //   setAlertVisible(true);
-  // };
 
   const openAlert = (productId: string) => {
     Swal.fire({
@@ -97,7 +89,7 @@ export const TableDataColumns = ({
 
       setSelectedItems(allProductIds);
     }
-  }, [cartData]);
+  }, [cartData, setSelectedItems]);
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
@@ -180,7 +172,7 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-50%] translate-y-[-200%]">{`${row.getValue(
+        <div className="text-label-strong text-base translate-x-[-68%] translate-y-[-200%]">{`${row.getValue(
           'product_name'
         )}`}</div>
       )
@@ -189,31 +181,33 @@ export const TableDataColumns = ({
       //상품 가격
       accessorKey: 'product_price',
       header: '',
-      cell: ({ row }) => (
-        <div className="absolute left-[65%] translate-x-[-65%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
-          <div className="font-normal text-label-normal text-sm">
-            {`${row.getValue('discountRate')}%`}
-            <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
-              {`${(
-                row.getValue('product_price') as number
-              ).toLocaleString()}원`}
-            </span>
+      cell: ({ row }) => {
+        const price = row.getValue('product_price') as number;
+        const count = row.getValue('count') as number;
+        const discountRate = row.getValue('discountRate') as number;
+
+        const discountAmount = price - (price * discountRate) / 100;
+        const totalAmount = discountAmount * count;
+
+        return (
+          <div className="absolute left-[65%] translate-x-[-65%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
+            <div className="font-normal text-label-normal text-sm">
+              {`${discountRate}%`}
+              <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
+                {`${price.toLocaleString()}원`}
+              </span>
+            </div>
+            {`${totalAmount.toLocaleString()}원`}
           </div>
-          {`${(
-            (row.getValue('product_price') as number) -
-            ((row.getValue('product_price') as number) *
-              (row.getValue('discountRate') as number)) /
-              100
-          ).toLocaleString()} 원`}
-        </div>
-      )
+        );
+      }
     },
     {
       //수량 버튼
       accessorKey: 'count',
       header: '',
       cell: ({ row }) => (
-        <div className="absolute left-[62%] translate-x-[-62%] translate-y-[35%] ">
+        <div className="absolute left-[65%] translate-x-[-65%] translate-y-[35%] ">
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
@@ -257,20 +251,6 @@ export const TableDataColumns = ({
         data={cartData ?? []}
         selectedItems={selectedItems}
       />
-      {isAlertVisible && (
-        <div
-          className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
-          onClick={() => setAlertVisible(false)}
-        >
-          {/* <AlertPage
-            title="잠깐!"
-            message="해당 제품을 삭제하시겠습니까?"
-            buttonText="삭제"
-            onButtonClick={() => handleDelete(productIdToDelete as string)}
-            onClose={() => setAlertVisible(false)}
-          /> */}
-        </div>
-      )}
     </>
   );
 };

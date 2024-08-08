@@ -35,6 +35,7 @@ const FixedButtons = ({
 
   const product = [
     {
+      productId: food.product_id,
       name: food.food_name,
       amount: discountAmount * (count ?? 0),
       quantity: count ?? 0
@@ -171,7 +172,10 @@ const FixedButtons = ({
 
           <div onClick={onPurchase} className="flex-1">
             {isModalOpen ? (
-              <PayButton product={product} orderNameArr={[food.food_name]} />
+              <PayButton
+                product={product}
+                orderNameArr={[food.food_name, food.product_id]}
+              />
             ) : (
               <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
                 구매하기

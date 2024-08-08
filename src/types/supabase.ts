@@ -104,24 +104,31 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
-          post_id: string | null
+          market_id: number | null
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: number
-          post_id?: string | null
+          market_id?: number | null
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: number
-          post_id?: string | null
+          market_id?: number | null
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "comments_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "markets"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "comments_user_id_fkey"
             columns: ["user_id"]
@@ -300,6 +307,48 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "order_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          content: string | null
+          created_at: string
+          product_id: string | null
+          rating: number | null
+          review_id: string
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          product_id?: string | null
+          rating?: number | null
+          review_id?: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          product_id?: string | null
+          rating?: number | null
+          review_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "local_food"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

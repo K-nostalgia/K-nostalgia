@@ -11,12 +11,15 @@ import Image from 'next/image';
 import { MainMarket } from './SectionMarket';
 import { LikeButton } from './LikeButton';
 import Link from 'next/link';
+import { useUser } from '@/hooks/useUser';
 
 interface marketProps {
   images: MainMarket | null | undefined;
 }
 
 export const Carousel = ({ images }: marketProps) => {
+  const { data: user } = useUser();
+
   return (
     <Swiper
       // install Swiper modules
@@ -53,7 +56,7 @@ export const Carousel = ({ images }: marketProps) => {
           <div className="bg-primary-20 text-label-light p-4 rounded-br-[12px] rounded-bl-[12px]">
             <div className="flex justify-between items-center">
               <h2 className="text-lg font-semibold">{item.시장명}</h2>
-              <LikeButton marketId={item.id} />
+              <LikeButton marketId={item.id} userId={user?.id as string} />
             </div>
             <div className="text-sm mt-2 leading-[22.4px]">
               <p>전통시장</p>

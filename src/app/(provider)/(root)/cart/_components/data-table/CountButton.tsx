@@ -27,7 +27,6 @@ export const CountButton: React.FC<CountButtonProps> = ({
 
     if (error) {
       console.log({ error });
-      alert('수량이 업데이트되지 않았습니다.');
       throw new Error('수량 업데이트 실패');
     }
   };

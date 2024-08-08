@@ -17,7 +17,7 @@ export const CartList = () => {
 
   return (
     <div>
-      {cartData ? (
+      {cartData && cartData.length > 0 ? (
         <TableDataColumns
           selectedItems={selectedItems}
           setSelectedItems={setSelectedItems}
