@@ -143,7 +143,7 @@ const LoginForm = () => {
             className={`w-[320px] mt-7 ml-7 mr-[27px] py-3 px-4 rounded-xl text-white ${
               isFormFilled
                 ? 'bg-primary-strong hover:bg-primary-strong'
-                : ' bg-label-disable hover:bg-primary-strong'
+                : ' bg-label-disable'
             }`}
           >
             입장하기
