@@ -128,7 +128,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
             className={`pr-10 placeholder:text-label-alternative text-base ${
               searchTerm.trim() === ''
                 ? 'border-primary-30 rounded-[6px]'
-                : 'border-label-assistive rounded-t-[6px]'
+                : 'border-label-assistive border-b-0 rounded-t-[6px]'
             }`}
           />
           <Button
