@@ -43,8 +43,8 @@ const MarketPage = () => {
       console.error('데이터를 가져오지 못했습니다.', error);
     }
   };
-  console.log('markets____', markets);
-  console.log('totalPages____', totalPages);
+  // console.log('markets____', markets);
+  // console.log('totalPages____', totalPages);
 
   // 필터
   const regionData: RegionData = {
@@ -133,7 +133,7 @@ const MarketPage = () => {
             height={80}
             priority
             alt="시장배너이미지"
-            style={{ width: 343, height: 80, objectFit: 'cover' }}
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             className="mt-4"
           />
 
@@ -153,19 +153,18 @@ const MarketPage = () => {
                         <p className="pl-1 text-base font-semibold text-label-strong">
                           {item.시장명}
                         </p>
-                        <div className="p-[2px]">
-                          <button
-                            onClick={(event) =>
-                              handleHeart(item.도로명주소, event)
-                            }
-                          >
-                            {heart.includes(item.도로명주소) ? (
-                              <GoHeartFill className="w-5 h-5 text-[#DB3B3B]" />
-                            ) : (
-                              <GoHeart className="w-5 h-5 text-[#545454]" />
-                            )}
-                          </button>
-                        </div>
+
+                        <button
+                          onClick={(event) =>
+                            handleHeart(item.도로명주소, event)
+                          }
+                        >
+                          {heart.includes(item.도로명주소) ? (
+                            <GoHeartFill className="w-5 h-5 text-[#DB3B3B]" />
+                          ) : (
+                            <GoHeart className="w-5 h-5 text-[#545454]" />
+                          )}
+                        </button>
                       </div>
                       <p className="pl-1 text-sm text-label-alternative">
                         {item.도로명주소}
@@ -241,7 +240,10 @@ const MarketPage = () => {
           })}
           <div className="flex gap-[6px] place-items-center">
             {currentPage < totalPages - 1 && (
-              <RiMoreLine className="w-4 h-4 text-primary-10" />
+              <RiMoreLine
+                onClick={() => setCurrentPage(totalPages)}
+                className="w-4 h-4 text-primary-10"
+              />
             )}
           </div>
         </div>

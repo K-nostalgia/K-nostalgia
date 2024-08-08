@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { MarketType } from '@/types/Market';
 import { PiMapPin } from 'react-icons/pi';
 import { LuDot } from 'react-icons/lu';
+import Loading from '@/components/common/Loading';
+import KaKaomap from '../_components/KaKaoMap';
 export type ImagesType = {
   title: string;
   link: string;
@@ -40,7 +42,7 @@ const MarketDetailPage = ({ params }: { params: { id: string } }) => {
     fetchImage();
   }, [market]);
 
-  if (!market) return <div>로딩 중..</div>;
+  if (!market) return <Loading />;
 
   const images = market.이미지 ?? [];
 
@@ -97,7 +99,11 @@ const MarketDetailPage = ({ params }: { params: { id: string } }) => {
         <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10">
           상세정보
         </div>
-        <Image
+
+        <div>
+          <KaKaomap />
+        </div>
+        {/* <Image
           src={
             'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/markets/Map.png'
           }
@@ -106,7 +112,7 @@ const MarketDetailPage = ({ params }: { params: { id: string } }) => {
           priority
           alt="시장디테일 지도 이미지"
           style={{ width: 343, height: 220, objectFit: 'cover' }}
-        />
+        /> */}
         <div className="flex mt-2 mb-8 place-items-center text-primary-10">
           <PiMapPin className="w-4 h-4" />
           <p className="text-sm font-normal">{market.도로명주소}</p>

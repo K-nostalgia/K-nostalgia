@@ -40,7 +40,7 @@ export const SectionFood = () => {
           href="/local-food"
           className="border-label-disable border rounded-[12px] w-[95%] my-10"
         >
-          <button className="w-full  transition-all duration-300 ease-in-out px-4 py-3 group-hover:hover:bg-label-disable text-label-light">
+          <button className="w-full  transition-all duration-300 ease-in-out px-4 py-3 text-label-light active:border-primary-50 active:text-primary-50">
             더 보기
           </button>
         </Link>

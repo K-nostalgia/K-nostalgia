@@ -18,6 +18,7 @@ import {
   TableRow
 } from '@/components/ui/table';
 import { CartPriceList } from '../CartPriceList';
+import useSelectedCartStore from '@/zustand/cart/cart.data';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -35,6 +36,7 @@ export function DataTable<TData, TValue>({
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
+  //const { selectedItems, setSelectedItems } = useSelectedCartStore();
 
   const table = useReactTable({
     data,
@@ -50,9 +52,9 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-full">
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
+      <div className="rounded-md border py-16px mt-16">
+        <Table className="bg-normal">
+          <TableHeader className="border-b-4 border-[#F2F2F2] fixed left-0 right-0 top-0 bg-normal z-10 py-2 mt-16">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -70,6 +72,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
+
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

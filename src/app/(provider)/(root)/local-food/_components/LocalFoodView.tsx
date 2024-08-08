@@ -72,8 +72,8 @@ const LocalFoodView = () => {
             priority
             alt="배너이미지"
             style={{
-              width: 343,
-              height: 80,
+              width: '100%',
+              height: '100%',
               objectFit: 'cover',
               margin: '0 auto'
             }}

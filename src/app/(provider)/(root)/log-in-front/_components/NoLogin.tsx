@@ -5,9 +5,11 @@ import React from 'react';
 const NoLogin = () => {
   const router = useRouter();
 
-  const handleNouserMove = () => {
+  const handleNoUserClick = () => {
+    document.cookie = 'guest=true; path=/';
     router.push('/');
   };
+
   return (
     <>
       <div className="flex justify-center">
@@ -20,8 +22,8 @@ const NoLogin = () => {
         />
       </div>
       <div
-        onClick={handleNouserMove}
-        className="text-center mt-[32px] mb-[56px] p-2 text-label-alternative underline text-nowrap cursor-pointer"
+        onClick={handleNoUserClick}
+        className="text-center mt-[32px] mb-[56px] p-2 text-label-alternative underline text-nowrap cursor-not-allowed"
       >
         비회원으로 입장하기
       </div>
