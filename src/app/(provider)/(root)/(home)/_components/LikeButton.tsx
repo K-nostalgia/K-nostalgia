@@ -1,7 +1,6 @@
 'use client';
 import supabase from '@/utils/supabase/client';
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 
 interface likeProps {
@@ -10,7 +9,7 @@ interface likeProps {
 }
 
 export const LikeButton = ({ marketId, userId }: likeProps) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
 
   //TODO 낙관적 업데이트
   const {

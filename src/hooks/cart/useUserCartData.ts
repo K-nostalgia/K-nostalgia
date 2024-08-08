@@ -21,7 +21,7 @@ export const useUserCartData = () => {
 
       const { data: productData, error } = await supabase
         .from('cart')
-        .select('*, product:product_id(*)')
+        .select('*, cart:product_id(*)') //product_id 필드를 기준으로 cart 테이블의 모든 정보 가져오기
         .eq('user_id', user.id);
 
       if (error) throw new Error(error.message);

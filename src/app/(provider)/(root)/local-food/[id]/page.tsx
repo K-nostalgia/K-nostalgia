@@ -29,7 +29,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('local_food')
-        .select('*')
+        .select('*, reviews(*)')
         .eq('product_id', id)
         .single();
 
@@ -44,18 +44,6 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
 
   const totalAmount =
     (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
-
-  const onPurchase = () => {
-    setOpenModal(true);
-  };
-
-  const handleCartModalOpen = () => {
-    setOpenCartModal(true);
-  };
-
-  const handleCartModalClose = () => {
-    setOpenCartModal(false);
-  };
 
   return (
     <div>
@@ -131,7 +119,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
                   : 'text-label-assistive'
               }`}
             >
-              리뷰
+              {`리뷰(${food.reviews.length})`}
             </p>
           </li>
         </ul>
@@ -147,9 +135,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       <FixedButtons
         food={food}
         count={food.count}
-        onPurchase={onPurchase}
+        onPurchase={() => setOpenModal(true)}
         isModalOpen={openModal}
-        handleCartModalOpen={handleCartModalOpen}
+        handleCartModalOpen={() => setOpenCartModal(true)}
       />
       {openModal && (
         <div
@@ -162,8 +150,8 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
             <OrderDetail
               params={{ id }}
               isModalOpen={openModal}
-              onPurchase={onPurchase}
-              handleCartModalOpen={handleCartModalOpen}
+              onPurchase={() => setOpenModal(true)}
+              handleCartModalOpen={() => setOpenCartModal(true)}
             />
           </div>
         </div>
@@ -171,12 +159,12 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       {openCartModal && (
         <div
           className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
-          onClick={handleCartModalClose}
+          onClick={() => setOpenCartModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
           >
-            <CartModal handleCartModalClose={handleCartModalClose} />
+            <CartModal handleCartModalClose={() => setOpenCartModal(false)} />
           </div>
         </div>
       )}

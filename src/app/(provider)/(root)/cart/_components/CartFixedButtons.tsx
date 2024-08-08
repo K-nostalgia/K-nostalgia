@@ -46,7 +46,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
         (item.product_price ?? 0) * ((item.discountRate ?? 0) / 100);
       if (selectedItems.includes(item.product_id as string)) {
         return {
-          productId: item.product_id,
+          id: item.product_id,
           name: item.product_name,
           amount: discountAmount * (item.count ?? 0),
           quantity: item.count ?? 0
@@ -59,7 +59,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
         item
         //타입 에러 : 타입 가드로 타입 축소
       ): item is {
-        productId: string | null;
+        id: string | null;
         name: string | null;
         amount: number;
         quantity: number;
