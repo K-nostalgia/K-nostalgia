@@ -11,7 +11,6 @@ interface likeProps {
 export const LikeButton = ({ marketId, userId }: likeProps) => {
   const queryClient = useQueryClient();
 
-  //TODO 낙관적 업데이트
   const {
     data: likeData,
     isPending,
