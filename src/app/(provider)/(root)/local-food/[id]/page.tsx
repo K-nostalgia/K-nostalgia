@@ -5,20 +5,35 @@ import { useQuery } from '@tanstack/react-query';
 import FixedButtons from '../_components/FixedButtons';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
 import { DetailImage } from './_components/DetailImage';
 import { Review } from './_components/Review';
 
-type LocalDetailPageProps = {
-  params: { id: string };
+export type ReviewType = {
+  review_id: string;
+  user_id: string;
+  product_id: string;
+  rating: number;
+  content: string;
 };
 
-const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
+const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [openModal, setOpenModal] = useState(false); //바텀시트
   const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
   const [activeTab, setActiveTab] = useState('상세 정보');
+  const [review, setReview] = useState<ReviewType[]>([]);
+
+  useEffect(() => {
+    const fetchReview = async () => {
+      const response = await fetch('/api/review');
+      const data = await response.json();
+      setReview(data);
+      return data;
+    };
+    fetchReview();
+  }, []);
 
   const {
     data: food,
@@ -29,7 +44,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('local_food')
-        .select('*, reviews(*)')
+        .select('*')
         .eq('product_id', id)
         .single();
 
@@ -119,7 +134,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
                   : 'text-label-assistive'
               }`}
             >
-              {`리뷰(${food.reviews.length})`}
+              {`리뷰(${review.length || 0})`}
             </p>
           </li>
         </ul>
