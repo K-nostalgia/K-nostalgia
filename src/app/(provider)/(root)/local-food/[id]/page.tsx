@@ -5,20 +5,35 @@ import { useQuery } from '@tanstack/react-query';
 import FixedButtons from '../_components/FixedButtons';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
 import { DetailImage } from './_components/DetailImage';
 import { Review } from './_components/Review';
 
-type LocalDetailPageProps = {
-  params: { id: string };
+export type ReviewType = {
+  review_id: string;
+  user_id: string;
+  product_id: string;
+  rating: number;
+  content: string;
 };
 
-const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
+const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [openModal, setOpenModal] = useState(false); //바텀시트
   const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
   const [activeTab, setActiveTab] = useState('상세 정보');
+  const [review, setReview] = useState<ReviewType[]>([]);
+
+  useEffect(() => {
+    const fetchReview = async () => {
+      const response = await fetch('/api/review');
+      const data = await response.json();
+      setReview(data);
+      return data;
+    };
+    fetchReview();
+  }, []);
 
   const {
     data: food,
@@ -44,18 +59,6 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
 
   const totalAmount =
     (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
-
-  const onPurchase = () => {
-    setOpenModal(true);
-  };
-
-  const handleCartModalOpen = () => {
-    setOpenCartModal(true);
-  };
-
-  const handleCartModalClose = () => {
-    setOpenCartModal(false);
-  };
 
   return (
     <div>
@@ -131,7 +134,7 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
                   : 'text-label-assistive'
               }`}
             >
-              리뷰
+              {`리뷰(${review.length || 0})`}
             </p>
           </li>
         </ul>
@@ -147,9 +150,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       <FixedButtons
         food={food}
         count={food.count}
-        onPurchase={onPurchase}
+        onPurchase={() => setOpenModal(true)}
         isModalOpen={openModal}
-        handleCartModalOpen={handleCartModalOpen}
+        handleCartModalOpen={() => setOpenCartModal(true)}
       />
       {openModal && (
         <div
@@ -162,8 +165,8 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
             <OrderDetail
               params={{ id }}
               isModalOpen={openModal}
-              onPurchase={onPurchase}
-              handleCartModalOpen={handleCartModalOpen}
+              onPurchase={() => setOpenModal(true)}
+              handleCartModalOpen={() => setOpenCartModal(true)}
             />
           </div>
         </div>
@@ -171,12 +174,12 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       {openCartModal && (
         <div
           className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
-          onClick={handleCartModalClose}
+          onClick={() => setOpenCartModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
           >
-            <CartModal handleCartModalClose={handleCartModalClose} />
+            <CartModal handleCartModalClose={() => setOpenCartModal(false)} />
           </div>
         </div>
       )}
