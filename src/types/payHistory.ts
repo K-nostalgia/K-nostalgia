@@ -1,4 +1,38 @@
-export type PayHistory = {
+type ExcludeFromNullable = 'payment_id';
+
+export type NullablePropertiesExcept<T> = {
+  [P in keyof T]: P 
+};
+
+export interface BaseOrderInPayHistory {
+    payment_id: string;
+    status: string;
+    order_name: string;
+    amount: number;
+    price: number;
+    user_id: string;
+    payment_date:string;
+    id: string;
+    pay_provider: string;
+    user_name: string;
+    phone_number: string;
+    products: 
+        {
+            id: string;
+            name: string;
+            amount: number;
+            quantity: number;
+        }[]
+    created_at: string;
+    user_email: string;
+}
+
+export type OrderInPayHistory = NullablePropertiesExcept<BaseOrderInPayHistory>;
+export type OrderListInPayHistory = {
+  [date: string]: OrderInPayHistory[];
+}
+
+export interface PayHistory  {
   status: string;
   id: string;
   transactionId: string;
