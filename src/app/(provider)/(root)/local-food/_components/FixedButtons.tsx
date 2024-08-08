@@ -35,7 +35,7 @@ const FixedButtons = ({
 
   const product = [
     {
-      productId: food.product_id,
+      id: food.product_id,
       name: food.food_name,
       amount: discountAmount * (count ?? 0),
       quantity: count ?? 0

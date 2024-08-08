@@ -26,25 +26,6 @@ const CheckPaymentContent = () => {
       if (paymentId) {
         try {
           const postPaymentHistory = async () => {
-            // 환불
-            const cancelResponse = await fetch('/api/payment/transaction', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ paymentId })
-            });
-
-            if (!cancelResponse.ok) {
-              toast({
-                variant: 'destructive',
-                description:
-                  '마이페이지의 주문내역에서 환불이 되었는지 확인해주세요'
-              });
-              throw new Error(
-                `Cancellation failed: ${cancelResponse.statusText}`
-              );
-            }
             //결제 내역 단건 조회
             const getPayHistory = await fetch(
               `/api/payment/transaction?paymentId=${paymentId}`
@@ -64,19 +45,12 @@ const CheckPaymentContent = () => {
               .locale('ko')
               .format('YYYY-MM-DD HH:MM');
 
-            if (status === 'PAID') {
-              toast({
-                variant: 'destructive',
-                description: '주문 내역 페이지에서 확인해주세요.'
-              });
-            }
-
             if (status === 'FAILED') {
               toast({
                 variant: 'destructive',
                 description: '결제에 실패했습니다. 다시 시도해주세요.'
               });
-              router.push(`/local-food`);
+              router.replace(`/local-food`);
               return;
             }
 
@@ -110,7 +84,7 @@ const CheckPaymentContent = () => {
               description: '결제 완료.'
             });
 
-            router.push(`complete-payment?paymentId=${paymentId}`);
+            router.replace(`complete-payment?paymentId=${paymentId}`);
           };
           postPaymentHistory();
         } catch (error) {

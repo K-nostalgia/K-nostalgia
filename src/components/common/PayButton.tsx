@@ -14,7 +14,7 @@ export type Products = {
   name: string | null;
   amount: number;
   quantity: number;
-  id?: string | undefined;
+  id: string | null;
 }[];
 
 interface Props {
@@ -25,14 +25,13 @@ interface Props {
 const PayButton = ({ orderNameArr, product }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
-  const products = product.map((prev) => ({ ...prev, id: uuidv4() }));
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
 
   const deliveryCharge: number = 2500;
   const discount: number = 2000;
-  const price: number = products.reduce((acc, item) => acc + item.amount, 0);
+  const price: number = product.reduce((acc, item) => acc + item.amount, 0);
 
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + deliveryCharge - discount;
@@ -62,7 +61,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
 
       toast({
         variant: 'destructive',
-        description: '가결제입니다. 즉시 환불 처리 됩니다.'
+        description: '가결제입니다. 주문 내역에서 환불 가능합니다.'
       });
       const { name, email, id } = users;
 
@@ -76,7 +75,7 @@ const PayButton = ({ orderNameArr, product }: Props) => {
         totalAmount,
         currency: 'CURRENCY_KRW',
         payMethod: 'CARD',
-        products: products as any,
+        products: product as any,
         redirectUrl:
           process.env.NODE_ENV === 'production'
             ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
@@ -101,7 +100,6 @@ const PayButton = ({ orderNameArr, product }: Props) => {
           }
         }
       });
-
       const paymentId = response?.paymentId;
 
       if (response?.code != null) {
@@ -109,10 +107,10 @@ const PayButton = ({ orderNameArr, product }: Props) => {
           variant: 'destructive',
           description: '결제에 실패했습니다. 다시 시도해주세요.'
         });
-        return router.push(`${pathName}`);
+        return router.replace(`${pathName}`);
       }
 
-      router.replace(
+      router.push(
         `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
       );
     } else {
