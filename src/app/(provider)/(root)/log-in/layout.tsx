@@ -4,7 +4,7 @@ import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 
-function LogInFrontLayout({ children }: PropsWithChildren) {
+function LogInLayout({ children }: PropsWithChildren) {
   const [isGuest, setIsGuest] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,4 +25,4 @@ function LogInFrontLayout({ children }: PropsWithChildren) {
   );
 }
 
-export default LogInFrontLayout;
+export default LogInLayout;
