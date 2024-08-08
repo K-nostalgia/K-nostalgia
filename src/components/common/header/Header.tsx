@@ -27,9 +27,9 @@ const Header = ({
         {headerTitle}
       </div>
       <div className="flex items-center">
-        {showSearch && (
+        {showSearch || showCart ? (
           <ShowSearchCart showSearch={showSearch} showCart={showCart} />
-        )}
+        ) : null}
         {showComplete && (
           <button className="text-black" onClick={onCompleteClick}>
             완료

@@ -9,6 +9,7 @@ function MyPageLayout({ children }: PropsWithChildren) {
       showChat={true}
       showNavigation={true}
       showSearch={false}
+      showCart={true}
       headerTitle="내 프로필"
     >
       {children}
