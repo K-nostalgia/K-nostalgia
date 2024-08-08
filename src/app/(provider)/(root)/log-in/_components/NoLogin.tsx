@@ -12,18 +12,9 @@ const NoLogin = () => {
 
   return (
     <>
-      <div className="flex justify-center">
-        <Image
-          src="/image/ORdivider.png"
-          alt="divider"
-          width={375}
-          height={20}
-          className="w-[375px] h-[20px] mt-[40px]"
-        />
-      </div>
       <div
         onClick={handleNoUserClick}
-        className="text-center mt-[32px] mb-[56px] p-2 text-label-alternative underline text-nowrap cursor-not-allowed"
+        className="text-center mt-4 text-label-alternative underline text-nowrap cursor-pointer"
       >
         비회원으로 입장하기
       </div>

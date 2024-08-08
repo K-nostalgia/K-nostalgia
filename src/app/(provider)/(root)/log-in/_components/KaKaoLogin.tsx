@@ -15,10 +15,10 @@ const KaKaoLogin = () => {
     }
   };
   return (
-    <div className="flex items-center justify-center mt-8">
+    <div className="flex items-center justify-center">
       <div
         onClick={handleClickKaKaoLogin}
-        className="flex items-center justify-center w-[323px] h-[48px] px-[88px] py-[12px] bg-[#FEDF32] border-[#FEDF32] rounded-[12px]"
+        className="flex items-center justify-center w-[320px] h-[48px] px-[88px] py-[12px] bg-[#FEDF32] border-[#FEDF32] rounded-[12px] cursor-pointer"
       >
         <div>
           <Image
@@ -26,7 +26,7 @@ const KaKaoLogin = () => {
             alt="KaKao Logo"
             width={24}
             height={24}
-            className="w-[24px] h-[24px] mr-2"
+            className="w-[24px] h-[24px] mr-3"
           />
         </div>
         <p className="text-label-strong text-center text-nowrap cursor-pointer">

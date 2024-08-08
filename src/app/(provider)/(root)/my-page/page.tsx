@@ -17,7 +17,7 @@ const Mypage = () => {
     if (!isLoading) {
       // console.log(user);
       if (!user) {
-        router.push('/log-in-front');
+        router.push('/log-in');
       }
     }
   }, [isLoading, user]);

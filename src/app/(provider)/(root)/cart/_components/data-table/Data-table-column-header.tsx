@@ -5,20 +5,23 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Image from 'next/image';
 import { CountButton } from './CountButton';
 import supabase from '@/utils/supabase/client';
-import { DeleteButton } from './DeleteButton';
 import Link from 'next/link';
 import { DataTable } from './DataTable';
 import Loading from '@/components/common/Loading';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
-import useSelectedCartStore from '@/zustand/cart/cart.data';
+import { useEffect, useState } from 'react';
+import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
+import { CgClose } from 'react-icons/cg';
+import Swal from 'sweetalert2';
 
 export type CartItem = {
   id: string | null;
   product_id: string | null;
   image: string[] | null;
-  product_price: number | null;
+  product_price: number | 0;
   product_name: string | null;
-  count: number | null;
+  count: number | 0;
+  discountRate: number | 0;
 };
 
 interface TableProps {
@@ -39,7 +42,8 @@ const fetchCartItems = async () => {
     image: item.image ? item.image[0] : null,
     product_price: item.product_price,
     product_name: item.product_name,
-    count: item.count
+    count: item.count,
+    discountRate: item.discountRate
   }));
 
   return mappedCartItems;
@@ -50,9 +54,42 @@ export const TableDataColumns = ({
   setSelectedItems
 }: TableProps) => {
   const { cartData, isPending, error } = useUserCartData();
-  // const { selectedItems, setSelectedItems } = useSelectedCartStore();
+  const mutation = useDeleteProduct();
 
-  //console.log('selectedItems:', selectedItems);
+  const handleDelete = (productId: string) => {
+    mutation.mutate(productId);
+  };
+
+  const openAlert = (productId: string) => {
+    Swal.fire({
+      text: '상품을 삭제하시겠습니까?',
+      showCancelButton: true,
+      cancelButtonColor: '#E0DDD9',
+      confirmButtonColor: '#9C6D2E',
+      cancelButtonText: '취소',
+      confirmButtonText: '삭제',
+      customClass: {
+        popup: 'rounded-[16px] pt-10',
+        actions: 'flex gap-3 mt-8',
+        confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
+        cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete(productId);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (cartData) {
+      const allProductIds = cartData
+        .map((item) => item.product_id)
+        .filter((id): id is string => id !== null);
+
+      setSelectedItems(allProductIds);
+    }
+  }, [cartData, setSelectedItems]);
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
@@ -65,8 +102,7 @@ export const TableDataColumns = ({
         <div className="flex items-center whitespace-nowrap">
           <Checkbox
             checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && 'indeterminate')
+              selectedItems.length === cartData?.length && cartData?.length > 0
             }
             onCheckedChange={(value) => {
               //console.log(value);
@@ -79,9 +115,7 @@ export const TableDataColumns = ({
             aria-label="Select all"
           />
           <div className="text-base text-label-strong ml-2 absolute left-10">
-            {`전체 선택 (${table.getFilteredSelectedRowModel().rows.length}/${
-              table.getFilteredRowModel().rows.length
-            })`}
+            {`전체 선택 (${selectedItems.length}/${cartData?.length || 0})`}
           </div>
         </div>
       ),
@@ -103,7 +137,7 @@ export const TableDataColumns = ({
             });
           }}
           aria-label="Select row"
-          style={{ transform: 'translate(0, -130%)' }}
+          style={{ transform: 'translate(0, -180%)' }}
         />
       ),
       enableSorting: false,
@@ -117,17 +151,17 @@ export const TableDataColumns = ({
         <Link href={`/local-food/${row.getValue('product_id')}`}>
           <Image
             src={row.getValue('image')}
-            width={96}
-            height={96}
+            width={115}
+            height={115}
             priority
             alt={row.getValue('product_name')}
             style={{
               borderRadius: '8px',
-              width: 96,
-              height: 96,
+              width: 115,
+              height: 115,
               objectFit: 'cover',
               translate: '-16%',
-              marginLeft: '5px'
+              marginLeft: '12px'
             }}
           />
         </Link>
@@ -138,7 +172,7 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-45%] translate-y-[-150%]">{`${row.getValue(
+        <div className="text-label-strong text-base translate-x-[-68%] translate-y-[-200%]">{`${row.getValue(
           'product_name'
         )}`}</div>
       )
@@ -147,23 +181,33 @@ export const TableDataColumns = ({
       //상품 가격
       accessorKey: 'product_price',
       header: '',
-      cell: ({ row }) => (
-        <div className="absolute left-[58%] translate-x-[-35%] translate-y-[-80%] text-lg text-primary-strong font-semibold">
-          {`${row.getValue('product_price')?.toLocaleString()} 원`}
-          <span className="text-base font-normal text-label-assistive line-through pl-2 translate-x-[80%]">
-            {`${(
-              ((row.getValue('product_price') as number) || 0) + 2000
-            ).toLocaleString()}원`}
-          </span>
-        </div>
-      )
+      cell: ({ row }) => {
+        const price = row.getValue('product_price') as number;
+        const count = row.getValue('count') as number;
+        const discountRate = row.getValue('discountRate') as number;
+
+        const discountAmount = price - (price * discountRate) / 100;
+        const totalAmount = discountAmount * count;
+
+        return (
+          <div className="absolute left-[65%] translate-x-[-65%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
+            <div className="font-normal text-label-normal text-sm">
+              {`${discountRate}%`}
+              <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
+                {`${price.toLocaleString()}원`}
+              </span>
+            </div>
+            {`${totalAmount.toLocaleString()}원`}
+          </div>
+        );
+      }
     },
     {
       //수량 버튼
       accessorKey: 'count',
       header: '',
       cell: ({ row }) => (
-        <div className="absolute left-[58%] translate-x-[-55%] translate-y-[10%] ">
+        <div className="absolute left-[65%] translate-x-[-65%] translate-y-[35%] ">
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
@@ -180,21 +224,33 @@ export const TableDataColumns = ({
       )
     },
     {
+      accessorKey: 'discountRate',
+      header: '',
+      cell: ({ row }) => (
+        <div style={{ display: 'none' }}>{row.getValue('discountRate')}</div>
+      )
+    },
+    {
       //삭제 버튼
       id: 'delete',
       header: '',
       cell: ({ row }) => (
-        <div className="translate-x-0 translate-y-[-100%]">
-          <DeleteButton productId={row.getValue('product_id')} />
-        </div>
+        <button
+          onClick={() => openAlert(row.getValue('product_id'))}
+          className="translate-x-0 translate-y-[-150%]"
+        >
+          <CgClose className="text-[#959595] w-7 h-7" />
+        </button>
       )
     }
   ];
   return (
-    <DataTable
-      columns={columns}
-      data={cartData ?? []}
-      selectedItems={selectedItems}
-    />
+    <>
+      <DataTable
+        columns={columns}
+        data={cartData ?? []}
+        selectedItems={selectedItems}
+      />
+    </>
   );
 };
