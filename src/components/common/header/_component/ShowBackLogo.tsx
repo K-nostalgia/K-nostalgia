@@ -17,7 +17,7 @@ const ShowBackLogo = ({ showBackButton, showLogo }: ShowBackLogoProps) => {
     return (
       <div
         onClick={() => router.back()}
-        className="flex cursor-pointer items-center"
+        className="flex cursor-pointer items-center w-[76px]"
       >
         <GoArrowLeft className="w-7 h-7" />
       </div>

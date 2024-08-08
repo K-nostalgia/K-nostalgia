@@ -18,17 +18,6 @@ import SearchRecommendations from './SearchRecommendations';
 import { GoSearch } from 'react-icons/go';
 import { Tables } from '@/types/supabase';
 import Link from 'next/link';
-
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut
-} from '@/components/ui/command';
 import useDebounce from '@/hooks/useDebounce';
 
 interface SearchBarProps {

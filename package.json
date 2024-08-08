@@ -28,6 +28,7 @@
     "@tanstack/react-query-devtools": "^5.51.3",
     "@tanstack/react-table": "^8.19.3",
     "@team-mintc/portone-v2": "^0.7.9",
+    "@types/js-cookie": "^3.0.6",
     "add": "^2.0.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
