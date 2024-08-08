@@ -15,7 +15,10 @@ export const SectionVideo = () => {
             제일 인기있는 4개의 시장을 소개합니다!
           </p>
         </div>
-        <Link href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}>
+        <Link
+          href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}
+          target="_blank"
+        >
           <Image
             src={
               'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/youtube.png'
@@ -30,6 +33,7 @@ export const SectionVideo = () => {
         </Link>
         <Link
           href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}
+          target="_blank"
           className="flex items-center gap-1"
         >
           <p className="underline text-label-normal text-sm font-medium">

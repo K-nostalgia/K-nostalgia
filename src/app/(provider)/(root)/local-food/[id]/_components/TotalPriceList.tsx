@@ -13,7 +13,9 @@ export const TotalPriceList = ({ data, count }: OrderProps) => {
 
   useEffect(() => {
     if (data && data.price && count) {
-      setTotalAmount(data.price * count);
+      const discountRate = (data.discountRate ?? 0) / 100;
+      const discountAmount = data.price - data.price * discountRate;
+      setTotalAmount(discountAmount * count);
     }
   }, [data, count]);
 

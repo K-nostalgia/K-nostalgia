@@ -9,15 +9,6 @@ import { TotalPriceList } from './TotalPriceList';
 import { CountButton } from './CountButton';
 import { useState } from 'react';
 import FixedButtons from '../../_components/FixedButtons';
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle
-} from '@/components/ui/sheet';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -65,13 +56,13 @@ export const OrderDetail = ({
           {orderData.title_image && (
             <Image
               src={orderData.title_image[0]}
-              width={96}
-              height={96}
+              width={115}
+              height={115}
               priority
               alt={`${orderData.food_name}이미지`}
               style={{
-                width: 96,
-                height: 96,
+                width: '100%',
+                height: '100%',
                 objectFit: 'cover',
                 borderRadius: 8
               }}
@@ -81,11 +72,20 @@ export const OrderDetail = ({
 
         <div className="bg-normal flex-auto">
           <h2 className="font-semibold">{orderData.food_name}</h2>
-          <strong className="text-lg text-primary-strong">
-            {`${orderData.price?.toLocaleString()}원`}
-            <span className="font-normal text-label-assistive line-through pl-3 text-base">
+
+          {/* 할인 전 금액 */}
+          <div className="flex items-center">
+            <p className="text-sm text-label-normal font-normal">{`${orderData.discountRate}%`}</p>
+            <span className="font-normal text-label-assistive line-through pl-1 text-base">
               {`${orderData.price?.toLocaleString()}원`}
             </span>
+          </div>
+          {/* 할인 후 금액 */}
+          <strong className="text-lg text-primary-20 font-semibold">
+            {`${(
+              (orderData.price ?? 0) -
+              (orderData.price ?? 0) * ((orderData.discountRate ?? 0) / 100)
+            ).toLocaleString()}원`}
           </strong>
           <CountButton count={count} onCountChange={setCount} />
         </div>

@@ -107,6 +107,14 @@ const SignUpContainer = () => {
     }
   };
 
+  const handleback = () => {
+    if (step === 0) {
+      router.push('/log-in-front');
+    } else {
+      prevStep();
+    }
+  };
+
   return (
     <div className="flex-col items-center justify-center flex">
       <div>
@@ -114,7 +122,7 @@ const SignUpContainer = () => {
           <div className="w-[76px]">
             <GoArrowLeft
               className="flex mt-1 mb-1 ml-1 mr-1 text-[28px] text-[##545454] cursor-pointer"
-              onClick={prevStep}
+              onClick={handleback}
             />
           </div>
           <span className="w-1"></span>

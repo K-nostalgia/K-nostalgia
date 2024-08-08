@@ -1,8 +1,14 @@
-"use client"
+'use client';
 
 import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { usePathname } from 'next/navigation';
 import { PropsWithChildren } from 'react';
+
+declare global {
+  interface Window {
+    Kakao: any;
+  }
+}
 
 function MarketLayout({ children }: PropsWithChildren) {
   const pathMarketName: string = usePathname();
@@ -14,7 +20,7 @@ function MarketLayout({ children }: PropsWithChildren) {
       showHeader={true}
       showNavigation={showMarketLayout}
       showBackButton={!showMarketLayout}
-      headerTitle={showMarketLayout ? "전통시장" : ""}
+      headerTitle={showMarketLayout ? '전통시장' : ''}
       showTopButton={true}
     >
       {children}

@@ -1,8 +1,10 @@
 'use client';
+
 import { CgMathPlus } from 'react-icons/cg';
 import { CgMathMinus } from 'react-icons/cg';
 import supabase from '@/utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from '@/components/ui/use-toast';
 
 interface CountButtonProps {
   product_id: string;
@@ -25,7 +27,6 @@ export const CountButton: React.FC<CountButtonProps> = ({
 
     if (error) {
       console.log({ error });
-      alert('수량이 업데이트되지 않았습니다.');
       throw new Error('수량 업데이트 실패');
     }
   };
@@ -96,10 +97,21 @@ export const CountButton: React.FC<CountButtonProps> = ({
     }
   });
 
+  const handleSubtractCount = () => {
+    if (counts <= 1) {
+      toast({
+        variant: 'destructive',
+        description: '최소 주문 수량은 1개 입니다.'
+      });
+    } else {
+      subCountMutation.mutate();
+    }
+  };
+
   return (
     <div className="flex gap-x-4 items-center justify-center border border-label-assistive p-[6px] rounded-[4px] w-24 mt-2">
-      <button onClick={() => subCountMutation.mutate()} className="rounded-sm">
-        <CgMathMinus />
+      <button onClick={handleSubtractCount} className="rounded-sm">
+        <CgMathMinus color="#959595" />
       </button>
       <span>{counts}</span>
       <button onClick={() => addCountMutation.mutate()} className="rounded-sm">
