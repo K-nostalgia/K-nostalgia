@@ -33,7 +33,6 @@ const AdminPayHistory = () => {
   if (!data) {
     return <div>로딩</div>;
   }
-  console.log(data);
   return (
     <div>
       <p className="font-semibold text-[2rem]">
