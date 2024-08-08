@@ -1,20 +1,26 @@
 'use client';
 
+import { HashLoader } from 'react-spinners';
 import { Carousel } from './Carousel';
 import { useQuery } from '@tanstack/react-query';
 
 export type MainMarket = {
+  id: number;
   시장명: string;
   도로명주소: string;
   이미지: string | null;
 }[];
 
 export const SectionMarket = () => {
-  const { data: mainMarket, error: mainMarketError } = useQuery({
+  const {
+    data: mainMarket,
+    isPending,
+    error: mainMarketError
+  } = useQuery({
     queryKey: ['market'],
     queryFn: async () => {
       try {
-        const response = await fetch('/api/market/marketDetailList');
+        const response = await fetch('/api/market/list');
         const { data } = await response.json();
         return data;
       } catch (error) {
@@ -39,12 +45,14 @@ export const SectionMarket = () => {
         );
         const data = await response.json();
         results.push({
+          id: market.id,
           시장명: market.시장명,
           도로명주소: market.도로명주소,
           이미지: data
         });
       } catch (error: any) {
         results.push({
+          id: market.id,
           시장명: market.시장명,
           도로명주소: market.도로명주소,
           이미지: null
@@ -68,7 +76,14 @@ export const SectionMarket = () => {
           유명 전통시장
         </h2>
 
-        <Carousel images={marketImages} />
+        {isPending ? (
+          <div className="flex-col justify-center mt-6">
+            <HashLoader color="#A87939" className="mx-auto" />
+            <p className="my-5">데이터를 불러오고 있어요!</p>
+          </div>
+        ) : (
+          <Carousel images={marketImages} />
+        )}
       </div>
     </div>
   );

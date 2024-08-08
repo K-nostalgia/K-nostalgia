@@ -9,6 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { banners } from '@/lib/banners';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const SectionBanner = () => {
   return (
@@ -27,14 +28,16 @@ export const SectionBanner = () => {
     >
       {banners.map((img, index) => (
         <SwiperSlide key={index}>
-          <Image
-            src={img}
-            width={375}
-            height={335}
-            priority
-            alt={`메인 배너 이미지 ${index + 1}`}
-            style={{ objectFit: 'cover' }}
-          />
+          <Link href={index === 1 ? '/coupon-page' : '#'}>
+            <Image
+              src={img}
+              width={375}
+              height={335}
+              priority
+              alt={`메인 배너 이미지 ${index + 1}`}
+              style={{ objectFit: 'cover' }}
+            />
+          </Link>
         </SwiperSlide>
       ))}
     </Swiper>

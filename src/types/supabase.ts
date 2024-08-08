@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           count: number | null
           created_at: string
+          discountRate: number | null
           id: number
           image: string | null
           product_id: string | null
@@ -23,6 +24,7 @@ export type Database = {
         Insert: {
           count?: number | null
           created_at?: string
+          discountRate?: number | null
           id?: number
           image?: string | null
           product_id?: string | null
@@ -33,6 +35,7 @@ export type Database = {
         Update: {
           count?: number | null
           created_at?: string
+          discountRate?: number | null
           id?: number
           image?: string | null
           product_id?: string | null
@@ -101,24 +104,31 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
-          post_id: string | null
+          market_id: number | null
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: number
-          post_id?: string | null
+          market_id?: number | null
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: number
-          post_id?: string | null
+          market_id?: number | null
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "comments_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "markets"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "comments_user_id_fkey"
             columns: ["user_id"]
@@ -130,30 +140,31 @@ export type Database = {
       }
       likes: {
         Row: {
-          count: number | null
           created_at: string
           id: number
-          is_like: boolean | null
-          post_id: string | null
+          market_id: number
           user_id: string | null
         }
         Insert: {
-          count?: number | null
           created_at?: string
           id?: number
-          is_like?: boolean | null
-          post_id?: string | null
+          market_id: number
           user_id?: string | null
         }
         Update: {
-          count?: number | null
           created_at?: string
           id?: number
-          is_like?: boolean | null
-          post_id?: string | null
+          market_id?: number
           user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "likes_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "markets"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "likes_user_id_fkey"
             columns: ["user_id"]
@@ -169,6 +180,7 @@ export type Database = {
           count: number | null
           created_at: string
           description: string | null
+          discountRate: number | null
           food_image: string | null
           food_name: string | null
           location: string | null
@@ -181,6 +193,7 @@ export type Database = {
           count?: number | null
           created_at?: string
           description?: string | null
+          discountRate?: number | null
           food_image?: string | null
           food_name?: string | null
           location?: string | null
@@ -193,6 +206,7 @@ export type Database = {
           count?: number | null
           created_at?: string
           description?: string | null
+          discountRate?: number | null
           food_image?: string | null
           food_name?: string | null
           location?: string | null
@@ -293,6 +307,48 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "order_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      reviews: {
+        Row: {
+          content: string | null
+          created_at: string
+          product_id: string | null
+          rating: number | null
+          review_id: string
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          product_id?: string | null
+          rating?: number | null
+          review_id?: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          product_id?: string | null
+          rating?: number | null
+          review_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "local_food"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
