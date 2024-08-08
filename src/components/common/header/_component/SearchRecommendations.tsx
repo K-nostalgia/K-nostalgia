@@ -86,21 +86,24 @@ const SearchRecommendations = ({
 }: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  // TODO 재사용성 고민해보기
   const pathName = usePathname();
+  const marketSide = pathName === '/market' || pathName.startsWith('/market');
+  const localFoodSide =
+    pathName === '/local-food' || pathName.startsWith('/local-food/');
+  const homeSide = pathName === '/';
 
   return (
     <div className="text-nowrap bg-normal">
       <div
         className={`px-2 pt-6 ${
-          pathName === '/market' || pathName === 'local-food'
-            ? 'block'
-            : 'hidden'
+          marketSide || localFoodSide || homeSide ? 'block' : 'hidden'
         }`}
       >
         <div className="text-base">
           향그리움이 추천하는{' '}
           <span>
-            {pathName === '/market'
+            {marketSide || homeSide
               ? '전통시장'
               : pathName === '/local-food'
               ? '특산물'
@@ -110,7 +113,7 @@ const SearchRecommendations = ({
         <div className="text-xs text-label-alternative pb-[17px]">
           가장 많이{' '}
           <span>
-            {pathName === '/market'
+            {marketSide || homeSide
               ? '찾았던 전통시장'
               : pathName === 'local-food'
               ? '구매했던 특산물'
@@ -120,7 +123,7 @@ const SearchRecommendations = ({
         </div>
       </div>
       <div className="grid grid-rows-4 grid-cols-2 gap-2">
-        {pathName === '/market'
+        {marketSide || homeSide
           ? top8Market.map((item) => (
               <Link
                 href={`/${item.productId}`}
@@ -135,7 +138,7 @@ const SearchRecommendations = ({
                 </div>
               </Link>
             ))
-          : pathName === '/local-food'
+          : localFoodSide
           ? top5LocalFood.map((item) => (
               <Link
                 href={`/${item.productId}`}

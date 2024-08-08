@@ -3,7 +3,14 @@ import { PropsWithChildren } from 'react';
 
 function MyPageLayout({ children }: PropsWithChildren) {
   return (
-    <DefaultAppLayout showHeader={true} showBackButton={false} showChat={true} showNavigation={true} headerTitle="내 프로필">
+    <DefaultAppLayout
+      showHeader={true}
+      showBackButton={false}
+      showChat={true}
+      showNavigation={true}
+      showSearch={false}
+      headerTitle="내 프로필"
+    >
       {children}
     </DefaultAppLayout>
   );

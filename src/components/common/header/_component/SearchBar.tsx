@@ -39,6 +39,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const marketSide = pathName === '/market' || pathName.startsWith('/market');
   const localFoodSide =
     pathName === '/local-food' || pathName.startsWith('/local-food/');
+  const homeSide = pathName === '/';
 
   // TODO 검색 결과 빈 배열로 받기 => 검색 결과 없음으로 처리
   const handleSearchTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,15 +48,21 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     if (event.target.value.trim() === '') {
       setResponse(null);
     }
+    // 검색어 길이 제한
+    if (event.target.value.length >= 20) {
+      alert('20자 미만으로 검색해주세어흥');
+      setSearchTerm('');
+      return;
+    }
   };
 
-  //검색어 전송 form
+  //검색어 전송 분기 처리
   const submitSearchTerm = useCallback(async () => {
     if (debounceSearchTerm.trim() === '') {
       return setResponse([]);
     }
 
-    // 'markets' or 'local-food'
+    // 'markets' or 'local-food', home일 땐 빈 문자열
     const tableValue = marketSide
       ? 'markets'
       : localFoodSide
@@ -63,17 +70,20 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       : '';
 
     try {
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-        // 공백 제거
-        body: JSON.stringify({
-          searchValue: debounceSearchTerm.replace(/\s+/g, '').trim(),
-          tableValue
-        })
-      });
+      const response = await fetch(
+        tableValue ? '/api/search' : '/api/search/home',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+          },
+          // 공백 제거
+          body: JSON.stringify({
+            searchValue: debounceSearchTerm.replace(/\s+/g, '').trim(),
+            tableValue
+          })
+        }
+      );
       const data = await response.json();
       console.log('3. data 받는 순간', data);
       setResponse(data);
@@ -108,22 +118,24 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                 ? '시장을 검색해주세요'
                 : localFoodSide
                 ? '특산물을 검색해주세요'
+                : homeSide
+                ? '시장과 특산물을 검색해주세요'
                 : '이 페이지 검색은 준비 중이에요'
             }
             value={searchTerm}
             onChange={handleSearchTerm}
-            disabled={!marketSide && !localFoodSide}
+            disabled={!marketSide && !localFoodSide && !homeSide}
             className={`pr-10 placeholder:text-label-alternative text-base ${
               searchTerm.trim() === ''
                 ? 'border-primary-30 rounded-[6px]'
-                : 'border-label-assistive rounded-t-[6px]'
+                : 'border-label-assistive border-b-0 rounded-t-[6px]'
             }`}
           />
           <Button
             type="submit"
             size="icon"
             className="absolute right-2 flex items-center h-full"
-            disabled={!marketSide && !localFoodSide}
+            disabled={!marketSide && !localFoodSide && !homeSide}
             aria-label="검색"
             style={{ border: 'none', background: 'none' }}
             onClick={submitSearchTerm}
@@ -141,17 +153,26 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
           {/* 검색 결과 있을 경우 */}
           {response !== null && response.length > 0 && (
             <div className="border-t border-label-assistive">
-              {response.map((item) => (
+              {response.map((item, index) => (
                 <Link
                   href={
                     marketSide
                       ? `/market/${(item as Market).id}`
-                      : `/local-food/${(item as LocalFood).product_id}`
+                      : localFoodSide
+                      ? `/local-food/${(item as LocalFood).product_id}`
+                      : homeSide
+                      ? `/market/${(item as Market).id}` ||
+                        `/local-food/${(item as LocalFood).product_id}`
+                      : ''
                   }
                   key={
                     marketSide
                       ? (item as Market).id
-                      : (item as LocalFood).product_id
+                      : localFoodSide
+                      ? (item as LocalFood).product_id
+                      : homeSide
+                      ? (item as Market).id || (item as LocalFood).product_id
+                      : Math.random()
                   }
                 >
                   <div
@@ -160,7 +181,11 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
                   >
                     {marketSide
                       ? (item as Market).시장명
-                      : (item as LocalFood).food_name}
+                      : localFoodSide
+                      ? (item as LocalFood).food_name
+                      : homeSide
+                      ? (item as Market).시장명 || (item as LocalFood).food_name
+                      : ''}
                   </div>
                 </Link>
               ))}
