@@ -41,10 +41,7 @@ const CommandInput = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Input>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>
 >(({ className, ...props }, ref) => (
-  <div
-    className="w-full flex items-center border-b px-3"
-    cmdk-input-wrapper=""
-  >
+  <div className="w-full flex items-center border-b" cmdk-input-wrapper="">
     {/* <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" /> */}
     <CommandPrimitive.Input
       ref={ref}
@@ -78,7 +75,7 @@ const CommandEmpty = React.forwardRef<
 >((props, ref) => (
   <CommandPrimitive.Empty
     ref={ref}
-    className="py-6 text-center text-sm"
+    className="py-6 text-center text-sm text-label-assistive my-3"
     {...props}
   />
 ));
@@ -116,16 +113,27 @@ CommandSeparator.displayName = CommandPrimitive.Separator.displayName;
 const CommandItem = React.forwardRef<
   React.ElementRef<typeof CommandPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof CommandPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <CommandPrimitive.Item
-    ref={ref}
-    className={cn(
-      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
-      className
-    )}
-    {...props}
-  />
-));
+>(({ className, ...props }, ref) => {
+  const customFilter = React.useCallback((value: string, search: string) => {
+    const normalizedValue = value.replace(/\s+/g, '');
+    const normalizedSearch = search.replace(/\s+/g, '');
+    return normalizedValue.includes(normalizedSearch);
+  }, []);
+
+  return (
+    <CommandPrimitive.Item
+      ref={ref}
+      className={cn(
+        "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50",
+        className
+      )}
+      {...props}
+      _cmdk-item-select={(value: string, search: string) =>
+        customFilter(value, search)
+      }
+    />
+  );
+});
 
 CommandItem.displayName = CommandPrimitive.Item.displayName;
 

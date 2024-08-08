@@ -90,15 +90,31 @@ const SearchRecommendations = ({
 
   return (
     <div className="text-nowrap bg-normal">
-      <div className="px-2 pt-6">
+      <div
+        className={`px-2 pt-6 ${
+          pathName === '/market' || pathName === 'local-food'
+            ? 'block'
+            : 'hidden'
+        }`}
+      >
         <div className="text-base">
           향그리움이 추천하는{' '}
-          <span>{pathName === '/market' ? '전통시장' : '특산물'}</span>
+          <span>
+            {pathName === '/market'
+              ? '전통시장'
+              : pathName === '/local-food'
+              ? '특산물'
+              : ''}
+          </span>
         </div>
         <div className="text-xs text-label-alternative pb-[17px]">
           가장 많이{' '}
           <span>
-            {pathName === '/market' ? '찾았던 전통시장' : '구매했던 특산물'}
+            {pathName === '/market'
+              ? '찾았던 전통시장'
+              : pathName === 'local-food'
+              ? '구매했던 특산물'
+              : ''}
           </span>
           을 추천해 드려요
         </div>
@@ -119,7 +135,8 @@ const SearchRecommendations = ({
                 </div>
               </Link>
             ))
-          : top5LocalFood.map((item) => (
+          : pathName === '/local-food'
+          ? top5LocalFood.map((item) => (
               <Link
                 href={`/${item.productId}`}
                 key={item.id}
@@ -132,7 +149,8 @@ const SearchRecommendations = ({
                   <span className="text-sm">{item.productName}</span>
                 </div>
               </Link>
-            ))}
+            ))
+          : ''}
       </div>
     </div>
   );
