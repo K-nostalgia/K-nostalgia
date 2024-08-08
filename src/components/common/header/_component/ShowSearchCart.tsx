@@ -68,7 +68,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
       </div>
     );
   } else {
-    return <div className="flex p-1 gap-3 w-[76px] h-9"></div>;
+    return <div className="flex p-1 w-[88px] h-9"></div>;
   }
 };
 
