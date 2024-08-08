@@ -24,7 +24,7 @@ const ShowBackLogo = ({ showBackButton, showLogo }: ShowBackLogoProps) => {
     );
   } else if (!showBackButton && showLogo) {
     return (
-      <div onClick={() => router.push('/')} className="cursor-pointer">
+      <div onClick={() => router.push('/')} className="cursor-pointer pl-1">
         <TitleLogo />
       </div>
     );
