@@ -30,7 +30,7 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
           className="cursor-pointer w-7 h-7"
           onClick={handleSearchToggle}
         />
-        <div className="relative w-7 h-9">
+        <div className="relative w-9 h-9">
           <PiShoppingCartSimple
             onClick={() => router.push('/cart')}
             className="cursor-pointer w-7 h-7 "
