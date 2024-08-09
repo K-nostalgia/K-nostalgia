@@ -81,6 +81,7 @@ export const TableDataColumns = ({
     });
   };
 
+  //장바구니 페이지 들어왔을 때 체크 활성화 상태
   useEffect(() => {
     if (cartData) {
       const allProductIds = cartData
@@ -160,8 +161,7 @@ export const TableDataColumns = ({
               width: 115,
               height: 115,
               objectFit: 'cover',
-              translate: '-16%',
-              marginLeft: '12px'
+              translate: '-20%'
             }}
           />
         </Link>
@@ -172,9 +172,9 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-68%] translate-y-[-200%]">{`${row.getValue(
-          'product_name'
-        )}`}</div>
+        <div className="absolute left-[57%] text-label-strong text-base translate-x-[-57%] translate-y-[-250%]">
+          {`${row.getValue('product_name')}`}
+        </div>
       )
     },
     {
@@ -211,6 +211,7 @@ export const TableDataColumns = ({
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
+            selectedItems={selectedItems}
           />
         </div>
       )
@@ -227,7 +228,9 @@ export const TableDataColumns = ({
       accessorKey: 'discountRate',
       header: '',
       cell: ({ row }) => (
-        <div style={{ display: 'none' }}>{row.getValue('discountRate')}</div>
+        <div style={{ visibility: 'hidden' }}>
+          {row.getValue('discountRate')}
+        </div>
       )
     },
     {
