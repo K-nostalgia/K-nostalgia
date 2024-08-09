@@ -11,9 +11,8 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import ChatIcon from '../../icons/ChatIcon';
 import ChatSendIcon from '../../icons/ChatSendIcon';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
 import { useUser } from '@/hooks/useUser';
@@ -48,9 +47,9 @@ export function SendChat({
   setSelectedChatRoom,
   isOpen
 }: SendChatProps) {
-  const [message, setMessage] = useState<string>('');
   const queryClient = useQueryClient();
   const { data: user } = useUser();
+  const messageRef = useRef<HTMLInputElement>(null);
   const scrollDown = useRef<HTMLDivElement | null>(null);
 
   // xss 공격 방지
@@ -75,7 +74,6 @@ export function SendChat({
       },
       body: JSON.stringify({ room_id: selectedChatRoom?.room_id })
     });
-    console.log('계속 실행 되는 거 같다??');
     const { data } = await response.json();
     return data;
   };
@@ -85,13 +83,6 @@ export function SendChat({
     queryFn: fetchChatData,
     enabled: !!selectedChatRoom?.room_id
   });
-
-  console.log(data);
-
-  // chat 입력
-  const handleMessage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMessage(event.target.value);
-  };
 
   //chat 전송
   const sendMessage = async (newMessage: {
@@ -107,11 +98,6 @@ export function SendChat({
       body: JSON.stringify(newMessage)
     });
 
-    if (!response.ok) {
-      console.log('비상비상~~~~~~');
-    }
-
-    setMessage('');
     return response.json();
   };
 
@@ -121,17 +107,19 @@ export function SendChat({
       queryClient.invalidateQueries({
         queryKey: ['chatData', selectedChatRoom?.room_id]
       });
+      if (messageRef.current) {
+        messageRef.current.value = '';
+      }
     }
   });
 
   // 유효성 검사 추가하기
   const handleSendMessage = () => {
     if (!user || !selectedChatRoom) {
-      console.log('머예여 이상하잖아용');
       return;
     }
 
-    if (!message.trim()) {
+    if (!messageRef.current?.value.trim()) {
       console.log('메시지가 비어잇어흥.');
       return;
     }
@@ -139,7 +127,7 @@ export function SendChat({
     const newMessage = {
       room_id: selectedChatRoom.room_id,
       user_id: user.id,
-      content: message
+      content: messageRef.current.value
     };
 
     sendMessageMutate.mutate(newMessage);
@@ -180,7 +168,6 @@ export function SendChat({
 
   // 1) 모달 켰을 때, 2) 채팅 메세지 쓸 때 스크롤 하단 유지
   useEffect(() => {
-    console.log(isOpen)
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         if (scrollDown.current) {
@@ -195,10 +182,7 @@ export function SendChat({
     }
   }, [isOpen, data]);
 
-  console.log(isOpen);
-
   const handleBackChatRoom = () => {
-    console.log('실행은 되는 거니');
     setSelectedChatRoom(null);
   };
 
@@ -281,6 +265,7 @@ export function SendChat({
           >
             <div className="relative">
               <Input
+                ref={messageRef}
                 type="text"
                 placeholder={
                   user
@@ -288,8 +273,6 @@ export function SendChat({
                     : '향그리움의 가족만 이용할 수 있어요'
                 }
                 className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base"
-                value={message}
-                onChange={handleMessage}
                 disabled={!user}
                 aria-label="메시지 입력"
               />
@@ -297,7 +280,7 @@ export function SendChat({
                 type="submit"
                 size="icon"
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                disabled={!user || message.trim() === ''}
+                disabled={!user}
                 aria-label="메시지 전송"
               >
                 <ChatSendIcon />

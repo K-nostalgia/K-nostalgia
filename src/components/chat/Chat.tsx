@@ -23,7 +23,7 @@ export function Chat() {
 
   const handleDialogStateChange = (open: boolean) => {
     setIsOpen(open);
-    console.log(isOpen);
+    setSelectedChatRoom(null);
   };
 
   return (
