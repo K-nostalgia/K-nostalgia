@@ -173,10 +173,7 @@ const FixedButtons = ({
 
           <div onClick={onPurchase} className="flex-1">
             {isModalOpen ? (
-              <PayButton
-                product={product}
-                orderNameArr={[food.food_name, food.product_id]}
-              />
+              <PayButton product={product} orderNameArr={[food.food_name]} />
             ) : (
               <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
                 구매하기
