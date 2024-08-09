@@ -6,6 +6,7 @@ import PortOne from '@portone/browser-sdk/v2';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from '../ui/use-toast';
 
@@ -13,26 +14,27 @@ export type Products = {
   name: string | null;
   amount: number;
   quantity: number;
-  id?: string;
+  id: string | null;
 }[];
 
-type Props = {
+interface Props {
   orderNameArr: (string | null)[];
   product: Products;
-};
+  //TODO selectedItems PROPS로 받아서 없을 경우 버튼 스타일링 OR 비활성화하기
+  // selectedItems: string[];
+}
 
 const PayButton = ({ orderNameArr, product }: Props) => {
+  console.log(orderNameArr);
   const router = useRouter();
   const pathName = usePathname();
-  const requestOrderName = orderNameArr.join(',');
-  const products = product.map((prev) => ({ ...prev, id: uuidv4() }));
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
 
   const deliveryCharge: number = 2500;
   const discount: number = 2000;
-  const price: number = products.reduce((acc, item) => acc + item.amount, 0);
+  const price: number = product.reduce((acc, item) => acc + item.amount, 0);
 
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + deliveryCharge - discount;
@@ -42,86 +44,117 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     queryFn: () => api.auth.getUser()
   });
 
-  const payRequest = async () => {
+  const [lastCallTime, setLastCallTime] = useState(0);
+  const DELAY = 3000;
+
+  const throttledPayRequest = useCallback(async () => {
     if (!users) {
-      return alert('로그인 후 이용 가능합니다');
-    }
-    toast({
-      variant: 'destructive',
-      description: '가결제입니다. 즉시 환불 처리 됩니다.'
-    });
-    const { name, email, id } = users;
-
-    const response = await PortOne.requestPayment({
-      storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
-      channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
-      paymentId: `${newPaymentId}`,
-      orderName: requestOrderName,
-      totalAmount,
-      currency: 'CURRENCY_KRW',
-      payMethod: 'CARD',
-      products: products as any,
-      redirectUrl:
-        process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
-          : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
-      appScheme:
-        process.env.NODE_ENV === 'production'
-          ? `https://k-nostalgia.vercel.app/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`
-          : `http://localhost:3000/check-payment?path_name=${pathName}&totalQuantity=${totalQuantity}`,
-      customer: {
-        customerId: id,
-        email: email as string,
-        phoneNumber: '01000000000',
-        fullName: name as string
-      },
-      windowType: {
-        pc: 'IFRAME',
-        mobile: 'REDIRECTION'
-      },
-      bypass: {
-        inicis_v2: {
-          acceptmethod: [`SKIN(#586452)`]
-        }
-      }
-    });
-
-    const paymentId = response?.paymentId;
-
-    if (response?.code != null) {
-      // 결제 과정에서 오류 발생시 처리
-
-      router.push(`${pathName}`);
-
       return toast({
-        variant: 'destructive',
-        description: '결제에 실패했습니다. 다시 시도해주세요.'
+        description: '로그인 후 이용 가능합니다.'
       });
     }
+    if (product.length === 0) {
+      return toast({
+        description: '구매할 상품을 선택 해 주세요.'
+      });
+    }
+    const now = Date.now();
+    if (now - lastCallTime >= DELAY) {
+      setLastCallTime(now);
 
-    router.replace(
-      `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
-    );
-  };
+      toast({
+        variant: 'destructive',
+        description: '가결제입니다. 주문 내역에서 환불 가능합니다.'
+      });
+      const { name, email, id } = users;
 
-  //TODO 결제 완료 후 서버에 확인 요청 (금액대조) => 추후 구현
-  // const notified = await fetch(`api/payment/complete`, {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   // paymentId와 주문 정보를 서버에 전달합니다
-  //   body: JSON.stringify({
-  //     paymentId: response.paymentId
-  //     // 주문 정보...
-  //   })
-  // });
-  // console.log(response);
-  // };
+      const requestOrderName = orderNameArr.join(',');
+
+      const response = await PortOne.requestPayment({
+        storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
+        channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
+        paymentId: `${newPaymentId}`,
+        orderName: requestOrderName,
+        totalAmount,
+        currency: 'CURRENCY_KRW',
+        payMethod: 'CARD',
+        products: product as any,
+        redirectUrl:
+          process.env.NODE_ENV === 'production'
+            ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+            : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
+        appScheme:
+          process.env.NODE_ENV === 'production'
+            ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+            : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
+        noticeUrls: [
+          `https://k-nostalgia.vercel.app/api/payment/webhook`,
+          //TODO 테스트용 URL (추후 제거)
+          'https://134c-118-33-158-132.ngrok-free.app/api/payment/webhook'
+        ],
+
+        customer: {
+          customerId: id,
+          email: email as string,
+          phoneNumber: '01000000000',
+          fullName: name as string
+        },
+        windowType: {
+          pc: 'IFRAME',
+          mobile: 'REDIRECTION'
+        },
+        bypass: {
+          inicis_v2: {
+            acceptmethod: [`SKIN(#586452)`]
+          }
+        }
+      });
+      const paymentId = response?.paymentId;
+
+      if (response?.code != null) {
+        toast({
+          variant: 'destructive',
+          description: '결제에 실패했습니다. 다시 시도해주세요.'
+        });
+        return router.replace(`${pathName}`);
+      }
+
+      router.push(
+        `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
+      );
+    } else {
+      toast({
+        description: '결제 창 요청중입니다'
+      });
+    }
+  }, [
+    users,
+    product,
+    orderNameArr,
+    totalQuantity,
+    totalAmount,
+    router,
+    pathName,
+    lastCallTime
+  ]);
 
   return (
+    //   <div>
+    //   <button
+    //     className={`min-w-[165px] ${
+    //       selectedItems && selectedItems.length > 0
+    //         ? 'bg-primary-20'
+    //         : 'bg-label-disable'
+    //     } py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7`}
+    //     onClick={payRequest}
+    //   >
+    //     바로 구매하기
+    //   </button>
+    // </div>
     <div>
       <button
         className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
-        onClick={payRequest}
+        onClick={throttledPayRequest}
       >
         바로 구매하기
       </button>
