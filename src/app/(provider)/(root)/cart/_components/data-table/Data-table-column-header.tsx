@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
 import { CgClose } from 'react-icons/cg';
 import Swal from 'sweetalert2';
+import { DeleteButton } from './DeleteButton';
 
 export type CartItem = {
   id: string | null;
@@ -24,7 +25,7 @@ export type CartItem = {
   discountRate: number | 0;
 };
 
-interface TableProps {
+export interface TableProps {
   selectedItems: string[];
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -249,11 +250,19 @@ export const TableDataColumns = ({
   ];
   return (
     <>
-      <DataTable
-        columns={columns}
-        data={cartData ?? []}
-        selectedItems={selectedItems}
-      />
+      <div className="fixed z-50 top-[13%] translate-y-[12%] right-4">
+        <DeleteButton
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
+        />
+      </div>
+      <div className="relative">
+        <DataTable
+          columns={columns}
+          data={cartData ?? []}
+          selectedItems={selectedItems}
+        />
+      </div>
     </>
   );
 };
