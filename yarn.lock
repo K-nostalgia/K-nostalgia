@@ -866,6 +866,13 @@
   resolved "https://registry.yarnpkg.com/@portone/browser-sdk/-/browser-sdk-0.0.8.tgz#660692320ab4a517c4fb4f37a39b58ef186be836"
   integrity sha512-OPejBEDy5IhsGo4bGq9wtoulkPPg5ahKM/3/WL4E1sii3dwNQpFf3F0mEw3pau6XLm8/1khJZ44aJZheKBYKlQ==
 
+"@radix-ui/primitive@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@radix-ui/primitive/-/primitive-1.0.1.tgz#e46f9958b35d10e9f6dc71c497305c22e3e55dbd"
+  integrity sha512-yQ8oGX2GVsEYMWGxcovu1uGWPCxV5BFfeeYxqPmuAzUyLT9qmaMXSAhXpb0WrspIeqYzdJpkh2vHModJPgRIaw==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+
 "@radix-ui/primitive@1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@radix-ui/primitive/-/primitive-1.1.0.tgz#42ef83b3b56dccad5d703ae8c42919a68798bbe2"
