@@ -4,7 +4,7 @@ import LoginForm from './_components/LoginForm';
 
 const LoginPage = () => {
   return (
-    <div className="bg-normal flex flex-col items-center justify-center">
+    <div className="bg-normal flex flex-col items-center justify-center xs:hidden">
       <LoginHeader />
       <LoginForm />
     </div>
