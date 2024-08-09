@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/service/service';
 import { GoArrowLeft } from 'react-icons/go';
@@ -44,6 +44,22 @@ const SignUpContainer = () => {
     setSuccesses((prev) => ({ ...prev, [name]: '' }));
   };
 
+  useEffect(() => {
+    if (step === 1) {
+      if (
+        userInfo.confirmPassword &&
+        userInfo.password !== userInfo.confirmPassword
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          confirmPassword: '비밀번호가 일치하지 않습니다.'
+        }));
+      } else {
+        setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+      }
+    }
+  }, [userInfo.password, userInfo.confirmPassword, step]);
+
   const validateStep = () => {
     const currentStep = steps[step];
     const value = userInfo[currentStep.key as keyof typeof userInfo];
@@ -54,14 +70,17 @@ const SignUpContainer = () => {
       error = '입력은 필수입니다.';
     } else if (currentStep.key === 'email' && !validateEmail(value)) {
       error = '형식에 맞지 않는 이메일 주소에요.';
-    } else if (currentStep.key === 'password' && !validatePassword(value)) {
-      error =
-        '영문 대문자, 소문자, 숫자와 !"?&@%$와 같은 특수문자를 포함하여 6글자 이상 입력하셔야해요.';
-    } else if (
-      currentStep.key === 'confirmPassword' &&
-      value !== userInfo.password
-    ) {
-      error = '비밀번호를 다시 확인해 주세요.';
+    } else if (currentStep.key === 'password') {
+      if (!validatePassword(value)) {
+        error =
+          '영문 대소문자, 숫자와 특수문자를 포함하여 6글자 이상 입력하셔야해요.';
+      } else if (value !== userInfo.confirmPassword) {
+        setErrors((prev) => ({
+          ...prev,
+          confirmPassword: '비밀번호가 일치하지 않습니다.'
+        }));
+        return false;
+      }
     } else if (currentStep.key === 'name' && !validateName(value)) {
       error = '정확한 이름을 입력해주세요.';
     } else if (currentStep.key === 'nickname' && !validateNickName(value)) {
@@ -235,9 +254,22 @@ const SignUpContainer = () => {
             onEmailCheckDuplicate={handleEmailCheckDuplicate}
             onNicknameCheckDuplicate={handleNicknameCheckDuplicate}
           />
+
+          {step === 1 && (
+            <SignupForm
+              title=""
+              label="비밀번호 재확인"
+              placeholder="한번 더 입력해주세요"
+              type="password"
+              name="confirmPassword"
+              value={userInfo.confirmPassword}
+              onChange={handleChange}
+              error={errors.confirmPassword}
+            />
+          )}
         </div>
       </div>
-      <div className=" w-[320px] h-[48px]  ml-[27px] mt-[440px] flex justify-between mb-10">
+      <div className="absolute bottom-0 left-0 right-0 p-[20px] flex justify-center">
         <button
           onClick={step === steps.length - 1 ? handleSubmit : nextStep}
           className="w-[320px] h-[48px] py-[12px] px-[16px] bg-primary-strong text-white rounded-xl"

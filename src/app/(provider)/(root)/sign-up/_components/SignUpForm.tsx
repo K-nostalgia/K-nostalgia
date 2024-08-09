@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { PiEye, PiEyeSlash } from 'react-icons/pi';
 
 interface SignupFormProps {
-  title: string;
+  title?: string;
   label: string;
   placeholder: string;
   type: string;
@@ -37,9 +37,11 @@ const SignupForm: React.FC<SignupFormProps> = ({
 
   return (
     <div className="relative">
-      <label className="block text-label-normal text-xl mb-5 mt-[40px] ml-[32px] text-left">
-        {title}
-      </label>
+      {title && (
+        <label className="block text-label-normal text-xl mb-5 ml-[32px] mt-10 text-left">
+          {title}
+        </label>
+      )}
       <div className="px-4 py-3 gap-2 w-[375px]">
         <label className="block text-label-alternative mb-2 px-[16px]">
           {label}
@@ -83,7 +85,20 @@ const SignupForm: React.FC<SignupFormProps> = ({
             </button>
           )}
         </div>
-        {error && <p className="text-red-500 text-sm px-4">{error}</p>}
+        {name === 'password' && (
+          <p
+            className={`${
+              error ? 'text-red-500' : 'text-label-alternative'
+            } text-sm px-4`}
+          >
+            {error ||
+              '영문 대소문자, 숫자와 특수문자를 포함하여 6글자 이상 입력해주세요.'}
+          </p>
+        )}
+        {name !== 'password' && error && (
+          <p className="text-red-500 text-sm px-4">{error}</p>
+        )}
+
         {successMessage && (
           <p className="text-green-500 text-sm px-4">{successMessage}</p>
         )}
