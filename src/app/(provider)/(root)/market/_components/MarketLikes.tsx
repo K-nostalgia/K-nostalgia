@@ -1,5 +1,5 @@
+import { toast } from '@/components/ui/use-toast';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 
 interface MarketLikesPropsType {
@@ -9,6 +9,12 @@ interface MarketLikesPropsType {
 
 const MarketLikes = ({ userId, marketId }: MarketLikesPropsType) => {
   const handleHeart = async () => {
+    if (!userId) {
+      return toast({
+        variant: 'destructive',
+        description: '로그인 후 이용할 수 있어요.'
+      });
+    }
     heartMutate(isLiked);
   };
   const getIsLiked = async () => {
@@ -74,6 +80,17 @@ const MarketLikes = ({ userId, marketId }: MarketLikesPropsType) => {
     }
   });
 
+  if (isPending) {
+    return <GoHeart className="w-5 h-5 text-[#545454]" />;
+  }
+
+  if (!userId) {
+    return (
+      <button onClick={() => handleHeart()}>
+        <GoHeart className="w-5 h-5 text-[#545454]" />
+      </button>
+    );
+  }
   return (
     <button onClick={() => handleHeart()}>
       {isLiked ? (

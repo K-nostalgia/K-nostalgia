@@ -149,7 +149,14 @@ const MarketPage = () => {
                         <p className="pl-1 text-base font-semibold text-label-strong">
                           {item.시장명}
                         </p>
-                        <MarketLikes userId={user?.id} marketId={item.id} />
+                        <div
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <MarketLikes userId={user?.id} marketId={item.id} />
+                        </div>
                       </div>
                       <p className="pl-1 text-sm text-label-alternative">
                         {item.도로명주소}
