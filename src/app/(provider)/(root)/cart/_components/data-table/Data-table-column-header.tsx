@@ -67,8 +67,8 @@ export const TableDataColumns = ({
       showCancelButton: true,
       cancelButtonColor: '#E0DDD9',
       confirmButtonColor: '#9C6D2E',
-      cancelButtonText: '취소',
-      confirmButtonText: '삭제',
+      cancelButtonText: '취소하기',
+      confirmButtonText: '삭제하기',
       customClass: {
         popup: 'rounded-[16px] pt-10',
         actions: 'flex gap-3 mt-8',

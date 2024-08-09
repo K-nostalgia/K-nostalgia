@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/use-toast';
 import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
 
 interface ButtonProps {
@@ -12,6 +13,13 @@ export const DeleteButton = ({
   const mutation = useDeleteProduct();
 
   const handleSelectedDelete = () => {
+    if (selectedItems.length === 0) {
+      toast({
+        variant: 'destructive',
+        description: '삭제할 상품을 선택해주세요.'
+      });
+      return;
+    }
     selectedItems.forEach((productId) => {
       mutation.mutate(productId);
     });
