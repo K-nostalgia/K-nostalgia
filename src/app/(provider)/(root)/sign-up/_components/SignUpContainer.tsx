@@ -35,6 +35,7 @@ const SignUpContainer = () => {
   const [successes, setSuccesses] = useState<SuccessState>({});
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [inputStarted, setInputStarted] = useState(false);
 
   //입력 필드의 변경 사항을 반영
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,6 +43,7 @@ const SignUpContainer = () => {
     setUserInfo((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: '' }));
     setSuccesses((prev) => ({ ...prev, [name]: '' }));
+    setInputStarted(true);
   };
 
   useEffect(() => {
@@ -106,6 +108,10 @@ const SignUpContainer = () => {
   };
 
   const nextStep = () => {
+    if (!validateStep()) {
+      return; // 유효성 검사 실패 시 함수 종료
+    }
+
     // 이메일 중복 확인이 필요할 경우 추가적인 검사를 진행합니다.
     if (step === 0) {
       if (!isEmailChecked) {
@@ -253,6 +259,9 @@ const SignUpContainer = () => {
             successMessage={successes[steps[step].key]}
             onEmailCheckDuplicate={handleEmailCheckDuplicate}
             onNicknameCheckDuplicate={handleNicknameCheckDuplicate}
+            isEmailChecked={isEmailChecked}
+            isNicknameChecked={isNicknameChecked}
+            inputStarted={inputStarted}
           />
 
           {step === 1 && (
@@ -269,7 +278,7 @@ const SignUpContainer = () => {
           )}
         </div>
       </div>
-      <div className="absolute bottom-0 left-0 right-0 p-[20px] flex justify-center">
+      <div className="absolute bottom-0 left-0 right-0 mb-10 flex justify-center">
         <button
           onClick={step === steps.length - 1 ? handleSubmit : nextStep}
           className="w-[320px] h-[48px] py-[12px] px-[16px] bg-primary-strong text-white rounded-xl"

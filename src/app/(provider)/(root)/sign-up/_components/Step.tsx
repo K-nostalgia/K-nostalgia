@@ -21,13 +21,6 @@ const steps: Step[] = [
     type: 'password',
     key: 'password'
   },
-  // {
-  //   label: '비밀번호 재확인',
-  //   title: '비밀번호를 한번 더 확인할게요',
-  //   placeholder: '한번 더 입력해주세요',
-  //   type: 'password',
-  //   key: 'confirmPassword'
-  // },
   {
     label: '이름',
     title: '성함이 어떻게 되시나요?',
