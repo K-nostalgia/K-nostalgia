@@ -1,8 +1,10 @@
 'use client';
+import { useUser } from '@/hooks/useUser';
 import supabase from '@/utils/supabase/client';
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
+import Swal from 'sweetalert2';
 
 interface likeProps {
   marketId: number;
@@ -10,9 +12,10 @@ interface likeProps {
 }
 
 export const LikeButton = ({ marketId, userId }: likeProps) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
+  const { data: userData } = useUser();
+  const router = useRouter();
 
-  //TODO 낙관적 업데이트
   const {
     data: likeData,
     isPending,
@@ -80,8 +83,30 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
   });
 
   const handleLikeToggle = () => {
+    if (!userData) {
+      Swal.fire({
+        title: '로그인 후 이용해주세요',
+        text: '로그인 페이지로 이동할까요?',
+        showCancelButton: true,
+        cancelButtonColor: '#E0DDD9',
+        confirmButtonColor: '#9C6D2E',
+        cancelButtonText: '취소',
+        confirmButtonText: '이동',
+        customClass: {
+          title: 'text-xl mt-10',
+          popup: 'rounded-[16px]',
+          actions: 'flex gap-3 mt-8',
+          confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
+          cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push('/log-in');
+        }
+      });
+      return;
+    }
     mutation.mutate();
-    console.log('click');
   };
 
   if (isPending) return <button disabled>로딩</button>;

@@ -49,7 +49,18 @@ export const Carousel = ({ images }: marketProps) => {
                   }}
                 />
               ) : (
-                <>없음</>
+                <>
+                  <Image
+                    src={'/image/StateSad.png'}
+                    width={100}
+                    height={92}
+                    alt="default"
+                    className="mx-auto"
+                  />
+                  <p className="text-label-assistive text-lg mt-4 font-medium">
+                    이미지가 없습니다
+                  </p>
+                </>
               )}
             </div>
           </Link>

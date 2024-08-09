@@ -35,7 +35,7 @@ const FixedButtons = ({
 
   const product = [
     {
-      productId: food.product_id,
+      id: food.product_id,
       name: food.food_name,
       amount: discountAmount * (count ?? 0),
       quantity: count ?? 0
@@ -92,6 +92,7 @@ const FixedButtons = ({
       Swal.fire({
         title: '로그인 후 이용해주세요',
         text: '로그인 페이지로 이동할까요?',
+        showCancelButton: true,
         cancelButtonColor: '#E0DDD9',
         confirmButtonColor: '#9C6D2E',
         cancelButtonText: '취소',
