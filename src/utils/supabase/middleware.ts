@@ -40,12 +40,18 @@ export async function updateSession(request: NextRequest) {
   const protectedRoutes = ['/my-page']; // 비회원 접근 불가능 
 
   const url = request.nextUrl.clone();
+
   // 비회원이 불가능 경로에 접근하려고 할 때 리다이렉트
-  if (!user && !isGuest && protectedRoutes.includes(request.nextUrl.pathname)) {
+  if (!user && isGuest && protectedRoutes.includes(request.nextUrl.pathname)) {
     url.pathname = '/log-in'; 
     return NextResponse.redirect(url);
   }
 
+  if(!user && !isGuest && !publicRoutes.includes(request.nextUrl.pathname)){
+    url.pathname = '/log-in';
+    return NextResponse.redirect(url);
+  
+  }
   // 비회원 접근 허용 페이지 또는 인증되지 않은 사용자 허용 페이지 접근 허용
   if (user && publicRoutes.includes(request.nextUrl.pathname)) {
     url.pathname = '/my-page'; 
