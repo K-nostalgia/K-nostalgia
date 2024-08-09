@@ -5,6 +5,7 @@ import { PiEye, PiEyeSlash } from 'react-icons/pi';
 interface SignupFormProps {
   title: string;
   label: string;
+  placeholder: string;
   type: string;
   name: string;
   value: string;
@@ -18,6 +19,7 @@ interface SignupFormProps {
 const SignupForm: React.FC<SignupFormProps> = ({
   title,
   label,
+  placeholder,
   type,
   name,
   value,
@@ -50,6 +52,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
             name={name}
             value={value}
             onChange={onChange}
+            placeholder={placeholder}
             className={`w-[322px] h-[52px] bg-normal flex pl-[16px] pr-[12px] pt-[12px] pb-[12px] m-[8px] border rounded-xl focus:outline-none text-primary-20 ${
               error ? 'border-red-500' : 'border-primary-strong'
             }`}
