@@ -29,7 +29,9 @@ const Header = ({
       <div className="flex items-center">
         {showSearch || showCart ? (
           <ShowSearchCart showSearch={showSearch} showCart={showCart} />
-        ) : null}
+        ) : (
+          <div className="invisible flex p-1 w-[80px] h-9" />
+        )}
         {showComplete && (
           <button className="text-black" onClick={onCompleteClick}>
             완료
