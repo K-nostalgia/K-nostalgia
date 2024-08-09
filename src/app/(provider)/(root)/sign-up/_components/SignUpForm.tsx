@@ -10,6 +10,9 @@ interface SignupFormProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  successMessage?: string;
+  onEmailCheckDuplicate?: () => void;
+  onNicknameCheckDuplicate?: () => void;
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({
@@ -19,7 +22,10 @@ const SignupForm: React.FC<SignupFormProps> = ({
   name,
   value,
   onChange,
-  error
+  error,
+  successMessage,
+  onEmailCheckDuplicate,
+  onNicknameCheckDuplicate
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -60,8 +66,24 @@ const SignupForm: React.FC<SignupFormProps> = ({
               )}
             </span>
           )}
+          {(name === 'email' || name === 'nickname') && (
+            <button
+              type="button"
+              className="absolute right-5 top-[50%] -translate-y-1/2 bg-primary-strong text-white px-2 py-1 rounded"
+              onClick={
+                name === 'email'
+                  ? onEmailCheckDuplicate
+                  : onNicknameCheckDuplicate
+              }
+            >
+              중복 확인
+            </button>
+          )}
         </div>
         {error && <p className="text-red-500 text-sm px-4">{error}</p>}
+        {successMessage && (
+          <p className="text-green-500 text-sm px-4">{successMessage}</p>
+        )}
       </div>
     </div>
   );
