@@ -65,21 +65,21 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
-          room_id: string | null
+          room_id: string
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: number
-          room_id?: string | null
+          room_id: string
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: number
-          room_id?: string | null
+          room_id?: string
           user_id?: string | null
         }
         Relationships: [
