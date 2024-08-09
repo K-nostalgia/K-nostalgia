@@ -6,6 +6,8 @@ import { MarketType } from '@/types/Market';
 import { PiMapPin } from 'react-icons/pi';
 import { LuDot } from 'react-icons/lu';
 import Loading from '@/components/common/Loading';
+import MarketComments from './_components/MarketComments';
+import { useUser } from '@/hooks/useUser';
 export type ImagesType = {
   title: string;
   link: string;
@@ -14,14 +16,14 @@ export type ImagesType = {
   sizewidth: string;
 }[];
 
-const MarketDetailPage = ({ params }: { params: { id: string } }) => {
+const MarketDetailPage = ({ params }: { params: { id: number } }) => {
+  const { data: user, isLoading, error } = useUser();
   const [market, setMarket] = useState<MarketType>();
-
   const [loading, setLoading] = useState(false);
   const { id } = params;
 
   useEffect(() => {
-    const fetchMarketDetail = async (id: string) => {
+    const fetchMarketDetail = async (id: number) => {
       try {
         const response = await fetch(`/api/market/marketDetail?id=${id}`);
         const { data } = await response.json();
@@ -118,7 +120,7 @@ const MarketDetailPage = ({ params }: { params: { id: string } }) => {
             className="text-base font-medium text-primary-10 text-center
           mb-3"
           >
-            필요 사항 보유 여부
+            편의시설 보유 여부
           </p>
           <div className="flex justify-start">
             <LuDot className="text-primary-20" />
@@ -161,6 +163,7 @@ const MarketDetailPage = ({ params }: { params: { id: string } }) => {
           </div>
         </div>
       </div>
+      <MarketComments userId={user?.id} marketId={id} />
     </>
   );
 };
