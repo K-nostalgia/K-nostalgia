@@ -13,6 +13,7 @@ export type Database = {
         Row: {
           count: number | null
           created_at: string
+          discountRate: number | null
           id: number
           image: string | null
           product_id: string | null
@@ -23,6 +24,7 @@ export type Database = {
         Insert: {
           count?: number | null
           created_at?: string
+          discountRate?: number | null
           id?: number
           image?: string | null
           product_id?: string | null
@@ -33,6 +35,7 @@ export type Database = {
         Update: {
           count?: number | null
           created_at?: string
+          discountRate?: number | null
           id?: number
           image?: string | null
           product_id?: string | null
@@ -62,21 +65,21 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
-          room_id: string | null
+          room_id: string
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: number
-          room_id?: string | null
+          room_id: string
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: number
-          room_id?: string | null
+          room_id?: string
           user_id?: string | null
         }
         Relationships: [
@@ -101,21 +104,21 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
-          post_id: string | null
+          market_id: number | null
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: number
-          post_id?: string | null
+          market_id?: number | null
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: number
-          post_id?: string | null
+          market_id?: number | null
           user_id?: string | null
         }
         Relationships: [
@@ -130,27 +133,21 @@ export type Database = {
       }
       likes: {
         Row: {
-          count: number | null
           created_at: string
           id: number
-          is_like: boolean | null
-          post_id: string | null
+          market_id: number
           user_id: string | null
         }
         Insert: {
-          count?: number | null
           created_at?: string
           id?: number
-          is_like?: boolean | null
-          post_id?: string | null
+          market_id: number
           user_id?: string | null
         }
         Update: {
-          count?: number | null
           created_at?: string
           id?: number
-          is_like?: boolean | null
-          post_id?: string | null
+          market_id?: number
           user_id?: string | null
         }
         Relationships: [
@@ -169,6 +166,7 @@ export type Database = {
           count: number | null
           created_at: string
           description: string | null
+          discountRate: number | null
           food_image: string | null
           food_name: string | null
           location: string | null
@@ -181,6 +179,7 @@ export type Database = {
           count?: number | null
           created_at?: string
           description?: string | null
+          discountRate?: number | null
           food_image?: string | null
           food_name?: string | null
           location?: string | null
@@ -193,6 +192,7 @@ export type Database = {
           count?: number | null
           created_at?: string
           description?: string | null
+          discountRate?: number | null
           food_image?: string | null
           food_name?: string | null
           location?: string | null
@@ -249,7 +249,7 @@ export type Database = {
           order_name: string | null
           pay_provider: string | null
           payment_date: string | null
-          payment_id: string | null
+          payment_id: string
           phone_number: string | null
           price: number | null
           products: Json | null
@@ -265,7 +265,7 @@ export type Database = {
           order_name?: string | null
           pay_provider?: string | null
           payment_date?: string | null
-          payment_id?: string | null
+          payment_id: string
           phone_number?: string | null
           price?: number | null
           products?: Json | null
@@ -281,7 +281,7 @@ export type Database = {
           order_name?: string | null
           pay_provider?: string | null
           payment_date?: string | null
-          payment_id?: string | null
+          payment_id?: string
           phone_number?: string | null
           price?: number | null
           products?: Json | null
@@ -300,27 +300,75 @@ export type Database = {
           },
         ]
       }
-      rooms: {
+      reviews: {
         Row: {
-          chat_name: string | null
+          content: string | null
           created_at: string
-          created_user_id: string | null
-          id: string
-          room_id: string | null
+          product_id: string | null
+          rating: number | null
+          review_id: string
+          user_id: string | null
         }
         Insert: {
-          chat_name?: string | null
+          content?: string | null
           created_at?: string
-          created_user_id?: string | null
-          id: string
-          room_id?: string | null
+          product_id?: string | null
+          rating?: number | null
+          review_id?: string
+          user_id?: string | null
         }
         Update: {
-          chat_name?: string | null
+          content?: string | null
           created_at?: string
-          created_user_id?: string | null
+          product_id?: string | null
+          rating?: number | null
+          review_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reviews_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "local_food"
+            referencedColumns: ["product_id"]
+          },
+          {
+            foreignKeyName: "reviews_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rooms: {
+        Row: {
+          chat_description: string
+          chat_name: string
+          created_at: string
+          created_user_id: string
+          id: string
+          room_id: string
+          room_img: string
+        }
+        Insert: {
+          chat_description: string
+          chat_name: string
+          created_at?: string
+          created_user_id?: string
+          id: string
+          room_id: string
+          room_img: string
+        }
+        Update: {
+          chat_description?: string
+          chat_name?: string
+          created_at?: string
+          created_user_id?: string
           id?: string
-          room_id?: string | null
+          room_id?: string
+          room_img?: string
         }
         Relationships: [
           {

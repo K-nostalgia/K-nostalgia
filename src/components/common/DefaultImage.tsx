@@ -12,6 +12,7 @@ export const DefaultImage = ({ text }: textProps) => {
         src="/image/StateSad.png"
         width={100}
         height={92}
+        priority
         alt={`${text}`}
         style={{ width: 100, height: 92 }}
       />

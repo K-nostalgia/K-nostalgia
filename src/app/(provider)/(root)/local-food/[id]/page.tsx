@@ -2,21 +2,38 @@
 
 import supabase from '@/utils/supabase/client';
 import { useQuery } from '@tanstack/react-query';
-import Image from 'next/image';
 import FixedButtons from '../_components/FixedButtons';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
 import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
+import { DetailImage } from './_components/DetailImage';
+import { Review } from './_components/Review';
 
-type LocalDetailPageProps = {
-  params: { id: string };
+export type ReviewType = {
+  review_id: string;
+  user_id: string;
+  product_id: string;
+  rating: number;
+  content: string;
 };
 
-const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [openCartModal, setOpenCartModal] = useState(false);
+const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
+  const [openModal, setOpenModal] = useState(false); //바텀시트
+  const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
+  const [activeTab, setActiveTab] = useState('상세 정보');
+  const [review, setReview] = useState<ReviewType[]>([]);
+
+  useEffect(() => {
+    const fetchReview = async () => {
+      const response = await fetch('/api/review');
+      const data = await response.json();
+      setReview(data);
+      return data;
+    };
+    fetchReview();
+  }, []);
 
   const {
     data: food,
@@ -37,45 +54,29 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
     }
   });
 
-  useEffect(() => {
-    if (openModal) {
-      document.body.style.overflow = 'hidden'; // 모달이 열리면 스크롤 X
-    } else {
-      document.body.style.overflow = 'auto'; // 모달이 닫히면 스크롤 O
-    }
-
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
-  }, [openModal]);
-
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
-  const onPurchase = () => {
-    setOpenModal(true);
-  };
-
-  const handleCartModalOpen = () => {
-    setOpenCartModal(true);
-  };
-
-  const handleCartModalClose = () => {
-    setOpenCartModal(false);
-  };
+  const totalAmount =
+    (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
 
   return (
     <div>
       {/* 슬라이드 */}
       <DetailSlide images={food.title_image} />
 
+      {/* 상세 정보 */}
       <div className="m-4">
         <h2 className="text-xl font-semibold">
           {`[${food.location}] `}
           {food?.food_name}
         </h2>
         <p className="text-[#AFACA7] text-sm">{food.description}</p>
-        <p className="text-[#1F1E1E] font-bold text-xl mt-2">{`${food?.price?.toLocaleString()}원`}</p>
+        <p className="text-label-normal text-sm mt-2">
+          {`${food.discountRate}%`}
+          <span className="inline-block ml-1 text-label-assistive line-through">{`${food.price?.toLocaleString()}원`}</span>
+        </p>
+        <p className="text-primary-20 font-bold text-xl">{`${totalAmount.toLocaleString()}원`}</p>
       </div>
       <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full mt-4 p-4">
         <table className="text-left text-sm">
@@ -88,7 +89,9 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
                 향신배송
                 <p className="text-[#76746d]">
                   23시 전 주문 시 내일 아침 8시 전 도착
-                  <span className="block">(제주 지역 향신배송 불가)</span>
+                  <span className="block">
+                    (제주도, 도서산간지역 향신배송 불가)
+                  </span>
                 </p>
               </td>
             </tr>
@@ -104,23 +107,52 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
         </table>
       </div>
 
-      {food.food_image && (
-        <Image
-          src={food.food_image}
-          width={375}
-          height={2451}
-          priority
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          alt="상세페이지"
-        />
-      )}
+      <div className="border-b-[2px] border-[#F2F2F2]">
+        <ul className="flex text-center pt-4 font-semibold">
+          <li
+            className="flex-1 cursor-pointer"
+            onClick={() => setActiveTab('상세 정보')}
+          >
+            <p
+              className={`pb-2 w-[140px] mx-auto ${
+                activeTab === '상세 정보'
+                  ? 'text-primary-20 border-b-4 border-primary-20'
+                  : 'text-label-assistive'
+              }`}
+            >
+              상세 정보
+            </p>
+          </li>
+          <li
+            className="flex-1 cursor-pointer"
+            onClick={() => setActiveTab('리뷰')}
+          >
+            <p
+              className={`pb-2 w-[140px] mx-auto ${
+                activeTab === '리뷰'
+                  ? 'text-primary-20 border-b-4 border-primary-20'
+                  : 'text-label-assistive'
+              }`}
+            >
+              {`리뷰(${review.length || 0})`}
+            </p>
+          </li>
+        </ul>
+      </div>
 
+      {/* 상세 정보 */}
+      {activeTab === '상세 정보' && <DetailImage food={food.food_image} />}
+
+      {/* 리뷰 */}
+      {activeTab === '리뷰' && <Review productId={food.product_id} />}
+
+      {/* 장바구니 담기, 구매하기 */}
       <FixedButtons
         food={food}
         count={food.count}
-        onPurchase={onPurchase}
+        onPurchase={() => setOpenModal(true)}
         isModalOpen={openModal}
-        handleCartModalOpen={handleCartModalOpen}
+        handleCartModalOpen={() => setOpenCartModal(true)}
       />
       {openModal && (
         <div
@@ -133,8 +165,8 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
             <OrderDetail
               params={{ id }}
               isModalOpen={openModal}
-              onPurchase={onPurchase}
-              handleCartModalOpen={handleCartModalOpen}
+              onPurchase={() => setOpenModal(true)}
+              handleCartModalOpen={() => setOpenCartModal(true)}
             />
           </div>
         </div>
@@ -142,12 +174,12 @@ const LocalDetailPage = ({ params: { id } }: LocalDetailPageProps) => {
       {openCartModal && (
         <div
           className="fixed inset-0 bg-[rgba(0,0,0,.24)] z-[9999]"
-          onClick={handleCartModalClose}
+          onClick={() => setOpenCartModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
           >
-            <CartModal handleCartModalClose={handleCartModalClose} />
+            <CartModal handleCartModalClose={() => setOpenCartModal(false)} />
           </div>
         </div>
       )}

@@ -9,10 +9,15 @@ import SignupForm from './SignUpForm';
 import {
   validateEmail,
   validateName,
+  validateNickName,
   validatePassword
 } from '@/utils/validate';
 
 type ErrorState = {
+  [key: string]: string;
+};
+
+type SuccessState = {
   [key: string]: string;
 };
 
@@ -27,21 +32,26 @@ const SignUpContainer = () => {
   });
   const router = useRouter();
   const [errors, setErrors] = useState<ErrorState>({});
+  const [successes, setSuccesses] = useState<SuccessState>({});
+  const [isEmailChecked, setIsEmailChecked] = useState(false);
+  const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
   //입력 필드의 변경 사항을 반영
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUserInfo((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: '' }));
+    setSuccesses((prev) => ({ ...prev, [name]: '' }));
   };
 
   const validateStep = () => {
     const currentStep = steps[step];
     const value = userInfo[currentStep.key as keyof typeof userInfo];
     let error = '';
+    let success = '';
 
     if (!value) {
-      error = '이 필드는 필수입니다.';
+      error = '입력은 필수입니다.';
     } else if (currentStep.key === 'email' && !validateEmail(value)) {
       error = '형식에 맞지 않는 이메일 주소에요.';
     } else if (currentStep.key === 'password' && !validatePassword(value)) {
@@ -53,14 +63,50 @@ const SignUpContainer = () => {
     ) {
       error = '비밀번호를 다시 확인해 주세요.';
     } else if (currentStep.key === 'name' && !validateName(value)) {
-      error = '정확한 이름을 입력해주세요';
+      error = '정확한 이름을 입력해주세요.';
+    } else if (currentStep.key === 'nickname' && !validateNickName(value)) {
+      error = '별명은 12자 이내로만 입력 가능해요.';
     }
 
+    if (currentStep.key === 'email' && isEmailChecked && errors.email) {
+      // 중복 확인이 완료된 이메일 필드에 중복된 이메일 에러가 있는지 체크
+      error = errors.email;
+    }
+
+    if (
+      currentStep.key === 'nickname' &&
+      isNicknameChecked &&
+      errors.nickname
+    ) {
+      // 중복 확인이 완료된 닉네임 필드에 중복된 닉네임 에러가 있는지 체크
+      error = errors.nickname;
+    }
     setErrors((prev) => ({ ...prev, [currentStep.key]: error }));
+    setSuccesses((prev) => ({ ...prev, [currentStep.key]: success }));
     return !error;
   };
 
   const nextStep = () => {
+    // 이메일 중복 확인이 필요할 경우 추가적인 검사를 진행합니다.
+    if (step === 0) {
+      if (!isEmailChecked) {
+        setErrors((prev) => ({
+          ...prev,
+          email: '이메일 중복 확인이 필요합니다.'
+        }));
+        return;
+      }
+      setStep(1);
+    } else if (step === 4) {
+      if (!isNicknameChecked) {
+        setErrors((prev) => ({
+          ...prev,
+          nickname: '별명 중복 확인이 필요합니다.'
+        }));
+        return;
+      }
+    }
+
     if (validateStep()) {
       if (step < steps.length - 1) {
         setStep(step + 1);
@@ -74,12 +120,53 @@ const SignUpContainer = () => {
     }
   };
 
+  const handleEmailCheckDuplicate = async () => {
+    const email = userInfo.email.trim();
+    if (!email) {
+      setErrors((prev) => ({ ...prev, email: '입력은 필수입니다.' }));
+      setIsEmailChecked(false);
+      return;
+    }
+
+    try {
+      await api.auth.checkDuplicate(email, '');
+      setErrors((prev) => ({ ...prev, email: '' }));
+      setSuccesses((prev) => ({ ...prev, email: '사용 가능한 이메일입니다.' }));
+      setIsEmailChecked(true);
+    } catch (error) {
+      setErrors((prev) => ({ ...prev, email: '중복된 이메일입니다.' }));
+      setSuccesses((prev) => ({ ...prev, email: '' }));
+      setIsEmailChecked(false);
+    }
+  };
+
+  const handleNicknameCheckDuplicate = async () => {
+    const nickname = userInfo.nickname.trim();
+    if (!nickname) {
+      setErrors((prev) => ({ ...prev, nickname: '입력은 필수입니다.' }));
+      setIsNicknameChecked(false);
+      return;
+    }
+
+    try {
+      await api.auth.checkDuplicate('', nickname);
+      setErrors((prev) => ({ ...prev, nickname: '' }));
+      setSuccesses((prev) => ({
+        ...prev,
+        nickname: '사용 가능한 닉네임입니다.'
+      }));
+      setIsNicknameChecked(true);
+    } catch (error) {
+      setErrors((prev) => ({ ...prev, nickname: '중복된 닉네임입니다.' }));
+      setSuccesses((prev) => ({ ...prev, nickname: '' }));
+      setIsNicknameChecked(false);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!validateStep()) {
       return;
     }
-
-    console.log('userinfo 확인', userInfo);
 
     try {
       const response = await api.auth.signUp(
@@ -88,8 +175,6 @@ const SignUpContainer = () => {
         userInfo.nickname,
         userInfo.name
       );
-
-      console.log('Response:', response);
 
       setUserInfo({
         email: '',
@@ -100,7 +185,11 @@ const SignUpContainer = () => {
       });
 
       setStep(0);
-      router.push('/log-in');
+
+      if (response) {
+        await api.auth.logOut();
+        router.push('/log-in');
+      }
     } catch (error) {
       console.error('Fetch error:', error);
       alert(`회원가입 요청 중 오류가 발생했습니다: ${error}`);
@@ -109,7 +198,7 @@ const SignUpContainer = () => {
 
   const handleback = () => {
     if (step === 0) {
-      router.push('/log-in-front');
+      router.push('/log-in');
     } else {
       prevStep();
     }
@@ -126,7 +215,6 @@ const SignUpContainer = () => {
             />
           </div>
           <span className="w-1"></span>
-          <span className="w-1"></span>
         </div>
 
         <div>
@@ -137,11 +225,15 @@ const SignUpContainer = () => {
           <SignupForm
             title={steps[step].title}
             label={steps[step].label}
+            placeholder={steps[step].placeholder}
             type={steps[step].type}
             name={steps[step].key}
             value={userInfo[steps[step].key as keyof typeof userInfo]}
             onChange={handleChange}
             error={errors[steps[step].key]}
+            successMessage={successes[steps[step].key]}
+            onEmailCheckDuplicate={handleEmailCheckDuplicate}
+            onNicknameCheckDuplicate={handleNicknameCheckDuplicate}
           />
         </div>
       </div>

@@ -9,9 +9,11 @@ const getConditionalSearch = (
   searchValue: string
 ): string => {
   if (tableValue === 'markets') {
-    return `시장명.ilike.%${searchValue}%,도로명주소.ilike.%${searchValue}%`;
+    // return `시장명.ilike.%${searchValue}%,도로명주소.ilike.%${searchValue}%`;
+    return `시장명.ilike.%${searchValue}%`;
   } else if (tableValue === 'local_food') {
-    return `food_name.ilike.%${searchValue}%,category.ilike.%${searchValue}%`;
+    // return `food_name.ilike.%${searchValue}%,category.ilike.%${searchValue}%`;
+    return `food_name.ilike.%${searchValue}%`;
   } else {
     return '';
   }
@@ -40,14 +42,14 @@ export const POST = async (request: NextRequest) => {
     .from(tableValue)
     .select('*')
     .or(getSearchData)
-    .limit(10);
+    .limit(8);
 
   if (searchError) {
     return NextResponse.json({ error: searchError.message }, { status: 400 });
   }
 
-  if (!searchData || searchData.length === 0 ) {
-    return NextResponse.json({ message: '검색 결과가 없습니다' });
+  if (!searchData || searchData.length === 0) {
+    return NextResponse.json([], { status : 200 },);
   }
 
   return NextResponse.json(searchData, { status: 200 });
