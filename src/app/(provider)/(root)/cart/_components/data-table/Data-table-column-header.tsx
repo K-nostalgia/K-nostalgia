@@ -250,7 +250,7 @@ export const TableDataColumns = ({
   ];
   return (
     <>
-      <div className="fixed z-50 top-[13%] translate-y-[12%] right-4">
+      <div className="fixed z-50 top-[12%] translate-y-[12%] right-4">
         <DeleteButton
           selectedItems={selectedItems}
           setSelectedItems={setSelectedItems}
