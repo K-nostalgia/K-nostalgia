@@ -17,7 +17,6 @@ const CheckPaymentContent = () => {
   useEffect(() => {
     const handlePayment = async () => {
       if (code === 'FAILURE_TYPE_PG') {
-        //TODO 해당 토스트 안 뜨고있음
         toast({
           variant: 'destructive',
           description: '결제가 취소되었습니다.'
@@ -27,31 +26,11 @@ const CheckPaymentContent = () => {
       if (paymentId) {
         try {
           const postPaymentHistory = async () => {
-            // 환불
-            const cancelResponse = await fetch('/api/payment/transaction', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ paymentId })
-            });
-            // console.log(cancelResponse);
-            if (!cancelResponse.ok) {
-              toast({
-                variant: 'destructive',
-                description:
-                  '마이페이지의 주문내역에서 환불이 되었는지 확인해주세요'
-              });
-              throw new Error(
-                `Cancellation failed: ${cancelResponse.statusText}`
-              );
-            }
             //결제 내역 단건 조회
-            const getResponse = await fetch(
+            const getPayHistory = await fetch(
               `/api/payment/transaction?paymentId=${paymentId}`
             );
-            const getData = await getResponse.json();
-            // console.log(getData);
+            const payHistory = await getPayHistory.json();
 
             const {
               paidAt,
@@ -61,24 +40,17 @@ const CheckPaymentContent = () => {
               method,
               customer,
               products
-            } = getData;
+            } = payHistory;
             const newPaidAt = dayjs(paidAt)
               .locale('ko')
               .format('YYYY-MM-DD HH:MM');
-
-            if (status === 'PAID') {
-              toast({
-                variant: 'destructive',
-                description: '마이페이지 > 주문내역에서 환불 재시도 해주세요.'
-              });
-            }
 
             if (status === 'FAILED') {
               toast({
                 variant: 'destructive',
                 description: '결제에 실패했습니다. 다시 시도해주세요.'
               });
-              router.push(`/local-food`);
+              router.replace(`/local-food`);
               return;
             }
 
@@ -112,17 +84,14 @@ const CheckPaymentContent = () => {
               description: '결제 완료.'
             });
 
-            router.push(
-              `complete-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
-            );
+            router.replace(`complete-payment?paymentId=${paymentId}`);
           };
           postPaymentHistory();
         } catch (error) {
           console.error(error);
           toast({
             variant: 'destructive',
-            description:
-              '즉시 환불 처리가 안 된 것 같아요. 주문 내역 페이지에서 확인해주세요.'
+            description: '주문 내역 페이지에서 확인해주세요.'
           });
         }
       }

@@ -6,14 +6,20 @@ import { usePaymentCancellation } from '@/hooks/payment/canclePayWithDbUpdate';
 import { imageSrc } from '@/hooks/payment/getProductImage';
 import { useGetPaymentHistoryWithSupabase } from '@/hooks/payment/useGetPaymentHistory';
 import api from '@/service/service';
+import {
+  BaseOrderInPayHistory,
+  OrderListInPayHistory
+} from '@/types/payHistory';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import NoPayHistory from './NoPayHistory';
 
 const PayHistoryList = () => {
+  const route = useRouter();
   const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
     queryKey: ['users'],
     queryFn: () => api.auth.getUser()
@@ -29,20 +35,23 @@ const PayHistoryList = () => {
     return <Loading />;
   }
 
-  const ordersList = payHistoryList.reduce((acc: any, order: any) => {
-    const date = dayjs(order.payment_date).format('YYYY. MM. DD');
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(order);
-    return acc;
-  }, {});
-  const sortedDates = Object.keys(ordersList).sort(
+  const orderList = payHistoryList.reduce<OrderListInPayHistory>(
+    (acc, order: any) => {
+      const date = dayjs(order.payment_date).format('YYYY. MM. DD');
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(order);
+      return acc;
+    },
+    {}
+  );
+  const sortedDates = Object.keys(orderList).sort(
     (a, b) => Date.parse(b) - Date.parse(a)
   );
 
   //취소 및 db 업데이트
-  const cancelPayment = async (order: any) => {
+  const cancelPayment = async (order: BaseOrderInPayHistory) => {
     const { status, payment_id, ...rest } = order;
     const newHistory = {
       status: 'CANCELLED',
@@ -58,7 +67,7 @@ const PayHistoryList = () => {
 
   return (
     <>
-      {Object.keys(ordersList).length === 0 ? (
+      {Object.keys(orderList).length === 0 ? (
         <NoPayHistory />
       ) : (
         <div className="p-[16px] border-t-4 border-[#F2F2F2] mb-[80px] bg-normal">
@@ -68,8 +77,7 @@ const PayHistoryList = () => {
                 <p className="font-medium">{date}</p>
                 <p className="font-medium">주문</p>
               </div>
-
-              {ordersList[date].map((order: any) => (
+              {orderList[date].map((order: any) => (
                 <div
                   key={order.id}
                   className="border rounded-[12px] p-[16px] mt-[8px] mb-[16px]"
@@ -95,42 +103,48 @@ const PayHistoryList = () => {
                     </div>
                   </div>
 
-                  {order.products.map((product: any, index: number) => (
-                    <div key={product.id}>
+                  {order.products.map((product: any, index: number) => {
+                    return (
                       <div
-                        className={`flex gap-[12px] pt-[12px] ${
-                          index !== order.products.length - 1
-                            ? 'border-b-2 pb-[12px]'
-                            : ''
-                        }`}
+                        className="cursor-pointer"
+                        key={product.id}
+                        onClick={() => route.push(`local-food/${product.id}`)}
                       >
-                        <Image
-                          src={imageSrc(product.name)}
-                          width={64}
-                          height={64}
-                          style={{
-                            width: 64,
-                            height: 64,
-                            objectFit: 'cover',
-                            borderRadius: 8
-                          }}
-                          alt={product.name}
-                        />
+                        <div
+                          className={`flex gap-[12px] pt-[12px] ${
+                            index !== order.products.length - 1
+                              ? 'border-b-2 pb-[12px]'
+                              : ''
+                          }`}
+                        >
+                          <Image
+                            src={imageSrc(product.name)}
+                            width={64}
+                            height={64}
+                            style={{
+                              width: 64,
+                              height: 64,
+                              objectFit: 'cover',
+                              borderRadius: 8
+                            }}
+                            alt={product.name}
+                          />
 
-                        <div className="flex flex-col justify-center gap-[8px]">
-                          <p className="font-medium text-[16px]">
-                            {product.name}
-                          </p>
-                          <div className="flex text-[#79746D] gap-[4px]">
-                            <p>{product.amount.toLocaleString()}원</p>
-                            <p>·</p>
-                            <p>{product.quantity}개</p>
+                          <div className="flex flex-col justify-center gap-[8px]">
+                            <p className="font-medium text-[16px]">
+                              {product.name}
+                            </p>
+                            <div className="flex text-[#79746D] gap-[4px]">
+                              <p>{product.amount.toLocaleString()}원</p>
+                              <p>·</p>
+                              <p>{product.quantity}개</p>
+                            </div>
                           </div>
+                          {index !== order.products.length - 1 && <hr />}
                         </div>
-                        {index !== order.products.length - 1 && <hr />}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                   <div
                     className={`flex justify-center gap-[7px] text-[14px] font-semibold pt-[12px] ${
                       order.status !== 'CANCELLED' ? 'flex' : 'hidden'

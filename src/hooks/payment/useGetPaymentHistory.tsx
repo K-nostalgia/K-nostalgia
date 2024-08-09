@@ -1,3 +1,5 @@
+import { PayHistory } from '@/types/payHistory';
+import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 
 interface Props {
@@ -5,7 +7,11 @@ interface Props {
 }
 //포트원 내역 단건 조회
 export const useGetPaymentHistory = ({ paymentId }: Props) => {
-  const { data: payHistory, isPending: payHistoryIsPending } = useQuery({
+  const { data: payHistory, isPending: payHistoryIsPending } = useQuery<
+    PayHistory,
+    Error,
+    PayHistory
+  >({
     queryKey: ['payHistory', paymentId],
     queryFn: async () => {
       if (!paymentId) {
@@ -24,7 +30,11 @@ export const useGetPaymentHistory = ({ paymentId }: Props) => {
 export const useGetPaymentHistoryWithSupabase = (
   userId: string | undefined
 ) => {
-  const { data: payHistoryList } = useQuery({
+  const { data: payHistoryList } = useQuery<
+    Tables<'orderd_list'>[],
+    Error,
+    Tables<'orderd_list'>[]
+  >({
     queryKey: ['payHistoryList'],
     queryFn: async () => {
       if (!userId) {

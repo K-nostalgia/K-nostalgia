@@ -5,21 +5,29 @@ import { PiEye, PiEyeSlash } from 'react-icons/pi';
 interface SignupFormProps {
   title: string;
   label: string;
+  placeholder: string;
   type: string;
   name: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: string;
+  successMessage?: string;
+  onEmailCheckDuplicate?: () => void;
+  onNicknameCheckDuplicate?: () => void;
 }
 
 const SignupForm: React.FC<SignupFormProps> = ({
   title,
   label,
+  placeholder,
   type,
   name,
   value,
   onChange,
-  error
+  error,
+  successMessage,
+  onEmailCheckDuplicate,
+  onNicknameCheckDuplicate
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -44,6 +52,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
             name={name}
             value={value}
             onChange={onChange}
+            placeholder={placeholder}
             className={`w-[322px] h-[52px] bg-normal flex pl-[16px] pr-[12px] pt-[12px] pb-[12px] m-[8px] border rounded-xl focus:outline-none text-primary-20 ${
               error ? 'border-red-500' : 'border-primary-strong'
             }`}
@@ -60,8 +69,24 @@ const SignupForm: React.FC<SignupFormProps> = ({
               )}
             </span>
           )}
+          {(name === 'email' || name === 'nickname') && (
+            <button
+              type="button"
+              className="absolute right-5 top-[50%] -translate-y-1/2 bg-primary-strong text-white px-2 py-1 rounded"
+              onClick={
+                name === 'email'
+                  ? onEmailCheckDuplicate
+                  : onNicknameCheckDuplicate
+              }
+            >
+              중복 확인
+            </button>
+          )}
         </div>
         {error && <p className="text-red-500 text-sm px-4">{error}</p>}
+        {successMessage && (
+          <p className="text-green-500 text-sm px-4">{successMessage}</p>
+        )}
       </div>
     </div>
   );

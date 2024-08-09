@@ -65,21 +65,21 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
-          room_id: string | null
+          room_id: string
           user_id: string | null
         }
         Insert: {
           content?: string | null
           created_at?: string
           id?: number
-          room_id?: string | null
+          room_id: string
           user_id?: string | null
         }
         Update: {
           content?: string | null
           created_at?: string
           id?: number
-          room_id?: string | null
+          room_id?: string
           user_id?: string | null
         }
         Relationships: [
@@ -123,13 +123,6 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "comments_market_id_fkey"
-            columns: ["market_id"]
-            isOneToOne: false
-            referencedRelation: "markets"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "comments_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -158,13 +151,6 @@ export type Database = {
           user_id?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "likes_market_id_fkey"
-            columns: ["market_id"]
-            isOneToOne: false
-            referencedRelation: "markets"
-            referencedColumns: ["id"]
-          },
           {
             foreignKeyName: "likes_user_id_fkey"
             columns: ["user_id"]
@@ -263,7 +249,7 @@ export type Database = {
           order_name: string | null
           pay_provider: string | null
           payment_date: string | null
-          payment_id: string | null
+          payment_id: string
           phone_number: string | null
           price: number | null
           products: Json | null
@@ -279,7 +265,7 @@ export type Database = {
           order_name?: string | null
           pay_provider?: string | null
           payment_date?: string | null
-          payment_id?: string | null
+          payment_id: string
           phone_number?: string | null
           price?: number | null
           products?: Json | null
@@ -295,7 +281,7 @@ export type Database = {
           order_name?: string | null
           pay_provider?: string | null
           payment_date?: string | null
-          payment_id?: string | null
+          payment_id?: string
           phone_number?: string | null
           price?: number | null
           products?: Json | null
@@ -358,25 +344,31 @@ export type Database = {
       }
       rooms: {
         Row: {
-          chat_name: string | null
+          chat_description: string
+          chat_name: string
           created_at: string
-          created_user_id: string | null
+          created_user_id: string
           id: string
-          room_id: string | null
+          room_id: string
+          room_img: string
         }
         Insert: {
-          chat_name?: string | null
+          chat_description: string
+          chat_name: string
           created_at?: string
-          created_user_id?: string | null
+          created_user_id?: string
           id: string
-          room_id?: string | null
+          room_id: string
+          room_img: string
         }
         Update: {
-          chat_name?: string | null
+          chat_description?: string
+          chat_name?: string
           created_at?: string
-          created_user_id?: string | null
+          created_user_id?: string
           id?: string
-          room_id?: string | null
+          room_id?: string
+          room_img?: string
         }
         Relationships: [
           {
