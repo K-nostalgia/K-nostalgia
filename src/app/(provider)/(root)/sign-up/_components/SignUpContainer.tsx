@@ -225,6 +225,7 @@ const SignUpContainer = () => {
           <SignupForm
             title={steps[step].title}
             label={steps[step].label}
+            placeholder={steps[step].placeholder}
             type={steps[step].type}
             name={steps[step].key}
             value={userInfo[steps[step].key as keyof typeof userInfo]}
