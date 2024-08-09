@@ -25,6 +25,7 @@ interface Props {
 }
 
 const PayButton = ({ orderNameArr, product }: Props) => {
+  console.log(orderNameArr);
   const router = useRouter();
   const pathName = usePathname();
 
@@ -138,6 +139,18 @@ const PayButton = ({ orderNameArr, product }: Props) => {
   ]);
 
   return (
+    //   <div>
+    //   <button
+    //     className={`min-w-[165px] ${
+    //       selectedItems && selectedItems.length > 0
+    //         ? 'bg-primary-20'
+    //         : 'bg-label-disable'
+    //     } py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7`}
+    //     onClick={payRequest}
+    //   >
+    //     바로 구매하기
+    //   </button>
+    // </div>
     <div>
       <button
         className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"

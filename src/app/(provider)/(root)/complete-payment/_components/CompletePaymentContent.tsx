@@ -16,7 +16,7 @@ const CompletePaymentContent = () => {
   const { payHistory, payHistoryIsPending } = useGetPaymentHistory({
     paymentId
   });
-  console.log(payHistory);
+
   if (payHistoryIsPending || !payHistory) {
     return <Loading />;
   }
