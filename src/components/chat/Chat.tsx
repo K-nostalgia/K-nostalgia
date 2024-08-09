@@ -23,6 +23,7 @@ export function Chat() {
 
   const handleDialogStateChange = (open: boolean) => {
     setIsOpen(open);
+    console.log(isOpen);
   };
 
   return (
@@ -40,7 +41,11 @@ export function Chat() {
       {!selectedChatRoom ? (
         <ChatList setSelectedChatRoom={setSelectedChatRoom} />
       ) : (
-        <SendChat selectedChatRoom={selectedChatRoom} setSelectedChatRoom={setSelectedChatRoom}/>
+        <SendChat
+          selectedChatRoom={selectedChatRoom}
+          setSelectedChatRoom={setSelectedChatRoom}
+          isOpen={isOpen}
+        />
       )}
     </Dialog>
   );

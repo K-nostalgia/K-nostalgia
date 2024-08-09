@@ -40,17 +40,18 @@ interface SendChatProps {
   setSelectedChatRoom: React.Dispatch<
     React.SetStateAction<Tables<'rooms'> | null>
   >;
+  isOpen: boolean;
 }
 
 export function SendChat({
   selectedChatRoom,
-  setSelectedChatRoom
+  setSelectedChatRoom,
+  isOpen
 }: SendChatProps) {
   const [message, setMessage] = useState<string>('');
   const queryClient = useQueryClient();
   const { data: user } = useUser();
   const scrollDown = useRef<HTMLDivElement | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   // xss 공격 방지
   const encoded = (str: string) => {
@@ -67,13 +68,14 @@ export function SendChat({
 
   // chat 가져오기
   const fetchChatData = async () => {
-    const response = await fetch(`/api/chat/chat-send`, {
+    const response = await fetch(`/api/chat/chat-read`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
       },
       body: JSON.stringify({ room_id: selectedChatRoom?.room_id })
     });
+    console.log('계속 실행 되는 거 같다??');
     const { data } = await response.json();
     return data;
   };
@@ -97,7 +99,7 @@ export function SendChat({
     user_id: string;
     content: string;
   }) => {
-    const response = await fetch('/api/chat', {
+    const response = await fetch('/api/chat/chat-send', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8'
@@ -105,10 +107,11 @@ export function SendChat({
       body: JSON.stringify(newMessage)
     });
 
-    if (response.ok) {
-      setMessage('');
+    if (!response.ok) {
+      console.log('비상비상~~~~~~');
     }
 
+    setMessage('');
     return response.json();
   };
 
@@ -124,7 +127,13 @@ export function SendChat({
   // 유효성 검사 추가하기
   const handleSendMessage = () => {
     if (!user || !selectedChatRoom) {
-      return console.log('머예여 이상하잖아용');
+      console.log('머예여 이상하잖아용');
+      return;
+    }
+
+    if (!message.trim()) {
+      console.log('메시지가 비어잇어흥.');
+      return;
     }
 
     const newMessage = {
@@ -171,6 +180,7 @@ export function SendChat({
 
   // 1) 모달 켰을 때, 2) 채팅 메세지 쓸 때 스크롤 하단 유지
   useEffect(() => {
+    console.log(isOpen)
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         if (scrollDown.current) {
@@ -185,7 +195,10 @@ export function SendChat({
     }
   }, [isOpen, data]);
 
-  const handleBackChatRoom = (open: boolean) => {
+  console.log(isOpen);
+
+  const handleBackChatRoom = () => {
+    console.log('실행은 되는 거니');
     setSelectedChatRoom(null);
   };
 
@@ -194,7 +207,7 @@ export function SendChat({
       <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading=[28.8px] items-center justify-center">
-            <button onClick={() => handleBackChatRoom}>뒤로가기</button>
+            <button onClick={handleBackChatRoom}>뒤로가기</button>
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>

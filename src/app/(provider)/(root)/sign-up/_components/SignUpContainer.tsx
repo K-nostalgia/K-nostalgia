@@ -129,7 +129,7 @@ const SignUpContainer = () => {
     }
 
     try {
-      await api.auth.CheckDuplicate(email, '');
+      await api.auth.checkDuplicate(email, '');
       setErrors((prev) => ({ ...prev, email: '' }));
       setSuccesses((prev) => ({ ...prev, email: '사용 가능한 이메일입니다.' }));
       setIsEmailChecked(true);
@@ -149,7 +149,7 @@ const SignUpContainer = () => {
     }
 
     try {
-      await api.auth.CheckDuplicate('', nickname);
+      await api.auth.checkDuplicate('', nickname);
       setErrors((prev) => ({ ...prev, nickname: '' }));
       setSuccesses((prev) => ({
         ...prev,
@@ -225,6 +225,7 @@ const SignUpContainer = () => {
           <SignupForm
             title={steps[step].title}
             label={steps[step].label}
+            placeholder={steps[step].placeholder}
             type={steps[step].type}
             name={steps[step].key}
             value={userInfo[steps[step].key as keyof typeof userInfo]}
