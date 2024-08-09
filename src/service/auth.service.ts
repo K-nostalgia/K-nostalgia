@@ -68,7 +68,7 @@ class AuthAPI {
     }
   }
 
-  async CheckDuplicate(email: string, nickname: string): Promise<UserType> {
+  async checkDuplicate(email: string, nickname: string): Promise<UserType> {
     return this.request<UserType>('/api/auth/check-duplicate', 'POST', { email, nickname});
   }
   
