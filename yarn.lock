@@ -866,6 +866,11 @@
   resolved "https://registry.yarnpkg.com/@portone/browser-sdk/-/browser-sdk-0.0.8.tgz#660692320ab4a517c4fb4f37a39b58ef186be836"
   integrity sha512-OPejBEDy5IhsGo4bGq9wtoulkPPg5ahKM/3/WL4E1sii3dwNQpFf3F0mEw3pau6XLm8/1khJZ44aJZheKBYKlQ==
 
+"@portone/server-sdk@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@portone/server-sdk/-/server-sdk-0.1.0.tgz#6ce6f537f2e9793f7fbf8018f1fafe41c6bfb7a6"
+  integrity sha512-jjcD1yN7M66eKVK4Wbw7BvvUe4ytobthRrSl5gHH7Zvi9icUU/SZEhvsxlRPpjXtiOUZbsNbvWS2jhDpO4LDew==
+
 "@radix-ui/primitive@1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@radix-ui/primitive/-/primitive-1.0.1.tgz#e46f9958b35d10e9f6dc71c497305c22e3e55dbd"
