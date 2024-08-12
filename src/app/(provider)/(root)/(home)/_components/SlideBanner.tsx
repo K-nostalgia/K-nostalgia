@@ -26,12 +26,20 @@ export const SlideBanner = ({ images }: marketProps) => {
       modules={[Pagination]}
       spaceBetween={16}
       slidesPerView={'auto'}
+      onSlideChange={(swiper) => {
+        const slides = swiper.slides;
+        slides.forEach((slide) => {
+          slide.style.transform = 'scale(1)';
+          slide.style.transition = 'transform 0.3s ease';
+        });
+        slides[swiper.activeIndex].style.transform = 'scale(1.1)';
+      }}
       centeredSlides={true}
       pagination={{ clickable: true }}
-      className="!pb-[80px]"
+      className="!pb-[110px] lg:!pt-10"
     >
-      {images?.slice(0, 4).map((item, index) => (
-        <SwiperSlide key={index} className="!w-[311px]">
+      {images?.slice(0, 6).map((item, index) => (
+        <SwiperSlide key={index} className="!w-[319px] ">
           <Link href={`/market/${item.id}`}>
             <div>
               {item.이미지 ? (
@@ -39,8 +47,9 @@ export const SlideBanner = ({ images }: marketProps) => {
                   src={`${item.이미지[0]?.link}`}
                   width={454}
                   height={340}
-                  priority
                   alt={`Slide ${index + 1}`}
+                  priority
+                  loading="eager"
                   style={{
                     height: 340,
                     border: '3px solid #9C6D2E',
