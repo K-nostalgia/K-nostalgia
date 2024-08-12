@@ -1,7 +1,5 @@
 'use client';
 
-import { DELETE } from '@/app/api/market/comment/[marketId]/route';
-import { Tables } from '@/types/supabase';
 import {
   QueryClient,
   useMutation,
@@ -9,7 +7,8 @@ import {
   useQueryClient
 } from '@tanstack/react-query';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { IoSend } from 'react-icons/io5';
 
 interface MarketCommentsPropsType {
   userId?: string;
@@ -30,6 +29,8 @@ type userCommentType = {
 
 const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   const [comment, setComment] = useState('');
+  const [updatedComment, setUpdatedComment] = useState('');
+  const [editMode, setEditMode] = useState<string[]>([]);
   const queryClient = useQueryClient();
   const newComment = {
     comment,
@@ -94,11 +95,11 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   const updateComment = async (commentId: string) => {
     const response = await fetch(`/api/market/comment/${marketId}`, {
       method: 'PATCH',
-      body: JSON.stringify({ comment, commentId })
+      body: JSON.stringify({ comment: updatedComment, commentId })
     });
 
     if (response.ok) {
-      setComment('');
+      setUpdatedComment('');
     } else {
       console.error('댓글 수정 실패용~');
     }
@@ -115,40 +116,107 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   }
 
   return (
-    <div className="mx-4 my-6">
-      <form onSubmit={createCommentsMutate}>
-        <p className="text-label-strong font-semibold text-base">댓글</p>
+    <div className="mt-6 mb-48">
+      <p className="text-label-strong font-semibold text-base pl-1 ml-4 mb-2">
+        댓글
+      </p>
+      <form
+        className="bg-white w-[346px] h-12 mx-4 px-4 py-3 mb-1 border rounded-xl border-primary-20 flex items-center"
+        onSubmit={createCommentsMutate}
+      >
         <input
           onChange={(e) => setComment(e.target.value)}
           value={comment}
           type="text"
-          className="border-4"
+          placeholder="댓글을 입력해 주세요"
+          className="outline-none placeholder:text-[15px] placeholder:text-label-assistive text-[15px] font-normal text-label-strong flex-1 w-[283px] h-auto mr-1 "
         />
-        <button>등록</button>
+        <button className="flex w-6 h-6 p-[2px] items-center justify-center">
+          <IoSend className="w-5 h-5 text-primary-20" />
+        </button>
       </form>
-      <div>
+      <div className="flex flex-col p-3 gap-3">
         {comments?.map((comment) => {
           return (
-            <div key={comment.id}>
-              <Image
-                src={comment.users.avatar}
-                alt="user프로필"
-                width={100}
-                height={100}
-              />
-              {userId === comment.user_id && (
-                <button onClick={() => updateCommentsMutate(comment.id)}>
-                  수정
-                </button>
+            <div key={comment.id} className="border-b-2 border-[#F2F2F2]">
+              <div className="flex justify-between px-1">
+                <div className="flex items-center gap-2 ">
+                  <Image
+                    src={comment.users.avatar}
+                    alt="user프로필"
+                    width={36}
+                    height={36}
+                    className="rounded-[18px]"
+                  />
+                  <p
+                    className={
+                      userId === comment.user_id
+                        ? 'text-primary-10 text-base font-semibold'
+                        : 'text-label-strong text-base font-semibold'
+                    }
+                  >
+                    {comment.users.nickname}
+                  </p>
+                  <p className="text-sm font-normal text-label-assistive">
+                    {comment.created_at.slice(0, 10).split('-').join('. ')}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  {userId === comment.user_id &&
+                    (!editMode.includes(comment.id) ? (
+                      <button
+                        onClick={() => {
+                          setEditMode((prev) => [...prev, comment.id]);
+                          setUpdatedComment(comment.content);
+                        }}
+                        className="font-normal text-sm text-label-normal"
+                      >
+                        수정
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          updateCommentsMutate(comment.id);
+                          setEditMode([]);
+                        }}
+                        className="font-normal text-sm text-label-normal"
+                      >
+                        확인
+                      </button>
+                    ))}
+                  <div className="flex justify-center items-center w-[1px] h-3 bg-label-assistive" />
+                  {userId === comment.user_id &&
+                    (!editMode.includes(comment.id) ? (
+                      <button
+                        onClick={() => deleteCommentsMutate(comment.id)}
+                        className="font-normal text-sm text-label-normal"
+                      >
+                        삭제
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setEditMode([])}
+                        className="font-normal text-sm text-label-normal"
+                      >
+                        취소
+                      </button>
+                    ))}
+                </div>
+              </div>
+              {editMode.includes(comment.id) ? (
+                <div className="pl-[38px] pr-1">
+                  <input
+                    type="text"
+                    onChange={(e) => setUpdatedComment(e.target.value)}
+                    value={updatedComment}
+                    className="border rounded-[6px] border-[#959595] outline-none w-[309px] h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 mb-3"
+                  />
+                </div>
+              ) : (
+                <p className="w-[299px] h-auto text-[15px] font-normal text-label-strong mb-3">
+                  {comment.content}
+                </p>
               )}
-              {userId === comment.user_id && (
-                <button onClick={() => deleteCommentsMutate(comment.id)}>
-                  삭제
-                </button>
-              )}
-              <p>{comment.users.nickname}</p>
-              <p>{comment.created_at.slice(0, 10).split('-').join('. ')}</p>
-              <p>{comment.content}</p>
             </div>
           );
         })}
