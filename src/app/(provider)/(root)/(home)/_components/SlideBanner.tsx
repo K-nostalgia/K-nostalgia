@@ -17,7 +17,7 @@ interface marketProps {
   images: MainMarket | null | undefined;
 }
 
-export const Carousel = ({ images }: marketProps) => {
+export const SlideBanner = ({ images }: marketProps) => {
   const { data: user } = useUser();
 
   return (
