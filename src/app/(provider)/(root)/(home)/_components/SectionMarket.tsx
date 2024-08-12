@@ -72,7 +72,7 @@ export const SectionMarket = () => {
   return (
     <div className="bg-[#FFF8EF] pb-40">
       <div className="flex flex-col justify-center items-center">
-        <h2 className="text-2xl text-primary-heavy my-10 mx-10 font-custom">
+        <h2 className="text-2xl text-primary-heavy mt-20 mb-10 mx-10 font-custom">
           유명 전통시장
         </h2>
 
