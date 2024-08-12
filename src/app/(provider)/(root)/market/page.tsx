@@ -155,10 +155,14 @@ const MarketPage = () => {
                             e.stopPropagation();
                           }}
                         >
-                          <MarketLikes userId={user?.id} marketId={item.id} />
+                          <MarketLikes
+                            pixel={5}
+                            userId={user?.id}
+                            marketId={item.id}
+                          />
                         </div>
                       </div>
-                      <p className="pl-1 text-sm text-label-alternative">
+                      <p className="w-[283px] pl-1 text-sm text-label-alternative text-ellipsis overflow-hidden whitespace-nowrap">
                         {item.도로명주소}
                       </p>
                     </div>
@@ -167,7 +171,11 @@ const MarketPage = () => {
                         {item.이미지.slice(0, 2).map((imgSrc, index) => (
                           <div
                             key={index}
-                            className=" gap-2 rounded-[8px] relative w-[156px] h-[130px]"
+                            className={`gap-2 rounded-[8px] relative w-[156px] h-[130px] ${
+                              index === 0
+                                ? 'rounded-l-[8px] rounded-r-none'
+                                : 'rounded-r-[8px] rounded-l-none'
+                            }`}
                           >
                             <Image
                               src={imgSrc}
@@ -175,8 +183,12 @@ const MarketPage = () => {
                               fill
                               sizes="(max-width: 768px) 100vw, 343px"
                               priority
-                              className="absolute w-full h-full rounded-[8px]"
-                              style={{ objectFit: 'cover' }}
+                              className="absolute w-full h-full"
+                              style={{
+                                objectFit: 'cover',
+                                borderRadius:
+                                  index === 0 ? '8px 0 0 8px' : '0 8px 8px 0'
+                              }}
                             />
                           </div>
                         ))}
