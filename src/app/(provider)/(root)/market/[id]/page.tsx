@@ -9,6 +9,9 @@ import Loading from '@/components/common/Loading';
 import KaKaomap from '../_components/KaKaoMap';
 import MarketComments from './_components/MarketComments';
 import { useUser } from '@/hooks/useUser';
+import MarketRecommend from './_components/MarketRecommend';
+import ScrollButton from './_components/ScrollButton';
+import MarketLikes from '../_components/MarketLikes';
 export type ImagesType = {
   title: string;
   link: string;
@@ -28,7 +31,6 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
       try {
         const response = await fetch(`/api/market/marketDetail?id=${id}`);
         const { data } = await response.json();
-        console.log('data____', data);
         setMarket(data);
       } catch (error) {
         console.error('데이터를 가져오지 못했습니다.', error);
@@ -49,7 +51,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
   const images = market.이미지 ?? [];
 
   return (
-    <>
+    <section>
       <div className="w-full p-4 bg-normal flex flex-col items-center">
         {images.length > 0 && (
           <div className="flex relative w-[343px] h-[230px] ">
@@ -74,6 +76,9 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         </p>
         <div className="w-full h-1 border-4 border-color-[#F2F2F2]" />
       </div>
+      <div>
+        <ScrollButton />
+      </div>
       <div className="w-full p-4 bg-primary-20 flex flex-col items-center">
         <div className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90">
           시장 전체 이미지
@@ -97,24 +102,13 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
           );
         })}
       </div>
-      <div className="w-full mb-40 bg-primary-70 flex flex-col justify-center items-center">
+      <div className="w-full bg-primary-70 flex flex-col justify-center items-center">
         <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10">
           상세정보
         </div>
-
         <div>
           <KaKaomap />
         </div>
-        {/* <Image
-          src={
-            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/markets/Map.png'
-          }
-          width={343}
-          height={80}
-          priority
-          alt="시장디테일 지도 이미지"
-          style={{ width: 343, height: 220, objectFit: 'cover' }}
-        /> */}
         <div className="flex mt-2 mb-8 place-items-center text-primary-10">
           <PiMapPin className="w-4 h-4" />
           <p className="text-sm font-normal">{market.도로명주소}</p>
@@ -168,8 +162,20 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
           </div>
         </div>
       </div>
+      <MarketRecommend region={market.소권역} />
+      <div className="w-full h-1 border-4 border-color-[#F2F2F2]" />
       <MarketComments userId={user?.id} marketId={id} />
-    </>
+      <div
+        style={{ zIndex: 1000 }} /* 맨 앞으로 나오게 */
+        className="w-full flex items-center justify-start fixed bottom-0 px-4 pt-3 pb-6 gap-3 box bg-normal shadow-custom"
+        /* fixed bottom-0 바닥에서 0만큼 떨어진 곳에다가 고정 */
+      >
+        <MarketLikes pixel={8} userId={user?.id} marketId={id} />
+        <div className="px-2 py-3 text-base font-normal text-label-alternative">
+          하단에서 댓글을 작성해 주세요
+        </div>
+      </div>
+    </section>
   );
 };
 
