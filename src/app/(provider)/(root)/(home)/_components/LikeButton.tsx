@@ -88,16 +88,17 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
         title: '로그인 후 이용해주세요',
         text: '로그인 페이지로 이동할까요?',
         showCancelButton: true,
-        cancelButtonColor: '#E0DDD9',
+        cancelButtonColor: '#f2f2f2',
         confirmButtonColor: '#9C6D2E',
-        cancelButtonText: '취소',
-        confirmButtonText: '이동',
+        cancelButtonText: '취소하기',
+        confirmButtonText: '이동하기',
         customClass: {
           title: 'text-xl mt-10',
           popup: 'rounded-[16px]',
           actions: 'flex gap-3 mt-8',
           confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
-          cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+          cancelButton:
+            'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0'
         }
       }).then((result) => {
         if (result.isConfirmed) {

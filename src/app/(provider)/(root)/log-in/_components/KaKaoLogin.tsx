@@ -18,7 +18,7 @@ const KaKaoLogin = () => {
     <div className="flex items-center justify-center">
       <div
         onClick={handleClickKaKaoLogin}
-        className="flex items-center justify-center w-[320px] h-[48px] px-[88px] py-[12px] bg-[#FEDF32] border-[#FEDF32] rounded-[12px] cursor-pointer"
+        className="flex items-center justify-center w-[320px] h-[48px] px-[88px] py-[12px] bg-[#FEDF32] border-[#FEDF32] rounded-[12px] cursor-pointer xs:w-[516px]"
       >
         <div>
           <Image

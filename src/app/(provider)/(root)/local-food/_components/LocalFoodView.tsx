@@ -12,7 +12,6 @@ import { useState } from 'react';
 type LocalFood = Tables<'local_food'>;
 
 const LocalFoodView = () => {
-  const text = '특산물을 준비하고 있어요';
   const categoryList = ['전체', '과일', '야채', '고기', '곡물', '공예품'];
   const [selectedCategory, setSelectedCategory] = useState('전체');
   const fetchLocalFoodData = async (category: string) => {
@@ -99,7 +98,7 @@ const LocalFoodView = () => {
           </div>
 
           {filteredFoodData?.length === 0 ? (
-            <DefaultImage text={text} />
+            <DefaultImage text={'특산물을 준비하고 있어요'} />
           ) : (
             <ul className="grid gap-4 grid-cols-2 pb-32">
               {filteredFoodData?.map((food) => (

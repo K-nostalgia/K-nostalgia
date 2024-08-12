@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useDeleteProduct } from '@/hooks/localFood/useDeleteProduct';
 import { CgClose } from 'react-icons/cg';
 import Swal from 'sweetalert2';
+import { DeleteButton } from './DeleteButton';
 
 export type CartItem = {
   id: string | null;
@@ -24,7 +25,7 @@ export type CartItem = {
   discountRate: number | 0;
 };
 
-interface TableProps {
+export interface TableProps {
   selectedItems: string[];
   setSelectedItems: React.Dispatch<React.SetStateAction<string[]>>;
 }
@@ -66,8 +67,8 @@ export const TableDataColumns = ({
       showCancelButton: true,
       cancelButtonColor: '#E0DDD9',
       confirmButtonColor: '#9C6D2E',
-      cancelButtonText: '취소',
-      confirmButtonText: '삭제',
+      cancelButtonText: '취소하기',
+      confirmButtonText: '삭제하기',
       customClass: {
         popup: 'rounded-[16px] pt-10',
         actions: 'flex gap-3 mt-8',
@@ -81,6 +82,7 @@ export const TableDataColumns = ({
     });
   };
 
+  //장바구니 페이지 들어왔을 때 체크 활성화 상태
   useEffect(() => {
     if (cartData) {
       const allProductIds = cartData
@@ -160,8 +162,7 @@ export const TableDataColumns = ({
               width: 115,
               height: 115,
               objectFit: 'cover',
-              translate: '-16%',
-              marginLeft: '12px'
+              translate: '-20%'
             }}
           />
         </Link>
@@ -172,9 +173,9 @@ export const TableDataColumns = ({
       accessorKey: 'product_name',
       header: '',
       cell: ({ row }) => (
-        <div className="text-label-strong text-base translate-x-[-68%] translate-y-[-200%]">{`${row.getValue(
-          'product_name'
-        )}`}</div>
+        <div className="absolute left-[57%] text-label-strong text-base translate-x-[-57%] translate-y-[-250%]">
+          {`${row.getValue('product_name')}`}
+        </div>
       )
     },
     {
@@ -211,6 +212,7 @@ export const TableDataColumns = ({
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
+            selectedItems={selectedItems}
           />
         </div>
       )
@@ -227,7 +229,9 @@ export const TableDataColumns = ({
       accessorKey: 'discountRate',
       header: '',
       cell: ({ row }) => (
-        <div style={{ display: 'none' }}>{row.getValue('discountRate')}</div>
+        <div style={{ visibility: 'hidden' }}>
+          {row.getValue('discountRate')}
+        </div>
       )
     },
     {
@@ -246,11 +250,19 @@ export const TableDataColumns = ({
   ];
   return (
     <>
-      <DataTable
-        columns={columns}
-        data={cartData ?? []}
-        selectedItems={selectedItems}
-      />
+      <div className="fixed z-50 top-[12%] translate-y-[12%] right-4">
+        <DeleteButton
+          selectedItems={selectedItems}
+          setSelectedItems={setSelectedItems}
+        />
+      </div>
+      <div className="relative">
+        <DataTable
+          columns={columns}
+          data={cartData ?? []}
+          selectedItems={selectedItems}
+        />
+      </div>
     </>
   );
 };

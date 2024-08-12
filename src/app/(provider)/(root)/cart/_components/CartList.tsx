@@ -10,7 +10,6 @@ import { useUserCartData } from '@/hooks/cart/useUserCartData';
 export const CartList = () => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const { cartData, isPending, error } = useUserCartData();
-  const text = '장바구니가 비었어요';
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
@@ -24,7 +23,7 @@ export const CartList = () => {
         />
       ) : (
         //장바구니 비어있을 경우 디폴트 이미지 표시
-        <DefaultImage text={text} />
+        <DefaultImage text={'장바구니가 비었어요'} />
       )}
 
       <CartFixedButtons data={cartData ?? []} selectedItems={selectedItems} />
