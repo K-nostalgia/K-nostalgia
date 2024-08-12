@@ -60,7 +60,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
         <label className="block text-label-normal mb-2 px-[16px]">
           {label}
         </label>
-        <div className="relative w-[320px] ml-2">
+        <div className="relative flex items-center w-[320px] ml-2">
           <input
             type={
               type === 'password' ? (showPassword ? 'text' : 'password') : type
@@ -69,7 +69,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={`w-[320px] bg-normal pl-[16px] pr-[44px] py-3 mr-2 border rounded-xl focus:outline-none text-primary-20 ${
+            className={`bg-normal pl-[16px] pr-[44px] py-3 mr-2 border rounded-xl focus:outline-none text-primary-20 ${
               error ? 'border-red-500' : 'border-primary-strong'
             } ${
               name === 'email' || name === 'nickname'
@@ -80,7 +80,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
           {(name === 'email' || name === 'nickname') && (
             <button
               type="button"
-              className={`absolute w-[66px] h-[50px] text-label-light text-xs px-3 py-1 rounded-[10px] 
+              className={`w-[66px] h-[50px] text-label-light text-xs px-2 py-1 rounded-[10px] 
               ${
                 (isEmailChecked && name === 'email') ||
                 (isNicknameChecked && name === 'nickname')
