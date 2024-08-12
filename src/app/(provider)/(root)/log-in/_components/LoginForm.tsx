@@ -77,7 +77,7 @@ const LoginForm = () => {
     <form onSubmit={handleLogin} className="w-full max-w-[320px] xs:max-w-full">
       <div className="flex flex-col justify-between mt-10">
         <div>
-          <div className="mb-4 px-4 py-2">
+          <div className="mb-4">
             <label className="block text-label-normal mb-2">이메일</label>
             <input
               type="text"
@@ -105,7 +105,7 @@ const LoginForm = () => {
                 placeholder="비밀번호를 입력해 주세요"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-3 pr-11 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
                   errors.password || loginError
                     ? 'border-status-negative'
                     : 'border-label-assistive'
@@ -113,7 +113,7 @@ const LoginForm = () => {
               />
               <span
                 onClick={handleShowPassword}
-                className="absolute w-[24px] h-[24px]right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                className="absolute w-6 h-6 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
               >
                 {showPassword ? (
                   <PiEyeSlash className="text-[#545454] text-xl" />

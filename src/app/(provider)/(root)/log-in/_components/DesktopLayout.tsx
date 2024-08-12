@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import LoginForm from './LoginForm';
+import TitleLogo from '@/components/icons/TitleLogo';
 
 const DesktopLoginLayout = () => {
   return (
