@@ -1,7 +1,7 @@
 'use client';
 
 import { HashLoader } from 'react-spinners';
-import { Carousel } from './Carousel';
+import { SlideBanner } from './SlideBanner';
 import { useQuery } from '@tanstack/react-query';
 
 export type MainMarket = {
@@ -72,7 +72,7 @@ export const SectionMarket = () => {
   return (
     <div className="bg-[#FFF8EF] pb-40">
       <div className="flex flex-col justify-center items-center">
-        <h2 className="text-2xl text-primary-heavy my-10 mx-10 font-custom">
+        <h2 className="text-2xl text-primary-heavy mt-20 mb-10 mx-10 font-custom">
           유명 전통시장
         </h2>
 
@@ -82,7 +82,7 @@ export const SectionMarket = () => {
             <p className="my-5">데이터를 불러오고 있어요!</p>
           </div>
         ) : (
-          <Carousel images={marketImages} />
+          <SlideBanner images={marketImages} />
         )}
       </div>
     </div>
