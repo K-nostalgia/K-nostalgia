@@ -5,9 +5,10 @@ import { GoHeart, GoHeartFill } from 'react-icons/go';
 interface MarketLikesPropsType {
   userId?: string;
   marketId: number;
+  pixel: number;
 }
 
-const MarketLikes = ({ userId, marketId }: MarketLikesPropsType) => {
+const MarketLikes = ({ userId, marketId, pixel }: MarketLikesPropsType) => {
   const handleHeart = async () => {
     if (!userId) {
       return toast({
@@ -19,7 +20,7 @@ const MarketLikes = ({ userId, marketId }: MarketLikesPropsType) => {
   };
   const getIsLiked = async () => {
     const response = await fetch(
-      `api/market/likes/${userId}?marketId=${marketId}`
+      `/api/market/likes/${userId}?marketId=${marketId}`
     );
     const data = await response.json();
 
@@ -28,13 +29,13 @@ const MarketLikes = ({ userId, marketId }: MarketLikesPropsType) => {
 
   const toggleHeart = async (isLiked: boolean) => {
     if (!isLiked) {
-      const response = await fetch(`api/market/likes/${userId}`, {
+      const response = await fetch(`/api/market/likes/${userId}`, {
         method: 'POST',
         body: JSON.stringify(marketId)
       });
       console.log('response____', response);
     } else {
-      const response = await fetch(`api/market/likes/${userId}`, {
+      const response = await fetch(`/api/market/likes/${userId}`, {
         method: 'DELETE',
         body: JSON.stringify(marketId)
       });
@@ -81,24 +82,30 @@ const MarketLikes = ({ userId, marketId }: MarketLikesPropsType) => {
   });
 
   if (isPending) {
-    return <GoHeart className="w-5 h-5 text-[#545454]" />;
+    return (
+      <div className={`w-${pixel} h-${pixel}`}>
+        <GoHeart className={`w-full h-full text-[#545454]`} />
+      </div>
+    );
   }
 
   if (!userId) {
     return (
-      <button onClick={() => handleHeart()}>
-        <GoHeart className="w-5 h-5 text-[#545454]" />
+      <button onClick={() => handleHeart()} className={`w-${pixel} h-${pixel}`}>
+        <GoHeart className={`w-full h-full text-[#545454]`} />
       </button>
     );
   }
   return (
-    <button onClick={() => handleHeart()}>
-      {isLiked ? (
-        <GoHeartFill className="w-5 h-5 text-[#DB3B3B]" />
-      ) : (
-        <GoHeart className="w-5 h-5 text-[#545454]" />
-      )}
-    </button>
+    <div className={`w-${pixel} h-${pixel}`}>
+      <button onClick={() => handleHeart()} className={`w-full h-full`}>
+        {isLiked ? (
+          <GoHeartFill className={`w-full h-full text-[#DB3B3B]`} />
+        ) : (
+          <GoHeart className={`w-full h-full text-[#545454]`} />
+        )}
+      </button>
+    </div>
   );
 };
 
