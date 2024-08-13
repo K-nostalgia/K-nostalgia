@@ -9,11 +9,13 @@ import { toast } from '@/components/ui/use-toast';
 interface CountButtonProps {
   product_id: string;
   counts: number;
+  selectedItems: string[];
 }
 
 export const CountButton: React.FC<CountButtonProps> = ({
   product_id,
-  counts
+  counts,
+  selectedItems
 }) => {
   const queryClient = useQueryClient();
 

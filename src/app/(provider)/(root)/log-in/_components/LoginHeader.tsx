@@ -4,7 +4,7 @@ import React from 'react';
 
 const LoginHeader = () => {
   return (
-    <div className="mt-[63px]">
+    <div className="mt-5">
       <Image
         src="/image/TitleLogo.png"
         alt="title logo"
