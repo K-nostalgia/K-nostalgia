@@ -5,8 +5,6 @@ import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { User } from '@supabase/supabase-js';
-import { Tables } from '@/types/supabase';
 import ShowSearchCart from './_component/ShowSearchCart';
 
 interface headerNavType {
