@@ -11,7 +11,6 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import ChatIcon from '../../icons/ChatIcon';
 import ChatSendIcon from '../../icons/ChatSendIcon';
 import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -20,6 +19,7 @@ import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
+import { GoArrowLeft } from 'react-icons/go';
 
 interface chatUserType {
   avatar: string;
@@ -180,7 +180,7 @@ export function SendChat({
 
   // 1) 모달 켰을 때, 2) 채팅 메세지 쓸 때 스크롤 하단 유지
   useEffect(() => {
-    console.log(isOpen)
+    console.log(isOpen);
     if (isOpen) {
       const timeoutId = setTimeout(() => {
         if (scrollDown.current) {
@@ -195,8 +195,6 @@ export function SendChat({
     }
   }, [isOpen, data]);
 
-  console.log(isOpen);
-
   const handleBackChatRoom = () => {
     console.log('실행은 되는 거니');
     setSelectedChatRoom(null);
@@ -206,8 +204,12 @@ export function SendChat({
     <DialogContent className="bg-normal w-[330px] rounded-[16px]">
       <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
         <DialogHeader>
-          <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading=[28.8px] items-center justify-center">
-            <button onClick={handleBackChatRoom}>뒤로가기</button>
+          <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
+            <button onClick={handleBackChatRoom}>
+              <GoArrowLeft className="w-7 h-7" />
+            </button>
+            <div>{selectedChatRoom?.chat_name}</div>
+            <div className="invisible w-7" />
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>

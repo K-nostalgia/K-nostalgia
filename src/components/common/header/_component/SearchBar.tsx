@@ -94,14 +94,14 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
 
   // 계속해서 작동
   useEffect(() => {
-    console.log('1. debounceSearchTerm', debounceSearchTerm);
+    // console.log('1. debounceSearchTerm', debounceSearchTerm);
     if (debounceSearchTerm) {
-      console.log('2. useEffect 작동 순간', debounceSearchTerm);
+      // console.log('2. useEffect 작동 순간', debounceSearchTerm);
       submitSearchTerm();
     }
   }, [debounceSearchTerm, submitSearchTerm]);
 
-  console.log('4. response야...', response);
+  // console.log('4. response야...', response);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
