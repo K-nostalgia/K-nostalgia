@@ -204,18 +204,20 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
                 </div>
               </div>
               {editMode.includes(comment.id) ? (
-                <div className="pl-[38px] pr-1">
+                <div className="pl-[38px] pr-1 mb-3">
                   <input
                     type="text"
                     onChange={(e) => setUpdatedComment(e.target.value)}
                     value={updatedComment}
-                    className="border rounded-[6px] border-[#959595] outline-none w-[309px] h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 mb-3"
+                    className="border rounded-[6px] border-[#959595] outline-none w-[309px] h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 "
                   />
                 </div>
               ) : (
-                <p className="w-[299px] h-auto text-[15px] font-normal text-label-strong mb-3">
-                  {comment.content}
-                </p>
+                <div className="pl-12 pr-1 py-1 mb-3">
+                  <p className="w-[299px] h-auto text-[15px] font-normal text-label-strong">
+                    {comment.content}
+                  </p>
+                </div>
               )}
             </div>
           );
