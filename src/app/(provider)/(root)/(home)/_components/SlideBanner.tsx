@@ -24,7 +24,7 @@ export const SlideBanner = ({ images }: marketProps) => {
     <Swiper
       // install Swiper modules
       modules={[Pagination]}
-      spaceBetween={16}
+      spaceBetween={32}
       slidesPerView={'auto'}
       onSlideChange={(swiper) => {
         const slides = swiper.slides;

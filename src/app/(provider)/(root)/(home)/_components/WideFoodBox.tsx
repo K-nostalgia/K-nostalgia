@@ -16,17 +16,21 @@ export const WideFoodBox = ({ item, index }: FoodProps) => {
 
   const discountAmount =
     (price ?? 0) - ((price ?? 0) * (discountRate ?? 0)) / 100;
+
   return (
     <>
-      <Link href={`/local-food/${item.product_id}`}>
-        <li
-          className={`flex flex-col rounded-[12px] ${
-            index === 2
-              ? 'absolute left-[50%] translate-x-[-50%] bottom-0'
-              : 'relative'
-          } flex-grow`}
+      <li
+        className={`
+        ${index === 2 ? 'row-start-2 row-end-3 col-start-2 col-end-4' : ''}
+        ${index === 1 ? 'row-start-1 row-end-2 col-start-2 col-end-4' : ''}
+        ${index === 0 ? 'row-start-1 row-end-3 col-start-1 col-end-2' : ''}
+        ${index === 3 ? 'row-start-1 row-end-3 col-start-4 col-end-5' : ''} `}
+      >
+        <Link
+          href={`/local-food/${item.product_id}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          className="relative"
         >
           {title_image ? (
             <Image
@@ -36,7 +40,7 @@ export const WideFoodBox = ({ item, index }: FoodProps) => {
               alt={`${food_name}이미지`}
               priority
               style={{
-                width: index === 1 || index === 2 ? 636 : 282,
+                width: '100%',
                 height: index === 1 || index === 2 ? 221 : 482,
                 objectFit: 'cover',
                 borderRadius: '12px',
@@ -48,10 +52,16 @@ export const WideFoodBox = ({ item, index }: FoodProps) => {
           )}
           {isHovered && (
             <div
-              className={`flex flex-col justify-center items-start absolute ${
+              className={`flex flex-col justify-center items-start absolute 
+              ${
+                index === 0 || index === 3
+                  ? 'bottom-0 left-0 right-0 rounded-b-[12px] border-t-0'
+                  : ''
+              }
+              ${
                 index === 1 || index === 2
-                  ? 'bottom-0 right-0 top-0 border-l-0 rounded-br-[12px] rounded-tr-[12px]'
-                  : 'bottom-0 left-0 right-0 border-t-0 rounded-b-[12px]'
+                  ? 'right-0 bottom-0 top-0 rounded-tr-[12px] rounded-br-[12px] border-l-0'
+                  : ''
               }  bg-[rgba(0,0,0,.56)] border-b-primary-80 border text-label-light bg-opacity-80 px-12 py-[61px]`}
             >
               <h3 className="text-base font-medium text-secondary-90">
@@ -68,8 +78,8 @@ export const WideFoodBox = ({ item, index }: FoodProps) => {
               </p>
             </div>
           )}
-        </li>
-      </Link>
+        </Link>
+      </li>
     </>
   );
 };

@@ -48,7 +48,7 @@ export const SectionFood = () => {
             <p className="my-5 text-label-light">데이터를 불러오고 있어요!</p>
           </div>
         ) : isWideScreen ? (
-          <ul className="w-full flex relative justify-center gap-10">
+          <ul className="max-w-screen-xl grid grid-cols-4  relative gap-10">
             {localFood?.slice(0, 4).map((item, index) => {
               return (
                 <WideFoodBox
@@ -75,11 +75,9 @@ export const SectionFood = () => {
 
         <Link
           href="/local-food"
-          className="border-label-disable border rounded-[12px] w-[373px] mt-10"
+          className="border-label-disable text-label-light border rounded-[12px] w-[373px] mt-10 block transition-all duration-300 ease-in-out hover:border-primary-50 hover:text-primary-50"
         >
-          <button className="w-full transition-all duration-300 ease-in-out px-4 py-3 text-label-light active:border-primary-50 active:text-primary-50">
-            더보기
-          </button>
+          <button className="w-full px-4 py-3 ">더보기</button>
         </Link>
       </div>
     </div>

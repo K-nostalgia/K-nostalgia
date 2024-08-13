@@ -7,7 +7,7 @@ interface textProps {
 
 export const DefaultImage = ({ text }: textProps) => {
   return (
-    <div className="flex flex-col justify-center items-center text-center absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
+    <div className="flex flex-col justify-center items-center text-center absolute translate-x-[-60%] translate-y-[-50%] top-[60%] left-[50%]">
       <Image
         src="/image/StateSad.png"
         width={100}

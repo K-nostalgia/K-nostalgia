@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { HashLoader } from 'react-spinners';
 
 type LocalFood = Tables<'local_food'>;
 
@@ -44,7 +45,7 @@ const LocalFoodView = () => {
   );
 
   return (
-    <div className="max-w-screen-md:mt-[16%] max-w-screen-lg mx-auto">
+    <div className="mt-[15%] max-w-screen-xl mx-auto lg:mt-0">
       <div className="lg:block hidden">
         <Image
           src={
@@ -61,9 +62,14 @@ const LocalFoodView = () => {
             margin: '40px auto'
           }}
         />
-        {isPending && <Loading />}
+        {isPending && (
+          <div className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-60%] translate-y-[-50%] top-[60%] left-[50%]">
+            <HashLoader color="#A87939" />
+            <p className="my-5">데이터를 불러오고 있어요!</p>
+          </div>
+        )}
       </div>
-      <div className="flex gap-2 items-center max-w-screen-md:py-3 max-w-screen-md:px-4 max-w-screen-md:fixed top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
+      <div className="flex gap-2 items-center py-3 px-4 fixed lg:static lg:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -96,7 +102,7 @@ const LocalFoodView = () => {
           <Loading />
         </div>
       ) : (
-        <div className="max-w-screen-md:mx-4 lg:mt-9">
+        <div className="mx-4 lg:mt-9 lg:mx-0">
           <div className="my-4 lg:hidden">
             <Image
               src={

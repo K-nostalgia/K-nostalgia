@@ -48,7 +48,6 @@ export const SectionBanner = () => {
   return (
     <div className="lg:mt-10">
       <Carousel
-        className="relative"
         setApi={setApi}
         plugins={[
           Autoplay({
@@ -60,7 +59,7 @@ export const SectionBanner = () => {
           {(debouncedWidth < 1280 ? banners : webBanners).map((img, index) => (
             <CarouselItem
               key={index}
-              className="flex justify-center items-center"
+              className="flex justify-center items-center relative"
             >
               <Link href={index === 1 ? '/coupon-page' : '#'}>
                 <Image
@@ -78,10 +77,10 @@ export const SectionBanner = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
+        <div className="hidden lg:block absolute right-[6%] translate-x-[-10%] bottom-[5%] translate-y-[-31%] px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
+          {`${current} / ${count}`}
+        </div>
       </Carousel>
-      <div className="absolute right-[6%] bottom-[56%] translate-y-[-50%] px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
-        {`${current} / ${count}`}
-      </div>
     </div>
   );
 };
