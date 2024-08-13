@@ -30,9 +30,11 @@ const WebHeader = () => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // 초기화
   useEffect(() => {
     const targetNavIndex = HeaderNavPaths.indexOf(pathName);
     setCurrentIndex(targetNavIndex);
+    setActiveIndex(targetNavIndex);
   }, [pathName]);
 
   const handleNaviBox = (index: number) => {
@@ -76,10 +78,15 @@ const WebHeader = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-[72px] border-b border-[#C8C8C8] bg-normal">
+    <div className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-[#C8C8C8] bg-normal">
       <div className="flex justify-between flex-1 max-w-screen-xl mx-auto">
-        <div className="flex items-center gap-12">
-          <TitleLogo />
+        <div className="flex gap-12">
+          <div
+            className="flex items-center justify-center cursour-pointer"
+            onClick={() => router.push('/')}
+          >
+            <TitleLogo />
+          </div>
           <nav className="relative flex items-center gap-5">
             {HeaderNav.map((item: headerNavType, index: number) => (
               <div
@@ -99,17 +106,18 @@ const WebHeader = () => {
                 ) : (
                   <div
                     onClick={() => handleNaviBox(index)}
-                    className={`py-[23px] px-5 cursor-pointer transition-colors duration-300 ${
+                    className={`py-[15px] px-[20px] cursor-pointer transition-colors duration-300 
+                    ${
+                      index === activeIndex
+                        ? 'text-primary-30'
+                        : 'text-label-alternative'
+                    }
+                    ${
                       pathName === item.path
                         ? 'text-primary-10'
                         : 'text-label-alternative'
                     }
-                  ${
-                    index === activeIndex
-                      ? 'text-primary-30'
-                      : 'text-label-alternative'
-                  }
-                  `}
+                    `}
                   >
                     {item.pathNaviName}
                   </div>
@@ -123,7 +131,10 @@ const WebHeader = () => {
             <ShowSearchCart showSearch={true} showCart={true} />
           </div>
           {user && user?.avatar ? (
-            <div className="flex items-center gap-2">
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => router.push('/my-page')}
+            >
               <Image
                 src={user.avatar}
                 alt={`${user.nickname} 이미지`}
@@ -131,10 +142,12 @@ const WebHeader = () => {
                 height={36}
                 className="w-9 h-9 border rounded-full border-primary-10"
               />
-              <div>{user.nickname}</div>
+              <div className="text-label-strong text-base font-semibold leading-[25.6px]">
+                {user.nickname}
+              </div>
             </div>
           ) : (
-            <div>
+            <div className="flex">
               <div>입장</div>
               <div>회원</div>
             </div>

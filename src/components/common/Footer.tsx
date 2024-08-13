@@ -5,8 +5,8 @@ import KNostalgiaIcon2 from '../icons/KNostalgiaIcon2';
 
 const Footer = () => {
   return (
-    <div className="h-[180px] bg-normal border-t border-[#C8C8C8]">
-      <div className="max-w-screen-xl mx-auto flex justify-between items-center mt-12">
+    <div className="h-[108px] bg-normal border-t border-[#C8C8C8]">
+      <div className="max-w-screen-xl mx-auto flex justify-between items-center mt-[22px]">
         <div className="cursor-pointer">
           <Link href="https://github.com/Chasyuss/K-nostalgia" className="flex">
             <Image
@@ -14,17 +14,17 @@ const Footer = () => {
               alt="깃허브"
               width={36}
               height={36}
-              className="h-9 w-9 p-1"
+              className="h-9 w-9 p-[2px]"
             />
-            <div className="text-base font-medium leading-[25.6px] flex items-center justify-center ml-2">
-              A05_gitHub
+            <div className="text-base font-medium leading-[25.6px] flex items-center justify-center ml-2 text-label-normal">
+              A05_GitHub
             </div>
           </Link>
         </div>
-        <div className="w-[73px] h-[80px]">
-          <KNostalgiaIcon2 width={73} height={80} />
+        <div className="w-[59px] h-[64px]">
+          <KNostalgiaIcon2 width={58.182} height={64} />
         </div>
-        <div className="text-base font-medium leading-[25.6px]">
+        <div className="text-base font-medium leading-[25.6px] text-label-normal text-nowrap">
           ⓒ 5JOSAMA. All rights reserved
         </div>
       </div>
