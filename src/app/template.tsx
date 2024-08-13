@@ -28,6 +28,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     return <Loading />;
   }
 
+  /* 모바일 레이아웃 */
   let showHeader: boolean = true;
   let showLogo: boolean = false;
   let showBackButton: boolean = true;
@@ -108,6 +109,21 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showCart = false;
     showNavigation = false;
   }
+  /* 모바일 레이아웃 끝 */
+
+  /* 데스크탑 레이아웃 */
+  let showWebHeader: boolean = true;
+  let showFooter: boolean = true;
+  let showWebChat: boolean = true;
+  let showWebTopButton: boolean = true;
+
+  if (pathName === '/log-in' || pathName === '/sign-up') {
+    showWebHeader = false;
+    showFooter = false;
+    showWebChat = false;
+    showWebTopButton = false;
+  }
+  /* 데스크탑 레이아웃 끝*/
 
   return isDesktop ? (
     <DefaultWebLayout>{children}</DefaultWebLayout>
