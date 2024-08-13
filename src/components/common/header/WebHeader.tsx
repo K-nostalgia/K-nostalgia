@@ -82,7 +82,7 @@ const WebHeader = () => {
       <div className="flex justify-between flex-1 max-w-screen-xl mx-auto">
         <div className="flex gap-12">
           <div
-            className="flex items-center justify-center cursour-pointer"
+            className="flex items-center justify-center cursor-pointer"
             onClick={() => router.push('/')}
           >
             <TitleLogo />
@@ -106,7 +106,7 @@ const WebHeader = () => {
                 ) : (
                   <div
                     onClick={() => handleNaviBox(index)}
-                    className={`py-[15px] px-[20px] cursor-pointer transition-colors duration-300 
+                    className={`py-[15px] px-[20px] text-nowrap cursor-pointer transition-colors duration-300 
                     ${
                       index === activeIndex
                         ? 'text-primary-30'
@@ -147,9 +147,21 @@ const WebHeader = () => {
               </div>
             </div>
           ) : (
-            <div className="flex">
-              <div>입장</div>
-              <div>회원</div>
+            <div className="flex gap-3 justify-center items-center">
+              <button
+                type="button"
+                className="bg-primary-20 text-label-light text-nowrap rounded-[10px] px-4 py-[10px] w-[120px] h-10 flex justify-center items-center"
+                onClick={() => router.push('/log-in')}
+              >
+                입장하기
+              </button>
+              <button
+                type="button"
+                className="bg-translate border-2 border-primary-30 text-primary-20 text-nowrap rounded-xl px-4 py-3 w-[120px] h-10 flex justify-center items-center"
+                onClick={() => router.push('/sign-up')}
+              >
+                회원가입
+              </button>
             </div>
           )}
         </div>

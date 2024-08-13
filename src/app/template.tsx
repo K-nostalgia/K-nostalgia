@@ -126,7 +126,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
   /* 데스크탑 레이아웃 끝*/
 
   return isDesktop ? (
-    <DefaultWebLayout>{children}</DefaultWebLayout>
+    <DefaultWebLayout
+      showWebHeader={showWebHeader}
+      showFooter={showFooter}
+      showWebChat={showWebChat}
+      showWebTopButton={showWebTopButton}
+    >
+      {children}
+    </DefaultWebLayout>
   ) : (
     <DefaultAppLayout
       showHeader={showHeader}
