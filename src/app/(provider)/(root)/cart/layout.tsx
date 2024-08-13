@@ -7,7 +7,7 @@ function CartLayout({ children }: PropsWithChildren) {
       showHeader={true}
       showNavigation={false}
       showChat={false}
-      showSeach={false}
+      showSearch={false}
       showCart={false}
       headerTitle="장바구니"
     >
