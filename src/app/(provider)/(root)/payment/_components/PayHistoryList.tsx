@@ -17,6 +17,7 @@ import 'dayjs/locale/ko';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import NoPayHistory from './NoPayHistory';
+import ReviewProductDetail from './ReviewProductDetail';
 
 const PayHistoryList = () => {
   const route = useRouter();
@@ -70,106 +71,114 @@ const PayHistoryList = () => {
       {Object.keys(orderList).length === 0 ? (
         <NoPayHistory />
       ) : (
-        <div className="p-[16px] border-t-4 border-[#F2F2F2] mb-[80px] bg-normal">
+        // border-[#F2F2F2]
+        <div className="pt-[16px] mb-[80px] bg-normal">
           {sortedDates.map((date) => (
-            <div key={date}>
-              <div className="flex gap-[8px] ml-[4px]">
+            <div key={date} className="pt-4">
+              <div className="flex gap-[8px] ml-[4px] px-[16px]">
                 <p className="font-medium">{date}</p>
                 <p className="font-medium">주문</p>
               </div>
-              {orderList[date].map((order: any) => (
-                <div
-                  key={order.id}
-                  className="border rounded-[12px] p-[16px] mt-[8px] mb-[16px]"
-                >
-                  <div className="flex gap-[4px]">
-                    <p className="font-medium">
-                      {order.status === 'CANCELLED'
-                        ? '주문취소완료'
-                        : '상품준비중'}
-                    </p>
-                    <p className="text-[#AFAFAF]">
-                      {order.status === 'CANCELLED' ? null : '·'}
-                    </p>
-                    <div className="flex">
-                      {order.status === 'PAID' && (
-                        <p className="text-[#9C6D2E] font-normal">
-                          {dayjs(order.payment_date)
-                            .locale('ko')
-                            .format('MM/DD (ddd)')}{' '}
-                          도착
+              <div className="px-[16px]">
+                {orderList[date].map((order: any) => (
+                  <div key={order.id}>
+                    <div className="border rounded-[12px] p-[16px] mt-[8px] mb-[16px] bg-white">
+                      <div className="flex gap-[4px]">
+                        <p className="font-medium">
+                          {order.status === 'CANCELLED'
+                            ? '주문취소완료'
+                            : '결제 완료'}
                         </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {order.products.map((product: any, index: number) => {
-                    return (
-                      <div
-                        className="cursor-pointer"
-                        key={product.id}
-                        onClick={() => route.push(`local-food/${product.id}`)}
-                      >
-                        <div
-                          className={`flex gap-[12px] pt-[12px] ${
-                            index !== order.products.length - 1
-                              ? 'border-b-2 pb-[12px]'
-                              : ''
-                          }`}
-                        >
-                          <Image
-                            src={imageSrc(product.name)}
-                            width={64}
-                            height={64}
-                            style={{
-                              width: 64,
-                              height: 64,
-                              objectFit: 'cover',
-                              borderRadius: 8
-                            }}
-                            alt={product.name}
-                          />
-
-                          <div className="flex flex-col justify-center gap-[8px]">
-                            <p className="font-medium text-[16px]">
-                              {product.name}
+                        <p className="text-[#AFAFAF]">
+                          {order.status === 'CANCELLED' ? null : '·'}
+                        </p>
+                        <div className="flex">
+                          {order.status === 'PAID' && (
+                            <p className="text-[#9C6D2E] font-normal">
+                              {dayjs(order.payment_date)
+                                .locale('ko')
+                                .format('MM/DD (ddd)')}{' '}
+                              도착 예정
                             </p>
-                            <div className="flex text-[#79746D] gap-[4px]">
-                              <p>{product.amount.toLocaleString()}원</p>
-                              <p>·</p>
-                              <p>{product.quantity}개</p>
-                            </div>
-                          </div>
-                          {index !== order.products.length - 1 && <hr />}
+                          )}
                         </div>
                       </div>
-                    );
-                  })}
-                  <div
-                    className={`flex justify-center gap-[7px] text-[14px] font-semibold pt-[12px] ${
-                      order.status !== 'CANCELLED' ? 'flex' : 'hidden'
-                    }`}
-                  >
-                    <button
-                      className="py-[10px] px-[16px] border-[1px] border-[#AFAFAF] text-[#79746D] w-[152px] h-[40px] rounded-[10px]"
-                      onClick={() => cancelPayment(order)}
-                    >
-                      주문취소
-                    </button>
-                    <button
-                      className="py-[10px] px-[16px] border-[1px] border-[#9C6D2E] text-[#9C6D2E] w-[152px] h-[40px] rounded-[10px]"
-                      onClick={() => {
-                        toast({
-                          variant: 'destructive',
-                          description: '서비스 준비 중이에요.'
-                        });
-                      }}
-                    >
-                      배송조회
-                    </button>
+
+                      {order.products.map((product: any, index: number) => {
+                        return (
+                          <div
+                            className="cursor-pointer"
+                            key={product.id}
+                            onClick={() =>
+                              route.push(`local-food/${product.id}`)
+                            }
+                          >
+                            <div
+                              className={`flex gap-[12px] pt-[12px] ${
+                                index !== order.products.length - 1
+                                  ? 'border-b-2 pb-[12px]'
+                                  : ''
+                              }`}
+                            >
+                              <Image
+                                src={imageSrc(product.name)}
+                                width={64}
+                                height={64}
+                                style={{
+                                  width: 64,
+                                  height: 64,
+                                  objectFit: 'cover',
+                                  borderRadius: 8
+                                }}
+                                alt={product.name}
+                              />
+
+                              <div className="flex flex-col justify-center gap-[8px]">
+                                <p className="font-medium text-[16px]">
+                                  {product.name}
+                                </p>
+                                <div className="flex text-[#79746D] gap-[4px]">
+                                  <p>{product.amount.toLocaleString()}원</p>
+                                  <p>·</p>
+                                  <p>{product.quantity}개</p>
+                                </div>
+                              </div>
+                              {index !== order.products.length - 1 && <hr />}
+                            </div>
+                          </div>
+                        );
+                      })}
+                      <div
+                        className={`flex justify-center gap-[7px] text-[14px] font-semibold pt-[12px] ${
+                          order.status !== 'CANCELLED' ? 'flex' : 'hidden'
+                        }`}
+                      >
+                        <button
+                          className="py-[10px] px-[16px] border-[1px] border-[#AFAFAF] text-[#79746D] w-[152px] h-[40px] rounded-[10px]"
+                          onClick={() => cancelPayment(order)}
+                        >
+                          주문취소
+                        </button>
+                        <button
+                          className="py-[10px] px-[16px] border-[1px] border-[#9C6D2E] text-[#9C6D2E] w-[152px] h-[40px] rounded-[10px]"
+                          onClick={() => {
+                            toast({
+                              variant: 'destructive',
+                              description: '서비스 준비 중이에요.'
+                            });
+                          }}
+                        >
+                          배송조회
+                        </button>
+                      </div>
+                    </div>
+                    <div className="w-full flex justify-center mb-4">
+                      <ReviewProductDetail order={order} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <hr className="border-4 border-[#F2F2F2]" />
             </div>
           ))}
         </div>
