@@ -1,8 +1,28 @@
+'use client';
+
 import DefaultAppLayout from '@/components/common/DefaultAppLayout';
-import { PropsWithChildren } from 'react';
+import DefaultWebLayout from '@/components/common/DefaultWebLayout';
+import Loading from '@/components/common/Loading';
+import useDeviceSize from '@/hooks/useDeviceSize';
+
+import { PropsWithChildren, useState, useEffect } from 'react';
 
 function HomeLayout({ children }: PropsWithChildren) {
-  return (
+  const { isDesktop } = useDeviceSize();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // TODO 로딩 컴포넌트 바꿀 것
+  if (!isClient) {
+    return <Loading />;
+  }
+
+  return isDesktop ? (
+    <DefaultWebLayout>{children}</DefaultWebLayout>
+  ) : (
     <DefaultAppLayout
       showNavigation={true}
       showHeader={true}

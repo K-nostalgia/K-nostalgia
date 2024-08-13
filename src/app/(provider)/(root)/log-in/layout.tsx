@@ -19,6 +19,7 @@ function LogInLayout({ children }: PropsWithChildren) {
       showHeader={isGuest}
       showNavigation={isGuest}
       headerTitle={isGuest ? '로그인' : ''}
+      showChat={false}
     >
       {children}
     </DefaultAppLayout>

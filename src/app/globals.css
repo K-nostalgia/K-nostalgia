@@ -83,3 +83,14 @@
 .swiper-pagination-bullet {
   background-color: rbg(189, 135, 63) !important;
 }
+
+.moving-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: red;
+  transition: transform 0.5s ease-in-out;
+}
