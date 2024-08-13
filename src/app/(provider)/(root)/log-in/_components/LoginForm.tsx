@@ -69,42 +69,43 @@ const LoginForm = () => {
     setshowPassword(!showPassword);
   };
 
+  const handleGoSignup = () => {
+    router.push('/sign-up');
+  };
+
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleLogin} className="w-full max-w-[320px] xs:max-w-full">
       <div className="flex flex-col justify-between mt-10">
         <div>
-          <div className="px-4 py-2">
-            <label className="block text-label-normal px-4 mb-2">이메일</label>
+          <div className="mb-4">
+            <label className="block text-label-normal mb-2">이메일</label>
             <input
               type="text"
               placeholder="이메일을 입력해 주세요"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-[320px] mx-3 pl-4 pr-3 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+              className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
                 errors.email || loginError
                   ? 'border-status-negative'
                   : 'border-label-assistive'
               }`}
             />
             {errors.email && (
-              <p className="text-status-negative mt-2 ml-4 text-[14px]">
-                {' '}
-                {errors.email}{' '}
+              <p className="text-status-negative mt-2 text-sm">
+                {errors.email}
               </p>
             )}
           </div>
 
-          <div className="px-4 py-2">
-            <label className="block text-label-normal px-4 mb-2 ">
-              비밀번호
-            </label>
-            <div className="relative w-[320px]">
+          <div className="mb-4">
+            <label className="block text-label-normal mb-2">비밀번호</label>
+            <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
                 placeholder="비밀번호를 입력해 주세요"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={` w-[320px] mx-3 pl-4 pr-11 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
                   errors.password || loginError
                     ? 'border-status-negative'
                     : 'border-label-assistive'
@@ -112,38 +113,33 @@ const LoginForm = () => {
               />
               <span
                 onClick={handleShowPassword}
-                className=" w-[24px] h-[24px] right-2 p-1 top-1/2 transform -translate-y-1/2 absolute cursor-pointer "
+                className="absolute w-6 h-6 right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
               >
                 {showPassword ? (
-                  <PiEyeSlash className="text-[#545454] text-xl " />
+                  <PiEyeSlash className="text-[#545454] text-xl" />
                 ) : (
                   <PiEye className="text-[#545454] text-xl" />
                 )}
               </span>
             </div>
-
             {errors.password && (
-              <p className="text-status-negative mt-2  ml-4 text-[14px]">
-                {' '}
-                {errors.password}{' '}
+              <p className="text-status-negative mt-2 text-sm">
+                {errors.password}
               </p>
             )}
-
             {loginError && (
-              <p className="text-status-negative mt-2 border-status-negative text-[14px]">
-                {loginError}
-              </p>
+              <p className="text-status-negative mt-2 text-sm">{loginError}</p>
             )}
           </div>
         </div>
 
-        <div className="flex flex-col justify-between items-center">
+        <div className="flex flex-col items-center">
           <button
             type="submit"
-            className={`w-[320px] mt-7 ml-7 mr-[27px] py-3 px-4 rounded-xl text-white ${
+            className={`w-full mt-7 py-3 px-4  rounded-xl text-white ${
               isFormFilled
                 ? 'bg-primary-strong hover:bg-primary-strong'
-                : ' bg-label-disable'
+                : 'bg-label-disable'
             }`}
           >
             입장하기
@@ -161,9 +157,9 @@ const LoginForm = () => {
           <Image
             src="/image/ORdivider.png"
             alt="divider"
-            width={375}
+            width={520}
             height={20}
-            className="w-[350px] h-[20px] mt-8 mb-[39px]"
+            className="w-[350px] h-[20px] mt-8 mb-[39px] xs:w-full"
           />
         </div>
 

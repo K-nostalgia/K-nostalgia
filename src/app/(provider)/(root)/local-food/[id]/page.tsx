@@ -27,13 +27,13 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
   useEffect(() => {
     const fetchReview = async () => {
-      const response = await fetch('/api/review');
+      const response = await fetch(`/api/review?product_id=${id}`);
       const data = await response.json();
       setReview(data);
       return data;
     };
     fetchReview();
-  }, []);
+  }, [id]);
 
   const {
     data: food,

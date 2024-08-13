@@ -5,7 +5,7 @@ import { BsChevronRight } from 'react-icons/bs';
 export const SectionVideo = () => {
   return (
     <>
-      <div className="flex flex-col justify-center items-center text-center my-8">
+      <div className="flex flex-col justify-center items-center text-center my-20">
         <div>
           <h1 className="text-lg text-label-strong font-semibold">
             안 가면 후회하는 K-관광마켓 4선
@@ -28,7 +28,7 @@ export const SectionVideo = () => {
             priority
             alt="시장 유튜브 이미지"
             style={{ width: 260, height: 180, objectFit: 'cover' }}
-            className="my-4"
+            className="my-8"
           />
         </Link>
         <Link

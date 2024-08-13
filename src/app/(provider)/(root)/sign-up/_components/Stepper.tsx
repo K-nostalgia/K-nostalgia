@@ -18,7 +18,7 @@ const Stepper: React.FC<StepperProps> = ({ steps, currentStep }) => {
       {steps.map((_, index) => (
         <div
           key={index}
-          className={`flex h-[8px] w-[58px] box-border border-l-6 border-t-6 rounded-full ${
+          className={`flex h-[8px] w-[74px] box-border rounded-tl-[4px] rounded-tr-[2px] rounded-br-[2px] rounded-bl-[4px] rounded-full ${
             index < currentStep
               ? 'bg-primary-strong'
               : index === currentStep

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import api from '@/service/service';
 import { GoArrowLeft } from 'react-icons/go';
@@ -35,6 +35,7 @@ const SignUpContainer = () => {
   const [successes, setSuccesses] = useState<SuccessState>({});
   const [isEmailChecked, setIsEmailChecked] = useState(false);
   const [isNicknameChecked, setIsNicknameChecked] = useState(false);
+  const [inputStarted, setInputStarted] = useState(false);
 
   //입력 필드의 변경 사항을 반영
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +43,24 @@ const SignUpContainer = () => {
     setUserInfo((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: '' }));
     setSuccesses((prev) => ({ ...prev, [name]: '' }));
+    setInputStarted(true);
   };
+
+  useEffect(() => {
+    if (step === 1) {
+      if (
+        userInfo.confirmPassword &&
+        userInfo.password !== userInfo.confirmPassword
+      ) {
+        setErrors((prev) => ({
+          ...prev,
+          confirmPassword: '비밀번호가 일치하지 않습니다.'
+        }));
+      } else {
+        setErrors((prev) => ({ ...prev, confirmPassword: '' }));
+      }
+    }
+  }, [userInfo.password, userInfo.confirmPassword, step]);
 
   const validateStep = () => {
     const currentStep = steps[step];
@@ -54,14 +72,17 @@ const SignUpContainer = () => {
       error = '입력은 필수입니다.';
     } else if (currentStep.key === 'email' && !validateEmail(value)) {
       error = '형식에 맞지 않는 이메일 주소에요.';
-    } else if (currentStep.key === 'password' && !validatePassword(value)) {
-      error =
-        '영문 대문자, 소문자, 숫자와 !"?&@%$와 같은 특수문자를 포함하여 6글자 이상 입력하셔야해요.';
-    } else if (
-      currentStep.key === 'confirmPassword' &&
-      value !== userInfo.password
-    ) {
-      error = '비밀번호를 다시 확인해 주세요.';
+    } else if (currentStep.key === 'password') {
+      if (!validatePassword(value)) {
+        error =
+          '영문 대소문자, 숫자와 특수문자를 포함하여 6글자 이상 입력하셔야해요.';
+      } else if (value !== userInfo.confirmPassword) {
+        setErrors((prev) => ({
+          ...prev,
+          confirmPassword: '비밀번호가 일치하지 않습니다.'
+        }));
+        return false;
+      }
     } else if (currentStep.key === 'name' && !validateName(value)) {
       error = '정확한 이름을 입력해주세요.';
     } else if (currentStep.key === 'nickname' && !validateNickName(value)) {
@@ -87,6 +108,10 @@ const SignUpContainer = () => {
   };
 
   const nextStep = () => {
+    if (!validateStep()) {
+      return; // 유효성 검사 실패 시 함수 종료
+    }
+
     // 이메일 중복 확인이 필요할 경우 추가적인 검사를 진행합니다.
     if (step === 0) {
       if (!isEmailChecked) {
@@ -129,7 +154,7 @@ const SignUpContainer = () => {
     }
 
     try {
-      await api.auth.CheckDuplicate(email, '');
+      await api.auth.checkDuplicate(email, '');
       setErrors((prev) => ({ ...prev, email: '' }));
       setSuccesses((prev) => ({ ...prev, email: '사용 가능한 이메일입니다.' }));
       setIsEmailChecked(true);
@@ -149,7 +174,7 @@ const SignUpContainer = () => {
     }
 
     try {
-      await api.auth.CheckDuplicate('', nickname);
+      await api.auth.checkDuplicate('', nickname);
       setErrors((prev) => ({ ...prev, nickname: '' }));
       setSuccesses((prev) => ({
         ...prev,
@@ -225,6 +250,7 @@ const SignUpContainer = () => {
           <SignupForm
             title={steps[step].title}
             label={steps[step].label}
+            placeholder={steps[step].placeholder}
             type={steps[step].type}
             name={steps[step].key}
             value={userInfo[steps[step].key as keyof typeof userInfo]}
@@ -233,10 +259,26 @@ const SignUpContainer = () => {
             successMessage={successes[steps[step].key]}
             onEmailCheckDuplicate={handleEmailCheckDuplicate}
             onNicknameCheckDuplicate={handleNicknameCheckDuplicate}
+            isEmailChecked={isEmailChecked}
+            isNicknameChecked={isNicknameChecked}
+            inputStarted={inputStarted}
           />
+
+          {step === 1 && (
+            <SignupForm
+              title=""
+              label="비밀번호 재확인"
+              placeholder="한번 더 입력해주세요"
+              type="password"
+              name="confirmPassword"
+              value={userInfo.confirmPassword}
+              onChange={handleChange}
+              error={errors.confirmPassword}
+            />
+          )}
         </div>
       </div>
-      <div className=" w-[320px] h-[48px]  ml-[27px] mt-[440px] flex justify-between mb-10">
+      <div className="absolute bottom-0 left-0 right-0 mb-10 flex justify-center">
         <button
           onClick={step === steps.length - 1 ? handleSubmit : nextStep}
           className="w-[320px] h-[48px] py-[12px] px-[16px] bg-primary-strong text-white rounded-xl"
