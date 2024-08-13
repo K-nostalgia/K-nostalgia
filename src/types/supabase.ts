@@ -426,7 +426,24 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_random_markets: {
+        Args: {
+          region: string
+          lim: number
+        }
+        Returns: {
+          id: number
+          고객휴게실_보유여부: string | null
+          대권역: string | null
+          도로명주소: string | null
+          물품보관함_보유여부: string | null
+          소권역: string | null
+          시도: string | null
+          시장명: string | null
+          시장전용고객주차장_보유여부: string | null
+          이미지: string[] | null
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

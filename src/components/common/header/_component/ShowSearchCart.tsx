@@ -30,10 +30,10 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
           className="cursor-pointer w-7 h-7"
           onClick={handleSearchToggle}
         />
-        <div className="relative w-9 h-9">
+        <div className="relative w-7 h-9">
           <PiShoppingCartSimple
             onClick={() => router.push('/cart')}
-            className="cursor-pointer w-7 h-7 "
+            className="cursor-pointer w-7 h-7"
           />
           <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full">
             {cartData?.length}
@@ -43,7 +43,8 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
     );
   } else if (showSearch && !showCart) {
     return (
-      <div className="flex p-1 w-9 h-9">
+      <div className="flex p-1 gap-3 w-[76px] h-9">
+        <div className="invisible w-7 h-7" />
         <SearchBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <GoSearch
           className="cursor-pointer w-7 h-7"
@@ -53,15 +54,19 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
     );
   } else if (!showSearch && showCart) {
     return (
-      <div className="flex p-1 w-9 h-9">
-        <PiShoppingCartSimple
-          onClick={() => router.push('/cart')}
-          className="cursor-pointer w-7 h-7"
-        />
+      <div className="flex p-1 gap-3 w-[76px] h-9">
+        <div className="invisible w-7 h-7" />
+        <div className="relative w-7 h-9">
+          <PiShoppingCartSimple
+            onClick={() => router.push('/cart')}
+            className="cursor-pointer w-7 h-7"
+          />
+          <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full">
+            {cartData?.length}
+          </span>
+        </div>
       </div>
     );
-  } else {
-    return <div className="invisible w-9 h-9" />;
   }
 };
 

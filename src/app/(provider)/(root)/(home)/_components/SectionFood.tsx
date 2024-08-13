@@ -23,8 +23,8 @@ export const SectionFood = () => {
 
   return (
     <div className="bg-secondary-30">
-      <div className="flex flex-col justify-center items-center">
-        <h2 className="text-2xl text-label-light mt-10 mb-3 font-custom">
+      <div className="flex flex-col justify-center items-center pb-20">
+        <h2 className="text-2xl text-label-light mt-20 mb-5 font-custom">
           지역 특산물
         </h2>
         {isPending ? (
@@ -48,9 +48,9 @@ export const SectionFood = () => {
 
         <Link
           href="/local-food"
-          className="border-label-disable border rounded-[12px] w-[95%] my-10"
+          className="border-label-disable border rounded-[12px] w-[95%] mt-10"
         >
-          <button className="w-full  transition-all duration-300 ease-in-out px-4 py-3 text-label-light active:border-primary-50 active:text-primary-50">
+          <button className="w-full transition-all duration-300 ease-in-out px-4 py-3 text-label-light active:border-primary-50 active:text-primary-50">
             특산물 보러가기
           </button>
         </Link>

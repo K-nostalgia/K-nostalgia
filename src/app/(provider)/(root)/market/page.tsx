@@ -6,15 +6,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
-import { GoHeart } from 'react-icons/go';
-import { GoHeartFill } from 'react-icons/go';
 import { RiMoreLine } from 'react-icons/ri';
+import MarketLikes from './_components/MarketLikes';
+import { useUser } from '@/hooks/useUser';
 
 const MarketPage = () => {
+  const { data: user, isLoading, error } = useUser();
   const [markets, setMarkets] = useState<MarketType[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [heart, setHeart] = useState<string[]>([]);
   const [activeFilter, setActiveFilter] = useState<string>('전체');
   const [activeSmallFilter, setActiveSmallFilter] = useState('전체');
   const [totalPages, setTotalPages] = useState(0);
@@ -66,12 +66,6 @@ const MarketPage = () => {
     fetchMarkets(currentPage);
   }, [currentPage, selectedLargeRegion, selectedSmallRegion]);
 
-  const handleHeart = (identity: string, event: React.MouseEvent) => {
-    event.preventDefault();
-    if (!heart.includes(identity)) setHeart((prev) => [...prev, identity]);
-    else setHeart((prev) => prev.filter((el) => el !== identity));
-  };
-
   const handleLargeRegionChange = (region: string) => {
     setSelectedLargeRegion(region);
     setActiveFilter(region);
@@ -88,6 +82,8 @@ const MarketPage = () => {
     setActiveSmallFilter(region);
     setCurrentPage(1);
   };
+
+  if (isLoading) return <div>유저 데이터 받아오는 중..</div>;
 
   return (
     <>
@@ -153,20 +149,20 @@ const MarketPage = () => {
                         <p className="pl-1 text-base font-semibold text-label-strong">
                           {item.시장명}
                         </p>
-
-                        <button
-                          onClick={(event) =>
-                            handleHeart(item.도로명주소, event)
-                          }
+                        <div
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
                         >
-                          {heart.includes(item.도로명주소) ? (
-                            <GoHeartFill className="w-5 h-5 text-[#DB3B3B]" />
-                          ) : (
-                            <GoHeart className="w-5 h-5 text-[#545454]" />
-                          )}
-                        </button>
+                          <MarketLikes
+                            pixel={5}
+                            userId={user?.id}
+                            marketId={item.id}
+                          />
+                        </div>
                       </div>
-                      <p className="pl-1 text-sm text-label-alternative">
+                      <p className="w-[283px] pl-1 text-sm text-label-alternative text-ellipsis overflow-hidden whitespace-nowrap">
                         {item.도로명주소}
                       </p>
                     </div>
@@ -175,7 +171,11 @@ const MarketPage = () => {
                         {item.이미지.slice(0, 2).map((imgSrc, index) => (
                           <div
                             key={index}
-                            className=" gap-2 rounded-[8px] relative w-[156px] h-[130px]"
+                            className={`gap-2 rounded-[8px] relative w-[156px] h-[130px] ${
+                              index === 0
+                                ? 'rounded-l-[8px] rounded-r-none'
+                                : 'rounded-r-[8px] rounded-l-none'
+                            }`}
                           >
                             <Image
                               src={imgSrc}
@@ -183,8 +183,12 @@ const MarketPage = () => {
                               fill
                               sizes="(max-width: 768px) 100vw, 343px"
                               priority
-                              className="absolute w-full h-full rounded-[8px]"
-                              style={{ objectFit: 'cover' }}
+                              className="absolute w-full h-full"
+                              style={{
+                                objectFit: 'cover',
+                                borderRadius:
+                                  index === 0 ? '8px 0 0 8px' : '0 8px 8px 0'
+                              }}
                             />
                           </div>
                         ))}
@@ -200,7 +204,7 @@ const MarketPage = () => {
         </div>
       </div>
 
-      <div className="flex justify-between items-center mb-64">
+      <div className="flex justify-between items-center mb-56">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}

@@ -1,7 +1,7 @@
 import ShowBackLogo from './_component/ShowBackLogo';
 import ShowSearchCart from './_component/ShowSearchCart';
 
-type HeaderProps = {
+type AppHeaderProps = {
   headerTitle?: string;
   showBackButton?: boolean;
   showLogo?: boolean;
@@ -11,7 +11,7 @@ type HeaderProps = {
   onCompleteClick?: () => void;
 };
 
-const Header = ({
+const AppHeader = ({
   headerTitle,
   showBackButton = true,
   showLogo = false,
@@ -19,7 +19,7 @@ const Header = ({
   showCart = true,
   showComplete = false,
   onCompleteClick
-}: HeaderProps) => {
+}: AppHeaderProps) => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 flex justify-between pt-5 pb-2 px-3 bg-normal">
       <ShowBackLogo showBackButton={showBackButton} showLogo={showLogo} />
@@ -27,8 +27,10 @@ const Header = ({
         {headerTitle}
       </div>
       <div className="flex items-center">
-        {showSearch && (
+        {showSearch || showCart ? (
           <ShowSearchCart showSearch={showSearch} showCart={showCart} />
+        ) : (
+          <div className="invisible flex p-1 w-[80px] h-9" />
         )}
         {showComplete && (
           <button className="text-black" onClick={onCompleteClick}>
@@ -40,4 +42,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default AppHeader;

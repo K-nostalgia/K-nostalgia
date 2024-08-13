@@ -66,17 +66,20 @@ export const Review = ({ productId }: { productId: string }) => {
 
   const handleReviewDelete = (reviewId: string) => {
     Swal.fire({
-      text: '해당 리뷰를 삭제하시겠습니까?',
+      title: '리뷰를 삭제하시겠어요?',
+      text: '삭제 후에는 복구나 재작성이 불가해요',
       showCancelButton: true,
-      cancelButtonColor: '#E0DDD9',
+      cancelButtonColor: '#F2F2F2',
       confirmButtonColor: '#9C6D2E',
-      cancelButtonText: '취소',
-      confirmButtonText: '삭제',
+      cancelButtonText: '취소하기',
+      confirmButtonText: '삭제하기',
       customClass: {
+        title: 'text-xl font-semibold text-label-strong',
         popup: 'rounded-[16px] pt-10',
         actions: 'flex gap-3 mt-8',
         confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
-        cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+        cancelButton:
+          'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0'
       }
     }).then((result) => {
       if (result.isConfirmed) {

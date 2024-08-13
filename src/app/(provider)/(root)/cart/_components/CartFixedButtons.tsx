@@ -66,8 +66,12 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
       } => item != null
     );
 
-  //총 상품 갯수(수량)
-  const dataCount = data.map((item) => item.count);
+  //선택된 상품 갯수(수량)
+  const dataCount = data.map((item) => {
+    if (selectedItems.includes(item.product_id as string)) {
+      return item.count;
+    }
+  });
   const totalCount = dataCount.reduce((acc, item) => {
     return (acc ?? 0) + (item ?? 0);
   }, 0);
@@ -93,7 +97,9 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
                   : `0 원`}
               </span>
             </p>
-            {/* <button onClick={clickButton}>결제하기기기기기기기ㅣ</button> */}
+            {/* <button onClick={() => console.log(selectedItems)}>
+              결제하기기기기기기기ㅣ
+            </button> */}
             <PayButton product={product} orderNameArr={orderNameArr} />
           </div>
         </div>
