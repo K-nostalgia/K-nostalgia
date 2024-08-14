@@ -19,6 +19,7 @@ import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
+import { GoArrowLeft } from 'react-icons/go';
 
 interface chatUserType {
   avatar: string;
@@ -190,8 +191,12 @@ export function SendChat({
     <DialogContent className="bg-normal w-[330px] rounded-[16px]">
       <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
         <DialogHeader>
-          <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading=[28.8px] items-center justify-center">
-            <button onClick={handleBackChatRoom}>뒤로가기</button>
+          <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
+            <button onClick={handleBackChatRoom}>
+              <GoArrowLeft className="w-7 h-7" />
+            </button>
+            <div>{selectedChatRoom?.chat_name}</div>
+            <div className="invisible w-7" />
           </DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>

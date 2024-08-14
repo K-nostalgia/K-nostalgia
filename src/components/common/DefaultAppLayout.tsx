@@ -2,7 +2,7 @@ import { PropsWithChildren } from 'react';
 import Navigation from './Navigation';
 import { Chat } from '../chat/Chat';
 import TopButton from '../icons/TopButton';
-import Header from './header/Header';
+import AppHeader from './header/AppHeader';
 
 interface DefaultAppLayoutProps {
   showNavigation: boolean;
@@ -20,9 +20,9 @@ interface DefaultAppLayoutProps {
 
 const DefaultAppLayout = ({
   children,
-  showNavigation,
-  showHeader,
-  headerTitle,
+  showNavigation = true,
+  showHeader = true,
+  headerTitle = '',
   showChat = true,
   showTopButton = false,
   showBackButton = true,
@@ -35,7 +35,7 @@ const DefaultAppLayout = ({
   return (
     <div className="flex flex-col min-h-screen">
       {showHeader && (
-        <Header
+        <AppHeader
           headerTitle={headerTitle}
           showBackButton={showBackButton}
           showLogo={showLogo}
