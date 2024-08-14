@@ -64,7 +64,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
 
   return (
-    <div>
+    <div className="max-w-screen-xl mx-auto">
       {/* 슬라이드 */}
 
       <div className="md:hidden">
@@ -97,10 +97,10 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         <DeliveryInfo />
       </div>
 
-      <div className="border-b-[2px] border-[#F2F2F2]">
-        <ul className="flex text-center pt-4 font-semibold">
+      <div className="border-b-[2px] border-[#F2F2F2] lg:mb-6">
+        <ul className="flex text-center pt-4 font-semibold lg:justify-center">
           <li
-            className="flex-1 cursor-pointer"
+            className="flex-1 lg:flex-none cursor-pointer"
             onClick={() => setActiveTab('상세 정보')}
           >
             <p
@@ -114,7 +114,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
             </p>
           </li>
           <li
-            className="flex-1 cursor-pointer"
+            className="flex-1 lg:flex-none cursor-pointer"
             onClick={() => setActiveTab('리뷰')}
           >
             <p
