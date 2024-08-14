@@ -2,13 +2,11 @@
 
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ChatSendIcon from '../../icons/ChatSendIcon';
@@ -210,19 +208,13 @@ export function SendChat({
           return item.user_id === user?.id ? (
             // 나일 경우
             <div key={item.id} className="flex flex-col mb-3 w-full">
-              {item.users?.avatar ? (
-                <Image
-                  src={item.users?.avatar}
-                  alt={`${item.users?.nickname}의 프로필`}
-                  height={36}
-                  width={36}
-                  className="rounded-full ml-auto w-9 h-9"
-                />
-              ) : (
-                <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
-                  X
-                </div>
-              )}
+              <Image
+                src={item.users?.avatar || '/image/profile.png'}
+                alt={`${item.users?.nickname || 'user'}의 프로필`}
+                height={36}
+                width={36}
+                className="rounded-full ml-auto w-9 h-9"
+              />
               <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-white bg-primary-strong w-fit px-3 py-2">
                 {encoded(item.content)}
               </div>
@@ -234,20 +226,13 @@ export function SendChat({
             // 다른 사람일 경우
             <div key={item.id} className="flex flex-col mb-3 w-full">
               <div className="flex gap-2">
-                {/* TODO null 일 경우 기본 이미지 태그로 바꾸기 */}
-                {item.users?.avatar ? (
-                  <Image
-                    src={item.users.avatar}
-                    alt={`${item.users.nickname}의 프로필`}
-                    height={36}
-                    width={36}
-                    className="rounded-full w-9 h-9"
-                  />
-                ) : (
-                  <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
-                    X
-                  </div>
-                )}
+                <Image
+                  src={item.users.avatar || '/image/profile.png'}
+                  alt={`${item.users.nickname}의 프로필` || 'User의 프로필'}
+                  height={36}
+                  width={36}
+                  className="rounded-full w-9 h-9"
+                />
                 <div className="flex items-center font-semibold mr-auto">
                   {item.users?.nickname}
                 </div>
