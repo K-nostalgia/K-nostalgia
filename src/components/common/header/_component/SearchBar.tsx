@@ -10,15 +10,15 @@ import {
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet';
-import { useCallback, useEffect, useState } from 'react';
+import React, { act, useCallback, useEffect, useState } from 'react';
 import SearchRecommendations from './SearchRecommendations';
 import { GoSearch } from 'react-icons/go';
 import { Tables } from '@/types/supabase';
-import Link from 'next/link';
 import useDebounce from '@/hooks/useDebounce';
 import HomeSearchResult from './HomeSearchResult';
 import MarketSearchResult from './MarketSearchResult';
 import LocalFoodSearchResult from './LocalFoodSearchResults';
+import { useRouter } from 'next/navigation';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -37,23 +37,39 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const [results, setResults] = useState<string>('');
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
+  const router = useRouter();
 
   const marketSide = pathName === '/market' || pathName.startsWith('/market');
   const localFoodSide =
     pathName === '/local-food' || pathName.startsWith('/local-food/');
   const homeSide = pathName === '/';
 
-  // TODO 검색 결과 빈 배열로 받기 => 검색 결과 없음으로 처리
+  // TODO 이스터애그 숨기기 예쁘게 알럿 제작하기!
   const handleSearchTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value
+      .normalize('NFKC')
+      .toLowerCase()
+      .trim();
+      
     setSearchTerm(event.target.value);
 
     if (event.target.value.trim() === '') {
       setResponse(null);
     }
-    // 검색어 길이 제한
+    // 검색어 길이 제한 및 이스터애그'-'
     if (event.target.value.length >= 20) {
       alert('20자 미만으로 검색해주세어흥');
       setSearchTerm('');
+      return;
+    } else if (inputValue === '향그리움'.trim()) {
+      console.log('향그리움을 입력햇다!!!!');
+      return;
+    } else if (
+      inputValue === '오조사마'.trim() ||
+      inputValue === '5JOSAMA'.normalize('NFKC').toLowerCase().trim() ||
+      inputValue === 'OJOSAMA'.normalize('NFKC').toLowerCase().trim()
+    ) {
+      console.log('오조사마를 입력햇다!!!!');
       return;
     }
   };
@@ -101,9 +117,28 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
   }, [debounceSearchTerm, submitSearchTerm]);
 
-  // TODO 1. 최근 검색어 저장
+  // TODO 1. 최근 검색어 저장- 로컬 스토리지
 
-  // TODO 2. 키보드 이동
+  // TODO 2. 키보드 이동 -
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (response === null || response.length === 0) return;
+
+    // 위 화살표
+    if (event.key === 'ArrowUp') {
+      setActiveIndex((prev) => (prev < 0 ? prev : prev - 1));
+    }
+    // 아래 화살표
+    else if (event.key === 'ArrowDown') {
+      setActiveIndex((prev) => (prev >= response.length - 1 ? prev : prev + 1));
+    }
+    // 엔터
+    else if (event.key === 'Enter') {
+      // 방어 코딩
+      if (activeIndex >= 0 && activeIndex < response.length) {
+        console.log(response[activeIndex]);
+      }
+    }
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

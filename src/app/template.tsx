@@ -11,22 +11,19 @@ import Cookies from 'js-cookie';
 export default function Template({ children }: { children: React.ReactNode }) {
   const { isDesktop } = useDeviceSize();
   const pathName = usePathname();
-  // const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [isGuest, setIsGuest] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   setIsClient(true);
-  // }, []);
-
   useEffect(() => {
+    setIsClient(true);
     const guestCookie = Cookies.get('guest') === 'true';
     setIsGuest(guestCookie);
   }, []);
 
   // TODO 로딩 컴포넌트 바꿀 것
-  // if (!isClient) {
-  //   return <Loading />;
-  // }
+  if (!isClient) {
+    return <Loading />;
+  }
 
   /* 모바일 레이아웃 */
   let showHeader: boolean = true;

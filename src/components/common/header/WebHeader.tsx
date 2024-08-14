@@ -21,7 +21,6 @@ const HeaderNav: headerNavType[] = [
 ];
 
 const HeaderNavPaths = HeaderNav.map((item) => item.path);
-console.log('HeaderNavPaths', HeaderNavPaths);
 
 const WebHeader = () => {
   const router = useRouter();
@@ -41,7 +40,6 @@ const WebHeader = () => {
       }
     });
 
-    console.log('targetNavIndex', targetNavIndex);
     setCurrentIndex(targetNavIndex);
     setActiveIndex(targetNavIndex);
   }, [pathName]);
