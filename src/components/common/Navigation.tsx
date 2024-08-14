@@ -22,7 +22,7 @@ const naviList: NaviList[] = [
     label: '홈',
     path: '/',
     icon: KNostalgiaIcon3,
-    activeIcon: KNostalgiaIcon2
+    activeIcon: KNostalgiaIcon2 as IconType
   },
   {
     label: '전통 시장',
