@@ -37,7 +37,6 @@ export function Chat() {
           <ChatIcon />
         </Button>
       </DialogTrigger>
-      {/*TODO 현재 w-[330px] 반응형일 때 조절하기 */}
       {!selectedChatRoom ? (
         <ChatList setSelectedChatRoom={setSelectedChatRoom} />
       ) : (
