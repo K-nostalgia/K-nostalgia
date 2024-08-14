@@ -53,7 +53,7 @@ const ChatList = ({
         {data?.map((item) => (
           <div
             key={item.room_id}
-            className="flex border py-4 pl-4 pr-3 rounded-xl gap-1 cursor-pointer shadow-chatCustom justify-between"
+            className="flex border py-4 pl-4 pr-3 rounded-xl gap-1 cursor-pointer shadow-chatCustom justify-between bg-white"
             onClick={() => handleRoom(item)}
           >
             <Image
