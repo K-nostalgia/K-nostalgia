@@ -30,7 +30,8 @@ export const AddCartButton = ({
         product_name: food.food_name,
         product_price: food.price,
         user_id: user?.id,
-        discountRate: food.discountRate
+        discountRate: food.discountRate,
+        description: food.description
       });
       if (error) throw new Error(error.message);
       return data;

@@ -65,12 +65,12 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <div className="max-w-screen-xl mx-auto">
-      {/* 슬라이드 */}
-
+      {/* 슬라이드 - 모바일 */}
       <div className="md:hidden">
         <DetailSlide images={food.title_image} />
       </div>
-      <div className="hidden md:block">
+      {/* 슬라이드 - pc */}
+      <div className="hidden md:block md:mt-20">
         <div className="flex">
           <ProductSlide images={food.title_image} />
           <ProductDetail

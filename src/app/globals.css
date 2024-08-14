@@ -26,8 +26,6 @@
 
 .swiper-slide {
   text-align: left;
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
 
   /* Center slide text vertically */
   display: flex;
@@ -69,6 +67,7 @@
 .swiper-slide {
   background-size: cover;
   background-position: center;
+  cursor: pointer;
 }
 
 .mySwiper2 {
@@ -77,6 +76,7 @@
 }
 
 .mySwiper {
+  margin-top: 12px;
   height: 20%;
   box-sizing: border-box;
   padding: 10px 0;
@@ -90,4 +90,5 @@
 
 .mySwiper .swiper-slide-thumb-active {
   opacity: 1;
+  border: 1px solid #9c6d2e;
 }

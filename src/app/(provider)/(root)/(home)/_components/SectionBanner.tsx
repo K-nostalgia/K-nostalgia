@@ -46,7 +46,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div className="lg:mt-10 max-w-screen-xl mx-auto">
+    <div className="md:mt-20 max-w-screen-xl mx-auto">
       <Carousel
         setApi={setApi}
         plugins={[

@@ -13,8 +13,8 @@ interface SlideProps {
 }
 
 export const ProductSlide = ({ images }: SlideProps) => {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  console.log(thumbsSwiper);
+  const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+
   return (
     <>
       <Swiper
@@ -28,27 +28,26 @@ export const ProductSlide = ({ images }: SlideProps) => {
         {images?.map((img, index) => (
           <SwiperSlide key={index}>
             {img ? (
-              <>
-                <Image
-                  src={img}
-                  width={375}
-                  height={375}
-                  priority
-                  alt={`상세 대표 이미지`}
-                  style={{
-                    objectFit: 'cover'
-                  }}
-                />
-              </>
+              <Image
+                src={img}
+                width={375}
+                height={375}
+                priority
+                alt={`상세 대표 이미지`}
+                style={{
+                  objectFit: 'cover',
+                  borderTopLeftRadius: '12px',
+                  borderBottomLeftRadius: '12px'
+                }}
+              />
             ) : (
               <DefaultImage text={'이미지가 없습니다.'} />
             )}
           </SwiperSlide>
         ))}
       </Swiper>
-
       <Swiper
-        onSwiper={() => setThumbsSwiper}
+        onSwiper={setThumbsSwiper}
         spaceBetween={10}
         slidesPerView={4}
         freeMode={true}

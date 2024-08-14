@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { CountButton } from '../CountButton';
 import { DeliveryInfo } from '../DeliveryInfo';
 import { AddCartButton } from '../../../_components/AddCartButton';
+import PayButton from '@/components/common/PayButton';
 
 export const ProductDetail = ({
   id,
@@ -40,13 +41,22 @@ export const ProductDetail = ({
   const discountAmount =
     (orderData?.price ?? 0) - (orderData?.price ?? 0) * discountRate;
 
+  const product = [
+    {
+      id: orderData?.product_id,
+      name: orderData?.food_name,
+      amount: discountAmount * (count ?? 0),
+      quantity: count ?? 0
+    }
+  ];
+
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <div className="rounded-tr-[16px] rounded-tl-[16px] w-full">
-      <div className="flex px-8 justify-between bg-normal py-10">
-        <div className="bg-normal flex-auto">
+    <div className="w-full bg-white rounded-tr-[12px] rounded-br-[12px]border border-l-0  border-[#E0E0E0]">
+      <div className="flex px-8 justify-between  py-10">
+        <div className="flex-auto">
           <h2 className="font-semibold text-label-strong text-xl">
             {`[${orderData.location}]`} {orderData.food_name}
           </h2>
@@ -90,9 +100,7 @@ export const ProductDetail = ({
               count={count}
               handleCartModalOpen={handleCartModalOpen}
             />
-            <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base">
-              바로 구매하기
-            </button>
+            <PayButton product={product} orderNameArr={[orderData.food_name]} />
           </div>
         </div>
       </div>
