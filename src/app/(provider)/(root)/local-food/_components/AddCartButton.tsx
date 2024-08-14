@@ -1,47 +1,22 @@
-import PayButton from '@/components/common/PayButton';
 import { Tables } from '@/types/supabase';
 import supabase from '@/utils/supabase/client';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
-import { AddCartButton } from './AddCartButton';
 
-interface Props {
+type AddCartType = {
   food: Tables<'local_food'>;
   count: number | null;
-  onPurchase: () => void;
-  isModalOpen: boolean;
   handleCartModalOpen: () => void;
-}
+};
 
-const FixedButtons = ({
+export const AddCartButton = ({
   food,
   count,
-  onPurchase,
-  isModalOpen,
   handleCartModalOpen
-}: Props) => {
+}: AddCartType) => {
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  // {
-  //   name: "청송 사과",
-  //   amount: 8000,
-  //   quantity: 3,
-  // }
-
-  //할인된 금액
-  const discountAmount =
-    (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
-
-  const product = [
-    {
-      id: food.product_id,
-      name: food.food_name,
-      amount: discountAmount * (count ?? 0),
-      quantity: count ?? 0
-    }
-  ];
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -162,30 +137,12 @@ const FixedButtons = ({
     }
     handleCartModalOpen();
   };
-
   return (
-    <>
-      <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0 md:hidden">
-        <div className="flex gap-3">
-          <AddCartButton
-            food={food}
-            count={count}
-            handleCartModalOpen={handleCartModalOpen}
-          />
-
-          <div onClick={onPurchase} className="flex-1">
-            {isModalOpen ? (
-              <PayButton product={product} orderNameArr={[food.food_name]} />
-            ) : (
-              <button className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7">
-                구매하기
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    </>
+    <button
+      onClick={onAddCart}
+      className="min-w-[165px] text-primary-strong font-semibold border-2 border-primary-strong py-3 px-4 rounded-xl flex-1"
+    >
+      장바구니에 담기
+    </button>
   );
 };
-
-export default FixedButtons;

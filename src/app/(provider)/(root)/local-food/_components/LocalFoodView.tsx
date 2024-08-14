@@ -45,8 +45,9 @@ const LocalFoodView = () => {
   );
 
   return (
-    <div className="mt-[15%] max-w-screen-xl mx-auto lg:mt-0">
-      <div className="lg:block hidden">
+    <div className="mt-[15%] max-w-screen-xl mx-auto md:mt-0">
+      {/* PC */}
+      <div className="md:block hidden">
         <Image
           src={
             'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/webLocal.png'
@@ -62,14 +63,8 @@ const LocalFoodView = () => {
             margin: '40px auto'
           }}
         />
-        {isPending && (
-          <div className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-60%] translate-y-[-50%] top-[60%] left-[50%]">
-            <HashLoader color="#A87939" />
-            <p className="my-5">데이터를 불러오고 있어요!</p>
-          </div>
-        )}
       </div>
-      <div className="flex gap-2 items-center py-3 px-4 fixed lg:static lg:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
+      <div className="flex gap-2 items-center py-3 px-4 fixed md:static md:py-0 lg:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -80,8 +75,9 @@ const LocalFoodView = () => {
           </FilterButton>
         ))}
       </div>
+      {/* 모바일 */}
       {isPending ? (
-        <div className="mx-4 lg:hidden">
+        <div className="mx-4 md:hidden">
           <div className="my-4">
             <Image
               src={
@@ -102,8 +98,8 @@ const LocalFoodView = () => {
           <Loading />
         </div>
       ) : (
-        <div className="mx-4 lg:mt-9 lg:mx-0">
-          <div className="my-4 lg:hidden">
+        <div className="mx-4 md:mt-9 lg:mx-0">
+          <div className="my-4 md:hidden">
             <Image
               src={
                 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
@@ -122,7 +118,9 @@ const LocalFoodView = () => {
           </div>
 
           {filteredFoodData?.length === 0 ? (
-            <DefaultImage text={'특산물을 준비하고 있어요'} />
+            <div className="h-[80vh] flex justify-center items-center">
+              <DefaultImage text={'특산물을 준비하고 있어요'} />
+            </div>
           ) : (
             <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 pb-32">
               {filteredFoodData?.map((food) => (

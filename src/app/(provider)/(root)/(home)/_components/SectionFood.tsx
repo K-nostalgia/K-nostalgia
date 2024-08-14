@@ -75,7 +75,7 @@ export const SectionFood = () => {
 
         <Link
           href="/local-food"
-          className="border-label-disable text-label-light border rounded-[12px] w-[373px] mt-10 block transition-all duration-300 ease-in-out hover:border-primary-50 hover:text-primary-50"
+          className="border-label-disable md:mt-16 text-label-light border rounded-[12px] w-[373px] mt-10 block transition-all duration-300 ease-in-out hover:border-primary-50 hover:text-primary-50"
         >
           <button className="w-full px-4 py-3 ">더보기</button>
         </Link>

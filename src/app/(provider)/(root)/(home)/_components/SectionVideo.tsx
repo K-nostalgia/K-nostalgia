@@ -6,7 +6,7 @@ export const SectionVideo = () => {
   return (
     <>
       {/* xs:375 sm:640 md:768 lg:1024 xl:1280 */}
-      <div className="flex flex-col md:flex-row md:border md:items-start md:gap-6 md:w-[630px] md:mx-auto md:rounded-[12px] md:p-8 md:border-[#C8C8C8] justify-center items-center text-center my-20">
+      <div className="flex flex-col md:flex-row md:border md:items-start md:gap-6 md:w-[650px] md:mx-auto md:rounded-[12px] md:p-8 md:border-[#C8C8C8] justify-center items-center text-center my-20">
         <div className="md:py-2 md:flex md:flex-col md:justify-between gap-6 order-1 md:order-2 md:text-left">
           <div>
             <h1 className="text-lg text-label-strong font-semibold">
@@ -20,7 +20,7 @@ export const SectionVideo = () => {
           <Link
             href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}
             target="_blank"
-            className="hidden md:flex items-center gap-1"
+            className="hidden md:flex items-center gap-1 mt-[17%] translate-y-[-17%]"
           >
             <p className="underline text-label-normal text-sm font-medium">
               영상보러 가기

@@ -46,7 +46,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div className="lg:mt-10">
+    <div className="lg:mt-10 max-w-screen-xl mx-auto">
       <Carousel
         setApi={setApi}
         plugins={[
@@ -69,7 +69,7 @@ export const SectionBanner = () => {
                   priority
                   alt={`메인 배너 이미지 ${index + 1}`}
                   style={{
-                    height: 'auto', // 높이를 자동으로 조정하여 비율 유지
+                    height: 'auto',
                     objectFit: 'cover'
                   }}
                 />
@@ -77,7 +77,7 @@ export const SectionBanner = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="hidden lg:block absolute right-[6%] translate-x-[-10%] bottom-[5%] translate-y-[-31%] px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
+        <div className="hidden lg:block absolute right-4 translate-x-[-10%] bottom-[5%] translate-y-[-31%] px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
           {`${current} / ${count}`}
         </div>
       </Carousel>

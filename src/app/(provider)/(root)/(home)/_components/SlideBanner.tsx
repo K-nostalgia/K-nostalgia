@@ -36,7 +36,7 @@ export const SlideBanner = ({ images }: marketProps) => {
       }}
       centeredSlides={true}
       pagination={{ clickable: true }}
-      className="!pb-[110px] lg:!pt-10"
+      className="!pb-[110px] !pt-10"
     >
       {images?.slice(0, 6).map((item, index) => (
         <SwiperSlide key={index} className="!w-[319px] ">

@@ -10,6 +10,9 @@ import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
 import { DetailImage } from './_components/DetailImage';
 import { Review } from './_components/Review';
+import { ProductDetail } from './_components/web/ProductDetail';
+import { ProductSlide } from './_components/web/ProductSlide';
+import { DeliveryInfo } from './_components/DeliveryInfo';
 
 export type ReviewType = {
   review_id: string;
@@ -63,10 +66,22 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   return (
     <div>
       {/* 슬라이드 */}
-      <DetailSlide images={food.title_image} />
+
+      <div className="md:hidden">
+        <DetailSlide images={food.title_image} />
+      </div>
+      <div className="hidden md:block">
+        <div className="flex">
+          <ProductSlide images={food.title_image} />
+          <ProductDetail
+            id={food.product_id}
+            handleCartModalOpen={() => setOpenCartModal(true)}
+          />
+        </div>
+      </div>
 
       {/* 상세 정보 */}
-      <div className="m-4">
+      <div className="m-4 md:hidden">
         <h2 className="text-xl font-semibold">
           {`[${food.location}] `}
           {food?.food_name}
@@ -78,33 +93,8 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         </p>
         <p className="text-primary-20 font-bold text-xl">{`${totalAmount.toLocaleString()}원`}</p>
       </div>
-      <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full mt-4 p-4">
-        <table className="text-left text-sm">
-          <tbody>
-            <tr>
-              <th className="align-top text-primary-heavy font-medium w-16">
-                배송
-              </th>
-              <td>
-                향신배송
-                <p className="text-[#76746d]">
-                  23시 전 주문 시 내일 아침 8시 전 도착
-                  <span className="block">
-                    (제주도, 도서산간지역 향신배송 불가)
-                  </span>
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <th className="text-primary-heavy font-medium py-2">배송비</th>
-              <td>2,500원</td>
-            </tr>
-            <tr>
-              <th className="text-primary-heavy font-medium">판매자</th>
-              <td>향그리움</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full mt-4 p-4 lg:hidden">
+        <DeliveryInfo />
       </div>
 
       <div className="border-b-[2px] border-[#F2F2F2]">
