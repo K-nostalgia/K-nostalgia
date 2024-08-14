@@ -21,6 +21,7 @@ const HeaderNav: headerNavType[] = [
 ];
 
 const HeaderNavPaths = HeaderNav.map((item) => item.path);
+console.log('HeaderNavPaths', HeaderNavPaths);
 
 const WebHeader = () => {
   const router = useRouter();
@@ -30,9 +31,17 @@ const WebHeader = () => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  // 초기화
+  // 초기화 및 디테일 페이지 포함 경로 설정
   useEffect(() => {
-    const targetNavIndex = HeaderNavPaths.indexOf(pathName);
+    const targetNavIndex = HeaderNavPaths.findIndex((item) => {
+      if (item === '/') {
+        return pathName === '/';
+      } else {
+        return pathName.startsWith(item);
+      }
+    });
+
+    console.log('targetNavIndex', targetNavIndex);
     setCurrentIndex(targetNavIndex);
     setActiveIndex(targetNavIndex);
   }, [pathName]);
