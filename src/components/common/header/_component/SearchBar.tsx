@@ -3,13 +3,10 @@
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle
 } from '@/components/ui/sheet';
@@ -19,6 +16,9 @@ import { GoSearch } from 'react-icons/go';
 import { Tables } from '@/types/supabase';
 import Link from 'next/link';
 import useDebounce from '@/hooks/useDebounce';
+import HomeSearchResult from './HomeSearchResult';
+import MarketSearchResult from './MarketSearchResult';
+import LocalFoodSearchResult from './LocalFoodSearchResults';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -34,6 +34,8 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const [response, setResponse] = useState<
     (Tables<'local_food'> | Tables<'markets'>)[] | null
   >(null);
+  const [results, setResults] = useState<string>('');
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
 
   const marketSide = pathName === '/market' || pathName.startsWith('/market');
@@ -94,18 +96,21 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
 
   // 계속해서 작동
   useEffect(() => {
-    // console.log('1. debounceSearchTerm', debounceSearchTerm);
     if (debounceSearchTerm) {
-      // console.log('2. useEffect 작동 순간', debounceSearchTerm);
       submitSearchTerm();
     }
   }, [debounceSearchTerm, submitSearchTerm]);
 
-  // console.log('4. response야...', response);
+  // TODO 1. 최근 검색어 저장
+
+  // TODO 2. 키보드 이동
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="top" className="bg-normal rounded-b-[12px]">
+      <SheetContent
+        side="top"
+        className="bg-normal rounded-b-[12px] md:w-[608px]"
+      >
         <SheetHeader>
           <SheetTitle></SheetTitle>
           <SheetDescription></SheetDescription>
@@ -125,7 +130,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
             value={searchTerm}
             onChange={handleSearchTerm}
             disabled={!marketSide && !localFoodSide && !homeSide}
-            className={`pr-10 placeholder:text-label-alternative text-base ${
+            className={`pr-10 placeholder:text-label-alternative text-base bg-white ${
               searchTerm.trim() === ''
                 ? 'border-primary-30 rounded-[6px]'
                 : 'border-label-assistive border-b-0 rounded-t-[6px]'
@@ -152,44 +157,23 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
         >
           {/* 검색 결과 있을 경우 */}
           {response !== null && response.length > 0 && (
-            <div className="border-t border-label-assistive">
-              {response.map((item, index) => (
-                <Link
-                  href={
-                    marketSide
-                      ? `/market/${(item as Market).id}`
-                      : localFoodSide
-                      ? `/local-food/${(item as LocalFood).product_id}`
-                      : homeSide
-                      ? `/market/${(item as Market).id}` ||
-                        `/local-food/${(item as LocalFood).product_id}`
-                      : ''
-                  }
-                  key={
-                    marketSide
-                      ? (item as Market).id
-                      : localFoodSide
-                      ? (item as LocalFood).product_id
-                      : homeSide
-                      ? (item as Market).id || (item as LocalFood).product_id
-                      : Math.random()
-                  }
-                >
-                  <div
-                    onClick={() => setIsOpen(false)}
-                    className="cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2]"
-                  >
-                    {marketSide
-                      ? (item as Market).시장명
-                      : localFoodSide
-                      ? (item as LocalFood).food_name
-                      : homeSide
-                      ? (item as Market).시장명 || (item as LocalFood).food_name
-                      : ''}
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <>
+              {homeSide && (
+                <HomeSearchResult response={response} setIsOpen={setIsOpen} />
+              )}
+              {marketSide && (
+                <MarketSearchResult
+                  response={response as Market[]}
+                  setIsOpen={setIsOpen}
+                />
+              )}
+              {localFoodSide && (
+                <LocalFoodSearchResult
+                  response={response as LocalFood[]}
+                  setIsOpen={setIsOpen}
+                />
+              )}
+            </>
           )}
 
           <div className="px-3 py-[6px] text-xs border-t border-label-assistive">
