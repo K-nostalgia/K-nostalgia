@@ -188,8 +188,8 @@ export function SendChat({
   };
 
   return (
-    <DialogContent className="bg-normal w-[330px] rounded-[16px]">
-      <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
+    <DialogContent className="bg-normal w-[330px] rounded-[16px] md:w-[608px]">
+      <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
             <button onClick={handleBackChatRoom}>
@@ -252,7 +252,7 @@ export function SendChat({
                   {item.users?.nickname}
                 </div>
               </div>
-              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px]">
+              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] bg-white">
                 {encoded(item.content)}
               </div>
               <div className="text-xs text-label-assistive mt-1">
@@ -262,7 +262,7 @@ export function SendChat({
           );
         })}
       </div>
-      <div className="border-t-2 w-[calc(100%+33px)] -mx-4">
+      <div className="border-t-2 w-[calc(100%+32px)] -mx-4">
         <DialogFooter className="flex relative items-center">
           <form
             className="relative w-[90%] mx-auto items-center"
@@ -277,7 +277,7 @@ export function SendChat({
                     ? '메시지 보내기...'
                     : '향그리움의 가족만 이용할 수 있어요'
                 }
-                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base"
+                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base bg-white"
                 disabled={!user}
                 aria-label="메시지 입력"
               />

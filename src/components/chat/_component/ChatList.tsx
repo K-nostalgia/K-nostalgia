@@ -39,8 +39,8 @@ const ChatList = ({
   };
 
   return (
-    <DialogContent className="bg-normal rounded-2xl w-[330px]">
-      <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
+    <DialogContent className="bg-normal rounded-2xl w-[330px] md:w-[608px]">
+      <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] items-center justify-center">
             실시간 채팅
@@ -49,26 +49,28 @@ const ChatList = ({
         </DialogHeader>
       </div>
 
-      <div className="flex flex-col py-4 h-[472px] flex-1 gap-3">
+      <div className="flex flex-col py-4 h-[472px] flex-1 gap-3 md:gap-4 pt-7">
         {data?.map((item) => (
           <div
             key={item.room_id}
-            className="flex border py-4 pl-4 pr-3 rounded-xl gap-1 cursor-pointer shadow-chatCustom justify-between bg-white"
+            className="flex border py-4 pl-4 pr-3 rounded-xl gap-1 cursor-pointer shadow-chatCustom justify-between bg-white md:"
             onClick={() => handleRoom(item)}
           >
-            <Image
-              src={item.room_img}
-              width={48}
-              height={48}
-              alt={item.chat_name}
-              className="w-12 h-12"
-            />
-            <div className="ml-2 flex flex-col justify-center">
-              <div className="font-medium text-base leading-[22.4px]">
-                {item.chat_name}
-              </div>
-              <div className="font-normal text-sm leading-[19.6px] text-label-alternative overflow-ellipsis">
-                {item.chat_description}
+            <div className="flex">
+              <Image
+                src={item.room_img}
+                width={48}
+                height={48}
+                alt={item.chat_name}
+                className="w-12 h-12"
+              />
+              <div className="ml-2 flex flex-col justify-center">
+                <div className="font-medium text-base leading-[22.4px]">
+                  {item.chat_name}
+                </div>
+                <div className="font-normal text-sm leading-[19.6px] text-label-alternative overflow-ellipsis">
+                  {item.chat_description}
+                </div>
               </div>
             </div>
             <div className="flex justify-center p-3">
