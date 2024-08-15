@@ -4,7 +4,13 @@ import { BsChevronRight } from 'react-icons/bs';
 import Image from 'next/image';
 import { useQuery } from '@tanstack/react-query';
 import { useUser } from '@/hooks/useUser';
-import Loading from '@/components/common/Loading';
+import { HashLoader } from 'react-spinners';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination } from 'swiper/modules';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const LikeMarket = () => {
   const { data: userData } = useUser();
@@ -34,7 +40,7 @@ const LikeMarket = () => {
     enabled: !!userData?.id
   });
 
-  if (isLoading) return <Loading />;
+  if (isLoading) return <HashLoader />;
   if (isError) return <div> 에러가 발생했습니다.</div>;
 
   const markets = Array.isArray(likedMarkets)
@@ -50,46 +56,47 @@ const LikeMarket = () => {
       </div>
 
       {markets.length > 0 ? (
-        markets.map((market, index) => (
-          <div
-            key={market.id || index}
-            className="border border-secondary-50 rounded-xl mt-1 p-3 flex"
-          >
-            <div>
-              <h3 className="text-[16px] text-label-strong font-semibold">
-                {market.시장명 || '이름 없음'}
-              </h3>
-              <p className="text-label-normal text-[14px]">
-                {market.도로명주소 || '주소 없음'}
-              </p>
+        <Swiper spaceBetween={10} slidesPerView={1} className="w-[328px]">
+          {markets.map((market, index) => (
+            <SwiperSlide key={market.id || index}>
+              <div className="border border-secondary-50 rounded-xl mt-1 p-3 flex w-full h-[204px]">
+                <div>
+                  <h3 className="text-[16px] text-label-strong font-semibold">
+                    {market.시장명 || '이름 없음'}
+                  </h3>
+                  <p className="text-label-normal text-[14px]">
+                    {market.도로명주소 || '주소 없음'}
+                  </p>
 
-              <div className="mt-2 mb-3 flex">
-                {market.이미지 ? (
-                  <>
-                    <Image
-                      src={market.이미지[0]}
-                      alt={`${market.시장명 || '시장'} 이미지`}
-                      width={64}
-                      height={64}
-                      className="rounded-lg mr-4"
-                    />
-                    <Image
-                      src={market.이미지[1]}
-                      alt={`${market.시장명 || '시장'} 이미지`}
-                      width={64}
-                      height={64}
-                      className="rounded-lg mr-4"
-                    />
-                  </>
-                ) : (
-                  '이미지 없음'
-                )}
+                  <div className="mt-2 mb-3 flex gap-2">
+                    {market.이미지 ? (
+                      <>
+                        <Image
+                          src={market.이미지[1]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={150}
+                          height={130}
+                          className="w-[148px] h-[130px]"
+                        />
+                        <Image
+                          src={market.이미지[2]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={150}
+                          height={130}
+                          className="w-[148px] h-[130px]"
+                        />
+                      </>
+                    ) : (
+                      '이미지 없음'
+                    )}
+                  </div>
+                </div>
+
+                <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
               </div>
-            </div>
-
-            <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
-          </div>
-        ))
+            </SwiperSlide>
+          ))}
+        </Swiper>
       ) : (
         <div className="text-center"> 관심 전통시장이 없습니다. </div>
       )}
