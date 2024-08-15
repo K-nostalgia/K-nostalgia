@@ -2,7 +2,7 @@
 
 import Loading from '@/components/common/Loading';
 import { imageSrc } from '@/hooks/payment/getProductImage';
-import useGetPaymentHistory from '@/hooks/payment/useGetPaymentHistory';
+import { useGetPaymentHistory } from '@/hooks/payment/useGetPaymentHistory';
 import dayjs from 'dayjs';
 import Image from 'next/image';
 import Link from 'next/link';
