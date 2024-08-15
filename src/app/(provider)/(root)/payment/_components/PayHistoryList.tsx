@@ -72,19 +72,20 @@ const PayHistoryList = () => {
 
   const deletePayment = async (order: Order) => {
     const { payment_id } = order;
-    //TODO 컨펌 창 변경
     Swal.fire({
       title: '주문 내역을 삭제하시겠어요?',
-      text: '내역 삭제시에는 복구 및 주문 취소가 불가해요.',
+      html: `
+      <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">내역 삭제시에는 복구 및 주문 취소가 불가해요.</div>
+    `,
       showCancelButton: true,
       cancelButtonColor: '#9C6D2E',
       confirmButtonColor: '#f2f2f2',
       cancelButtonText: '취소하기',
       confirmButtonText: '삭제하기',
       customClass: {
-        title: 'text-xl mt-10',
+        title: 'text-xl mt-10 md:mb-[8px]',
         popup: 'rounded-[16px]',
-        actions: 'flex gap-3 mt-8',
+        actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
         confirmButton:
           'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
         cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
