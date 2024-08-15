@@ -8,7 +8,7 @@ function MyPageLayout({ children }: PropsWithChildren) {
   const { isDesktop } = useDeviceSize();
   return (
     <div
-      className={`min-h-screen max-w-[1280px] mx-auto ${
+      className={`min-h-screen max-w-[1280px] mx-auto md:px-4 ${
         isDesktop ? 'flex' : ''
       }`}
     >
