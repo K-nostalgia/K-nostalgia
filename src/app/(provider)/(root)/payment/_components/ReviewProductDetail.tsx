@@ -7,7 +7,7 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { imageSrc } from '@/hooks/payment/getProductImage';
-import { Tables } from '@/types/supabase';
+import { Order, Product } from '@/types/payHistory';
 import supabase from '@/utils/supabase/client';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
@@ -16,20 +16,6 @@ import ReviewForm from './ReviewForm';
 
 interface Props {
   order: Order;
-}
-
-interface Product {
-  amount: number;
-  id: string;
-  name: string;
-  quantity: number;
-  user_id: string;
-  hasReview?: boolean;
-  rating?: number | null | undefined;
-}
-
-interface Order extends Omit<Tables<'orderd_list'>, 'products'> {
-  products: Product[] | null;
 }
 
 const ReviewProductDetail = ({ order }: Props) => {
@@ -59,25 +45,22 @@ const ReviewProductDetail = ({ order }: Props) => {
     };
 
     fetchReviewStatus();
-  }, [order.products, user_id, productsWithReviewStatus]);
+  }, [order.products, user_id]);
 
   return (
     <div>
       <Dialog>
-        <DialogTrigger>
-          <div
-            role="button"
-            onClick={(e) => {
-              if (isDisabled) {
-                e.preventDefault();
-              }
-            }}
-            className={`flex flex-col gap-2 h-[40px] w-[343px] px-[10px] py-[16px] justify-center items-center text-[14px] text-[#F6F5F3] font-semibold leading-[140%] rounded-[10px] ${
-              isDisabled ? 'bg-[#E0DDD9]' : 'bg-[#9C6D2E]'
-            }`}
-          >
-            리뷰 작성하기
-          </div>
+        <DialogTrigger
+          onClick={(e) => {
+            if (isDisabled) {
+              e.preventDefault();
+            }
+          }}
+          className={`flex gap-2 w-[100%] h-[40px] justify-center items-center px-[10px] py-[16px]   text-[14px] text-[#F6F5F3] font-semibold leading-[140%] rounded-[10px] ${
+            isDisabled ? 'bg-[#E0DDD9]' : 'bg-[#9C6D2E]'
+          }`}
+        >
+          리뷰 작성하기
         </DialogTrigger>
         <DialogContent className="bg-[#FAF8F5] w-[330px] h-[627px] rounded-2xl">
           {selectedProduct ? (
