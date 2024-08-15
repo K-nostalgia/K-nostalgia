@@ -49,8 +49,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
           id: item.product_id,
           name: item.product_name,
           amount: discountAmount * (item.count ?? 0),
-          quantity: item.count ?? 0,
-          description: item.description
+          quantity: item.count ?? 0
         };
       }
       return null; //장바구니 선택 상품 외 null 처리
@@ -64,7 +63,6 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
         name: string | null;
         amount: number;
         quantity: number;
-        description: string;
       } => item != null
     );
 

@@ -36,7 +36,7 @@ export const CartPriceList = ({ data, selectedItems }: CartProps) => {
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 
   return (
-    <div className="bg-normal mt-2 pt-6 pb-[30%]">
+    <div className="bg-normal mt-2 pt-6 pb-[30%] md:pb-0">
       <ul className="flex flex-col mx-4 gap-2">
         <li className="flex justify-between">
           <p>총 상품 금액</p>
