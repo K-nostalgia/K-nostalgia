@@ -8,34 +8,60 @@ import Image from 'next/image';
 import { StarRating } from './StarRating';
 import Loading from '@/components/common/Loading';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationNext,
+  PaginationLink,
+  PaginationPrevious
+} from '@/components/ui/pagination';
+import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
+
+type UserType = {
+  id: string;
+  name: string;
+  avatar: string;
+};
+
+export type ReviewType = {
+  review_id: string;
+  created_at: string;
+  product_id: string;
+  user_id: string;
+  content: string;
+  rating: number;
+  users?: UserType;
+};
+
+export type ReviewDataType = {
+  reviews: ReviewType[];
+  totalPages: number;
+  totalReviews: number;
+};
 
 export const Review = ({ productId }: { productId: string }) => {
   const { data: userData } = useUser();
   const queryClient = useQueryClient();
+  const [currentPage, setCurrentPage] = useState(1);
+  const limit = 10;
+
+  const fetchReview = async (page: number) => {
+    const response = await fetch(
+      `/api/review?product_id=${productId}&page=${page}&limit=${limit}`
+    );
+    const data = await response.json();
+    return data;
+  };
 
   const {
     data: reviewData,
     error,
     isPending
-  } = useQuery({
-    queryKey: ['reviews', productId],
-    queryFn: async () => {
-      try {
-        const { data, error } = await supabase
-          .from('reviews')
-          .select('*,users(avatar, name)')
-          .eq('product_id', productId)
-          .order('created_at', { ascending: false });
-
-        if (error) {
-          console.error(error.message);
-        }
-
-        return data;
-      } catch (error) {
-        console.error('해당 상품의 리뷰를 가져오지 못했습니다.', error);
-      }
-    }
+  } = useQuery<ReviewDataType>({
+    queryKey: ['reviews', productId, currentPage],
+    queryFn: () => fetchReview(currentPage)
   });
 
   const mutation = useMutation({
@@ -58,11 +84,11 @@ export const Review = ({ productId }: { productId: string }) => {
   if (isPending) return <Loading />;
   if (error) return <div>오류</div>;
 
-  const totalRate = reviewData?.reduce(
+  const totalRate = reviewData.reviews.reduce(
     (acc, item) => acc + (item.rating ?? 0),
     0
   );
-  const averageRate = (totalRate ?? 0) / (reviewData?.length || 1);
+  const averageRate = (totalRate ?? 0) / (reviewData?.reviews.length || 1);
 
   const handleReviewDelete = (reviewId: string) => {
     Swal.fire({
@@ -88,8 +114,12 @@ export const Review = ({ productId }: { productId: string }) => {
     });
   };
 
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   return (
-    <div className="pb-[30%] flex flex-col justify-center items-center">
+    <div className="pb-32 md:pb-20 flex flex-col justify-center items-center">
       {/* 별점 */}
       <div className="border-b-2 border-[#F2F2F2] w-full">
         <div className="w-[235px] my-8 mx-auto flex items-center justify-center border border-[##E0E0E0] rounded-[8px] p-4">
@@ -102,8 +132,8 @@ export const Review = ({ productId }: { productId: string }) => {
 
       {/* 리뷰목록 */}
       <ul className="mt-8 w-full">
-        {reviewData && reviewData.length > 0 ? (
-          reviewData?.map((review) => (
+        {reviewData.reviews && reviewData.reviews.length > 0 ? (
+          reviewData?.reviews.map((review) => (
             <li
               key={review.review_id}
               className="border-b-2 border-[#F2F2F2] py-3"
@@ -156,12 +186,60 @@ export const Review = ({ productId }: { productId: string }) => {
               alt="default"
               className="mx-auto"
             />
-            <p className="text-label-assistive text-lg mt-4 font-medium">
+            <p className="text-label-assistive text-lg mt-4 font-medium text-center">
               작성된 리뷰가 없어요
             </p>
           </>
         )}
       </ul>
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationLink onClick={() => handlePageChange(currentPage - 1)}>
+              <button className="flex items-center gap-[6px] text-label-assistive text-[15px]">
+                <RiArrowLeftDoubleFill />
+                처음
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() =>
+                currentPage > 1 && handlePageChange(currentPage - 1)
+              }
+            />
+          </PaginationItem>
+          {Array.from({ length: reviewData.totalPages }, (_, index) => (
+            <PaginationItem key={index + 1}>
+              <PaginationLink
+                href="#"
+                onClick={() => handlePageChange(index + 1)}
+                isActive={currentPage === index + 1}
+              >
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              onClick={() =>
+                currentPage < reviewData.totalPages &&
+                handlePageChange(currentPage + 1)
+              }
+            />
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink
+              onClick={() => handlePageChange(reviewData.totalPages)}
+            >
+              <button className="flex items-center gap-[6px] text-label-assistive text-[15px]">
+                마지막
+                <RiArrowRightDoubleFill />
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

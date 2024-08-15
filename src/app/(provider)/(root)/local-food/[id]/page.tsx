@@ -9,24 +9,16 @@ import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
 import { DetailImage } from './_components/DetailImage';
-import { Review } from './_components/Review';
+import { Review, ReviewDataType } from './_components/Review';
 import { ProductDetail } from './_components/web/ProductDetail';
 import { ProductSlide } from './_components/web/ProductSlide';
 import { DeliveryInfo } from './_components/DeliveryInfo';
-
-export type ReviewType = {
-  review_id: string;
-  user_id: string;
-  product_id: string;
-  rating: number;
-  content: string;
-};
 
 const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [openModal, setOpenModal] = useState(false); //바텀시트
   const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
   const [activeTab, setActiveTab] = useState('상세 정보');
-  const [review, setReview] = useState<ReviewType[]>([]);
+  const [review, setReview] = useState<ReviewDataType[]>([]);
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -59,7 +51,6 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
-
   const totalAmount =
     (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
 
@@ -124,7 +115,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
                   : 'text-label-assistive'
               }`}
             >
-              {`리뷰(${review.length || 0})`}
+              {`리뷰(${review.totalReviews || 0})`}
             </p>
           </li>
         </ul>
