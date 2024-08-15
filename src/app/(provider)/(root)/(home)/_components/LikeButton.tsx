@@ -23,6 +23,9 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
   } = useQuery({
     queryKey: ['likes', marketId, userId],
     queryFn: async () => {
+      if (!userId) {
+        return []; // 비회원일 경우 빈 배열 반환
+      }
       //현재 사용자 좋아요 상태
       const { data } = await supabase
         .from('likes')
@@ -31,7 +34,8 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
         .eq('user_id', userId);
 
       return data;
-    }
+    },
+    enabled: !!userId // userId가 있을 때만 쿼리 실행
   });
 
   const mutation = useMutation({
