@@ -46,6 +46,16 @@ export const CartList = () => {
       })
       .filter((item): item is Product[number] => item !== null) || [];
 
+  const selectedOrderNameArr =
+    cartData
+      ?.map((item) => {
+        if (selectedItems.includes(item.product_id as string)) {
+          return item.product_name;
+        }
+        return null;
+      })
+      .filter((name): name is string => name !== null) || [];
+
   //선택 상품 주문하기
   const selectedProduct: Product =
     cartData
@@ -88,9 +98,17 @@ export const CartList = () => {
         }`}
       >
         {/* 선택 상품 주문하기 */}
-        <PayButton product={selectedProduct} orderNameArr={selectedItems} />
+        <PayButton
+          product={selectedProduct}
+          orderNameArr={selectedOrderNameArr}
+          text={'선택 상품 주문하기'}
+        />
         {/* 전체 상품 주문하기 */}
-        <PayButton product={product} orderNameArr={orderNameArr} />
+        <PayButton
+          product={product}
+          orderNameArr={orderNameArr}
+          text={'전체 상품 주문하기'}
+        />
       </div>
     </div>
   );

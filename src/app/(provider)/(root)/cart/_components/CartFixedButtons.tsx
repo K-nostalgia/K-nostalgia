@@ -100,7 +100,11 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
             {/* <button onClick={() => console.log(selectedItems)}>
               결제하기기기기기기기ㅣ
             </button> */}
-            <PayButton product={product} orderNameArr={orderNameArr} />
+            <PayButton
+              product={product}
+              orderNameArr={orderNameArr}
+              text={'바로 구매하기'}
+            />
           </div>
         </div>
       )}
