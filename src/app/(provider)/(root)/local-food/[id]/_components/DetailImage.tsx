@@ -13,8 +13,9 @@ export const DetailImage = ({ food }: ImageProps) => {
           width={375}
           height={2451}
           priority
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          style={{ objectFit: 'cover' }}
           alt="상세페이지"
+          className="lg:w-[860px] mx-auto w-[100%]"
         />
       )}
     </>

@@ -30,7 +30,7 @@ export const DeleteButton = ({
   return (
     <button
       onClick={handleSelectedDelete}
-      className="text-base text-label-alternative font-normal"
+      className="text-base text-label-alternative font-normal md:bg-[#F2F2F2] md:text-sm md:rounded-[6px] md:px-[10px] md:py-[5px]"
     >
       선택 삭제
     </button>

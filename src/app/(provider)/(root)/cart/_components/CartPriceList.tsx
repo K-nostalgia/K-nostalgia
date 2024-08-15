@@ -36,7 +36,7 @@ export const CartPriceList = ({ data, selectedItems }: CartProps) => {
   const totalPrice = totalAmount + DELIVERY_FEE - COUPON;
 
   return (
-    <div className="bg-normal mt-2 pt-6 pb-[30%]">
+    <div className="bg-normal mt-2 pt-6 pb-[30%] md:pb-0">
       <ul className="flex flex-col mx-4 gap-2">
         <li className="flex justify-between">
           <p>총 상품 금액</p>
@@ -58,7 +58,7 @@ export const CartPriceList = ({ data, selectedItems }: CartProps) => {
               : `0 원`}
           </p>
         </li>
-        <li className="flex justify-between text-lg text-label-strong font-semibold border-t-2 border-[#F2F2F2] pt-4">
+        <li className="flex justify-between text-lg text-label-strong md:text-primary-20 font-semibold border-t-2 border-[#F2F2F2] pt-4">
           <p>결제 예정 금액</p>
           <p>
             {selectedItems.length > 0

@@ -8,6 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
+import { HashLoader } from 'react-spinners';
 
 type LocalFood = Tables<'local_food'>;
 
@@ -44,8 +45,26 @@ const LocalFoodView = () => {
   );
 
   return (
-    <div className="mt-[16%]">
-      <div className="flex gap-2 items-center py-3 px-4 overflow-x-auto w-full whitespace-nowrap filter-button-container fixed top-[52px] bg-normal">
+    <div className="mt-[15%] max-w-screen-xl mx-auto md:mt-0">
+      {/* PC */}
+      <div className="md:block hidden">
+        <Image
+          src={
+            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/webLocal.png'
+          }
+          width={1280}
+          height={280}
+          priority
+          alt="배너이미지"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            margin: '40px auto'
+          }}
+        />
+      </div>
+      <div className="flex gap-2 items-center py-3 px-4 fixed md:static md:py-0 lg:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -56,8 +75,9 @@ const LocalFoodView = () => {
           </FilterButton>
         ))}
       </div>
+      {/* 모바일 */}
       {isPending ? (
-        <div className="mx-4">
+        <div className="mx-4 md:hidden">
           <div className="my-4">
             <Image
               src={
@@ -78,8 +98,8 @@ const LocalFoodView = () => {
           <Loading />
         </div>
       ) : (
-        <div className="mx-4">
-          <div className="my-4">
+        <div className="mx-4 md:mt-9 lg:mx-0">
+          <div className="my-4 md:hidden">
             <Image
               src={
                 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
@@ -98,16 +118,18 @@ const LocalFoodView = () => {
           </div>
 
           {filteredFoodData?.length === 0 ? (
-            <DefaultImage text={'특산물을 준비하고 있어요'} />
+            <div className="h-[80vh] flex justify-center items-center">
+              <DefaultImage text={'특산물을 준비하고 있어요'} />
+            </div>
           ) : (
-            <ul className="grid gap-4 grid-cols-2 pb-32">
+            <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 pb-32">
               {filteredFoodData?.map((food) => (
                 <li
                   key={food.product_id}
-                  className="rounded-[12px] mx-auto w-full border border-secondary-50"
+                  className="rounded-[12px] flex flex-col lg:rounded-[4px] mx-auto w-full border border-secondary-50"
                 >
                   <Link href={`/local-food/${food.product_id}`}>
-                    <div className="flex justify-center items-center w-auto h-[120px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
+                    <div className="flex justify-center items-center w-auto h-[120px] sm:h-[205px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
                       {food.title_image && (
                         <Image
                           src={food.title_image[0]}
@@ -132,7 +154,6 @@ const LocalFoodView = () => {
                       <div className="text-sm mt-2">
                         {`${food.discountRate}%`}
                         <span className="inline-block text-sm ml-1 text-label-assistive line-through">
-                          {/* {`${((food.price ?? 0) + COUPON).toLocaleString()}원`} */}
                           {food.price?.toLocaleString()} 원
                         </span>
                       </div>
