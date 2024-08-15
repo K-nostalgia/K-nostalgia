@@ -79,8 +79,11 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
       <div>
         <ScrollButton />
       </div>
-      <div className="w-full p-4 bg-primary-20 flex flex-col items-center">
-        <div className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90">
+      <div className="mt-[1px] w-full p-4 bg-primary-20 flex flex-col items-center">
+        <div
+          id="photos-section"
+          className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90"
+        >
           시장 전체 이미지
         </div>
         {images.slice(0).map((image, index) => {
@@ -102,7 +105,10 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
           );
         })}
       </div>
-      <div className="w-full bg-primary-70 flex flex-col justify-center items-center">
+      <div
+        id="details-section"
+        className="w-full bg-primary-70 flex flex-col justify-center items-center"
+      >
         <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10">
           상세정보
         </div>
@@ -162,9 +168,13 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
           </div>
         </div>
       </div>
-      <MarketRecommend region={market.소권역} />
+      <div id="recommend-section">
+        <MarketRecommend region={market.소권역} />
+      </div>
       <div className="w-full h-1 border-4 border-color-[#F2F2F2]" />
-      <MarketComments userId={user?.id} marketId={id} />
+      <div id="comments-section">
+        <MarketComments userId={user?.id} marketId={id} />
+      </div>
       <div
         style={{ zIndex: 1000 }} /* 맨 앞으로 나오게 */
         className="w-full flex items-center justify-start fixed bottom-0 px-4 pt-3 pb-6 gap-3 box bg-normal shadow-custom"
