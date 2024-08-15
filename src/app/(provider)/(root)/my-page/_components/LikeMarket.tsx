@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { GoHeart, GoHeartFill } from 'react-icons/go';
 import { BsChevronRight } from 'react-icons/bs';
@@ -6,13 +7,17 @@ import { useQuery } from '@tanstack/react-query';
 import { useUser } from '@/hooks/useUser';
 import { HashLoader } from 'react-spinners';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination } from 'swiper/modules';
-
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { useRouter } from 'next/navigation';
 
 const LikeMarket = () => {
+  const router = useRouter();
+
+  const handleLikeMarketClick = () => {
+    router.push('/my-page/likemarket-page');
+  };
   const { data: userData } = useUser();
 
   const getLikedMarkets = async () => {
@@ -49,10 +54,10 @@ const LikeMarket = () => {
 
   return (
     <div className="p-4">
-      <div className="flex items-center mb-4">
+      <div className="flex items-center mb-4" onClick={handleLikeMarketClick}>
         <GoHeart className="mr-[8px] text-label-normal text-[20px]" />
         <span className="text-[16px]">관심 전통시장</span>
-        <BsChevronRight className="ml-auto text-[#545454]" />
+        <BsChevronRight className="ml-auto text-[#545454] cursor-pointer" />
       </div>
 
       {markets.length > 0 ? (
@@ -76,14 +81,14 @@ const LikeMarket = () => {
                           alt={`${market.시장명 || '시장'} 이미지`}
                           width={150}
                           height={130}
-                          className="w-[148px] h-[130px]"
+                          className="w-[148px] h-[130px] overflow-hidden"
                         />
                         <Image
                           src={market.이미지[2]}
                           alt={`${market.시장명 || '시장'} 이미지`}
                           width={150}
                           height={130}
-                          className="w-[148px] h-[130px]"
+                          className="w-[148px] h-[130px] overflow-hidden"
                         />
                       </>
                     ) : (
