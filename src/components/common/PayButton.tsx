@@ -20,11 +20,10 @@ export type Products = {
 interface Props {
   orderNameArr: (string | null)[];
   product: Products;
-  //TODO selectedItems PROPS로 받아서 없을 경우 버튼 스타일링 OR 비활성화하기
-  // selectedItems: string[];
+  text: string;
 }
 
-const PayButton = ({ orderNameArr, product }: Props) => {
+const PayButton = ({ orderNameArr, product, text }: Props) => {
   console.log(orderNameArr);
   const router = useRouter();
   const pathName = usePathname();
@@ -139,24 +138,12 @@ const PayButton = ({ orderNameArr, product }: Props) => {
   ]);
 
   return (
-    //   <div>
-    //   <button
-    //     className={`min-w-[165px] ${
-    //       selectedItems && selectedItems.length > 0
-    //         ? 'bg-primary-20'
-    //         : 'bg-label-disable'
-    //     } py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7`}
-    //     onClick={payRequest}
-    //   >
-    //     바로 구매하기
-    //   </button>
-    // </div>
     <div>
       <button
         className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
         onClick={throttledPayRequest}
       >
-        바로 구매하기
+        {text}
       </button>
     </div>
   );
