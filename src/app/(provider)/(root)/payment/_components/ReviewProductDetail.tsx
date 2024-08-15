@@ -62,7 +62,7 @@ const ReviewProductDetail = ({ order }: Props) => {
         >
           리뷰 작성하기
         </DialogTrigger>
-        <DialogContent className="bg-[#FAF8F5] w-[330px] h-[627px] rounded-2xl">
+        <DialogContent className="bg-[#FAF8F5] w-[330px] h-[627px] rounded-2xl md:w-[608px] md:h-[840px]">
           {selectedProduct ? (
             <ReviewForm
               product={selectedProduct}
@@ -90,14 +90,16 @@ const ReviewProductDetail = ({ order }: Props) => {
                         <div key={id} className="py-4 flex gap-3 border-b-2">
                           <div>
                             <img
-                              className="rounded-[8px] w-[64px] h-[64px]"
+                              className="rounded-[8px] w-[64px] h-[64px] md:w-[88px] md:h-[88px]"
                               src={imageSrc(name)}
                               alt={name}
                             />
                           </div>
                           <div className="flex flex-col flex-1 items-start">
                             <div className="mb-2">
-                              <p className="flex font-medium">{name}</p>
+                              <p className="flex font-medium md:text-[20px]">
+                                {name}
+                              </p>
                               <div className="flex gap-[4px] items-center text-[#79746D]">
                                 <p>{amount}원</p>
                                 <p>·</p>

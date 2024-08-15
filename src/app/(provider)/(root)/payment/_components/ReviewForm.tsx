@@ -141,13 +141,13 @@ const ReviewForm = ({
                 className="text-gray-500"
                 aria-label="뒤로 가기"
               >
-                <ChevronLeft size={24} />
+                <ChevronLeft size={34} />
               </button>
               <h2 className="text-[18px] font-semibold flex justify-center leading-[160%]">
                 리뷰 작성하기
               </h2>
               <div className="invisible">
-                <ChevronLeft size={24} />
+                <ChevronLeft size={34} />
               </div>
             </div>
           </DialogTitle>
@@ -161,7 +161,7 @@ const ReviewForm = ({
           >
             <div>
               <img
-                className="w-[64px] h-[64px] rounded-[8px]"
+                className="w-[64px] h-[64px] rounded-[8px] md:w-[88px] md:h-[88px]"
                 src={imageSrc(name)}
                 alt={name}
               />
@@ -170,7 +170,7 @@ const ReviewForm = ({
               {isEditing && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button className="absolute right-0 mr-4 py-1 px-2 text-[12px] text-[#1F1E1E] font-normal leading-[140%] bg-[#F2F2F2] rounded-[6px]">
+                    <button className="absolute right-0 mr-4 py-1 px-2 text-[12px] text-[#1F1E1E] font-normal leading-[140%] bg-[#F2F2F2] rounded-[6px] md:text-[14px]">
                       삭제
                     </button>
                   </AlertDialogTrigger>
@@ -197,8 +197,8 @@ const ReviewForm = ({
                   </AlertDialogContent>
                 </AlertDialog>
               )}
-              <div className="h-[64px] mb-2">
-                <p className="flex font-medium">{name}</p>
+              <div className="flex flex-col mb-2 md:gap-[6px]">
+                <p className="flex font-medium md:text-[20px]">{name}</p>
                 <div className="flex gap-[4px] items-center text-[#79746D] font-medium">
                   <p>{amount}원</p>
                   <p>·</p>
@@ -231,14 +231,14 @@ const ReviewForm = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="상품에 대한 솔직한 리뷰를 작성해주세요 :)"
-          className="w-full h-[243px] p-2 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E]"
+          className="w-full h-[243px] p-2 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
         />
         {/* bg-[#FAF8F5] */}
       </div>
-      <div className="flex -mx-4 w-[calc(100%+2rem)] bg-slate-300 shadow-custom pt-3 pb-6">
+      <div className="flex -mx-4 w-[calc(100%+2rem)] shadow-custom pt-3 pb-6">
         <button
           onClick={submitReview}
-          className="mt-4 mx-[16px] bg-[#9C6D2E] text-white px-4 py-2 rounded w-full"
+          className="mt-4 mx-[16px] bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
         >
           {isEditing ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
