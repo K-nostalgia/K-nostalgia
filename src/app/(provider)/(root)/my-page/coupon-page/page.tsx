@@ -10,6 +10,16 @@ const CouponPage = () => {
 
   return (
     <div className=" p-4 bg-normal">
+      <div className="hidden md:mb-[48px] md:flex">
+        <Image
+          src="/image/coupon_tiger.png"
+          alt="마이페이지 쿠폰호랑이 "
+          width={141}
+          height={88}
+          className="w-[140px] h-[88px]"
+        />
+      </div>
+
       <div className="border-4 border-[#F2F2F2]" />
 
       <div className="flex mt-[15px] mx-auto w-[95%] justify-between items-center md:items-center md:justify-center md:gap-4">

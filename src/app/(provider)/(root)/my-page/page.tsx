@@ -53,7 +53,7 @@ const Mypage = () => {
             <div className="w-[749px] flex justify-between items-end">
               <Image
                 src="/image/coupon_tiger.png"
-                alt="마이페이지 쿠폰 "
+                alt="마이페이지 쿠폰호랑이 "
                 width={141}
                 height={88}
                 className="w-[141px] h-[88px] mt-10"
