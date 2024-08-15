@@ -2,11 +2,9 @@
 import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { Autoplay } from 'swiper/modules';
 
 const CouponPage = () => {
   const { data: user, isLoading, error } = useUser();
-  //   console.log(user);
 
   const [activeTab, setActiveTab] = useState('coupons');
 
@@ -14,7 +12,7 @@ const CouponPage = () => {
     <div className=" p-4 bg-normal">
       <div className="border-4 border-[#F2F2F2]" />
 
-      <div className="flex mt-[15px] mx-auto w-[95%] justify-between items-center">
+      <div className="flex mt-[15px] mx-auto w-[95%] justify-between items-center md:items-center md:justify-center md:gap-4">
         <div>
           <button
             className={`px-6 py-2 border-b-4 text-[16px] ${
@@ -49,10 +47,10 @@ const CouponPage = () => {
           <Image
             src={user?.coupon}
             alt="profile"
-            width={343}
+            width={640}
             height={161}
             priority
-            className="w-[343px] h-[161px] mt-[15px]"
+            className="w-[343px] h-[161px] mt-[15px] md:w-[640px] md:h-[280px]"
           />
         )}
       </div>
@@ -65,7 +63,7 @@ const CouponPage = () => {
               alt="쿠폰없을때"
               width={100}
               height={100}
-              className="w-[100px] h-[100px] mx-auto"
+              className="w-[100px] h-[100px] mx-auto md:w-[114px] md:h-[97px]"
             />
             <p className="text-label-assistive mt-4">
               {' '}
