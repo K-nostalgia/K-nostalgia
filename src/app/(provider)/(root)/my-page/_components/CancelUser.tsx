@@ -2,6 +2,7 @@
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 import React from 'react';
+import { BsTrash3 } from 'react-icons/bs';
 
 const CancelUser = () => {
   const router = useRouter();
@@ -15,9 +16,11 @@ const CancelUser = () => {
     }
   };
   return (
-    <div>
-      {' '}
-      <button onClick={handleDeleteUser}> 회원 탈퇴 </button>
+    <div className="p-4">
+      <div className="flex items-center py-[3px]">
+        <BsTrash3 className="mr-[8px] text-label-normal text-[20px]" />
+        <div onClick={handleDeleteUser}> 회원탈퇴 </div>
+      </div>
     </div>
   );
 };
