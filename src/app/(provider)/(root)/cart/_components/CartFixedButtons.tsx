@@ -77,7 +77,7 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
   }, 0);
 
   return (
-    <>
+    <div className="md:hidden">
       {data?.length === 0 ? (
         <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0">
           <div className="flex gap-3 ">
@@ -100,10 +100,14 @@ export const CartFixedButtons = ({ data, selectedItems }: CartButtonProps) => {
             {/* <button onClick={() => console.log(selectedItems)}>
               결제하기기기기기기기ㅣ
             </button> */}
-            <PayButton product={product} orderNameArr={orderNameArr} />
+            <PayButton
+              product={product}
+              orderNameArr={orderNameArr}
+              text={'바로 구매하기'}
+            />
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
