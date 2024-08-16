@@ -113,12 +113,16 @@ export const Review = ({ productId }: { productId: string }) => {
     });
   };
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    page: number
+  ) => {
+    e.preventDefault();
     setCurrentPage(page);
   };
 
   return (
-    <div className="pb-32 md:pb-20 flex flex-col justify-center items-center">
+    <section className="pb-32 md:pb-20 flex flex-col justify-center items-center">
       {/* 별점 */}
       <div className="border-b-2 border-[#F2F2F2] w-full">
         <div className="w-[235px] my-8 mx-auto flex items-center justify-center border border-[##E0E0E0] bg-white rounded-[8px] p-4">
@@ -191,10 +195,13 @@ export const Review = ({ productId }: { productId: string }) => {
           </>
         )}
       </ul>
-      <Pagination>
+
+      <Pagination className={`${reviewData ? 'flex' : 'hidden'}`}>
         <PaginationContent>
           <PaginationItem>
-            <PaginationLink onClick={() => handlePageChange(currentPage - 1)}>
+            <PaginationLink
+              onClick={(e) => handlePageChange(e, currentPage - 1)}
+            >
               <button className="flex items-center gap-[6px] text-label-assistive text-[15px]">
                 <RiArrowLeftDoubleFill />
                 처음
@@ -203,8 +210,8 @@ export const Review = ({ productId }: { productId: string }) => {
           </PaginationItem>
           <PaginationItem>
             <PaginationPrevious
-              onClick={() =>
-                currentPage > 1 && handlePageChange(currentPage - 1)
+              onClick={(e) =>
+                currentPage > 1 && handlePageChange(e, currentPage - 1)
               }
             />
           </PaginationItem>
@@ -212,7 +219,7 @@ export const Review = ({ productId }: { productId: string }) => {
             <PaginationItem key={index + 1}>
               <PaginationLink
                 href="#"
-                onClick={() => handlePageChange(index + 1)}
+                onClick={(e) => handlePageChange(e, index + 1)}
                 isActive={currentPage === index + 1}
               >
                 {index + 1}
@@ -221,15 +228,15 @@ export const Review = ({ productId }: { productId: string }) => {
           ))}
           <PaginationItem>
             <PaginationNext
-              onClick={() =>
+              onClick={(e) =>
                 currentPage < reviewData.totalPages &&
-                handlePageChange(currentPage + 1)
+                handlePageChange(e, currentPage + 1)
               }
             />
           </PaginationItem>
           <PaginationItem>
             <PaginationLink
-              onClick={() => handlePageChange(reviewData.totalPages)}
+              onClick={(e) => handlePageChange(e, reviewData.totalPages)}
             >
               <button className="flex items-center gap-[6px] text-label-assistive text-[15px]">
                 마지막
@@ -239,6 +246,6 @@ export const Review = ({ productId }: { productId: string }) => {
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </div>
+    </section>
   );
 };
