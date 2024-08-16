@@ -20,12 +20,14 @@ export type Products = {
 interface Props {
   orderNameArr: (string | null)[];
   product: Products;
-  //TODO selectedItems PROPS로 받아서 없을 경우 버튼 스타일링 OR 비활성화하기
-  // selectedItems: string[];
+  text: string;
 }
 
-const PayButton = ({ orderNameArr, product }: Props) => {
-  console.log(orderNameArr);
+type ButtonStylesObj = {
+  [key: string]: string;
+};
+
+const PayButton = ({ orderNameArr, product, text }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
 
@@ -138,25 +140,45 @@ const PayButton = ({ orderNameArr, product }: Props) => {
     lastCallTime
   ]);
 
+  const ButtonStylesObj: ButtonStylesObj = {
+    '바로 구매하기':
+      'min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7',
+    '선택 상품 주문하기':
+      'flex flex-1 w-[336px] h-[48px] py-[12px] px-[16px] justify-center items-center rounded-xl text-[#9C6D2E] font-semibold leading-7 border-[1px] border-[#9C6D2E]',
+    '전체 상품 주문하기':
+      'flex flex-1 w-[336px] h-[48px] py-[12px] px-[16px] justify-center items-center rounded-xl text-white font-semibold leading-7 bg-[#9C6D2E]'
+  };
+  const buttonDisabled = product.length === 0;
+
+  let PayButtonStyle = ButtonStylesObj[text];
+
+  if (buttonDisabled) {
+    switch (text) {
+      case '바로 구매하기':
+        PayButtonStyle =
+          'min-w-[165px] bg-stone-200 py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7';
+        break;
+      case '선택 상품 주문하기':
+        PayButtonStyle =
+          'flex flex-1 w-[336px] h-[48px] py-[12px] px-[16px] justify-center items-center rounded-xl text-stone-300 font-semibold leading-7 border-[1px] border-stone-300';
+        break;
+      case '전체 상품 주문하기':
+        PayButtonStyle =
+          'flex flex-1 w-[336px] h-[48px] py-[12px] px-[16px] justify-center items-center rounded-xl text-white font-semibold leading-7 bg-stone-200';
+        break;
+      default:
+        break;
+    }
+  }
+
   return (
-    //   <div>
-    //   <button
-    //     className={`min-w-[165px] ${
-    //       selectedItems && selectedItems.length > 0
-    //         ? 'bg-primary-20'
-    //         : 'bg-label-disable'
-    //     } py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7`}
-    //     onClick={payRequest}
-    //   >
-    //     바로 구매하기
-    //   </button>
-    // </div>
     <div>
       <button
-        className="min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7"
+        className={PayButtonStyle}
         onClick={throttledPayRequest}
+        disabled={buttonDisabled}
       >
-        바로 구매하기
+        {text}
       </button>
     </div>
   );

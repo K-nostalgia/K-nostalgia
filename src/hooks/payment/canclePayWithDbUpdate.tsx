@@ -48,7 +48,7 @@ export const usePaymentCancellation = () => {
 
       queryClient.setQueryData(['payHistoryList'], (old: any[] = []) => {
         return old.map((item) =>
-          item.id === variables.newHistory.id
+          item.payment_id === variables.payment_id
             ? { ...item, ...variables.newHistory }
             : item
         );

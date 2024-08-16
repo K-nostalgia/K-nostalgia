@@ -4,19 +4,24 @@ import Loading from '@/components/common/Loading';
 import { toast } from '@/components/ui/use-toast';
 import { usePaymentCancellation } from '@/hooks/payment/canclePayWithDbUpdate';
 import { imageSrc } from '@/hooks/payment/getProductImage';
+import useDeletePayHistory from '@/hooks/payment/useDeletePayHistory';
 import { useGetPaymentHistoryWithSupabase } from '@/hooks/payment/useGetPaymentHistory';
 import api from '@/service/service';
 import {
   BaseOrderInPayHistory,
-  OrderListInPayHistory
+  Order,
+  OrderListInPayHistory,
+  Product
 } from '@/types/payHistory';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { CgClose } from 'react-icons/cg';
+import Swal from 'sweetalert2';
 import NoPayHistory from './NoPayHistory';
+import ReviewProductDetail from './ReviewProductDetail';
 
 const PayHistoryList = () => {
   const route = useRouter();
@@ -27,10 +32,10 @@ const PayHistoryList = () => {
 
   const userId = users?.id;
 
-  //해당 유저 주문내역 불러오기
   const { payHistoryList } = useGetPaymentHistoryWithSupabase(userId);
-
   const cancelPaymentMutation = usePaymentCancellation();
+  const deletePayHistory = useDeletePayHistory();
+
   if (!payHistoryList) {
     return <Loading />;
   }
@@ -65,111 +70,150 @@ const PayHistoryList = () => {
     }
   };
 
+  const deletePayment = async (order: Order) => {
+    const { payment_id } = order;
+    Swal.fire({
+      title: '주문 내역을 삭제하시겠어요?',
+      html: `
+      <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">내역 삭제시에는 복구 및 주문 취소가 불가해요.</div>
+    `,
+      showCancelButton: true,
+      cancelButtonColor: '#9C6D2E',
+      confirmButtonColor: '#f2f2f2',
+      cancelButtonText: '취소하기',
+      confirmButtonText: '삭제하기',
+      customClass: {
+        title: 'text-xl mt-10 md:mb-[8px]',
+        popup: 'rounded-[16px]',
+        actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+        confirmButton:
+          'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
+        cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePayHistory.mutate(payment_id);
+      }
+    });
+  };
+
   return (
     <>
       {Object.keys(orderList).length === 0 ? (
         <NoPayHistory />
       ) : (
-        <div className="p-[16px] border-t-4 border-[#F2F2F2] mb-[80px] bg-normal">
+        <div className=" pt-[16px] mb-[80px] mx-auto mt-[3.25rem] bg-normal md:w-[737px] md:mt-14">
+          <div className="hidden py-10 border-b-8 border-[#F2F2F2] md:block">
+            <img
+              src="/image/pay_history_tiger.png"
+              alt="복숭아 든 귀여운 호랑이"
+            />
+          </div>
           {sortedDates.map((date) => (
-            <div key={date}>
-              <div className="flex gap-[8px] ml-[4px]">
+            <div key={date} className="pt-4 md:pt-7 md:pb-9">
+              <div className="flex gap-[8px] ml-[4px] px-[16px] md:p-0">
                 <p className="font-medium">{date}</p>
                 <p className="font-medium">주문</p>
               </div>
-              {orderList[date].map((order: any) => (
-                <div
-                  key={order.id}
-                  className="border rounded-[12px] p-[16px] mt-[8px] mb-[16px]"
-                >
-                  <div className="flex gap-[4px]">
-                    <p className="font-medium">
-                      {order.status === 'CANCELLED'
-                        ? '주문취소완료'
-                        : '상품준비중'}
-                    </p>
-                    <p className="text-[#AFAFAF]">
-                      {order.status === 'CANCELLED' ? null : '·'}
-                    </p>
-                    <div className="flex">
-                      {order.status === 'PAID' && (
-                        <p className="text-[#9C6D2E] font-normal">
-                          {dayjs(order.payment_date)
-                            .locale('ko')
-                            .format('MM/DD (ddd)')}{' '}
-                          도착
-                        </p>
-                      )}
-                    </div>
-                  </div>
+              <div className="px-[16px] md:p-0">
+                {orderList[date].map((order: any) => (
+                  <div key={order.id}>
+                    <div className="border rounded-[12px] p-[16px] mt-[8px] mb-[16px] bg-white">
+                      <div className="flex justify-between items-center">
+                        <div className="flex gap-[4px] items-center md:text-[18px]">
+                          <p className="font-medium">
+                            {order.status === 'CANCELLED'
+                              ? '주문취소완료'
+                              : '결제 완료'}
+                          </p>
+                          <p className="text-[#AFAFAF]">
+                            {order.status === 'CANCELLED' ? null : '·'}
+                          </p>
+                          <div className="flex">
+                            {order.status === 'PAID' && (
+                              <p className="text-[#9C6D2E] font-normal">
+                                {dayjs(order.payment_date)
+                                  .locale('ko')
+                                  .format('MM/DD (ddd)')}{' '}
+                                도착 예정
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        <CgClose
+                          onClick={() => deletePayment(order)}
+                          className="text-[#959595] w-7 h-7 p-1 cursor-pointer"
+                        />
+                      </div>
 
-                  {order.products.map((product: any, index: number) => {
-                    return (
-                      <div
-                        className="cursor-pointer"
-                        key={product.id}
-                        onClick={() => route.push(`local-food/${product.id}`)}
-                      >
-                        <div
-                          className={`flex gap-[12px] pt-[12px] ${
-                            index !== order.products.length - 1
-                              ? 'border-b-2 pb-[12px]'
-                              : ''
-                          }`}
-                        >
-                          <Image
-                            src={imageSrc(product.name)}
-                            width={64}
-                            height={64}
-                            style={{
-                              width: 64,
-                              height: 64,
-                              objectFit: 'cover',
-                              borderRadius: 8
-                            }}
-                            alt={product.name}
-                          />
+                      {order.products.map((product: Product, index: number) => {
+                        return (
+                          <div
+                            className="cursor-pointer"
+                            key={product.id}
+                            onClick={() =>
+                              route.push(`local-food/${product.id}`)
+                            }
+                          >
+                            <div
+                              className={`flex gap-[12px] pt-[12px] ${
+                                index !== order.products.length - 1
+                                  ? 'border-b-2 pb-[12px]'
+                                  : ''
+                              }`}
+                            >
+                              <img
+                                src={imageSrc(product.name)}
+                                className="w-[64px] h-[64px] object-cover rounded-[8px] xs:w-[100px] xs:h-[100px]"
+                                alt={`${product.name}`}
+                              />
 
-                          <div className="flex flex-col justify-center gap-[8px]">
-                            <p className="font-medium text-[16px]">
-                              {product.name}
-                            </p>
-                            <div className="flex text-[#79746D] gap-[4px]">
-                              <p>{product.amount.toLocaleString()}원</p>
-                              <p>·</p>
-                              <p>{product.quantity}개</p>
+                              <div className="flex flex-col justify-center gap-[8px]">
+                                <p className="font-medium text-[16px] md:text-[20px]">
+                                  {product.name}
+                                </p>
+                                <div className="flex text-[#79746D] gap-[4px] md:gap-2">
+                                  <p>{product.amount.toLocaleString()}원</p>
+                                  <p>·</p>
+                                  <p>{product.quantity}개</p>
+                                </div>
+                              </div>
+                              {index !== order.products.length - 1 && <hr />}
                             </div>
                           </div>
-                          {index !== order.products.length - 1 && <hr />}
-                        </div>
+                        );
+                      })}
+                      <div
+                        className={`flex justify-center gap-[8px] text-[14px] font-semibold pt-[12px] ${
+                          order.status !== 'CANCELLED' ? 'flex' : 'hidden'
+                        } self-stretch`}
+                      >
+                        <button
+                          className="flex flex-1 justify-center items-center py-[10px] px-[16px] border-[1px] border-[#AFAFAF] text-[#79746D] h-[40px] rounded-[10px]"
+                          onClick={() => cancelPayment(order)}
+                        >
+                          주문취소
+                        </button>
+                        <button
+                          className="flex flex-1 justify-center items-center py-[10px] px-[16px] border-[1px] border-[#9C6D2E] text-[#9C6D2E] h-[40px] rounded-[10px]"
+                          onClick={() => {
+                            toast({
+                              variant: 'destructive',
+                              description: '서비스 준비 중이에요.'
+                            });
+                          }}
+                        >
+                          배송조회
+                        </button>
                       </div>
-                    );
-                  })}
-                  <div
-                    className={`flex justify-center gap-[7px] text-[14px] font-semibold pt-[12px] ${
-                      order.status !== 'CANCELLED' ? 'flex' : 'hidden'
-                    }`}
-                  >
-                    <button
-                      className="py-[10px] px-[16px] border-[1px] border-[#AFAFAF] text-[#79746D] w-[152px] h-[40px] rounded-[10px]"
-                      onClick={() => cancelPayment(order)}
-                    >
-                      주문취소
-                    </button>
-                    <button
-                      className="py-[10px] px-[16px] border-[1px] border-[#9C6D2E] text-[#9C6D2E] w-[152px] h-[40px] rounded-[10px]"
-                      onClick={() => {
-                        toast({
-                          variant: 'destructive',
-                          description: '서비스 준비 중이에요.'
-                        });
-                      }}
-                    >
-                      배송조회
-                    </button>
+                    </div>
+                    <div className="w-full mb-4 bg-slate-200">
+                      <ReviewProductDetail order={order} />
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <hr className="border-2 border-[#F2F2F2]" />
             </div>
           ))}
         </div>
