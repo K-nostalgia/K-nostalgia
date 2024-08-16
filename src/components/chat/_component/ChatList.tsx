@@ -41,8 +41,8 @@ const ChatList = ({
     // hasChater 있는지 확인
     const hasChater = localStorage.getItem('visitedChat');
     if (!hasChater) {
-      localStorage.setItem('visitedChat', 'true');
       setShowWarning(true);
+      localStorage.setItem('visitedChat', 'true');
     }
   }, []);
 

@@ -218,7 +218,7 @@ export function SendChat({
               <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-label-light text-sm bg-primary-strong w-fit px-3 py-2 leading-[22.4px]">
                 {encoded(item.content)}
               </div>
-              <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2]">
+              <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2px]">
                 {formatDate(item.created_at)}
               </div>
             </div>

@@ -4,7 +4,6 @@ import useDeviceSize from '@/hooks/useDeviceSize';
 import Image from 'next/image';
 import React from 'react';
 import { BsCheck2 } from 'react-icons/bs';
-import { LuDot } from 'react-icons/lu';
 
 const WarningChat = ({
   setShowWarning
