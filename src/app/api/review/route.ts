@@ -6,7 +6,7 @@ export const GET = async (request: NextRequest) => {
   const supabase = createClient();
 
   try {
-    const { searchParams } = new URL(request.url);
+    const { searchParams } = new URL(request.url); //상대 경로는 URL 객체에서 직접 설정
     const productId = searchParams.get('product_id'); // 쿼리 파라미터에서 product_id 가져오기
     const page = Number(searchParams.get('page')) || 1; // 페이지 번호
     const limit = Number(searchParams.get('product_id')) || 10; // 리뷰 10개씩
@@ -32,7 +32,7 @@ export const GET = async (request: NextRequest) => {
     // 총 리뷰 수 가져오기
     const { count: totalReviews, error: countError } = await supabase
       .from('reviews')
-      .select('*', { count: 'exact' })
+      .select('*', { count: 'exact' }) // 총 행 수 계산 => 반환, count 속성에 총 리뷰 수
       .eq('product_id', productId);
 
     if (countError) {
@@ -44,8 +44,7 @@ export const GET = async (request: NextRequest) => {
     return NextResponse.json({
       reviews: reviewData,
       totalReviews,
-      totalPages,
-      currentPage: page
+      totalPages
     });
   } catch (error) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
