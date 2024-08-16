@@ -68,9 +68,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
     headerTitle = '내 프로필';
     showSearch = false;
   }
-  // 프로필 수정은 UX를 위해 페이지 내에서 처리
-  // 쿠폰
-  else if (pathName === '/coupon-page') {
+  // 마이페이지/쿠폰
+  else if (pathName === '/my-page/coupon-page') {
     headerTitle = '할인쿠폰';
     showSearch = false;
   }
