@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
 import PayButton from '@/components/common/PayButton';
 import useDeviceSize from '@/hooks/useDeviceSize';
+import { CartPriceList } from './CartPriceList';
 
 type Product = {
   id: string | null;
@@ -46,6 +47,7 @@ export const CartList = () => {
       })
       .filter((item): item is Product[number] => item !== null) || [];
 
+  //선택 상품명
   const selectedOrderNameArr =
     cartData
       ?.map((item) => {

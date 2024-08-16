@@ -196,7 +196,7 @@ export const Review = ({ productId }: { productId: string }) => {
         )}
       </ul>
 
-      <Pagination className={`${reviewData ? 'flex' : 'hidden'}`}>
+      <Pagination>
         <PaginationContent>
           <PaginationItem>
             <PaginationLink

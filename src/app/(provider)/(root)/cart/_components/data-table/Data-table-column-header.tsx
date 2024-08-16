@@ -293,7 +293,7 @@ export const TableDataColumns = ({
           src={'/image/Tiger_Cart.png'}
           width={93}
           height={47}
-          alt="호랑이"
+          alt="장바구니호랑이"
           className="absolute top-[-79%] right-[-30%]"
         />
         장바구니

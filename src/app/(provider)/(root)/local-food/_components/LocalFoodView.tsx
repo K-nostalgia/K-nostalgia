@@ -3,18 +3,20 @@
 import { DefaultImage } from '@/components/common/DefaultImage';
 import Loading from '@/components/common/Loading';
 import FilterButton from '@/components/ui/FilterButton';
+import useDeviceSize from '@/hooks/useDeviceSize';
 import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
-import { HashLoader } from 'react-spinners';
+import { useDebugValue, useState } from 'react';
 
 type LocalFood = Tables<'local_food'>;
 
 const LocalFoodView = () => {
   const categoryList = ['전체', '과일', '야채', '고기', '곡물', '공예품'];
   const [selectedCategory, setSelectedCategory] = useState('전체');
+  const { isDesktop } = useDeviceSize();
+
   const fetchLocalFoodData = async (category: string) => {
     try {
       const response = await fetch(`/api/localfood?category=${category}`);
@@ -47,23 +49,25 @@ const LocalFoodView = () => {
   return (
     <div className="mt-[15%] max-w-screen-xl mx-auto md:mt-0">
       {/* PC */}
-      <div className="md:block hidden">
-        <Image
-          src={
-            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/webLocal.png'
-          }
-          width={1280}
-          height={280}
-          priority
-          alt="배너이미지"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            margin: '40px auto'
-          }}
-        />
-      </div>
+      {isDesktop && (
+        <div className="mt-20 mb-10">
+          <Image
+            src={
+              'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/webLocal.png'
+            }
+            width={1280}
+            height={280}
+            priority
+            alt="배너이미지"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+          />
+        </div>
+      )}
+
       <div className="flex gap-2 items-center py-3 px-4 fixed md:static md:py-0 lg:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
         {categoryList.map((category) => (
           <FilterButton
@@ -118,8 +122,22 @@ const LocalFoodView = () => {
           </div>
 
           {filteredFoodData?.length === 0 ? (
-            <div className="h-[80vh] flex justify-center items-center">
-              <DefaultImage text={'특산물을 준비하고 있어요'} />
+            <div className="md:h-[50vh] flex justify-center items-center">
+              {isDesktop ? (
+                <div className="flex flex-col text-center">
+                  <Image
+                    src={'/image/readytoTiger.png'}
+                    width={208}
+                    height={226}
+                    alt="준비중입니다."
+                  />
+                  <p className="text-label-assistive text-lg font-medium">
+                    특산물을 준비하고 있어요
+                  </p>
+                </div>
+              ) : (
+                <DefaultImage text={'특산물을 준비하고 있어요'} />
+              )}
             </div>
           ) : (
             <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 pb-32">

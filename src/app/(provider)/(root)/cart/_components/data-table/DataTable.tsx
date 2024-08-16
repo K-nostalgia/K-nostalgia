@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/table';
 import { CartPriceList } from '../CartPriceList';
 import useSelectedCartStore from '@/zustand/cart/cart.data';
+import Image from 'next/image';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
