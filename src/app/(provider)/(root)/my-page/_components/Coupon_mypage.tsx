@@ -7,7 +7,7 @@ const Coupon_mypage = () => {
   const router = useRouter();
 
   const handleCouponClick = () => {
-    router.push('/coupon-page');
+    router.push('/my-page/coupon-page');
   };
 
   return (

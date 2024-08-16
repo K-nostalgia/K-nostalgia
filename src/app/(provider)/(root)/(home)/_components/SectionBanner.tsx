@@ -61,7 +61,7 @@ export const SectionBanner = () => {
               key={index}
               className="flex justify-center items-center relative"
             >
-              <Link href={index === 1 ? '/coupon-page' : '#'}>
+              <Link href={index === 1 ? '/my-page/coupon-page' : '#'}>
                 <Image
                   src={img}
                   width={debouncedWidth < 1280 ? 375 : 1280} // 모바일과 웹에 따라 width 조정
