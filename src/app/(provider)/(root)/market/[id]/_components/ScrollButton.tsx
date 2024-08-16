@@ -5,10 +5,10 @@ const ScrollButton = () => {
     useState<string>('photos-section');
 
   const scrollToSection = (sectionId: string) => {
-    setSelectedSection(sectionId); // 버튼이 클릭될 때마다 선택된 섹션을 업데이트
+    setSelectedSection(sectionId);
     const section = document.getElementById(sectionId);
     if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+      section.scrollIntoView();
     }
   };
 
