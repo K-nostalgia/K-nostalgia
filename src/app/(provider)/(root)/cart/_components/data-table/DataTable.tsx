@@ -51,10 +51,10 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="w-full">
-      <div className="rounded-md border py-16px mt-16">
+    <div className="max-w-screen-xl mx-auto">
+      <div className="rounded-md border py-16px mt-16 md:mt-16">
         <Table className="bg-normal">
-          <TableHeader className="border-b-4 border-[#F2F2F2] fixed left-0 right-0 top-0 bg-normal z-10 py-2 mt-16">
+          <TableHeader className="border-b-4 font-medium md:border-t-4 md:border-b-2 md:text-base md:text-label-alternative border-[#F2F2F2] fixed md:static left-0 right-0 top-0 bg-normal z-10 py-2 mt-16">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {

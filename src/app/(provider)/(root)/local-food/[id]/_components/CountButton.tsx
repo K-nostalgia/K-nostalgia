@@ -18,7 +18,7 @@ export const CountButton = ({ count, onCountChange }: CountProps) => {
   };
 
   return (
-    <div className="flex gap-x-4 items-center justify-center border border-label-assistive p-[6px] rounded-[4px] w-24 mt-2">
+    <div className="flex gap-x-4 items-center justify-center border border-label-assistive p-[6px] lg:m-0 rounded-[4px] w-24 mt-2">
       <button onClick={onSubCount} className="rounded-sm">
         <CgMathMinus />
       </button>
