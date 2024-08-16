@@ -186,7 +186,7 @@ export function SendChat({
   };
 
   return (
-    <DialogContent className="bg-normal w-[330px] rounded-[16px] md:w-[608px]">
+    <DialogContent className="bg-normal w-[330px] rounded-[16px] md:w-[608px] md:h-[840px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
@@ -201,7 +201,7 @@ export function SendChat({
       </div>
 
       <div
-        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide md:h-[694px]"
         ref={scrollDown}
       >
         {data?.map((item) => {
@@ -215,10 +215,10 @@ export function SendChat({
                 width={36}
                 className="rounded-full ml-auto w-9 h-9"
               />
-              <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-white bg-primary-strong w-fit px-3 py-2">
+              <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-label-light text-sm bg-primary-strong w-fit px-3 py-2 leading-[22.4px]">
                 {encoded(item.content)}
               </div>
-              <div className="text-xs text-label-assistive ml-auto mt-1">
+              <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2]">
                 {formatDate(item.created_at)}
               </div>
             </div>
@@ -237,11 +237,11 @@ export function SendChat({
                   {item.users?.nickname}
                 </div>
               </div>
-              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] bg-white">
+              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] text-sm leading-[22.4px] bg-[#FEFEFE]">
                 {encoded(item.content)}
               </div>
-              <div className="text-xs text-label-assistive mt-1">
-                {formatDate(item.created_at)}
+              <div className="text-xs text-label-assistive mt-1 leading-[19.2px]">
+                <span>{formatDate(item.created_at)}</span>
               </div>
             </div>
           );
@@ -262,7 +262,7 @@ export function SendChat({
                     ? '메시지 보내기...'
                     : '향그리움의 가족만 이용할 수 있어요'
                 }
-                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base bg-white"
+                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-5 mb-1 text-base bg-[#FEFEFE]"
                 disabled={!user}
                 aria-label="메시지 입력"
               />
