@@ -106,6 +106,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showCart = false;
     showNavigation = false;
   }
+  // 결제 확인
+  else if (pathName === '/check-payment') {
+    showHeader = false;
+    showSearch = false;
+    showCart = false;
+    showNavigation = false;
+    showChat = false;
+  }
+
   /* 모바일 레이아웃 끝 */
 
   /* 데스크탑 레이아웃 */
@@ -115,6 +124,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
   let showWebTopButton: boolean = true;
 
   if (pathName === '/log-in' || pathName === '/sign-up') {
+    showWebHeader = false;
+    showFooter = false;
+    showWebChat = false;
+    showWebTopButton = false;
+  }
+  // 결제 확인
+  else if (pathName === '/check-payment') {
     showWebHeader = false;
     showFooter = false;
     showWebChat = false;

@@ -102,7 +102,7 @@ const WebHeader = () => {
               >
                 {item.path === 'divider' ? (
                   <div
-                    className={`w-[72px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 ${
+                    className={`w-[60px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 lg:w-[72px] ${
                       index === activeIndex
                         ? 'bg-primary-30'
                         : 'bg-label-alternative'
@@ -149,7 +149,7 @@ const WebHeader = () => {
                 height={36}
                 className="w-9 h-9 border rounded-full border-primary-10"
               />
-              <div className="text-label-strong text-base font-semibold leading-[25.6px]">
+              <div className="text-label-strong text-base font-semibold leading-[25.6px] text-nowrap">
                 {user.nickname}
               </div>
             </div>

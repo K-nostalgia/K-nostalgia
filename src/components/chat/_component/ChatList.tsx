@@ -77,6 +77,7 @@ const ChatList = ({
           </div>
         ))}
       </div>
+      <div className="border border-b">채팅방 이용시 주의사항</div>
     </DialogContent>
   );
 };
