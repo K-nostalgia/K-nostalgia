@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 const NoPayHistory = () => {
   return (
@@ -13,9 +14,11 @@ const NoPayHistory = () => {
       <p className="text-[18px] text-[#AFACA7] font-medium">
         주문 내역이 없어요
       </p>
-      <button className="w-au h-[48px] px-[32px] py-[12px] rounded-[12px] text-white bg-[#9C6D2E] mt-[16px] font-semibold leading-[140%]">
-        특산물 보러 가기
-      </button>
+      <Link href={'local-food'}>
+        <button className="w-au h-[48px] px-[32px] py-[12px] rounded-[12px] text-white bg-[#9C6D2E] mt-[16px] font-semibold leading-[140%]">
+          특산물 보러 가기
+        </button>
+      </Link>
     </div>
   );
 };
