@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useUser } from '@/hooks/useUser';
 import Loading from '@/components/common/Loading';
 import { useQuery } from '@tanstack/react-query';
+import { LuDot } from 'react-icons/lu';
 
 const LikeMarketPage = () => {
   const { data: userData } = useUser();
@@ -44,50 +45,173 @@ const LikeMarketPage = () => {
 
   return (
     <div className="m-4">
-      {markets.length > 0 ? (
-        markets.map((market, index) => (
-          <div
-            key={market.id || index}
-            className="border border-secondary-50 rounded-xl mt-1 p-3 flex mb-5"
-          >
-            <div>
-              <h3 className="text-[16px] text-label-strong font-semibold">
-                {market.시장명 || '이름 없음'}
-              </h3>
-              <p className="text-label-normal text-[14px]">
-                {market.도로명주소 || '주소 없음'}
-              </p>
+      {/* 앱버전 */}
+      <div className="block md:hidden">
+        {markets.length > 0 ? (
+          markets.map((market, index) => (
+            <div
+              key={market.id || index}
+              className="border border-secondary-50 rounded-xl mt-1 p-3 flex mb-5"
+            >
+              <div>
+                <h3 className="text-[16px] text-label-strong font-semibold">
+                  {market.시장명 || '이름 없음'}
+                </h3>
+                <p className="text-label-normal text-[14px]">
+                  {market.도로명주소 || '주소 없음'}
+                </p>
 
-              <div className="mt-2 mb-3 flex gap-2">
-                {market.이미지 ? (
-                  <>
-                    <Image
-                      src={market.이미지[1]}
-                      alt={`${market.시장명 || '시장'} 이미지`}
-                      width={156}
-                      height={130}
-                      className="w-full h-[130px] overflow-hidden "
-                    />
-                    <Image
-                      src={market.이미지[2]}
-                      alt={`${market.시장명 || '시장'} 이미지`}
-                      width={156}
-                      height={130}
-                      className="w-full h-[130px] overflow-hidden"
-                    />
-                  </>
-                ) : (
-                  '이미지 없음'
-                )}
+                <div className="mt-2 mb-3 flex gap-2">
+                  {market.이미지 ? (
+                    <>
+                      <Image
+                        src={market.이미지[1]}
+                        alt={`${market.시장명 || '시장'} 이미지`}
+                        width={156}
+                        height={130}
+                        className="w-full h-[130px] overflow-hidden"
+                      />
+                      <Image
+                        src={market.이미지[2]}
+                        alt={`${market.시장명 || '시장'} 이미지`}
+                        width={156}
+                        height={130}
+                        className="w-full h-[130px] overflow-hidden"
+                      />
+                    </>
+                  ) : (
+                    '이미지 없음'
+                  )}
+                </div>
+              </div>
+
+              <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
+            </div>
+          ))
+        ) : (
+          <div className="text-center"> 관심 전통시장이 없습니다. </div>
+        )}
+      </div>
+
+      {/* 웹버전 */}
+      <div className="hidden md:block">
+        <Image
+          src="/image/like_tiger.png"
+          alt="관심전통시장 "
+          width={163}
+          height={88}
+          className="w-[163px] h-[88px] mt-10 mb-10"
+        />
+
+        <div className="border-2 border-[#F2F2F2] mb-6 w-full" />
+
+        {markets.length > 0 ? (
+          markets.map((market, index) => (
+            <div
+              key={market.id || index}
+              className="py-6 items-center flex gap-[48px] border-b border-primary-60 border-w-full "
+            >
+              <div className="flex flex-row gap-4 h-[175px]">
+                <div>
+                  <h3 className="text-[20px] text-label-strong">
+                    {market.시장명 || '이름 없음'}
+                  </h3>
+                  <p className="text-label-normal text-[16px]">
+                    {market.도로명주소 || '주소 없음'}
+                  </p>
+
+                  <div className="flex flex-col mt-11 w-[172px]">
+                    <div className="flex items-center">
+                      <LuDot className="text-primary-20" />
+                      <div className="flex justify-between w-full">
+                        <div className="text-sm text-label-normal">
+                          고객 전용 주차장
+                        </div>
+                        <div className="text-sm text-label-strong">
+                          {market.시장전용고객주차장_보유여부 === 'Y'
+                            ? '보유'
+                            : '미보유'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <LuDot className="text-primary-20" />
+                      <div className="flex justify-between w-full">
+                        <div className="text-sm text-label-normal">
+                          고객 휴게실
+                        </div>
+                        <div className="text-sm text-label-strong">
+                          {market.고객휴게실_보유여부 === 'Y'
+                            ? '보유'
+                            : '미보유'}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center">
+                      <LuDot className="text-primary-20" />
+                      <div className="flex justify-between w-full">
+                        <div className="text-sm text-label-normal">
+                          물품 보관함
+                        </div>
+                        <div className="text-sm text-label-strong">
+                          {market.물품보관함_보유여부 === 'Y'
+                            ? '보유'
+                            : '미보유'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative flex flex-1 items-center gap-2">
+                  {market.이미지 ? (
+                    <>
+                      <div className="relative">
+                        <Image
+                          src={market.이미지[1]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={200}
+                          height={180}
+                          className="w-[139px] h-[180px] rounded-l-2 object-cover"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <Image
+                          src={market.이미지[2]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={200}
+                          height={180}
+                          className="w-[139px] h-[180px] rounded-l-2 object-cover"
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <Image
+                          src={market.이미지[3]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={200}
+                          height={180}
+                          className="w-[139px] h-[180px] rounded-l-2 object-cover"
+                        />
+                        <div className="absolute top-0 right-0 m-2">
+                          <GoHeartFill className="text-[#DB3B3B] text-[20px]" />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    '아직 이미지가 없어요'
+                  )}
+                </div>
               </div>
             </div>
-
-            <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
-          </div>
-        ))
-      ) : (
-        <div className="text-center"> 관심 전통시장이 없습니다. </div>
-      )}
+          ))
+        ) : (
+          <div className="text-center"> 관심 전통시장이 없습니다. </div>
+        )}
+      </div>
     </div>
   );
 };

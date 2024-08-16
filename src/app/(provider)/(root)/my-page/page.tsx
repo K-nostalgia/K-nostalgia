@@ -33,12 +33,16 @@ const Mypage = () => {
     router.push('/my-page/coupon-page');
   };
 
+  const handleGoMarket = () => {
+    router.push('/my-page/likemarket-page');
+  };
+
   return (
     <div className="md:flex md:flex-row md:max-w-[1280px]">
       {/* 오른쪽 사이드 */}
       {isDesktop ? (
         <div className="flex flex-col">
-          <div>
+          <div className="w-[749px] flex justify-between items-end">
             <Image
               src="/image/like_tiger.png"
               alt="관심전통시장 "
@@ -46,8 +50,16 @@ const Mypage = () => {
               height={88}
               className="w-[141px] h-[88px] mt-10"
             />
+            <div
+              className="items-center flex p-3 gap-2 cursor-pointer"
+              onClick={handleGoMarket}
+            >
+              <span className="underline"> 더보기 </span>
+              <BsChevronRight className=" w-4 h-4 text-[#545454] cursor-pointer" />
+            </div>
           </div>
-          <div className="border-4  border-[#F2F2F2] mt-4" />
+          <LikeMarket />
+          <div className="border-4 border-[#F2F2F2] mt-4 w-full" />
 
           <div className="flex flex-col">
             <div className="w-[749px] flex justify-between items-end">
@@ -59,11 +71,11 @@ const Mypage = () => {
                 className="w-[141px] h-[88px] mt-10"
               />
               <div
-                className="items-center flex p-3 gap-2 ml-auto cursor-pointer"
+                className="items-center flex p-3 gap-2 cursor-pointer"
                 onClick={handleGoCoupon}
               >
                 <span className="underline"> 더보기 </span>
-                <BsChevronRight className="ml-auto w-4 h-4 text-[#545454] cursor-pointer" />
+                <BsChevronRight className=" w-4 h-4 text-[#545454] cursor-pointer" />
               </div>
             </div>
 
