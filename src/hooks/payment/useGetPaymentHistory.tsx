@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 interface Props {
   paymentId: string | null;
 }
+
 //포트원 내역 단건 조회
 export const useGetPaymentHistory = ({ paymentId }: Props) => {
   const { data: payHistory, isPending: payHistoryIsPending } = useQuery<
@@ -48,5 +49,3 @@ export const useGetPaymentHistoryWithSupabase = (
   });
   return { payHistoryList };
 };
-
-export default useGetPaymentHistory;
