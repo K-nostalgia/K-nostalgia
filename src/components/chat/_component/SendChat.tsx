@@ -18,6 +18,7 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
 import { GoArrowLeft } from 'react-icons/go';
+import { BsPersonExclamation } from 'react-icons/bs';
 
 interface chatUserType {
   avatar: string;
@@ -240,8 +241,13 @@ export function SendChat({
               <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] text-sm leading-[22.4px] bg-[#FEFEFE]">
                 {encoded(item.content)}
               </div>
-              <div className="text-xs text-label-assistive mt-1 leading-[19.2px]">
-                <span>{formatDate(item.created_at)}</span>
+              <div className="text-xs text-label-assistive mt-1 leading-[19.2px] flex items-center">
+                <div>{formatDate(item.created_at)}</div>
+                <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
+                <div className="flex gap-1 justify-center cursor-pointer">
+                  <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
+                  <span>신고하기</span>
+                </div>
               </div>
             </div>
           );
