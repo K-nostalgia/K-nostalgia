@@ -9,6 +9,7 @@ import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { RiMoreLine } from 'react-icons/ri';
 import MarketLikes from './_components/MarketLikes';
 import { useUser } from '@/hooks/useUser';
+import Loading from '@/components/common/Loading';
 
 const MarketPage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -83,43 +84,43 @@ const MarketPage = () => {
     setCurrentPage(1);
   };
 
-  if (isLoading) return <div>유저 데이터 받아오는 중..</div>;
+  if (isLoading) return <Loading />;
 
   return (
     <>
-      <div className="w-full p-4 mb-6">
-        <div className="flex overflow-auto scrollbar-hide gap-2 border-b-[1px] border-[#E0E0E0]">
-          {largeRegions.map((region) => (
+      <div className="flex overflow-auto scrollbar-hide gap-2 px-4 pt-2 mb-4 border-b-[1px] border-[#E0E0E0]">
+        {largeRegions.map((region) => (
+          <button
+            key={region}
+            onClick={() => handleLargeRegionChange(region)}
+            className={`text-nowrap text-base font-medium pt-2 px-4 pb-3 ${
+              activeFilter === region
+                ? 'text-primary-20 border-b-4 border-primary-20'
+                : 'text-label-alternative'
+            }`}
+          >
+            {region}
+          </button>
+        ))}
+      </div>
+      {regionWithSmall.includes(selectedLargeRegion) && (
+        <div className="flex overflow-auto scrollbar-hide px-4 pb-4 gap-2">
+          {regionData[selectedLargeRegion].map((small) => (
             <button
-              key={region}
-              onClick={() => handleLargeRegionChange(region)}
-              className={`text-nowrap text-base font-medium pt-2 px-3 pb-3 ${
-                activeFilter === region
-                  ? 'text-primary-20 border-b-4 border-primary-20'
-                  : 'text-label-alternative'
+              key={small}
+              onClick={() => handleSmallRegionChange(small)}
+              className={`text-nowrap text-base font-medium px-4 py-[6px] rounded-[4px] ${
+                activeSmallFilter === small
+                  ? 'text-label-light bg-secondary-20'
+                  : 'text-label-strong bg-secondary-60'
               }`}
             >
-              {region}
+              {small}
             </button>
           ))}
         </div>
-        {regionWithSmall.includes(selectedLargeRegion) && (
-          <div className="flex overflow-auto scrollbar-hide pt-4 gap-2">
-            {regionData[selectedLargeRegion].map((small) => (
-              <button
-                key={small}
-                onClick={() => handleSmallRegionChange(small)}
-                className={`text-nowrap text-base font-medium px-4 py-[6px] rounded-[4px] ${
-                  activeSmallFilter === small
-                    ? 'text-label-light bg-secondary-20'
-                    : 'text-label-strong bg-secondary-60'
-                }`}
-              >
-                {small}
-              </button>
-            ))}
-          </div>
-        )}
+      )}
+      <div className="w-full px-4 mb-6">
         <div className="justify-center place-content-center ">
           <Image
             src={
@@ -130,7 +131,6 @@ const MarketPage = () => {
             priority
             alt="시장배너이미지"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-            className="mt-4"
           />
 
           <div className="flex flex-col mt-4 gap-5 ">
@@ -216,16 +216,33 @@ const MarketPage = () => {
         >
           <div className="flex gap-[6px] place-items-center font-medium">
             <BsChevronLeft className="w-4 h-4 text-color-[#0B0B0B]" />
-            이전
           </div>
         </button>
+
         <div className="flex space-x-2">
+          {/* 1 ... 표시 (currentPage가 137 이상일 때만 표시) */}
+          {currentPage > 3 && currentPage < 137 && (
+            <>
+              <button
+                onClick={() => setCurrentPage(1)}
+                className={`py-1 gap-[2px] text-primary-10 text-center w-10 h-10`}
+              >
+                1
+              </button>
+              <div className="flex gap-[6px] place-items-center">
+                <RiMoreLine className="w-4 h-4 text-primary-10" />
+              </div>
+            </>
+          )}
+
+          {/* 중간 페이지 번호 표시 */}
           {[...Array(totalPages)].map((_, index) => {
             const pageNumber = index + 1;
             if (
               (pageNumber >= currentPage - 1 &&
                 pageNumber <= currentPage + 1) ||
-              (currentPage === 1 && pageNumber <= 3)
+              (currentPage <= 3 && pageNumber <= 3) || // 1, 2, 3페이지 조건
+              (currentPage >= 137 && pageNumber >= 137)
             ) {
               return (
                 <button
@@ -242,15 +259,26 @@ const MarketPage = () => {
             }
             return null;
           })}
-          <div className="flex gap-[6px] place-items-center">
-            {currentPage < totalPages - 1 && (
-              <RiMoreLine
+
+          {/* ... 139 표시 (currentPage가 137 미만일 때만 표시) */}
+          {currentPage < 137 && totalPages > 3 && (
+            <>
+              <div className="flex gap-[6px] place-items-center">
+                <RiMoreLine className="w-4 h-4 text-primary-10" />
+              </div>
+              <button
                 onClick={() => setCurrentPage(totalPages)}
-                className="w-4 h-4 text-primary-10"
-              />
-            )}
-          </div>
+                className={`py-1 gap-[2px] text-primary-10 text-center w-10 h-10 ${
+                  currentPage === totalPages &&
+                  'border border-solid rounded-[6px] border-primary-30'
+                }`}
+              >
+                {totalPages}
+              </button>
+            </>
+          )}
         </div>
+
         <button
           onClick={() =>
             setCurrentPage((prev) => Math.min(prev + 1, totalPages))
@@ -263,7 +291,6 @@ const MarketPage = () => {
           }`}
         >
           <div className="flex gap-[6px] place-items-center font-medium">
-            다음
             <BsChevronRight className="w-6 h-6 text-color-[#0B0B0B]" />
           </div>
         </button>

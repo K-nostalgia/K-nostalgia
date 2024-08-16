@@ -52,7 +52,7 @@ export const SectionBanner = () => {
               key={index}
               className="flex justify-center items-center relative"
             >
-              <Link href={index === 1 ? '/coupon-page' : '#'}>
+              <Link href={index === 1 ? '/my-page/coupon-page' : '#'}>
                 <Image
                   src={img}
                   width={isDesktop ? 1280 : 375}

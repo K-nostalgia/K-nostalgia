@@ -14,8 +14,17 @@ const Profile = () => {
 
   return (
     <div className="p-6 rounded-lg">
-      <div className="flex flex-col items-center">
-        <div className="w-[120px] h-[120px] rounded-full border border-primary-20">
+      <div className="flex flex-col items-center relative">
+        <div className="hidden md:flex md:items-center md:justify-center md:absolute md:w-[240px] md:h-[152px] md:-top-14 md:z-10 ">
+          <Image
+            src="/image/Profile_Adorn.png"
+            alt="tiger overlay"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-full"
+          />
+        </div>
+        <div className="w-[120px] h-[120px] md:w-[168px] md:h-[168px] rounded-full border border-primary-20">
           {user?.avatar ? (
             <Image
               src={user.avatar}
