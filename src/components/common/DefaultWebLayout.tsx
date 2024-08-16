@@ -21,7 +21,7 @@ const DefaultWebLayout = ({
   return (
     <div className="min-h-screen">
       {showWebHeader && <WebHeader />}
-      <main className="mx-auto mt-14">{children}</main>
+      <main className="mx-auto">{children}</main>
       <div className="flex flex-col fixed bottom-[40px] right-[41px] z-1001 gap-3">
         {showWebChat && <Chat />}
         {showWebTopButton && <TopButton />}

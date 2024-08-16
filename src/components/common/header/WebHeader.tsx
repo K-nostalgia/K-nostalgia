@@ -87,22 +87,22 @@ const WebHeader = () => {
   return (
     <div className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-[#C8C8C8] bg-normal">
       <div className="flex justify-between flex-1 max-w-screen-xl mx-auto">
-        <div className="flex gap-12">
+        <div className="flex gap-2 lg:gap-12">
           <div
-            className="flex items-center justify-center cursor-pointer"
+            className="flex items-center justify-center cursor-pointer pt-[10px] pb-[14px]"
             onClick={() => router.push('/')}
           >
             <TitleLogo />
           </div>
-          <nav className="relative flex items-center gap-5">
+          <nav className="relative flex items-center gap-2 lg:gap-5">
             {HeaderNav.map((item: headerNavType, index: number) => (
               <div
                 key={index}
-                className="flex flex-row justify-center items-center gap-5"
+                className="flex flex-row justify-center items-center gap-2 lg:gap-5"
               >
                 {item.path === 'divider' ? (
                   <div
-                    className={`w-[60px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 lg:w-[72px] ${
+                    className={`w-[50px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 lg:w-[72px] ${
                       index === activeIndex
                         ? 'bg-primary-30'
                         : 'bg-label-alternative'
