@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ChatSendIcon from '../../icons/ChatSendIcon';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
 import { useUser } from '@/hooks/useUser';
@@ -19,6 +19,7 @@ import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
 import { GoArrowLeft } from 'react-icons/go';
 import { BsPersonExclamation } from 'react-icons/bs';
+import { debounce, throttle } from 'lodash';
 
 interface chatUserType {
   avatar: string;
@@ -114,7 +115,7 @@ export function SendChat({
   });
 
   // 유효성 검사 추가하기
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     if (!user || !selectedChatRoom) {
       return;
     }
@@ -131,11 +132,17 @@ export function SendChat({
     };
 
     sendMessageMutate.mutate(newMessage);
-  };
+  }, [user, selectedChatRoom, sendMessageMutate]);
+
+  // TODO 쓰로틀링 디바운싱 취사 선택!
+  const throttleSendMessage = useMemo(
+    () => debounce(handleSendMessage, 300),
+    [handleSendMessage]
+  );
 
   const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleSendMessage();
+    throttleSendMessage();
   };
 
   useEffect(() => {
@@ -147,7 +154,12 @@ export function SendChat({
       .channel(`room_${selectedChatRoom?.room_id}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat' },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat',
+          filter: `room_${selectedChatRoom?.room_id}`
+        },
         (payload) => {
           queryClient.invalidateQueries({
             queryKey: ['chatData', selectedChatRoom?.room_id]
