@@ -209,7 +209,16 @@ const LikeMarketPage = () => {
             </div>
           ))
         ) : (
-          <div className="text-center"> 관심 전통시장이 없습니다. </div>
+          <div className="text-center text-label-assistive flex flex-col items-center justify-center">
+            <Image
+              src="/image/StateSad.png"
+              alt="관심전통시장 없을때"
+              width={114}
+              height={97}
+              className="w-[114px] h-[97px] mb-4"
+            />
+            관심 전통시장이 없습니다.{' '}
+          </div>
         )}
       </div>
     </div>
