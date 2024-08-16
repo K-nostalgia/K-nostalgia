@@ -101,7 +101,7 @@ export const Review = ({ productId }: { productId: string }) => {
       </div>
 
       {/* 리뷰목록 */}
-      <ul className="mt-8">
+      <ul className="mt-8 w-full">
         {reviewData && reviewData.length > 0 ? (
           reviewData?.map((review) => (
             <li
