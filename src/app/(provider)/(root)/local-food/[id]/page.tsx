@@ -9,16 +9,22 @@ import { useEffect, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
 import { DetailImage } from './_components/DetailImage';
-import { Review, ReviewDataType } from './_components/Review';
+import { Review, ReviewType } from './_components/Review';
 import { ProductDetail } from './_components/web/ProductDetail';
 import { ProductSlide } from './_components/web/ProductSlide';
 import { DeliveryInfo } from './_components/DeliveryInfo';
+
+type ReviewDataType = {
+  reviews: ReviewType[];
+  totalPages: number;
+  totalReviews: number;
+};
 
 const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [openModal, setOpenModal] = useState(false); //바텀시트
   const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
   const [activeTab, setActiveTab] = useState('상세 정보');
-  const [review, setReview] = useState<ReviewDataType[]>([]);
+  const [review, setReview] = useState<ReviewDataType | null>(null);
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -28,7 +34,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       return data;
     };
     fetchReview();
-  }, [id]);
+  }, []);
 
   const {
     data: food,
@@ -115,7 +121,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
                   : 'text-label-assistive'
               }`}
             >
-              {`리뷰(${review.totalReviews || 0})`}
+              {`리뷰 (${review?.totalReviews || 0})`}
             </p>
           </li>
         </ul>

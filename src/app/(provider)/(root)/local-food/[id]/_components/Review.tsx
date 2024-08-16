@@ -20,7 +20,6 @@ import {
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
 
 type UserType = {
-  id: string;
   name: string;
   avatar: string;
 };
@@ -35,7 +34,7 @@ export type ReviewType = {
   users?: UserType;
 };
 
-export type ReviewDataType = {
+type ReviewDataType = {
   reviews: ReviewType[];
   totalPages: number;
   totalReviews: number;
