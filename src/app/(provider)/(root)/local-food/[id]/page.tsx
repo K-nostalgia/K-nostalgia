@@ -5,28 +5,42 @@ import { useQuery } from '@tanstack/react-query';
 import FixedButtons from '../_components/FixedButtons';
 import Loading from '@/components/common/Loading';
 import { OrderDetail } from './_components/OrderDetail';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DetailSlide } from './_components/DetailSlide';
 import { CartModal } from './_components/CartModal';
 import { DetailImage } from './_components/DetailImage';
-import { Review } from './_components/Review';
+import { Review, ReviewType } from './_components/Review';
 import { ProductDetail } from './_components/web/ProductDetail';
 import { ProductSlide } from './_components/web/ProductSlide';
 import { DeliveryInfo } from './_components/DeliveryInfo';
+import useDeviceSize from '@/hooks/useDeviceSize';
 
-export type ReviewType = {
-  review_id: string;
-  user_id: string;
-  product_id: string;
-  rating: number;
-  content: string;
+type ReviewDataType = {
+  reviews: ReviewType[];
+  totalPages: number;
+  totalReviews: number;
 };
 
 const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   const [openModal, setOpenModal] = useState(false); //바텀시트
   const [openCartModal, setOpenCartModal] = useState(false); //카트 담기 완료 모달
   const [activeTab, setActiveTab] = useState('상세 정보');
-  const [review, setReview] = useState<ReviewType[]>([]);
+  const [review, setReview] = useState<ReviewDataType | null>(null);
+  const { isDesktop } = useDeviceSize();
+
+  // pc : 섹션 이동
+  const reviewRef = useRef<HTMLDivElement | null>(null);
+  const detailRef = useRef<HTMLDivElement | null>(null);
+
+  // pc : 섹션 이동
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
+    if (tab === '리뷰' && reviewRef.current) {
+      reviewRef.current.scrollIntoView();
+    } else if (tab === '상세 정보' && detailRef.current) {
+      detailRef.current.scrollIntoView();
+    }
+  };
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -36,7 +50,29 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       return data;
     };
     fetchReview();
-  }, [id]);
+  }, []);
+
+  // top 버튼 눌렀을 때 스크롤 값에 따른 tab활성화
+  useEffect(() => {
+    const handleScroll = () => {
+      if (reviewRef.current && detailRef.current) {
+        // getBoundingClientRect : 엘리먼트의 상대좌표를 알려주는 객체를 반환
+        const reviewTop = reviewRef.current.getBoundingClientRect().top;
+        const detailTop = detailRef.current.getBoundingClientRect().top;
+
+        if (detailTop < window.innerHeight) {
+          setActiveTab('상세 정보');
+        } else if (reviewTop < window.innerHeight) {
+          setActiveTab('리뷰');
+        }
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
   const {
     data: food,
@@ -65,22 +101,24 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
   return (
     <div className="max-w-screen-xl mx-auto">
-      {/* 슬라이드 - 모바일 */}
-      <div className="md:hidden">
-        <DetailSlide images={food.title_image} />
-      </div>
-      {/* 슬라이드 - pc */}
-      <div className="hidden md:block md:mt-20">
-        <div className="flex">
-          <ProductSlide images={food.title_image} />
-          <ProductDetail
-            id={food.product_id}
-            handleCartModalOpen={() => setOpenCartModal(true)}
-          />
+      {/* 슬라이드 - pc / mo */}
+      {isDesktop ? (
+        <div className="mt-20 w-[1080px] h-[64vh] mx-auto flex justify-center">
+          <div className="float-left !w-[540px]">
+            <ProductSlide images={food.title_image} />
+          </div>
+          <div className="float-right">
+            <ProductDetail
+              id={food.product_id}
+              handleCartModalOpen={() => setOpenCartModal(true)}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <DetailSlide images={food.title_image} />
+      )}
 
-      {/* 상세 정보 */}
+      {/* 상품 정보 */}
       <div className="m-4 md:hidden">
         <h2 className="text-xl font-semibold">
           {`[${food.location}] `}
@@ -97,11 +135,12 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
         <DeliveryInfo />
       </div>
 
-      <div className="border-b-[2px] border-[#F2F2F2] lg:mb-6">
-        <ul className="flex text-center pt-4 font-semibold lg:justify-center">
+      {/* 탭 */}
+      <div className="border-b-[2px] border-[#F2F2F2] md:mb-6 md:clear-both md:mt-10 md:border-t-8">
+        <ul className="flex text-center pt-4 font-semibold md:justify-center">
           <li
-            className="flex-1 lg:flex-none cursor-pointer"
-            onClick={() => setActiveTab('상세 정보')}
+            className="flex-1 md:flex-none cursor-pointer"
+            onClick={() => handleTabClick('상세 정보')}
           >
             <p
               className={`pb-2 w-[140px] mx-auto ${
@@ -114,8 +153,8 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
             </p>
           </li>
           <li
-            className="flex-1 lg:flex-none cursor-pointer"
-            onClick={() => setActiveTab('리뷰')}
+            className="flex-1 md:flex-none cursor-pointer"
+            onClick={() => handleTabClick('리뷰')}
           >
             <p
               className={`pb-2 w-[140px] mx-auto ${
@@ -124,17 +163,30 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
                   : 'text-label-assistive'
               }`}
             >
-              {`리뷰(${review.length || 0})`}
+              {`리뷰 (${review?.totalReviews || 0})`}
             </p>
           </li>
         </ul>
       </div>
 
-      {/* 상세 정보 */}
-      {activeTab === '상세 정보' && <DetailImage food={food.food_image} />}
-
-      {/* 리뷰 */}
-      {activeTab === '리뷰' && <Review productId={food.product_id} />}
+      {/* 섹션 이동 - pc / mo */}
+      {isDesktop ? (
+        <>
+          <div ref={detailRef}>
+            <DetailImage food={food.food_image} />
+          </div>
+          <div ref={reviewRef} className="border-t-8 border-[#F2F2F2] mt-8">
+            <Review productId={food.product_id} />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* 상세 정보 */}
+          {activeTab === '상세 정보' && <DetailImage food={food.food_image} />}
+          {/* 리뷰 */}
+          {activeTab === '리뷰' && <Review productId={food.product_id} />}
+        </>
+      )}
 
       {/* 장바구니 담기, 구매하기 */}
       <FixedButtons
@@ -150,7 +202,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
           onClick={() => setOpenModal(false)}
         >
           <div
-            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
+            onClick={(e) => e.stopPropagation()} // 이벤트 버블링 방지
           >
             <OrderDetail
               params={{ id }}
@@ -167,7 +219,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
           onClick={() => setOpenCartModal(false)}
         >
           <div
-            onClick={(e) => e.stopPropagation()} // 모달 내부 클릭해도 이벤트 발생 X
+            onClick={(e) => e.stopPropagation()} // 이벤트 버블링 방지
           >
             <CartModal handleCartModalClose={() => setOpenCartModal(false)} />
           </div>
