@@ -29,7 +29,7 @@ export async function GET(request: Request, { params }: { params: { userId: stri
         // 좋아요한 시장들의 정보 가져오기
         const { data: likedMarket, error: marketsError } = await supabase
         .from('markets')
-        .select('id, 시장명, 도로명주소, 이미지')
+        .select('id, 시장명, 도로명주소, 이미지, 시장전용고객주차장_보유여부, 물품보관함_보유여부, 고객휴게실_보유여부')
         .eq('id', id).single();
 
         if (marketsError) {
