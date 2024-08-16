@@ -54,22 +54,77 @@ const LikeMarket = () => {
 
   return (
     <div className="p-4">
-      <div className="flex items-center mb-4" onClick={handleLikeMarketClick}>
+      <div
+        className="flex items-center mb-4 md:hidden"
+        onClick={handleLikeMarketClick}
+      >
         <GoHeart className="mr-[8px] text-label-normal text-[20px]" />
         <span className="text-[16px]">관심 전통시장</span>
         <BsChevronRight className="ml-auto text-[#545454] cursor-pointer" />
       </div>
 
       {markets.length > 0 ? (
-        <Swiper spaceBetween={10} slidesPerView={1} className="w-[328px]">
-          {markets.map((market, index) => (
-            <SwiperSlide key={market.id || index}>
-              <div className="border border-secondary-50 rounded-xl mt-1 p-3 flex w-full h-[204px]">
+        <>
+          {/* 앱버전일때 Swiper */}
+          <div className="md:hidden">
+            <Swiper spaceBetween={10} slidesPerView={1} className="w-[328px]">
+              {markets.map((market, index) => (
+                <SwiperSlide key={market.id || index}>
+                  <div className="border border-secondary-50 rounded-xl mt-1 p-3 flex flex-col w-full h-[204px]">
+                    <div className="flex justify-between">
+                      <div className="flex flex-col">
+                        <h3 className="text-[16px] text-label-strong font-semibold">
+                          {market.시장명 || '이름 없음'}
+                        </h3>
+                        <p className="text-label-normal text-[14px]">
+                          {market.도로명주소 || '주소 없음'}
+                        </p>
+                      </div>
+
+                      <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
+                    </div>
+
+                    <div className="mt-2 mb-3 flex gap-2">
+                      {market.이미지 ? (
+                        <>
+                          <Image
+                            src={market.이미지[1]}
+                            alt={`${market.시장명 || '시장'} 이미지`}
+                            width={150}
+                            height={130}
+                            className="!w-[148px] !h-[130px] object-cover"
+                          />
+                          <Image
+                            src={market.이미지[2]}
+                            alt={`${market.시장명 || '시장'} 이미지`}
+                            width={150}
+                            height={130}
+                            className="!w-[148px] !h-[130px] object-cover "
+                          />
+                        </>
+                      ) : (
+                        '이미지 없음'
+                      )}
+                    </div>
+                  </div>
+                  {/* </div> */}
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+
+          {/* 웹 버전일때 */}
+          <div className="hidden md:block">
+            {markets.map((market, index) => (
+              <div
+                key={market.id || index}
+                className="border border-secondary-50 rounded-xl mt-1 p-6 flex w-full h-[300px] mb-4"
+              >
                 <div>
-                  <h3 className="text-[16px] text-label-strong font-semibold">
+                  <h3 className="text-[20px] text-label-strong font-semibold">
                     {market.시장명 || '이름 없음'}
                   </h3>
-                  <p className="text-label-normal text-[14px]">
+                  <p className="text-label-normal text-[18px]">
                     {market.도로명주소 || '주소 없음'}
                   </p>
 
@@ -79,16 +134,16 @@ const LikeMarket = () => {
                         <Image
                           src={market.이미지[1]}
                           alt={`${market.시장명 || '시장'} 이미지`}
-                          width={150}
-                          height={130}
-                          className="w-[148px] h-[130px] overflow-hidden"
+                          width={200}
+                          height={150}
+                          className="w-[200px] h-[150px] overflow-hidden"
                         />
                         <Image
                           src={market.이미지[2]}
                           alt={`${market.시장명 || '시장'} 이미지`}
-                          width={150}
-                          height={130}
-                          className="w-[148px] h-[130px] overflow-hidden"
+                          width={200}
+                          height={150}
+                          className="w-[200px] h-[150px] overflow-hidden"
                         />
                       </>
                     ) : (
@@ -97,11 +152,11 @@ const LikeMarket = () => {
                   </div>
                 </div>
 
-                <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
+                <GoHeartFill className="text-[#DB3B3B] text-[30px] ml-auto" />
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+            ))}
+          </div>
+        </>
       ) : (
         <div className="text-center"> 관심 전통시장이 없습니다. </div>
       )}
