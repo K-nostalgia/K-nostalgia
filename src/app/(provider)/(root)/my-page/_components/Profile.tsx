@@ -2,11 +2,17 @@
 import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Profile = () => {
   const { data: user, isLoading, error } = useUser();
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: ['users'] });
+  }, [queryClient]);
 
   const handleEditMoveClick = () => {
     router.push('/profile-edit');
