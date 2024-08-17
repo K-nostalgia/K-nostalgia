@@ -32,6 +32,7 @@ interface chatMessageType {
   room_id: string;
   user_id: string;
   content: string;
+  isReported: boolean | null;
   users: chatUserType;
 }
 
@@ -116,12 +117,7 @@ export function SendChat({
 
   // 유효성 검사 추가하기
   const handleSendMessage = useCallback(() => {
-    if (!user || !selectedChatRoom) {
-      return;
-    }
-
-    if (!messageRef.current?.value.trim()) {
-      console.log('메시지가 비어잇어흥.');
+    if (!user || !selectedChatRoom || !messageRef.current?.value.trim()) {
       return;
     }
 
@@ -198,6 +194,22 @@ export function SendChat({
     setSelectedChatRoom(null);
   };
 
+  const handleReport = async (item: Tables<'chat'>) => {
+    if (confirm('신고하시겠습니까?')) {
+      console.log(item);
+      // 예일 경우 isReported true 로 업데이트
+      const response = await fetch('/api/chat/chat-send', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(item)
+      });
+
+      return response.json();
+    }
+  };
+
   return (
     <DialogContent className="bg-normal w-[330px] rounded-[16px] md:w-[608px] md:h-[840px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
@@ -256,7 +268,10 @@ export function SendChat({
               <div className="text-xs text-label-assistive mt-1 leading-[19.2px] flex items-center">
                 <div>{formatDate(item.created_at)}</div>
                 <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
-                <div className="flex gap-1 justify-center cursor-pointer">
+                <div
+                  className="flex gap-1 justify-center cursor-pointer"
+                  onClick={() => handleReport(item)}
+                >
                   <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
                   <span>신고하기</span>
                 </div>
