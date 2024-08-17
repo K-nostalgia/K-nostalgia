@@ -6,6 +6,14 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import ShowSearchCart from './_component/ShowSearchCart';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
 
 interface headerNavType {
   path: string;
@@ -138,21 +146,29 @@ const WebHeader = () => {
             <ShowSearchCart showSearch={true} showCart={true} />
           </div>
           {user && user?.avatar ? (
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => router.push('/my-page')}
-            >
-              <Image
-                src={user.avatar}
-                alt={`${user.nickname} 이미지`}
-                width={36}
-                height={36}
-                className="w-9 h-9 border rounded-full border-primary-10"
-              />
-              <div className="text-label-strong text-base font-semibold leading-[25.6px] text-nowrap">
-                {user.nickname}
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <Image
+                    src={user.avatar}
+                    alt={`${user.nickname} 이미지`}
+                    width={36}
+                    height={36}
+                    className="w-9 h-9 border rounded-full border-primary-10"
+                  />
+                  <div className="text-label-strong text-base font-semibold leading-[25.6px] text-nowrap">
+                    {user.nickname}
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-normal">
+                <DropdownMenuItem>내 프로필</DropdownMenuItem>
+                <DropdownMenuItem>관심 전통시장</DropdownMenuItem>
+                <DropdownMenuItem>할인쿠폰</DropdownMenuItem>
+                <DropdownMenuItem>주문 내역</DropdownMenuItem>
+                <DropdownMenuItem>로그아웃</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <div className="flex gap-3 justify-center items-center">
               <button
