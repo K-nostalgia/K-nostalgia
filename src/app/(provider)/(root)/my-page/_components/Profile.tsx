@@ -45,8 +45,15 @@ const Profile = () => {
             </div>
           )}
         </div>
-        <h2 className="text-xl text-label-strong font-semibold my-4">
-          {user?.nickname ?? '설정된 닉네임이 없습니다.'}
+        <h2 className="text-xl text-label-strong my-4 relative">
+          <span className="relative font-semibold">
+            {user?.nickname ?? '설정된 닉네임이 없습니다.'}
+            <span
+              className="absolute left-0 right-0 bottom-[-1px] h-[10px]"
+              style={{ backgroundColor: 'rgba(156, 109, 46, 0.4)' }}
+            ></span>
+          </span>
+          <span className="text-base text-label-normal ml-1">님</span>
         </h2>
         <button
           className="border text-[14px] border-primary-10 text-primary-20 px-4 py-[6px] rounded"
