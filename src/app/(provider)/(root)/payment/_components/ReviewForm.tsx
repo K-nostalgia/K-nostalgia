@@ -174,16 +174,16 @@ const ReviewForm = ({
                       삭제
                     </button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent className="">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
+                  <AlertDialogContent className="w-[330px] h-[220px] flex flex-col justify-center gap-1">
+                    <AlertDialogHeader className="flex flex-col  gap-0 justify-center">
+                      <AlertDialogTitle className="flex justify-center ">
                         리뷰를 삭제하시겠어요?
                       </AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogDescription className="flex justify-center ">
                         삭제 후에는 복구나 재작성이 불가해요
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
+                    <AlertDialogFooter className=" pt-6 flex items-end">
                       <AlertDialogAction
                         onClick={DeleteHandler}
                         className="text-[#ED1B18]"
@@ -199,7 +199,7 @@ const ReviewForm = ({
               )}
               <div className="flex flex-col mb-2 md:gap-[6px]">
                 <p className="flex font-medium md:text-[20px]">{name}</p>
-                <div className="flex gap-[4px] items-center text-[#79746D] font-medium">
+                <div className="flex gap-[4px] items-center text-[#79746D] font-medium md:text-[16px]">
                   <p>{amount}원</p>
                   <p>·</p>
                   <p>{quantity}개</p>
@@ -231,14 +231,14 @@ const ReviewForm = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="상품에 대한 솔직한 리뷰를 작성해주세요 :)"
-          className="w-full h-[243px] p-2 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
+          className="w-full h-[243px] p-4 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
         />
         {/* bg-[#FAF8F5] */}
       </div>
       <div className="flex -mx-4 w-[calc(100%+2rem)] shadow-custom pt-3 pb-6">
         <button
           onClick={submitReview}
-          className="mt-4 mx-[16px] bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
+          className="mt-4 mx-[16px] h-12 bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
         >
           {isEditing ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
