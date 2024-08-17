@@ -74,7 +74,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="w-full max-w-[320px] xs:max-w-full">
+    <form onSubmit={handleLogin} className="max-w-[320px]">
       <div className="flex flex-col justify-between mt-10">
         <div>
           <div className="mb-4">
