@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React from 'react';
 import { IoIosLogOut } from 'react-icons/io';
+import Swal from 'sweetalert2';
 
 const Logout = () => {
   const { data: user, isLoading, error } = useUser();
@@ -17,7 +18,14 @@ const Logout = () => {
       await api.auth.logOut();
       // 캐시 무효화
       queryClient.invalidateQueries();
-      console.log('로그아웃 완료');
+      // console.log('로그아웃 완료');
+      Swal.fire({
+        icon: 'success',
+        title: '로그아웃이 완료 되었습니다.',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 로그인 페이지로 자동으로 넘어갑니다. </div>
+      `
+      });
       router.push('/log-in');
     } catch (err) {
       console.log('로그아웃 에러');
