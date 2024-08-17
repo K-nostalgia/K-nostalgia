@@ -35,7 +35,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     (Tables<'local_food'> | Tables<'markets'>)[] | null
   >(null);
   const [results, setResults] = useState<string>('');
-  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeIndex, setActiveIndex] = useState<number>(-1);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
 
@@ -60,12 +60,12 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     // 검색어 길이 제한 및 이스터애그'-'
     if (event.target.value.length >= 20) {
       alert('20자 미만으로 검색해주세어흥');
-      setActiveIndex(0);
+      setActiveIndex(-1);
       setSearchTerm('');
       return;
     } else if (inputValue === '향그리움'.trim()) {
       console.log('향그리움을 입력햇다!!!!');
-      setActiveIndex(0);
+      setActiveIndex(-1);
       return;
     } else if (
       inputValue === '오조사마'.trim() ||
@@ -73,7 +73,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       inputValue === 'OJOSAMA'.normalize('NFKC').toLowerCase().trim()
     ) {
       console.log('오조사마를 입력햇다!!!!');
-      setActiveIndex(0);
+      setActiveIndex(-1);
       return;
     }
   };
@@ -82,7 +82,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const submitSearchTerm = useCallback(async () => {
     if (debounceSearchTerm.trim() === '') {
       setResponse([]);
-      setActiveIndex(0);
+      setActiveIndex(-1);
       return;
     }
 
@@ -110,7 +110,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       );
       const data = await response.json();
       setResponse(data);
-      setActiveIndex(0);
+      setActiveIndex(-1);
     } catch (error) {
       console.log(error);
     }
@@ -122,8 +122,6 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       submitSearchTerm();
     }
   }, [debounceSearchTerm, submitSearchTerm]);
-
-  // TODO 1. 최근 검색어 저장- 로컬 스토리지
 
   // 키보드 키로 검색어 이동
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -157,6 +155,9 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       router.push(`/market/${item.id}`);
     }
   };
+
+  // TODO 1. 최근 검색어 저장- 로컬 스토리지
+  const recentResults = () => {};
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
