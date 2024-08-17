@@ -17,7 +17,8 @@ import { Tables } from '@/types/supabase';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { BsChevronRight } from 'react-icons/bs';
 import { CgClose } from 'react-icons/cg';
 import Swal from 'sweetalert2';
 import NoPayHistory from './NoPayHistory';
@@ -25,6 +26,9 @@ import ReviewProductDetail from './ReviewProductDetail';
 
 const PayHistoryList = () => {
   const route = useRouter();
+  const pathName = usePathname();
+  console.log(pathName);
+
   const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
     queryKey: ['users'],
     queryFn: () => api.auth.getUser()
@@ -97,20 +101,47 @@ const PayHistoryList = () => {
     });
   };
 
+  const datesToRender =
+    pathName === '/my-page' ? [sortedDates[0]] : sortedDates;
+
   return (
     <>
       {Object.keys(orderList).length === 0 ? (
         <NoPayHistory />
       ) : (
-        <div className=" pt-[16px] mb-[80px] mx-auto mt-[3.25rem] bg-normal md:w-[737px] md:mt-14">
-          <div className="hidden py-10 border-b-8 border-[#F2F2F2] md:block">
+        <div
+          className={`mb-[80px] mx-auto bg-normal md:w-[737px] ${
+            pathName === '/payment' && 'pt-[16px] mt-[3.25rem] md:mt-14'
+          }`}
+        >
+          <div
+            className={`hidden py-10 border-b-8 border-[#F2F2F2] md:flex md:justify-between ${
+              pathName === '/my-page' && 'border-none'
+            }`}
+          >
             <img
               src="/image/pay_history_tiger.png"
               alt="복숭아 든 귀여운 호랑이"
             />
+            <div
+              className={`flex items-center text-[14px] gap-1 ${
+                pathName === '/payment' && 'hidden'
+              }`}
+            >
+              <span
+                className="underline cursor-pointer"
+                onClick={() => route.push('payment')}
+              >
+                더보기
+              </span>
+              <BsChevronRight className=" w-4 h-4 text-[#545454] cursor-pointer" />
+            </div>
           </div>
-          {sortedDates.map((date) => (
-            <div key={date} className="pt-4 md:pt-7 md:pb-9">
+          {datesToRender.map((date) => (
+            <div
+              key={date}
+              className={`${pathName === '/payment' && 'pt-4 md:pt-7 md:pb-9'}`}
+            >
               <div className="flex gap-[8px] ml-[4px] px-[16px] md:p-0">
                 <p className="font-medium">{date}</p>
                 <p className="font-medium">주문</p>
@@ -146,43 +177,40 @@ const PayHistoryList = () => {
                         />
                       </div>
 
-                      {order.products.map((product: Product, index: number) => {
-                        return (
+                      {order.products.map((product: Product, index: number) => (
+                        <div
+                          className="cursor-pointer"
+                          key={product.id}
+                          onClick={() => route.push(`local-food/${product.id}`)}
+                        >
                           <div
-                            className="cursor-pointer"
-                            key={product.id}
-                            onClick={() =>
-                              route.push(`local-food/${product.id}`)
-                            }
+                            className={`flex gap-[12px] pt-[12px] ${
+                              index !== order.products.length - 1
+                                ? 'border-b-2 pb-[12px]'
+                                : ''
+                            }`}
                           >
-                            <div
-                              className={`flex gap-[12px] pt-[12px] ${
-                                index !== order.products.length - 1
-                                  ? 'border-b-2 pb-[12px]'
-                                  : ''
-                              }`}
-                            >
-                              <img
-                                src={imageSrc(product.name)}
-                                className="w-[64px] h-[64px] object-cover rounded-[8px] xs:w-[100px] xs:h-[100px]"
-                                alt={`${product.name}`}
-                              />
+                            <img
+                              src={imageSrc(product.name)}
+                              className="w-[64px] h-[64px] object-cover rounded-[8px] xs:w-[100px] xs:h-[100px]"
+                              alt={`${product.name}`}
+                            />
 
-                              <div className="flex flex-col justify-center gap-[8px]">
-                                <p className="font-medium text-[16px] md:text-[20px]">
-                                  {product.name}
-                                </p>
-                                <div className="flex text-[#79746D] gap-[4px] md:gap-2">
-                                  <p>{product.amount.toLocaleString()}원</p>
-                                  <p>·</p>
-                                  <p>{product.quantity}개</p>
-                                </div>
+                            <div className="flex flex-col justify-center gap-[8px]">
+                              <p className="font-medium text-[16px] md:text-[20px]">
+                                {product.name}
+                              </p>
+                              <div className="flex text-[#79746D] gap-[4px] md:gap-2">
+                                <p>{product.amount.toLocaleString()}원</p>
+                                <p>·</p>
+                                <p>{product.quantity}개</p>
                               </div>
-                              {index !== order.products.length - 1 && <hr />}
                             </div>
+                            {index !== order.products.length - 1 && <hr />}
                           </div>
-                        );
-                      })}
+                        </div>
+                      ))}
+
                       <div
                         className={`flex justify-center gap-[8px] text-[14px] font-semibold pt-[12px] ${
                           order.status !== 'CANCELLED' ? 'flex' : 'hidden'

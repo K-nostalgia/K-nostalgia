@@ -1,17 +1,18 @@
 'use client';
-import { useUser } from '@/hooks/useUser';
-import React, { useEffect } from 'react';
-import Profile from './_components/Profile';
-import LikeMarket from './_components/LikeMarket';
-import OrderList_mypage from './_components/OrderList_mypage';
-import Coupon_mypage from './_components/Coupon_mypage';
-import Logout from './_components/Logout';
 import Loading from '@/components/common/Loading';
-import { useRouter } from 'next/navigation';
-import CancelUser from './_components/CancelUser';
 import useDeviceSize from '@/hooks/useDeviceSize';
-import { BsChevronRight } from 'react-icons/bs';
+import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { BsChevronRight } from 'react-icons/bs';
+import PayHistoryList from '../payment/_components/PayHistoryList';
+import CancelUser from './_components/CancelUser';
+import Coupon_mypage from './_components/Coupon_mypage';
+import LikeMarket from './_components/LikeMarket';
+import Logout from './_components/Logout';
+import OrderList_mypage from './_components/OrderList_mypage';
+import Profile from './_components/Profile';
 
 const Mypage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -89,6 +90,9 @@ const Mypage = () => {
             />
 
             <div className="border-4  border-[#F2F2F2] mt-10" />
+          </div>
+          <div>
+            <PayHistoryList />
           </div>
         </div>
       ) : (
