@@ -77,7 +77,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
     headerTitle = '할인쿠폰';
     showSearch = false;
   }
-  // 회원가입 퍼널형으로 페이지 내에서 처리
+  // 회원가입
+  else if (pathName === '') {
+    showHeader = false;
+    showSearch = false;
+    showCart = false;
+    showNavigation = false;
+    showChat = false;
+  }
   // 로그인 페이지 쿠키에 따라 다르게 처리
   else if (pathName === '/log-in') {
     showHeader = isGuest;
