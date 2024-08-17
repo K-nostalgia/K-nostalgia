@@ -28,8 +28,8 @@ const Logout = () => {
   if (error) return <div> Error </div>;
 
   return (
-    <div className="p-4 cursor-pointer">
-      <div className="flex items-center py-[3px] mb-[98px]">
+    <div className="p-4">
+      <div className="flex items-center py-[3px] mb-[98px] cursor-pointer">
         <IoIosLogOut className="mr-[8px] text-label-normal text-[20px]" />
         <div onClick={handleClickLogOut}>로그아웃</div>
       </div>
