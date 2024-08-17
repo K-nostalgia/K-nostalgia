@@ -43,8 +43,8 @@ export const ProductDetail = ({
 
   const product = [
     {
-      id: orderData?.product_id,
-      name: orderData?.food_name,
+      id: orderData?.product_id || '',
+      name: orderData?.food_name || null,
       amount: discountAmount * (count ?? 0),
       quantity: count ?? 0
     }
@@ -54,7 +54,7 @@ export const ProductDetail = ({
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <div className="w-full bg-white rounded-tr-[12px] rounded-br-[12px]border border-l-0  border-[#E0E0E0]">
+    <div className="w-[540px] bg-white rounded-tr-[12px] rounded-br-[12px]border border-l-0  border-[#E0E0E0]">
       <div className="flex px-8 justify-between  py-10">
         <div className="flex-auto">
           <h2 className="font-semibold text-label-strong text-xl">
@@ -100,7 +100,11 @@ export const ProductDetail = ({
               count={count}
               handleCartModalOpen={handleCartModalOpen}
             />
-            <PayButton product={product} orderNameArr={[orderData.food_name]} />
+            <PayButton
+              product={product}
+              orderNameArr={[orderData.food_name]}
+              text={'바로 구매하기'}
+            />
           </div>
         </div>
       </div>

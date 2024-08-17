@@ -6,7 +6,7 @@ interface ImageProps {
 
 export const DetailImage = ({ food }: ImageProps) => {
   return (
-    <>
+    <section>
       {food && (
         <Image
           src={food}
@@ -18,6 +18,6 @@ export const DetailImage = ({ food }: ImageProps) => {
           className="lg:w-[860px] mx-auto w-[100%]"
         />
       )}
-    </>
+    </section>
   );
 };

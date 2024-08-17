@@ -1,4 +1,20 @@
+import { Tables } from "./supabase";
+
 type ExcludeFromNullable = 'payment_id';
+
+export interface Product {
+  amount: number;
+  id: string;
+  name: string;
+  quantity: number;
+  user_id: string;
+  hasReview?: boolean;
+  rating?: number | null | undefined;
+}
+
+export interface Order extends Omit<Tables<'orderd_list'>, 'products'> {
+  products: Product[] | null;
+}
 
 export type NullablePropertiesExcept<T> = {
   [P in keyof T]: P 

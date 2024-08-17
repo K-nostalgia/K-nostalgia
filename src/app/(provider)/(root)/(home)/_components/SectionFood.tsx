@@ -6,10 +6,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Tables } from '@/types/supabase';
 import { HashLoader } from 'react-spinners';
 import { WideFoodBox } from './WideFoodBox';
-import { useEffect, useState } from 'react';
+import useDeviceSize from '@/hooks/useDeviceSize';
 
 export const SectionFood = () => {
-  const [isWideScreen, setIsWideScreen] = useState(false);
+  const { isDesktop } = useDeviceSize();
   const { data: localFood, isPending } = useQuery({
     queryKey: ['localfood'],
     queryFn: async () => {
@@ -23,19 +23,6 @@ export const SectionFood = () => {
     }
   });
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsWideScreen(window.innerWidth >= 1024);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // 초기값 설정
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
   return (
     <div className="bg-secondary-30">
       <div className="flex flex-col justify-center items-center pb-20">
@@ -47,8 +34,8 @@ export const SectionFood = () => {
             <HashLoader color="#f2f2f2" className="mx-auto" />
             <p className="my-5 text-label-light">데이터를 불러오고 있어요!</p>
           </div>
-        ) : isWideScreen ? (
-          <ul className="max-w-screen-xl grid grid-cols-4  relative gap-10">
+        ) : isDesktop ? (
+          <ul className="max-w-screen-xl grid grid-cols-4 relative gap-10">
             {localFood?.slice(0, 4).map((item, index) => {
               return (
                 <WideFoodBox

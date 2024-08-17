@@ -6,9 +6,11 @@ import {
   useQuery,
   useQueryClient
 } from '@tanstack/react-query';
+import { LogIn } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { IoSend } from 'react-icons/io5';
+import Swal from 'sweetalert2';
 
 interface MarketCommentsPropsType {
   userId?: string;
@@ -104,12 +106,40 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
       console.error('댓글 수정 실패용~');
     }
   };
+
   const { mutate: updateCommentsMutate } = useMutation({
     mutationFn: updateComment,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comment', marketId] });
     }
   });
+
+  const handleDeleteComment = (commentId: string) => {
+    Swal.fire({
+      title: '댓글을 삭제하시겠어요?',
+      html: `
+      <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">삭제 후에는 복구나 재작성이 불가해요.</div>
+      `,
+      showCancelButton: true,
+      cancelButtonColor: '#9C6D2E',
+      confirmButtonColor: '#f2f2f2',
+      cancelButtonText: '취소하기',
+      confirmButtonText: '삭제하기',
+      customClass: {
+        title: 'text-xl mt-10 md:mb-[8px]',
+        popup: 'rounded-[16px]',
+        actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+        confirmButton:
+          'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
+        cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // 사용자가 "삭제하기" 버튼을 클릭한 경우
+        deleteCommentsMutate(commentId);
+      }
+    });
+  };
 
   if (isPending) {
     return <div>로딩중...</div>;
@@ -184,11 +214,11 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
                         확인
                       </button>
                     ))}
-                  <div className="flex justify-center items-center w-[1px] h-3 bg-label-assistive" />
+                  {/* <div className="flex justify-center items-center w-[1px] h-3 bg-label-assistive" /> */}
                   {userId === comment.user_id &&
                     (!editMode.includes(comment.id) ? (
                       <button
-                        onClick={() => deleteCommentsMutate(comment.id)}
+                        onClick={() => handleDeleteComment(comment.id)}
                         className="font-normal text-sm text-label-normal"
                       >
                         삭제
