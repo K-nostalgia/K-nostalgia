@@ -10,9 +10,16 @@ import Cookies from 'js-cookie';
 interface likeProps {
   marketId: number;
   userId: string;
+  className?: string;
+  isBlack?: boolean;
 }
 
-export const LikeButton = ({ marketId, userId }: likeProps) => {
+export const LikeButton = ({
+  marketId,
+  userId,
+  className = '',
+  isBlack = false
+}: likeProps) => {
   const queryClient = useQueryClient();
   const { data: userData } = useUser();
   const router = useRouter();
@@ -83,7 +90,7 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['likes', marketId, userId]
+        queryKey: ['likes', userId]
       });
     }
   });
@@ -148,12 +155,16 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
       {likeData && likeData.length > 0 ? (
         <GoHeartFill
           style={{ color: '#DB3B3B' }}
-          className="w-[22px] h-[22px] transition-transform duration-300 ease-in-out hover:scale-110"
+          className={` transition-transform duration-300 ease-in-out hover:scale-110 ${
+            className ? className : 'w-[22px] h-[22px]'
+          }`}
         />
       ) : (
         <GoHeart
-          style={{ color: '#F6F5F3' }}
-          className="w-[22px] h-[22px] transition-transform duration-300 ease-in-out hover:scale-110"
+          style={{ color: `${isBlack ? '#403D3A' : '#F6F5F3'}` }}
+          className={` transition-transform duration-300 ease-in-out hover:scale-110 ${
+            className ? className : 'w-[22px] h-[22px]'
+          }`}
         />
       )}
     </button>
