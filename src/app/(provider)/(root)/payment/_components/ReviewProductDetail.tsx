@@ -31,12 +31,17 @@ const ReviewProductDetail = ({ order }: Props) => {
       if (order.products) {
         const updatedProducts = await Promise.all(
           order.products.map(async (product) => {
-            const { data } = await supabase
+            const { data, error } = await supabase
               .from('reviews')
               .select('rating')
               .eq('product_id', product.id)
               .eq('user_id', user_id as string)
+              .order('created_at', { ascending: false })
+              .limit(1)
               .maybeSingle();
+            if (error) {
+              console.error(error);
+            }
             return { ...product, hasReview: !!data, ...data };
           })
         );
@@ -62,7 +67,7 @@ const ReviewProductDetail = ({ order }: Props) => {
         >
           리뷰 작성하기
         </DialogTrigger>
-        <DialogContent className="bg-[#FAF8F5] w-[330px] h-[627px] rounded-2xl md:w-[608px] md:h-[840px]">
+        <DialogContent className="bg-[#FAF8F5] min-w-[330px] w-[80%] h-[627px] rounded-2xl overflow-y-auto md:max-w-[608px] md:h-[840px]">
           {selectedProduct ? (
             <ReviewForm
               product={selectedProduct}
