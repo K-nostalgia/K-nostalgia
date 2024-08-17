@@ -7,13 +7,17 @@ type LocalFood = Tables<'local_food'>;
 interface HomeSearchResultProps {
   response: (Market | LocalFood)[];
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  activeIndex: number;
 }
 
-const HomeSearchResult = ({ response, setIsOpen }: HomeSearchResultProps) => {
+const HomeSearchResult = ({
+  response,
+  setIsOpen,
+  activeIndex
+}: HomeSearchResultProps) => {
   return (
     <div className="border-t border-label-assistive">
       {response.map((item, index) => {
-        // market 일 때
         if ('시장명' in item) {
           return (
             <Link
@@ -22,7 +26,9 @@ const HomeSearchResult = ({ response, setIsOpen }: HomeSearchResultProps) => {
             >
               <div
                 onClick={() => setIsOpen(false)}
-                className="cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2]"
+                className={`cursor-pointer px-3 py-[6px] text-base hover:bg-[#AFACA7] ${
+                  index === activeIndex ? '!bg-[#AFACA7]' : 'bg-[#FEFEFE]'
+                }`}
               >
                 {(item as Market).시장명}
               </div>
@@ -38,7 +44,9 @@ const HomeSearchResult = ({ response, setIsOpen }: HomeSearchResultProps) => {
             >
               <div
                 onClick={() => setIsOpen(false)}
-                className="cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2]"
+                className={`cursor-pointer px-3 py-[6px] text-base hover:bg-[#AFACA7]
+                  ${index === activeIndex ? 'bg-[#AFACA7]' : 'bg-[#FEFEFE]'}
+                  `}
               >
                 {(item as LocalFood).food_name}
               </div>

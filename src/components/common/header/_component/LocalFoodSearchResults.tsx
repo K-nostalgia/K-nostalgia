@@ -6,11 +6,13 @@ type LocalFood = Tables<'local_food'>;
 interface LocalFoodSearchResultProps {
   response: LocalFood[];
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  activeIndex: number;
 }
 
 const LocalFoodSearchResult = ({
   response,
-  setIsOpen
+  setIsOpen,
+  activeIndex
 }: LocalFoodSearchResultProps) => {
   return (
     <div className="border-t border-label-assistive">
@@ -18,7 +20,10 @@ const LocalFoodSearchResult = ({
         <Link href={`/local-food/${item.product_id}`} key={item.product_id}>
           <div
             onClick={() => setIsOpen(false)}
-            className="cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2]"
+            className={`cursor-pointer px-3 py-[6px] text-base hover:bg-[#AFACA7] ${
+              index === activeIndex ? '!bg-[#AFACA7]' : 'bg-[#FEFEFE]'
+            }`}
+            tabIndex={0}
           >
             {item.food_name}
           </div>
