@@ -47,7 +47,7 @@ const LocalFoodView = () => {
   );
 
   return (
-    <div className="mt-[15%] max-w-screen-xl mx-auto md:mt-0">
+    <div className="mt-[11%] max-w-screen-xl mx-auto md:mt-0 ">
       {/* PC */}
       {isDesktop && (
         <div className="mt-20 mb-10">
@@ -102,7 +102,7 @@ const LocalFoodView = () => {
           <Loading />
         </div>
       ) : (
-        <div className="mx-4 md:mt-9 lg:mx-0">
+        <div className="mx-4 mt-9 md:mx-0">
           <div className="my-4 md:hidden">
             <Image
               src={
@@ -140,53 +140,61 @@ const LocalFoodView = () => {
               )}
             </div>
           ) : (
-            <ul className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 pb-32">
-              {filteredFoodData?.map((food) => (
-                <li
-                  key={food.product_id}
-                  className="rounded-[12px] flex flex-col lg:rounded-[4px] mx-auto w-full border border-secondary-50"
-                >
-                  <Link href={`/local-food/${food.product_id}`}>
-                    <div className="flex justify-center items-center w-auto h-[120px] sm:h-[205px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
-                      {food.title_image && (
-                        <Image
-                          src={food.title_image[0]}
-                          width={164}
-                          height={120}
-                          alt="특산물 이미지"
-                          priority
-                          style={{
-                            objectFit: 'cover'
-                          }}
-                          className="object-cover w-full h-auto"
-                        />
-                      )}
-                    </div>
-                    <div className="bg-normal py-2 px-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
-                      <h2 className="text-base font-semibold">
-                        {food.food_name}
-                      </h2>
-                      <p className="text-xs text-label-assistive">
-                        {food.description}
-                      </p>
-                      <div className="text-sm mt-2">
-                        {`${food.discountRate}%`}
-                        <span className="inline-block text-sm ml-1 text-label-assistive line-through">
-                          {food.price?.toLocaleString()} 원
-                        </span>
+            <div
+              className={`max-h-[400px] overflow-y-scroll ${
+                isDesktop && 'h-auto overflow-hidden'
+              }`}
+            >
+              <ul
+                className={`grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 pb-32`}
+              >
+                {filteredFoodData?.map((food) => (
+                  <li
+                    key={food.product_id}
+                    className="rounded-[12px] flex flex-col lg:rounded-[4px] mx-auto w-full border border-secondary-50"
+                  >
+                    <Link href={`/local-food/${food.product_id}`}>
+                      <div className="flex justify-center items-center w-auto h-[120px] sm:h-[205px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
+                        {food.title_image && (
+                          <Image
+                            src={food.title_image[0]}
+                            width={164}
+                            height={120}
+                            alt="특산물 이미지"
+                            priority
+                            style={{
+                              objectFit: 'cover'
+                            }}
+                            className="object-cover w-full h-auto"
+                          />
+                        )}
                       </div>
-                      <p className="text-base text-primary-20 font-medium">
-                        {(
-                          (food.price ?? 0) -
-                          (food.price ?? 0) * ((food.discountRate ?? 0) / 100)
-                        )?.toLocaleString()}{' '}
-                        원
-                      </p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                      <div className="bg-normal py-2 px-3 text-[#403D3A] rounded-bl-[12px] rounded-br-[12px]">
+                        <h2 className="text-base font-semibold">
+                          {food.food_name}
+                        </h2>
+                        <p className="text-xs text-label-assistive">
+                          {food.description}
+                        </p>
+                        <div className="text-sm mt-2">
+                          {`${food.discountRate}%`}
+                          <span className="inline-block text-sm ml-1 text-label-assistive line-through">
+                            {food.price?.toLocaleString()} 원
+                          </span>
+                        </div>
+                        <p className="text-base text-primary-20 font-medium">
+                          {(
+                            (food.price ?? 0) -
+                            (food.price ?? 0) * ((food.discountRate ?? 0) / 100)
+                          )?.toLocaleString()}{' '}
+                          원
+                        </p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </div>
       )}
