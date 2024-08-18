@@ -20,12 +20,21 @@ interface marketProps {
 export const SlideBanner = ({ images }: marketProps) => {
   const { data: user } = useUser();
 
+  const handleSwiperInit = (swiper: any) => {
+    const slides = swiper.slides;
+    // 첫 번째 슬라이드에 대해 scale(1.1) 적용
+    if (slides.length > 0) {
+      slides[0].style.transform = 'scale(1.1)';
+    }
+  };
+
   return (
     <Swiper
       // install Swiper modules
       modules={[Pagination]}
       spaceBetween={32}
       slidesPerView={'auto'}
+      onInit={handleSwiperInit}
       onSlideChange={(swiper) => {
         const slides = swiper.slides;
         slides.forEach((slide) => {

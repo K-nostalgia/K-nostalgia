@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useDebugValue, useState } from 'react';
 import { HashLoader } from 'react-spinners';
+import { SkeletonCard } from '../../(home)/_components/LoadingSkeleton';
 
 type LocalFood = Tables<'local_food'>;
 
@@ -97,19 +98,14 @@ const LocalFoodView = () => {
           }}
         />
       </div>
-      {/* 모바일 */}
+
       {isPending ? (
-        <div className="mx-4 text-label-assistive text-sm">
-          <div
-            className={`flex justify-center flex-col items-center ${
-              isDesktop
-                ? 'h-[60vh]'
-                : ' absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]'
-            }`}
-          >
-            <HashLoader color="#A87939" />
-            <p className="my-5">데이터를 불러오고 있어요!</p>
-          </div>
+        <div className="mt-4">
+          {isDesktop ? (
+            <SkeletonCard columns={4} count={8} />
+          ) : (
+            <SkeletonCard columns={2} count={4} />
+          )}
         </div>
       ) : (
         <div className="mx-4 mt-4 md:mx-0">
