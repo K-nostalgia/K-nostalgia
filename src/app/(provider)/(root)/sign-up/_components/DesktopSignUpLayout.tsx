@@ -9,6 +9,7 @@ import {
   validatePassword
 } from '@/utils/validate';
 import { PiEye, PiEyeSlash } from 'react-icons/pi';
+import Swal from 'sweetalert2';
 
 type ErrorState = {
   [key: string]: string;
@@ -270,6 +271,14 @@ const DesktopSignUpLayout = () => {
 
       if (response) {
         await api.auth.logOut();
+        Swal.fire({
+          icon: 'success',
+          title: '회원가입이 완료 되었습니다.',
+          html: `
+          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 로그인 페이지로 자동으로 넘어갑니다. </div>
+        `
+        });
+
         router.push('/log-in');
       }
     } catch (error) {
@@ -300,173 +309,180 @@ const DesktopSignUpLayout = () => {
   };
 
   return (
-    <div className="flex flex-col gap-2">
-      {/* 이메일 */}
-      <div className="py-3 px-6 mt-8">
-        <label className="block text-label-normal mb-2">이메일</label>
-        <div className="flex flex-1 items-center mr-2">
+    <>
+      <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+        {/* 이메일 */}
+        <div className="py-3 px-6 mt-8">
+          <label className="block text-label-normal mb-2">이메일</label>
+          <div className="flex flex-1 items-center mr-2">
+            <input
+              type="text"
+              name="email"
+              value={userInfo.email}
+              onChange={handleChange}
+              placeholder="이메일을 입력해 주세요"
+              className={`bg-[#FEFEFE] border rounded-xl pl-4 pr-3 py-3 w-full text-primary-20 focus:outline-none ${
+                errors.email ? 'border-red-500' : 'border-primary-strong'
+              }`}
+            />
+            <button
+              type="button"
+              className={`w-[66px] h-[50px] ml-2 rounded-[10px] ${
+                isEmailChecked
+                  ? 'bg-primary-10'
+                  : inputStarted.email
+                  ? 'bg-primary-20 hover:bg-primary-10'
+                  : 'bg-label-disable'
+              } text-label-light text-xs px-2 py-1`}
+              onClick={handleEmailCheckDuplicate}
+            >
+              {isEmailChecked ? '완료' : '중복확인'}
+            </button>
+          </div>
+          {errors.email && (
+            <p className="text-red-500 text-sm mt-2">{errors.email}</p>
+          )}
+          {successes.email && (
+            <p className="text-secondary-20 text-sm mt-2">{successes.email}</p>
+          )}
+        </div>
+
+        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+
+        {/* 비밀번호 */}
+        <div className="px-6 py-3">
+          <label className="text-label-normal p-2">비밀번호</label>
+          <div className="relative flex items-center">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={userInfo.password}
+              onChange={handleChange}
+              placeholder="비밀번호를 입력해 주세요"
+              className={`bg-[#FEFEFE] border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
+                errors.password ? 'border-red-500' : 'border-primary-strong'
+              }`}
+            />
+            <span
+              className="absolute inset-y-0 right-[15px] flex items-center cursor-pointer"
+              onClick={handleShowPassword}
+            >
+              {showPassword ? (
+                <PiEyeSlash className="text-[#545454] text-2xl p-[2px]" />
+              ) : (
+                <PiEye className="text-[#545454] text-2xl p-[2px]" />
+              )}
+            </span>
+          </div>
+          {!errors.password && (
+            <p className="text-label-alternative text-sm mt-2">
+              영문 대소문자, 숫자, 특수문자를 포함해 6자리 이상으로
+              입력해주세요.
+            </p>
+          )}
+          {errors.password && (
+            <p className="text-red-500 text-sm mt-2">{errors.password}</p>
+          )}
+        </div>
+
+        {/* 비밀번호 확인 */}
+        <div className="mt-8 px-6 py-3">
+          <label className="block text-label-normal p-2 ">
+            비밀번호 재확인
+          </label>
+          <div className="relative flex items-center">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="confirmPassword"
+              value={userInfo.confirmPassword}
+              onChange={handleChange}
+              placeholder="한번 더 입력해주세요"
+              className={`bg-[#FEFEFE] border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
+                errors.confirmPassword
+                  ? 'border-red-500'
+                  : 'border-primary-strong'
+              }`}
+            />
+            <span
+              className="absolute inset-y-0 right-[15px] flex items-center cursor-pointer"
+              onClick={handleShowPassword}
+            >
+              {showPassword ? (
+                <PiEyeSlash className="text-[#545454] text-2xl p-[2px]" />
+              ) : (
+                <PiEye className="text-[#545454] text-2xl p-[2px]" />
+              )}
+            </span>
+          </div>
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-2">
+              {errors.confirmPassword}
+            </p>
+          )}
+        </div>
+
+        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+
+        {/* 이름 */}
+        <div className="px-6 py-3">
+          <label className="flex text-label-normal mb-2">이름</label>
           <input
             type="text"
-            name="email"
-            value={userInfo.email}
+            name="name"
+            value={userInfo.name}
             onChange={handleChange}
-            placeholder="이메일을 입력해 주세요"
-            className={`bg-normal border rounded-xl pl-4 pr-3 py-3 w-full text-primary-20 focus:outline-none ${
-              errors.email ? 'border-red-500' : 'border-primary-strong'
+            placeholder="이름"
+            className={`bg-[#FEFEFE] border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
+              errors.name ? 'border-red-500' : 'border-primary-strong'
             }`}
           />
-          <button
-            type="button"
-            className={`w-[66px] h-[50px] ml-2 rounded-[10px] ${
-              isEmailChecked
-                ? 'bg-primary-10'
-                : inputStarted.email
-                ? 'bg-primary-20 hover:bg-primary-10'
-                : 'bg-label-disable'
-            } text-label-light text-xs px-2 py-1`}
-            onClick={handleEmailCheckDuplicate}
-          >
-            {isEmailChecked ? '완료' : '중복확인'}
-          </button>
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-2">{errors.name}</p>
+          )}
         </div>
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-2">{errors.email}</p>
-        )}
-        {successes.email && (
-          <p className="text-secondary-20 text-sm mt-2">{successes.email}</p>
-        )}
-      </div>
 
-      <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="border border-[#E0E0E0] mt-12 mb-12" />
 
-      {/* 비밀번호 */}
-      <div className="px-6 py-3">
-        <label className="text-label-normal p-2">비밀번호</label>
-        <div className="relative flex items-center">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            value={userInfo.password}
-            onChange={handleChange}
-            placeholder="비밀번호를 입력해 주세요"
-            className={`bg-normal border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
-              errors.password ? 'border-red-500' : 'border-primary-strong'
-            }`}
-          />
-          <span
-            className="absolute inset-y-0 right-[15px] flex items-center cursor-pointer"
-            onClick={handleShowPassword}
-          >
-            {showPassword ? (
-              <PiEyeSlash className="text-[#545454] text-2xl p-[2px]" />
-            ) : (
-              <PiEye className="text-[#545454] text-2xl p-[2px]" />
-            )}
-          </span>
+        {/* 별명 */}
+        <div className="px-6 py-3 mb-12">
+          <label className="block text-label-normal mb-2 ">별명</label>
+          <div className="relative flex items-center">
+            <input
+              type="text"
+              name="nickname"
+              value={userInfo.nickname}
+              onChange={handleChange}
+              placeholder="사용할 별명"
+              className={`bg-[#FEFEFE] border rounded-xl pl-4 pr-3 py-3 w-full text-primary-20 focus:outline-none ${
+                errors.nickname ? 'border-red-500' : 'border-primary-strong'
+              }`}
+            />
+            <button
+              type="button"
+              className={`w-[66px] h-[50px] ml-2 rounded-[10px] ${
+                isNicknameChecked
+                  ? 'bg-primary-10'
+                  : inputStarted.nickname
+                  ? 'bg-primary-20 hover:bg-primary-10'
+                  : 'bg-label-disable'
+              }  text-label-light text-xs px-2 py-1`}
+              onClick={handleNicknameCheckDuplicate}
+            >
+              {isNicknameChecked ? '완료' : '중복확인'}
+            </button>
+          </div>
+          {errors.nickname && (
+            <p className="text-red-500 text-sm mt-2">{errors.nickname}</p>
+          )}
+          {successes.nickname && (
+            <p className="text-secondary-20 text-sm mt-2">
+              {successes.nickname}
+            </p>
+          )}
         </div>
-        {!errors.password && (
-          <p className="text-label-alternative text-sm mt-2">
-            영문 대소문자, 숫자, 특수문자를 포함해 6자리 이상으로 입력해주세요.
-          </p>
-        )}
-        {errors.password && (
-          <p className="text-red-500 text-sm mt-2">{errors.password}</p>
-        )}
       </div>
 
-      {/* 비밀번호 확인 */}
-      <div className="mt-8 px-6 py-3">
-        <label className="block text-label-normal p-2 ">비밀번호 재확인</label>
-        <div className="relative flex items-center">
-          <input
-            type={showPassword ? 'text' : 'password'}
-            name="confirmPassword"
-            value={userInfo.confirmPassword}
-            onChange={handleChange}
-            placeholder="한번 더 입력해주세요"
-            className={`bg-normal border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
-              errors.confirmPassword
-                ? 'border-red-500'
-                : 'border-primary-strong'
-            }`}
-          />
-          <span
-            className="absolute inset-y-0 right-[15px] flex items-center cursor-pointer"
-            onClick={handleShowPassword}
-          >
-            {showPassword ? (
-              <PiEyeSlash className="text-[#545454] text-2xl p-[2px]" />
-            ) : (
-              <PiEye className="text-[#545454] text-2xl p-[2px]" />
-            )}
-          </span>
-        </div>
-        {errors.confirmPassword && (
-          <p className="text-red-500 text-sm mt-2">{errors.confirmPassword}</p>
-        )}
-      </div>
-
-      <div className="border border-[#E0E0E0] mt-12 mb-12" />
-
-      {/* 이름 */}
-      <div className="px-6 py-3">
-        <label className="flex text-label-normal mb-2">이름</label>
-        <input
-          type="text"
-          name="name"
-          value={userInfo.name}
-          onChange={handleChange}
-          placeholder="이름"
-          className={`bg-normal border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
-            errors.name ? 'border-red-500' : 'border-primary-strong'
-          }`}
-        />
-        {errors.name && (
-          <p className="text-red-500 text-sm mt-2">{errors.name}</p>
-        )}
-      </div>
-
-      <div className="border border-[#E0E0E0] mt-12 mb-12" />
-
-      {/* 별명 */}
-      <div className="px-6 py-3">
-        <label className="block text-label-normal mb-2">별명</label>
-        <div className="relative flex items-center">
-          <input
-            type="text"
-            name="nickname"
-            value={userInfo.nickname}
-            onChange={handleChange}
-            placeholder="사용할 별명"
-            className={`bg-normal border rounded-xl pl-4 pr-3 py-3 w-full text-primary-20 focus:outline-none ${
-              errors.nickname ? 'border-red-500' : 'border-primary-strong'
-            }`}
-          />
-          <button
-            type="button"
-            className={`w-[66px] h-[50px] ml-2 rounded-[10px] ${
-              isNicknameChecked
-                ? 'bg-primary-10'
-                : inputStarted.nickname
-                ? 'bg-primary-20 hover:bg-primary-10'
-                : 'bg-label-disable'
-            }  text-label-light text-xs px-2 py-1`}
-            onClick={handleNicknameCheckDuplicate}
-          >
-            {isNicknameChecked ? '완료' : '중복확인'}
-          </button>
-        </div>
-        {errors.nickname && (
-          <p className="text-red-500 text-sm mt-2">{errors.nickname}</p>
-        )}
-        {successes.nickname && (
-          <p className="text-secondary-20 text-sm mt-2">{successes.nickname}</p>
-        )}
-      </div>
-
-      <div className="border border-[#E0E0E0] mt-12 mb-12" />
-
-      <div className="flex-shrink-0 px-4">
+      <div className="flex-shrink-0 px-4 mt-4">
         <button
           type="button"
           className={`w-full rounded-xl ${
@@ -480,7 +496,7 @@ const DesktopSignUpLayout = () => {
           회원가입하기
         </button>
       </div>
-    </div>
+    </>
   );
 };
 
