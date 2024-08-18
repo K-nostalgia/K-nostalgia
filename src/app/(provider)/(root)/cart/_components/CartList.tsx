@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
 import PayButton from '@/components/common/PayButton';
 import useDeviceSize from '@/hooks/useDeviceSize';
-import { CartPriceList } from './CartPriceList';
 
 type Product = {
   id: string | null;
@@ -89,7 +88,16 @@ export const CartList = () => {
         />
       ) : (
         //장바구니 비어있을 경우 디폴트 이미지 표시
-        <DefaultImage text={'장바구니가 비었어요'} />
+        <div>
+          {isDesktop ? (
+            <TableDataColumns
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+            />
+          ) : (
+            <DefaultImage text={'장바구니가 비었어요'} />
+          )}
+        </div>
       )}
 
       <CartFixedButtons data={cartData ?? []} selectedItems={selectedItems} />

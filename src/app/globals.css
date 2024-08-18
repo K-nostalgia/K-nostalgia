@@ -92,3 +92,11 @@
   opacity: 1;
   border: 1px solid #9c6d2e;
 }
+
+/* 장바구니 nth-child(2) 스타일 지정 */
+.nth-2\:hidden:nth-child(2) {
+  display: none;
+}
+.nth-3\:w-115px:nth-child(3) {
+  width: 115px; /* 원하는 너비를 설정 */
+}
