@@ -10,7 +10,7 @@ const TopButton = () => {
   return (
     <button className="whitespace-nowrap rounded-md text-sm font-medium text-primary-foreground h-10 w-10 flex justify-center items-center">
       <div
-        className="flex items-center justify-center rounded-full bg-secondary-60 shadow w-10 h-10 p-[6px] cursor-pointer z-50"
+        className="flex items-center justify-center rounded-full bg-secondary-60 shadow w-10 h-10 p-[6px] cursor-pointer z-50 hover:bg-secondary-40"
         onClick={scrollToTop}
       >
         <svg

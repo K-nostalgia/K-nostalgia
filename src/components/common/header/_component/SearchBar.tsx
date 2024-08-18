@@ -129,14 +129,17 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
 
     // 위 화살표
     if (event.key === 'ArrowUp') {
+      event.preventDefault();
       setActiveIndex((prev) => (prev <= 0 ? prev : prev - 1));
     }
     // TODO 아래 화살표 뭔가 뭔가 이상함;;;
     else if (event.key === 'ArrowDown') {
-      setActiveIndex((prev) => (prev > response.length - 1 ? prev : prev + 1));
+      event.preventDefault();
+      setActiveIndex((prev) => (prev >= response.length - 1 ? prev : prev + 1));
     }
     // 엔터
     else if (event.key === 'Enter') {
+      event.preventDefault();
       // 방어 코딩
       if (activeIndex >= 0 && activeIndex < response.length) {
         console.log(response[activeIndex]);
@@ -163,7 +166,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent
         side="top"
-        className="bg-normal rounded-b-[12px] md:w-[990px] md:mx-auto"
+        className="bg-normal rounded-b-[12px] md:w-[768px] md:mx-auto lg:w-[990px]"
       >
         <SheetHeader>
           <SheetTitle></SheetTitle>

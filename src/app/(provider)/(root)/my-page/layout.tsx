@@ -3,6 +3,7 @@
 import useDeviceSize from '@/hooks/useDeviceSize';
 import { PropsWithChildren } from 'react';
 import Profile from './_components/Profile';
+// import RecentMarket from './_components/RecentMarket';
 
 function MyPageLayout({ children }: PropsWithChildren) {
   const { isDesktop } = useDeviceSize();
@@ -13,13 +14,16 @@ function MyPageLayout({ children }: PropsWithChildren) {
       }`}
     >
       {isDesktop && (
-        <aside className="w-1/3 md:mr-10">
-          <div className=" md:max-w-[503px] md:mt-10 md:md:max-h-[422px] md:p-10 md:bg-primary-70 md:rounded-xl">
+        <aside className="w-1/2 md:mr-6 flex flex-col">
+          <div className="w-full max-w-[503px] md:mt-20 md:max-h-[422px] md:p-10 md:bg-primary-70 md:rounded-xl">
             <Profile />
+          </div>
+          <div className="w-full max-w-[503px] md:mt-20 md:max-h-[422px] md:p-10 md:bg-secondary-70 md:rounded-xl">
+            {/* <RecentMarket /> */}
           </div>
         </aside>
       )}
-      <main className={`${isDesktop ? 'w-2/3' : 'w-full'}`}>{children}</main>
+      <main className={`${isDesktop ? 'w-2/3 ' : 'w-full'}`}>{children}</main>
     </div>
   );
 }

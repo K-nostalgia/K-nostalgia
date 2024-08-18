@@ -19,10 +19,10 @@ const DefaultWebLayout = ({
   showWebTopButton = true
 }: PropsWithChildren<DefaultWebLayoutProps>) => {
   return (
-    <div className="min-h-screen">
+    <div>
       {showWebHeader && <WebHeader />}
       <main className="mx-auto">{children}</main>
-      <div className="flex flex-col fixed bottom-[40px] right-[41px] z-1001 gap-3">
+      <div className="flex flex-col fixed bottom-[40px] right-[41px] z-50 gap-3">
         {showWebChat && <Chat />}
         {showWebTopButton && <TopButton />}
       </div>

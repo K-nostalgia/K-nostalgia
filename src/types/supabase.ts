@@ -68,6 +68,10 @@ export type Database = {
           content: string | null
           created_at: string
           id: number
+<<<<<<< HEAD
+=======
+          isReported: boolean | null
+>>>>>>> 540e4a59a17d2754fea755754669a95854a60830
           room_id: string
           user_id: string | null
         }
@@ -75,6 +79,10 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: number
+<<<<<<< HEAD
+=======
+          isReported?: boolean | null
+>>>>>>> 540e4a59a17d2754fea755754669a95854a60830
           room_id: string
           user_id?: string | null
         }
@@ -82,6 +90,10 @@ export type Database = {
           content?: string | null
           created_at?: string
           id?: number
+<<<<<<< HEAD
+=======
+          isReported?: boolean | null
+>>>>>>> 540e4a59a17d2754fea755754669a95854a60830
           room_id?: string
           user_id?: string | null
         }

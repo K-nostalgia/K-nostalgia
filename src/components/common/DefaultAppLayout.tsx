@@ -33,7 +33,7 @@ const DefaultAppLayout = ({
   onCompleteClick
 }: PropsWithChildren<DefaultAppLayoutProps>) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       {showHeader && (
         <AppHeader
           headerTitle={headerTitle}
