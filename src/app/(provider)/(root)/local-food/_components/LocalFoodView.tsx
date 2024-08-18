@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { useDebugValue, useState } from 'react';
 import { HashLoader } from 'react-spinners';
 import { SkeletonCard } from '../../(home)/_components/LoadingSkeleton';
+import { DiscountAmount } from '../[id]/_components/DiscountAmount';
 
 type LocalFood = Tables<'local_food'>;
 
@@ -174,22 +175,10 @@ const LocalFoodView = () => {
                         <h2 className="text-base font-semibold">
                           {food.food_name}
                         </h2>
-                        <p className="text-xs text-label-assistive">
+                        <p className="text-xs text-label-assistive mb-2">
                           {food.description}
                         </p>
-                        <div className="text-sm mt-2">
-                          {`${food.discountRate}%`}
-                          <span className="inline-block text-sm ml-1 text-label-assistive line-through">
-                            {food.price?.toLocaleString()} 원
-                          </span>
-                        </div>
-                        <p className="text-base text-primary-20 font-medium">
-                          {(
-                            (food.price ?? 0) -
-                            (food.price ?? 0) * ((food.discountRate ?? 0) / 100)
-                          )?.toLocaleString()}{' '}
-                          원
-                        </p>
+                        <DiscountAmount food={food} totalSize="base" />
                       </div>
                     </Link>
                   </li>

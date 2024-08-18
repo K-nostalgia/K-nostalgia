@@ -14,6 +14,7 @@ import { ProductDetail } from './_components/web/ProductDetail';
 import { ProductSlide } from './_components/web/ProductSlide';
 import { DeliveryInfo } from './_components/DeliveryInfo';
 import useDeviceSize from '@/hooks/useDeviceSize';
+import { DiscountAmount } from './_components/DiscountAmount';
 
 type ReviewDataType = {
   reviews: ReviewType[];
@@ -104,7 +105,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       {/* 슬라이드 - pc / mo */}
       {isDesktop ? (
         <div className="mt-20 w-[1080px] h-[686px] mx-auto flex justify-center">
-          <div className="float-left !w-[540px] h-[686px]">
+          <div className="float-left !w-[540px] h-[686px] z-[-1]">
             <ProductSlide images={food.title_image} />
           </div>
           <div className="float-right">
@@ -124,12 +125,8 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
           {`[${food.location}] `}
           {food?.food_name}
         </h2>
-        <p className="text-[#AFACA7] text-sm">{food.description}</p>
-        <p className="text-label-normal text-sm mt-2">
-          {`${food.discountRate}%`}
-          <span className="inline-block ml-1 text-label-assistive line-through">{`${food.price?.toLocaleString()}원`}</span>
-        </p>
-        <p className="text-primary-20 font-bold text-xl">{`${totalAmount.toLocaleString()}원`}</p>
+        <p className="text-[#AFACA7] text-sm mb-2">{food.description}</p>
+        <DiscountAmount food={food} totalSize={'xl'} />
       </div>
       <div className="border-t-4 border-b-4 border-[#F2F2F2] w-full mt-4 p-4 lg:hidden">
         <DeliveryInfo />

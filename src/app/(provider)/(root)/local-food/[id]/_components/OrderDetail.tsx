@@ -9,6 +9,7 @@ import { TotalPriceList } from './TotalPriceList';
 import { CountButton } from './CountButton';
 import { useState } from 'react';
 import FixedButtons from '../../_components/FixedButtons';
+import { DiscountAmount } from './DiscountAmount';
 
 type LocalDetailPageProps = {
   params: { id: string };
@@ -72,22 +73,10 @@ export const OrderDetail = ({
 
         <div className="bg-normal flex-auto">
           <h2 className="font-semibold">{orderData.food_name}</h2>
-
-          {/* 할인 전 금액 */}
-          <div className="flex items-center">
-            <p className="text-sm text-label-normal font-normal">{`${orderData.discountRate}%`}</p>
-            <span className="font-normal text-label-assistive line-through pl-1 text-base">
-              {`${orderData.price?.toLocaleString()}원`}
-            </span>
+          <DiscountAmount food={orderData} totalSize={'lg'} />
+          <div className="mt-2">
+            <CountButton count={count} onCountChange={setCount} />
           </div>
-          {/* 할인 후 금액 */}
-          <strong className="text-lg text-primary-20 font-semibold">
-            {`${(
-              (orderData.price ?? 0) -
-              (orderData.price ?? 0) * ((orderData.discountRate ?? 0) / 100)
-            ).toLocaleString()}원`}
-          </strong>
-          <CountButton count={count} onCountChange={setCount} />
         </div>
       </div>
       <TotalPriceList data={orderData} count={count} />
