@@ -1,17 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import api from '@/service/service';
-import { GoArrowLeft } from 'react-icons/go';
-import steps from './Step';
-import Stepper from './Stepper';
-import SignupForm from './SignUpForm';
 import {
   validateEmail,
   validateName,
   validateNickName,
   validatePassword
 } from '@/utils/validate';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { GoArrowLeft } from 'react-icons/go';
+import SignupForm from './SignUpForm';
+import steps from './Step';
+import Stepper from './Stepper';
 
 type ErrorState = {
   [key: string]: string;

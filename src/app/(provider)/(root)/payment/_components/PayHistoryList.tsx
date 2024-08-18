@@ -114,7 +114,7 @@ const PayHistoryList = () => {
           }`}
         >
           <div
-            className={`hidden py-10 border-b-8 border-[#F2F2F2] md:flex md:justify-between md:py-0 md:py-10 ${
+            className={`hidden py-10 border-b-8 border-[#F2F2F2] md:flex md:justify-between ${
               pathName === '/my-page' && 'border-none'
             }`}
           >
