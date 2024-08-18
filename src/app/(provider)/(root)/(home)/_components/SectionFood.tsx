@@ -47,7 +47,7 @@ export const SectionFood = () => {
             })}
           </ul>
         ) : (
-          <ul className="grid grid-cols-2 gap-x-[23px] mx-[10px] relative">
+          <ul className="grid grid-cols-2 gap-x-[23px] gap-y-8  relative">
             {localFood?.slice(0, 4).map((item, index) => {
               return (
                 <FoodBox
