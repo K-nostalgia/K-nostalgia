@@ -136,13 +136,25 @@ const LocalFoodView = () => {
                   </p>
                 </div>
               ) : (
-                <DefaultImage text={'특산물을 준비하고 있어요'} />
+                <div className="flex flex-col text-center mt-10">
+                  <Image
+                    src={'/image/readytoTiger.png'}
+                    width={208}
+                    height={226}
+                    alt="준비중입니다."
+                  />
+                  <p className="text-label-assistive text-lg font-medium">
+                    특산물을 준비하고 있어요
+                  </p>
+                </div>
               )}
             </div>
           ) : (
             <div
-              className={`max-h-[400px] overflow-y-scroll ${
-                isDesktop && 'h-auto overflow-hidden'
+              className={`${
+                isDesktop
+                  ? 'h-auto overflow-hidden'
+                  : 'max-h-[400px] overflow-y-scroll'
               }`}
             >
               <ul
@@ -151,10 +163,10 @@ const LocalFoodView = () => {
                 {filteredFoodData?.map((food) => (
                   <li
                     key={food.product_id}
-                    className="rounded-[12px] flex flex-col lg:rounded-[4px] mx-auto w-full border border-secondary-50"
+                    className="rounded-[12px] flex flex-col md:rounded-[4px] mx-auto w-full border border-secondary-50"
                   >
                     <Link href={`/local-food/${food.product_id}`}>
-                      <div className="flex justify-center items-center w-auto h-[120px] sm:h-[205px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] ">
+                      <div className="flex justify-center items-center w-auto h-[120px] sm:h-[205px] overflow-hidden rounded-tl-[12px] rounded-tr-[12px] md:rounded-tl-[4px] md:rounded-tr-[4px]">
                         {food.title_image && (
                           <Image
                             src={food.title_image[0]}
@@ -163,6 +175,7 @@ const LocalFoodView = () => {
                             alt="특산물 이미지"
                             priority
                             style={{
+                              borderRadius: '4px',
                               objectFit: 'cover'
                             }}
                             className="object-cover w-full h-auto"

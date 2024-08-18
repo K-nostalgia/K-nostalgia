@@ -33,11 +33,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div
-      className={`${
-        isDesktop ? 'mt-20 max-w-screen-xl mx-auto' : 'max-w-screen-xl mx-auto'
-      }`}
-    >
+    <div className={` max-w-screen-xl mx-auto ${isDesktop && 'mt-20'}`}>
       <Carousel
         setApi={setApi}
         plugins={[
@@ -50,7 +46,7 @@ export const SectionBanner = () => {
           {(isDesktop ? webBanners : banners).map((img, index) => (
             <CarouselItem
               key={index}
-              className="flex justify-center items-center relative"
+              className="flex justify-center items-center relative w-full"
             >
               <Link href={index === 1 ? '/my-page/coupon-page' : '#'}>
                 <Image
@@ -60,7 +56,9 @@ export const SectionBanner = () => {
                   priority
                   alt={`메인 배너 이미지 ${index + 1}`}
                   style={{
-                    height: 'auto',
+                    width: '100%',
+                    height: '100%',
+
                     objectFit: 'cover'
                   }}
                 />

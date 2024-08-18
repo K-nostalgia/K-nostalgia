@@ -103,8 +103,8 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
     <div className="max-w-screen-xl mx-auto">
       {/* 슬라이드 - pc / mo */}
       {isDesktop ? (
-        <div className="mt-20 w-[1080px] h-[64vh] mx-auto flex justify-center">
-          <div className="float-left !w-[540px]">
+        <div className="mt-20 w-[1080px] h-[686px] mx-auto flex justify-center">
+          <div className="float-left !w-[540px] h-[686px]">
             <ProductSlide images={food.title_image} />
           </div>
           <div className="float-right">
@@ -137,7 +137,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
 
       {/* 탭 */}
       <div className="border-b-[2px] border-[#F2F2F2] md:mb-6 md:clear-both md:mt-10 md:border-t-8">
-        <ul className="flex text-center pt-4 font-semibold md:justify-center">
+        <ul className="flex text-center pt-4 font-semibold md:justify-center md:gap-6">
           <li
             className="flex-1 md:flex-none cursor-pointer"
             onClick={() => handleTabClick('상세 정보')}
