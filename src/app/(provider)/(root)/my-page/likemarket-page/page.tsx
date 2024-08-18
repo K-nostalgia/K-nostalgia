@@ -107,7 +107,7 @@ const LikeMarketPage = () => {
       </div>
 
       {/* 웹버전 */}
-      <div className="hidden md:block">
+      <div className="hidden md:block md:mt-20">
         <Image
           src="/image/like_tiger.png"
           alt="관심전통시장 "
