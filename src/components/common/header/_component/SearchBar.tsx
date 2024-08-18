@@ -34,7 +34,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const [response, setResponse] = useState<
     (Tables<'local_food'> | Tables<'markets'>)[] | null
   >(null);
-  const [results, setResults] = useState<string>('');
+  const [results, setResults] = useState<string[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
@@ -83,6 +83,34 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     setSearchTerm('');
   }, [pathName]);
 
+  // 최근 검색어 저장- 로컬 스토리지
+  // 검색어 말고 실제로 이동한 거만 해야겠다~
+  const recentResults = useCallback(() => {
+    //이미 저장된 검색어
+    const saveResults = localStorage.getItem('recentResults');
+    let currentResults: string[] = [];
+
+    if (saveResults) {
+      const updateResults = JSON.parse(saveResults);
+
+      //같은 거 삭제
+      currentResults = updateResults?.filter(
+        (item: string) => item !== debounceSearchTerm
+      );
+
+      //배열 3개로 유지 + 최신 바로 앞으로 넣기
+      currentResults = [debounceSearchTerm, ...currentResults];
+
+      if (currentResults.length > 3) {
+        currentResults = currentResults.slice(0, 3);
+      }
+    } else {
+      currentResults = [debounceSearchTerm];
+    }
+    localStorage.setItem('recentResults', JSON.stringify(currentResults));
+    setResults(currentResults);
+  }, [debounceSearchTerm]);
+
   //검색어 전송 분기 처리
   const submitSearchTerm = useCallback(async () => {
     if (debounceSearchTerm.trim() === '') {
@@ -116,10 +144,11 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       const data = await response.json();
       setResponse(data);
       setActiveIndex(-1);
+      recentResults();
     } catch (error) {
       console.log(error);
     }
-  }, [debounceSearchTerm, localFoodSide, marketSide]);
+  }, [debounceSearchTerm, localFoodSide, marketSide, recentResults]);
 
   // 계속해서 작동
   useEffect(() => {
@@ -169,8 +198,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
   };
 
-  // TODO 1. 최근 검색어 저장- 로컬 스토리지
-  const recentResults = () => {};
+  console.log(results);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -253,6 +281,9 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
           <div className="px-3 py-[6px] text-xs border-t border-label-assistive">
             최근 검색어
           </div>
+          {results?.map((item, index) => (
+            <div key={index}>{item}</div>
+          ))}
         </div>
 
         {/* 검색 결과 없을 경우 검색창에서 보이는 것 X */}
