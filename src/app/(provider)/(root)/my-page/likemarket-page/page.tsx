@@ -7,9 +7,10 @@ import { useUser } from '@/hooks/useUser';
 import Loading from '@/components/common/Loading';
 import { useQuery } from '@tanstack/react-query';
 import { LuDot } from 'react-icons/lu';
+import { LikeButton } from '../../(home)/_components/LikeButton';
 
 const LikeMarketPage = () => {
-  const { data: userData } = useUser();
+  const { data: userData, isPending } = useUser();
 
   const getLikedMarkets = async () => {
     if (!userData || !userData.id) {
@@ -31,10 +32,14 @@ const LikeMarketPage = () => {
     isError,
     error
   } = useQuery({
-    queryKey: ['likedMarkets', userData?.id],
+    queryKey: ['likes', userData?.id],
     queryFn: getLikedMarkets,
     enabled: !!userData?.id
   });
+
+  if (isPending) {
+    return <div> 유저정보 받아오는중 </div>;
+  }
 
   if (isLoading) return <Loading />;
   if (isError) return <div> 에러가 발생했습니다.</div>;
@@ -53,10 +58,20 @@ const LikeMarketPage = () => {
               key={market.id || index}
               className="border border-secondary-50 rounded-xl mt-1 p-3 flex mb-5"
             >
-              <div>
-                <h3 className="text-[16px] text-label-strong font-semibold">
-                  {market.시장명 || '이름 없음'}
-                </h3>
+              <div className="mx-auto">
+                <div className="flex justify-between">
+                  <h3 className="text-[16px] text-label-strong font-semibold">
+                    {market.시장명 || '이름 없음'}
+                  </h3>
+                  {userData && (
+                    <LikeButton
+                      marketId={market.id}
+                      userId={userData?.id}
+                      className="w-[20px] h-[20px] ml-auto"
+                      isBlack
+                    />
+                  )}
+                </div>
                 <p className="text-label-normal text-[14px]">
                   {market.도로명주소 || '주소 없음'}
                 </p>
@@ -84,8 +99,6 @@ const LikeMarketPage = () => {
                   )}
                 </div>
               </div>
-
-              <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
             </div>
           ))
         ) : (
@@ -109,10 +122,12 @@ const LikeMarketPage = () => {
           markets.map((market, index) => (
             <div
               key={market.id || index}
-              className="py-6 items-center flex gap-[48px] border-b border-primary-60 border-w-full "
+              className={`py-6 justify-between w-full items-center flex ${
+                index !== markets.length - 1 ? 'border-b border-primary-60' : ''
+              }`}
             >
-              <div className="flex flex-row gap-4 h-[175px]">
-                <div>
+              <div className="flex flex-row gap-4 w-full h-[175px] justify-between">
+                <div className="md:mr-4 md:w-[280px]">
                   <h3 className="text-[20px] text-label-strong">
                     {market.시장명 || '이름 없음'}
                   </h3>
@@ -165,7 +180,7 @@ const LikeMarketPage = () => {
                   </div>
                 </div>
 
-                <div className="relative flex flex-1 items-center gap-2">
+                <div className="relative flex flex-1 items-center max-w-max gap-2">
                   {market.이미지 ? (
                     <>
                       <div className="relative">
@@ -196,8 +211,15 @@ const LikeMarketPage = () => {
                           height={180}
                           className="w-[139px] h-[180px] rounded-l-2 object-cover"
                         />
-                        <div className="absolute top-0 right-0 m-2">
-                          <GoHeartFill className="text-[#DB3B3B] text-[20px]" />
+                        <div className="absolute top-0 right-0 m-2  bg-[rgba(0,0,0,0.40)] bg-opacity-50 rounded-full w-[32px] h-[32px] flex items-center justify-center">
+                          {userData && (
+                            <LikeButton
+                              marketId={market.id}
+                              userId={userData?.id}
+                              className="w-[20px] h-[20px] ml-auto"
+                              isBlack
+                            />
+                          )}
                         </div>
                       </div>
                     </>
@@ -209,7 +231,16 @@ const LikeMarketPage = () => {
             </div>
           ))
         ) : (
-          <div className="text-center"> 관심 전통시장이 없습니다. </div>
+          <div className="text-center text-label-assistive flex flex-col items-center justify-center">
+            <Image
+              src="/image/StateSad.png"
+              alt="관심전통시장 없을때"
+              width={114}
+              height={97}
+              className="w-[114px] h-[97px] mb-4"
+            />
+            관심 전통시장이 없습니다.{' '}
+          </div>
         )}
       </div>
     </div>

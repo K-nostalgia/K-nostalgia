@@ -42,8 +42,8 @@ const Mypage = () => {
     <div className="md:flex md:flex-row md:max-w-[1280px]">
       {/* 오른쪽 사이드 */}
       {isDesktop ? (
-        <div className="flex flex-col">
-          <div className="w-[749px] flex justify-between items-end">
+        <div className="flex w-full flex-col">
+          <div className="w-full flex justify-between items-end mt-10">
             <Image
               src="/image/like_tiger.png"
               alt="관심전통시장 "
@@ -62,8 +62,8 @@ const Mypage = () => {
           <LikeMarket />
           <div className="border-4 border-[#F2F2F2] mt-4 w-full" />
 
-          <div className="flex flex-col">
-            <div className="w-[749px] flex justify-between items-end">
+          <div className="flex flex-col w-full">
+            <div className="w-full flex justify-between items-end">
               <Image
                 src="/image/coupon_tiger.png"
                 alt="마이페이지 쿠폰호랑이 "
@@ -81,7 +81,7 @@ const Mypage = () => {
             </div>
 
             <Image
-              src={user?.coupon || '쿠폰이 없어요'}
+              src={user?.coupon || '/image/StateSad'}
               alt="profile"
               width={343}
               height={161}
