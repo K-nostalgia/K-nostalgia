@@ -37,12 +37,12 @@ const ChatList = ({
     setSelectedChatRoom(item);
   };
 
+  // 로컬 스토리지에서 세션 스토리지 변경
   useEffect(() => {
-    // hasChater 있는지 확인
-    const hasChater = localStorage.getItem('visitedChat');
+    const hasChater = sessionStorage.getItem('visitedChat');
     if (!hasChater) {
       setShowWarning(true);
-      localStorage.setItem('visitedChat', 'true');
+      sessionStorage.setItem('visitedChat', 'true');
     }
   }, []);
 

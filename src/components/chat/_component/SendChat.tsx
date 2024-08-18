@@ -194,7 +194,9 @@ export function SendChat({
     setSelectedChatRoom(null);
   };
 
+  // 채팅 신고
   const handleReport = async (item: Tables<'chat'>) => {
+    // TODO confirm 말고 다른 걸로!
     if (confirm('신고하시겠습니까?')) {
       console.log(item);
       // 예일 경우 isReported true 로 업데이트
@@ -206,8 +208,13 @@ export function SendChat({
         body: JSON.stringify(item)
       });
 
+      queryClient.invalidateQueries({
+        queryKey: ['chatData', selectedChatRoom?.room_id]
+      });
+
       return response.json();
     }
+    // 신고되었습니다 알럿 필요
   };
 
   return (
@@ -229,56 +236,58 @@ export function SendChat({
         className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide md:h-[694px]"
         ref={scrollDown}
       >
-        {data?.map((item) => {
-          return item.user_id === user?.id ? (
-            // 나일 경우
-            <div key={item.id} className="flex flex-col mb-3 w-full">
-              <Image
-                src={item.users?.avatar || '/image/profile.png'}
-                alt={`${item.users?.nickname || 'user'}의 프로필`}
-                height={36}
-                width={36}
-                className="rounded-full ml-auto w-9 h-9"
-              />
-              <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-label-light text-sm bg-primary-strong w-fit px-3 py-2 leading-[22.4px]">
-                {encoded(item.content)}
-              </div>
-              <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2px]">
-                {formatDate(item.created_at)}
-              </div>
-            </div>
-          ) : (
-            // 다른 사람일 경우
-            <div key={item.id} className="flex flex-col mb-3 w-full">
-              <div className="flex gap-2">
+        {data
+          ?.filter((item) => !item.isReported)
+          .map((item) => {
+            return item.user_id === user?.id ? (
+              // 나일 경우
+              <div key={item.id} className="flex flex-col mb-3 w-full">
                 <Image
-                  src={item.users.avatar || '/image/profile.png'}
-                  alt={`${item.users.nickname}의 프로필` || 'User의 프로필'}
+                  src={item.users?.avatar || '/image/profile.png'}
+                  alt={`${item.users?.nickname || 'user'}의 프로필`}
                   height={36}
                   width={36}
-                  className="rounded-full w-9 h-9"
+                  className="rounded-full ml-auto w-9 h-9"
                 />
-                <div className="flex items-center font-semibold mr-auto">
-                  {item.users?.nickname}
+                <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-label-light text-sm bg-primary-strong w-fit px-3 py-2 leading-[22.4px]">
+                  {encoded(item.content)}
+                </div>
+                <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2px]">
+                  {formatDate(item.created_at)}
                 </div>
               </div>
-              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] text-sm leading-[22.4px] bg-[#FEFEFE]">
-                {encoded(item.content)}
-              </div>
-              <div className="text-xs text-label-assistive mt-1 leading-[19.2px] flex items-center">
-                <div>{formatDate(item.created_at)}</div>
-                <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
-                <div
-                  className="flex gap-1 justify-center cursor-pointer"
-                  onClick={() => handleReport(item)}
-                >
-                  <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
-                  <span>신고하기</span>
+            ) : (
+              // 다른 사람일 경우
+              <div key={item.id} className="flex flex-col mb-3 w-full">
+                <div className="flex gap-2">
+                  <Image
+                    src={item.users.avatar || '/image/profile.png'}
+                    alt={`${item.users.nickname}의 프로필` || 'User의 프로필'}
+                    height={36}
+                    width={36}
+                    className="rounded-full w-9 h-9"
+                  />
+                  <div className="flex items-center font-semibold mr-auto">
+                    {item.users?.nickname}
+                  </div>
+                </div>
+                <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] text-sm leading-[22.4px] bg-[#FEFEFE]">
+                  {encoded(item.content)}
+                </div>
+                <div className="text-xs text-label-assistive mt-1 leading-[19.2px] flex items-center">
+                  <div>{formatDate(item.created_at)}</div>
+                  <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
+                  <div
+                    className="flex gap-1 justify-center cursor-pointer"
+                    onClick={() => handleReport(item)}
+                  >
+                    <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
+                    <span>신고하기</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
       <div className="border-t-2 w-[calc(100%+32px)] -mx-4">
         <DialogFooter className="flex relative items-center">
