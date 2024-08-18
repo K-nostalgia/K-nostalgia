@@ -16,7 +16,7 @@ import supabase from '@/utils/supabase/client';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import dayjs from 'dayjs';
 import { ChevronLeft } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
 type Products = {
@@ -27,17 +27,22 @@ type Products = {
   user_id?: string;
 };
 
+type Props = {
+  product: Products;
+  onBack: () => void;
+  hasWrittenReview?: boolean;
+  payment_date: string | null;
+  reviewIsOpen: boolean;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
+};
 const ReviewForm = ({
   product,
   onBack,
-  isEditing,
-  payment_date
-}: {
-  product: Products;
-  onBack: () => void;
-  isEditing?: boolean;
-  payment_date: string | null;
-}) => {
+  hasWrittenReview,
+  payment_date,
+  reviewIsOpen,
+  setIsEditing
+}: Props) => {
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState('');
 
@@ -45,7 +50,12 @@ const ReviewForm = ({
   const { name, amount, quantity, id, user_id } = product;
 
   useEffect(() => {
-    if (isEditing) {
+    setIsEditing(true);
+    return () => setIsEditing(false);
+  }, []);
+
+  useEffect(() => {
+    if (hasWrittenReview) {
       const fetchReview = async () => {
         const { data } = await supabase
           .from('reviews')
@@ -61,9 +71,10 @@ const ReviewForm = ({
       };
       fetchReview();
     }
-  }, [isEditing, product.id, product.user_id]);
+  }, [hasWrittenReview, product.id, product.user_id]);
 
   const submitReview = async () => {
+    setIsEditing(false);
     if (rating === 0) {
       return toast({
         variant: 'destructive',
@@ -77,7 +88,7 @@ const ReviewForm = ({
       content
     };
     let error;
-    if (isEditing) {
+    if (hasWrittenReview) {
       const { error: updateError } = await supabase
         .from('reviews')
         .update(reviewData)
@@ -99,7 +110,7 @@ const ReviewForm = ({
       });
     } else {
       toast({
-        description: isEditing
+        description: hasWrittenReview
           ? '리뷰가 수정되었습니다.'
           : '리뷰가 작성되었습니다.'
       });
@@ -109,6 +120,7 @@ const ReviewForm = ({
 
   const DeleteHandler = async () => {
     try {
+      setIsEditing(false);
       const { error } = await supabase
         .from('reviews')
         .delete()
@@ -167,7 +179,7 @@ const ReviewForm = ({
               />
             </div>
             <div className="flex flex-col items-start w-full flex-1">
-              {isEditing && (
+              {hasWrittenReview && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <button className="absolute right-0 mr-4 py-1 px-2 text-[12px] text-[#1F1E1E] font-normal leading-[140%] bg-[#F2F2F2] rounded-[6px] md:text-[14px]">
@@ -240,7 +252,7 @@ const ReviewForm = ({
           onClick={submitReview}
           className="mt-4 mx-[16px] h-12 bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
         >
-          {isEditing ? '리뷰 수정 완료' : '리뷰 작성 완료'}
+          {hasWrittenReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
       </div>
     </div>
