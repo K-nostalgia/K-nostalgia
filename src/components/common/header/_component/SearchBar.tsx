@@ -78,6 +78,11 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
   };
 
+  // 검색어 초기화
+  useEffect(() => {
+    setSearchTerm('');
+  }, [pathName]);
+
   //검색어 전송 분기 처리
   const submitSearchTerm = useCallback(async () => {
     if (debounceSearchTerm.trim() === '') {
@@ -129,17 +134,16 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
 
     // 위 화살표
     if (event.key === 'ArrowUp') {
-      event.preventDefault();
       setActiveIndex((prev) => (prev <= 0 ? prev : prev - 1));
     }
     // TODO 아래 화살표 뭔가 뭔가 이상함;;;
     else if (event.key === 'ArrowDown') {
       event.preventDefault();
       setActiveIndex((prev) => (prev >= response.length - 1 ? prev : prev + 1));
+      console.log(activeIndex);
     }
     // 엔터
     else if (event.key === 'Enter') {
-      event.preventDefault();
       // 방어 코딩
       if (activeIndex >= 0 && activeIndex < response.length) {
         console.log(response[activeIndex]);
@@ -147,6 +151,12 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    if (response && response.length > 0) {
+      setActiveIndex(-1);
+    }
+  }, [response]);
 
   // 엔터로 이동하는 함수
   const LinkToItems = (item: Market | LocalFood) => {

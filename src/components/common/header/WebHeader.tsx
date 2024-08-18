@@ -10,11 +10,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import api from '@/service/service';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface headerNavType {
   path: string;
@@ -38,6 +37,7 @@ const WebHeader = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   // 초기화 및 디테일 페이지 포함 경로 설정
   useEffect(() => {
@@ -96,7 +96,7 @@ const WebHeader = () => {
   const handleClickLogOut = async () => {
     try {
       await api.auth.logOut();
-      console.log('로그아웃 완료');
+      queryClient.invalidateQueries();
       router.push('/log-in');
     } catch (err) {
       console.log('로그아웃 에러');
@@ -158,7 +158,7 @@ const WebHeader = () => {
           </div>
           {user && user?.avatar ? (
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger className="ring-0 focus:ring-0 focus:outline-none">
                 <div className="flex items-center gap-2 cursor-pointer">
                   <Image
                     src={user.avatar}
@@ -172,26 +172,35 @@ const WebHeader = () => {
                   </div>
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-normal cursor-pointer">
-                <DropdownMenuItem onClick={() => router.push('/my-page')}>
+              <DropdownMenuContent className="bg-normal">
+                <DropdownMenuItem
+                  onClick={() => router.push('/my-page')}
+                  className="cursor-pointer"
+                >
                   내 프로필
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push('/my-page/likemarket-page')}
+                  className="cursor-pointer"
                 >
                   관심 전통시장
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push('/my-page/coupon-page')}
+                  className="cursor-pointer"
                 >
                   할인쿠폰
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => router.push('/my-page/payment')}
+                  className="cursor-pointer"
                 >
                   주문 내역
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleClickLogOut}>
+                <DropdownMenuItem
+                  onClick={handleClickLogOut}
+                  className="cursor-pointer"
+                >
                   로그아웃
                 </DropdownMenuItem>
               </DropdownMenuContent>
