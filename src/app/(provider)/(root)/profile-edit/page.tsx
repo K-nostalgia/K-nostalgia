@@ -114,7 +114,7 @@ const EditProfilePage = () => {
       onCompleteClick={handleEditClick}
       headerTitle="프로필 수정"
     >
-      <div className="p-6 rounded-lg flex flex-col items-center relative md:mt-16">
+      <div className="p-6 rounded-lg flex flex-col items-center relative mt-20 md:mt-32">
         <div className="hidden md:flex md:items-center md:justify-center md:absolute md:w-[240px] md:h-[152px] md:-top-9 md:z-10 ">
           <Image
             src="/image/Profile_Adorn.png"
