@@ -33,7 +33,7 @@ const DefaultAppLayout = ({
   onCompleteClick
 }: PropsWithChildren<DefaultAppLayoutProps>) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       {showHeader && (
         <AppHeader
           headerTitle={headerTitle}
@@ -45,9 +45,7 @@ const DefaultAppLayout = ({
           onCompleteClick={onCompleteClick}
         />
       )}
-      <main className="flex-grow overflow-y-hidden mt-[3.25rem]">
-        {children}
-      </main>
+      <main className="flex-grow overflow-y-hidden">{children}</main>
       <div className="flex flex-col fixed bottom-[86px] right-3 z-50 gap-3 pb-4">
         {showChat && <Chat />}
         {showTopButton && <TopButton />}
