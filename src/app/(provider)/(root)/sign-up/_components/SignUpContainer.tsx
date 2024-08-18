@@ -6,16 +6,13 @@ import {
   validateNickName,
   validatePassword
 } from '@/utils/validate';
-<<<<<<< HEAD
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoArrowLeft } from 'react-icons/go';
+import Swal from 'sweetalert2';
 import SignupForm from './SignUpForm';
 import steps from './Step';
 import Stepper from './Stepper';
-=======
-import Swal from 'sweetalert2';
->>>>>>> 7e2c334905cf0d8024be5e5ae69fd574390fc0e8
 
 type ErrorState = {
   [key: string]: string;
