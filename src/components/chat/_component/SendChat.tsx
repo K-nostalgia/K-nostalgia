@@ -218,7 +218,7 @@ export function SendChat({
   };
 
   return (
-    <DialogContent className="bg-normal w-[330px] rounded-[16px] md:w-[608px] md:h-[840px]">
+    <DialogContent className="bg-normal w-[330px] rounded-2xl md:w-[479px] md:h-[710px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
@@ -233,7 +233,7 @@ export function SendChat({
       </div>
 
       <div
-        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide md:h-[694px]"
+        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide md:h-[564px]"
         ref={scrollDown}
       >
         {data
