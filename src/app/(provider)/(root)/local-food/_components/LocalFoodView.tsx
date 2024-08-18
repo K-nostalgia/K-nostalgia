@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useDebugValue, useState } from 'react';
+import { HashLoader } from 'react-spinners';
 
 type LocalFood = Tables<'local_food'>;
 
@@ -79,50 +80,41 @@ const LocalFoodView = () => {
           </FilterButton>
         ))}
       </div>
+      <div className="m-4 md:hidden">
+        <Image
+          src={
+            'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
+          }
+          width={343}
+          height={80}
+          priority
+          alt="배너이미지"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            margin: '0 auto'
+          }}
+        />
+      </div>
       {/* 모바일 */}
       {isPending ? (
-        <div className="mx-4 md:hidden">
-          <div className="my-4">
-            <Image
-              src={
-                'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
-              }
-              width={343}
-              height={80}
-              priority
-              alt="배너이미지"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                margin: '0 auto'
-              }}
-            />
+        <div className="mx-4 text-label-assistive text-sm">
+          <div
+            className={`flex justify-center flex-col items-center ${
+              isDesktop
+                ? 'h-[60vh]'
+                : ' absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]'
+            }`}
+          >
+            <HashLoader color="#A87939" />
+            <p className="my-5">데이터를 불러오고 있어요!</p>
           </div>
-          <Loading />
         </div>
       ) : (
-        <div className="mx-4 mt-9 md:mx-0">
-          <div className="my-4 md:hidden">
-            <Image
-              src={
-                'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
-              }
-              width={343}
-              height={80}
-              priority
-              alt="배너이미지"
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                margin: '0 auto'
-              }}
-            />
-          </div>
-
+        <div className="mx-4 mt-4 md:mx-0">
           {filteredFoodData?.length === 0 ? (
-            <div className="md:h-[50vh] flex justify-center items-center">
+            <div className="md:h-[60vh] flex justify-center items-center">
               {isDesktop ? (
                 <div className="flex flex-col text-center">
                   <Image
@@ -136,7 +128,7 @@ const LocalFoodView = () => {
                   </p>
                 </div>
               ) : (
-                <div className="flex flex-col text-center mt-10">
+                <div className="flex flex-col text-center  absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
                   <Image
                     src={'/image/readytoTiger.png'}
                     width={208}
