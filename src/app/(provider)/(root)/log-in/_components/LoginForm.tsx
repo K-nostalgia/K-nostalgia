@@ -9,6 +9,7 @@ import Image from 'next/image';
 import KaKaoLogin from './KaKaoLogin';
 import GoogleLogin from './GoogleLogin';
 import NoLogin from './NoLogin';
+import Swal from 'sweetalert2';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -50,6 +51,14 @@ const LoginForm = () => {
           { email, password },
           {
             onSuccess: () => {
+              Swal.fire({
+                icon: 'success',
+                title: '로그인이 완료 되었습니다.',
+                html: `
+                <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 환영합니다! </div>
+              `
+              });
+
               router.push('/');
             },
 
@@ -74,7 +83,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="max-w-[320px]">
+    <form onSubmit={handleLogin} className="max-w-[320px] md:min-w-full">
       <div className="flex flex-col justify-between mt-10">
         <div>
           <div className="mb-4">
@@ -84,7 +93,7 @@ const LoginForm = () => {
               placeholder="이메일을 입력해 주세요"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+              className={`w-full px-4 py-3 border rounded-xl bg-[##FEFEFE] focus:outline-none focus:border-primary-strong text-primary-20 ${
                 errors.email || loginError
                   ? 'border-status-negative'
                   : 'border-label-assistive'
@@ -105,7 +114,7 @@ const LoginForm = () => {
                 placeholder="비밀번호를 입력해 주세요"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+                className={`w-full px-4 py-3 border rounded-xl bg-[#FEFEFE] focus:outline-none focus:border-primary-strong text-primary-20 ${
                   errors.password || loginError
                     ? 'border-status-negative'
                     : 'border-label-assistive'
