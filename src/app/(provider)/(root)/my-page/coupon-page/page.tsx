@@ -21,7 +21,6 @@ const CouponPage = () => {
       </div>
 
       <div className="border-4 border-[#F2F2F2]" />
-
       <div className="flex mt-[15px] mx-auto w-[95%] justify-between items-center md:items-center md:justify-center md:gap-4">
         <div>
           <button
@@ -60,20 +59,20 @@ const CouponPage = () => {
             width={640}
             height={161}
             priority
-            className="w-[343px] h-[161px] mt-[15px] md:w-[640px] md:h-[280px]"
+            className="w-auto h-[161px] mt-[15px] md:w-[640px] md:h-[280px]"
           />
         )}
       </div>
 
       <div className="flex justify-center items-center">
         {activeTab === 'download' && (
-          <div className="flex-col items-center mt-[15px]">
+          <div className="flex-col items-center mt-[217px]">
             <Image
               src="/image/StateSad.png"
               alt="쿠폰없을때"
-              width={100}
-              height={100}
-              className="w-[100px] h-[100px] mx-auto md:w-[114px] md:h-[97px]"
+              width={114}
+              height={97}
+              className="w-[114px] h-[97px] mx-auto md:w-[114px] md:h-[97px]"
             />
             <p className="text-label-assistive mt-4">
               {' '}

@@ -6,12 +6,16 @@ import {
   validateNickName,
   validatePassword
 } from '@/utils/validate';
+<<<<<<< HEAD
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { GoArrowLeft } from 'react-icons/go';
 import SignupForm from './SignUpForm';
 import steps from './Step';
 import Stepper from './Stepper';
+=======
+import Swal from 'sweetalert2';
+>>>>>>> 7e2c334905cf0d8024be5e5ae69fd574390fc0e8
 
 type ErrorState = {
   [key: string]: string;
@@ -213,6 +217,14 @@ const SignUpContainer = () => {
 
       if (response) {
         await api.auth.logOut();
+        Swal.fire({
+          icon: 'success',
+          title: '회원가입이 완료 되었습니다.',
+          html: `
+          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 로그인 페이지로 자동으로 넘어갑니다. </div>
+        `
+        });
+
         router.push('/log-in');
       }
     } catch (error) {
