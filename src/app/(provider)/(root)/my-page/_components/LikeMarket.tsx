@@ -85,7 +85,7 @@ const LikeMarket = () => {
                       <GoHeartFill className="text-[#DB3B3B] text-[24px] ml-auto" />
                     </div>
 
-                    <div className="mt-2 mb-3 flex gap-2">
+                    <div className="mt-2 mb-3 flex gap-2 ">
                       {market.이미지 ? (
                         <>
                           <Image
@@ -125,8 +125,8 @@ const LikeMarket = () => {
                     : 'border-b border-primary-60'
                 }`}
               >
-                <div className="flex flex-row gap-4 h-[175px]">
-                  <div>
+                <div className="flex flex-row gap-4 h-[175px] w-full justify-between items-center">
+                  <div className="w-[280px] mr-4">
                     <h3 className="text-[20px] text-label-strong">
                       {market.시장명 || '이름 없음'}
                     </h3>
@@ -179,7 +179,7 @@ const LikeMarket = () => {
                     </div>
                   </div>
 
-                  <div className=" relative flex flex-1 items-center gap-2">
+                  <div className=" relative flex flex-1 items-center max-w-max gap-2">
                     {market.이미지 ? (
                       <>
                         <div className="relative">
@@ -208,9 +208,9 @@ const LikeMarket = () => {
                             alt={`${market.시장명 || '시장'} 이미지`}
                             width={200}
                             height={180}
-                            className="w-[139px] h-[180px] rounded-l-2 object-cover"
+                            className={`w-[139px] h-[180px] rounded-l-2 object-cover  `}
                           />
-                          <div className="absolute top-0 right-0 m-2">
+                          <div className="absolute top-0 right-0 m-2  bg-[rgba(0,0,0,0.40)]  bg-opacity-50 rounded-full w-[32px] h-[32px] flex items-center justify-center">
                             <GoHeartFill className="text-[#DB3B3B] text-[20px]" />
                           </div>
                         </div>

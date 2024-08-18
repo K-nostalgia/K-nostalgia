@@ -122,10 +122,12 @@ const LikeMarketPage = () => {
           markets.map((market, index) => (
             <div
               key={market.id || index}
-              className="py-6 items-center flex gap-[48px] border-b border-primary-60 border-w-full "
+              className={`py-6 justify-between w-full items-center flex ${
+                index !== markets.length - 1 ? 'border-b border-primary-60' : ''
+              }`}
             >
-              <div className="flex flex-row gap-4 h-[175px]">
-                <div>
+              <div className="flex flex-row gap-4 w-full h-[175px] justify-between">
+                <div className="md:mr-4 md:w-[280px]">
                   <h3 className="text-[20px] text-label-strong">
                     {market.시장명 || '이름 없음'}
                   </h3>
@@ -178,7 +180,7 @@ const LikeMarketPage = () => {
                   </div>
                 </div>
 
-                <div className="relative flex flex-1 items-center gap-2">
+                <div className="relative flex flex-1 items-center max-w-max gap-2">
                   {market.이미지 ? (
                     <>
                       <div className="relative">
@@ -209,7 +211,7 @@ const LikeMarketPage = () => {
                           height={180}
                           className="w-[139px] h-[180px] rounded-l-2 object-cover"
                         />
-                        <div className="absolute top-0 right-0 m-2">
+                        <div className="absolute top-0 right-0 m-2  bg-[rgba(0,0,0,0.40)] bg-opacity-50 rounded-full w-[32px] h-[32px] flex items-center justify-center">
                           {userData && (
                             <LikeButton
                               marketId={market.id}
@@ -218,7 +220,6 @@ const LikeMarketPage = () => {
                               isBlack
                             />
                           )}
-                          {/* <GoHeartFill className="text-[#DB3B3B] text-[20px]" /> */}
                         </div>
                       </div>
                     </>

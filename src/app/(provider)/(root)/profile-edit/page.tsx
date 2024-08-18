@@ -12,6 +12,7 @@ import { validateNickName } from '@/utils/validate';
 import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { BsChevronRight } from 'react-icons/bs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import Swal from 'sweetalert2';
 
 const EditProfilePage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -22,7 +23,7 @@ const EditProfilePage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const updateProfileMutation = useMutation({
+  const updateProfile = useMutation({
     mutationFn: async ({
       userId,
       nickname,
@@ -39,8 +40,14 @@ const EditProfilePage = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      Swal.fire({
+        icon: 'success',
+        title: '프로필 변경이 완료되었습니다.',
+        html: `
+          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 내 프로필로 넘어갑니다. </div>
+        `
+      });
       router.push('/my-page');
-      alert('프로필 업데이트 성공');
     },
     onError: (error) => {
       console.error('프로필 업데이트 실패', error);
@@ -87,7 +94,7 @@ const EditProfilePage = () => {
       return;
     }
 
-    updateProfileMutation.mutate({
+    updateProfile.mutate({
       userId: user.id,
       nickname,
       avatar: user.avatar || '/image/profile.png'
@@ -174,15 +181,18 @@ const EditProfilePage = () => {
             )}
           </div>
 
-          <button className="hidden md:flex md:border md:border-[#C8C8C8] md:px-4 md:py-2 md:rounded md:bg-[#F2F2F2] md:mt-10 md:text-[#AFACA7]">
+          <button
+            className="hidden md:flex md:border md:border-[#C8C8C8] md:hover:bg-primary-strong md:hover:text-label-light md:px-4 md:py-2 md:rounded md:bg-[#F2F2F2] md:mt-10 md:text-[#AFACA7]"
+            onClick={handleEditClick}
+          >
             {' '}
             수정 완료{' '}
           </button>
         </div>
-        <div className="hidden md:flex md:flex-row md:items-center md:mt-[85px] ">
+        {/* <div className="hidden md:flex md:flex-row md:items-center md:mt-[85px] ">
           <p className="md:text-label-alternative md:mr-1 "> 회원탈퇴 </p>
           <BsChevronRight className="md:text-[#838383] cursor-pointer md:w-4 md:h-4" />
-        </div>
+        </div> */}
       </div>
     </DefaultAppLayout>
   );
