@@ -9,6 +9,8 @@ import Image from 'next/image';
 import KaKaoLogin from './KaKaoLogin';
 import GoogleLogin from './GoogleLogin';
 import NoLogin from './NoLogin';
+import Swal from 'sweetalert2';
+import { toast } from '@/components/ui/use-toast';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -50,6 +52,11 @@ const LoginForm = () => {
           { email, password },
           {
             onSuccess: () => {
+              toast({
+                variant: 'destructive',
+                description: '로그인이 완료되었습니다.'
+              });
+
               router.push('/');
             },
 
@@ -74,7 +81,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin} className="w-full max-w-[320px] xs:max-w-full">
+    <form onSubmit={handleLogin} className="max-w-[320px] md:min-w-full">
       <div className="flex flex-col justify-between mt-10">
         <div>
           <div className="mb-4">
@@ -84,7 +91,7 @@ const LoginForm = () => {
               placeholder="이메일을 입력해 주세요"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+              className={`w-full px-4 py-3 border rounded-xl bg-[##FEFEFE] focus:outline-none focus:border-primary-strong text-primary-20 ${
                 errors.email || loginError
                   ? 'border-status-negative'
                   : 'border-label-assistive'
@@ -105,7 +112,7 @@ const LoginForm = () => {
                 placeholder="비밀번호를 입력해 주세요"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className={`w-full px-4 py-3 border rounded-xl focus:outline-none focus:border-primary-strong text-primary-20 ${
+                className={`w-full px-4 py-3 border rounded-xl bg-[#FEFEFE] focus:outline-none focus:border-primary-strong text-primary-20 ${
                   errors.password || loginError
                     ? 'border-status-negative'
                     : 'border-label-assistive'

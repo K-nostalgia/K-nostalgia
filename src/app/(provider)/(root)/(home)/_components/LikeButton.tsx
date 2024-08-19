@@ -10,9 +10,16 @@ import Cookies from 'js-cookie';
 interface likeProps {
   marketId: number;
   userId: string;
+  className?: string;
+  isBlack?: boolean;
 }
 
-export const LikeButton = ({ marketId, userId }: likeProps) => {
+export const LikeButton = ({
+  marketId,
+  userId,
+  className = '',
+  isBlack = false
+}: likeProps) => {
   const queryClient = useQueryClient();
   const { data: userData } = useUser();
   const router = useRouter();
@@ -83,7 +90,7 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['likes', marketId, userId]
+        queryKey: ['likes', userId]
       });
     }
   });
@@ -92,20 +99,22 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
     if (!userData) {
       if (guestCookie) {
         Swal.fire({
-          title: '비회원입니다.',
-          text: '좋아요 기능을 사용하시려면 로그인해주세요.',
+          title: '비회원입니다',
+          html: `
+          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">좋아요 기능을 사용하시려면 로그인해주세요</div>
+        `,
           showCancelButton: true,
-          cancelButtonColor: '#f2f2f2',
-          confirmButtonColor: '#9C6D2E',
+          cancelButtonColor: '#9C6D2E',
+          confirmButtonColor: '#f2f2f2',
           cancelButtonText: '취소하기',
-          confirmButtonText: '로그인',
+          confirmButtonText: '입장하기',
           customClass: {
-            title: 'text-xl mt-10',
+            title: 'text-xl mt-10 md:mb-[8px]',
             popup: 'rounded-[16px]',
-            actions: 'flex gap-3 mt-8',
-            confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
-            cancelButton:
-              'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0'
+            actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+            confirmButton:
+              'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
+            cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
           }
         }).then((result) => {
           if (result.isConfirmed) {
@@ -148,12 +157,16 @@ export const LikeButton = ({ marketId, userId }: likeProps) => {
       {likeData && likeData.length > 0 ? (
         <GoHeartFill
           style={{ color: '#DB3B3B' }}
-          className="w-[22px] h-[22px] transition-transform duration-300 ease-in-out hover:scale-110"
+          className={` transition-transform duration-300 ease-in-out hover:scale-110 ${
+            className ? className : 'w-[22px] h-[22px]'
+          }`}
         />
       ) : (
         <GoHeart
-          style={{ color: '#F6F5F3' }}
-          className="w-[22px] h-[22px] transition-transform duration-300 ease-in-out hover:scale-110"
+          style={{ color: `${isBlack ? '#403D3A' : '#F6F5F3'}` }}
+          className={` transition-transform duration-300 ease-in-out hover:scale-110 ${
+            className ? className : 'w-[22px] h-[22px]'
+          }`}
         />
       )}
     </button>

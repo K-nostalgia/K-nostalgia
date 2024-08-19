@@ -1,17 +1,19 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import api from '@/service/service';
-import { GoArrowLeft } from 'react-icons/go';
-import steps from './Step';
-import Stepper from './Stepper';
-import SignupForm from './SignUpForm';
 import {
   validateEmail,
   validateName,
   validateNickName,
   validatePassword
 } from '@/utils/validate';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { GoArrowLeft } from 'react-icons/go';
+import Swal from 'sweetalert2';
+import SignupForm from './SignUpForm';
+import steps from './Step';
+import Stepper from './Stepper';
+import { toast } from '@/components/ui/use-toast';
 
 type ErrorState = {
   [key: string]: string;
@@ -213,11 +215,19 @@ const SignUpContainer = () => {
 
       if (response) {
         await api.auth.logOut();
+        toast({
+          variant: 'destructive',
+          description: '회원가입이 완료되었습니다.'
+        });
+
         router.push('/log-in');
       }
     } catch (error) {
       console.error('Fetch error:', error);
-      alert(`회원가입 요청 중 오류가 발생했습니다: ${error}`);
+      toast({
+        variant: 'destructive',
+        description: '회원가입이 불가합니다. 다시 확인해주세요.'
+      });
     }
   };
 

@@ -6,11 +6,11 @@ import DesktopLoginLayout from './_components/DesktopLayout';
 const LoginPage = () => {
   return (
     <>
-      <div className="bg-normal flex flex-col items-center justify-center xs:hidden">
+      <div className="bg-normal flex flex-col items-center justify-center md:hidden">
         <LoginHeader />
         <LoginForm />
       </div>
-      <div className="bg-primary-20">
+      <div className="hidden md:flex bg-primary-20 md:justify-center md:items-center">
         <DesktopLoginLayout />
       </div>
     </>

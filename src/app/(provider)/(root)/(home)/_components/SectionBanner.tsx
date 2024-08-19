@@ -3,7 +3,9 @@
 import {
   Carousel,
   CarouselContent,
-  CarouselItem
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext
 } from '@/components/ui/carousel';
 import { type CarouselApi } from '@/components/ui/carousel';
 import { banners, webBanners } from '@/lib/banners';
@@ -11,26 +13,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
-import useDebounce from '@/hooks/useDebounce';
+import useDeviceSize from '@/hooks/useDeviceSize';
 
 export const SectionBanner = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(1280);
-  const debouncedWidth = useDebounce(windowWidth, 200);
-
-  const handleResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const { isDesktop } = useDeviceSize();
 
   useEffect(() => {
     if (!api) {
@@ -46,7 +35,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div className="md:mt-20 max-w-screen-xl mx-auto">
+    <div className={` max-w-screen-xl mx-auto ${isDesktop && 'mt-20'}`}>
       <Carousel
         setApi={setApi}
         plugins={[
@@ -56,20 +45,25 @@ export const SectionBanner = () => {
         ]}
       >
         <CarouselContent>
-          {(debouncedWidth < 1280 ? banners : webBanners).map((img, index) => (
+          {(isDesktop ? webBanners : banners).map((img, index) => (
             <CarouselItem
               key={index}
-              className="flex justify-center items-center relative"
+              className="flex justify-center items-center relative w-full"
             >
-              <Link href={index === 1 ? '/coupon-page' : '#'}>
+              <Link
+                href={index === 1 ? '/my-page/coupon-page' : '#'}
+                className="flex-1"
+              >
                 <Image
                   src={img}
-                  width={debouncedWidth < 1280 ? 375 : 1280} // 모바일과 웹에 따라 width 조정
-                  height={debouncedWidth < 1280 ? 335 : 280}
+                  width={isDesktop ? 1280 : 375}
+                  height={isDesktop ? 280 : 335}
                   priority
                   alt={`메인 배너 이미지 ${index + 1}`}
                   style={{
-                    height: 'auto',
+                    width: '100%',
+                    height: '100%',
+
                     objectFit: 'cover'
                   }}
                 />
@@ -77,8 +71,18 @@ export const SectionBanner = () => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="hidden lg:block absolute right-4 translate-x-[-10%] bottom-[5%] translate-y-[-31%] px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
-          {`${current} / ${count}`}
+        <div
+          className={`absolute right-4 translate-x-[-10%] bottom-[1rem] translate-y-0 `}
+        >
+          {isDesktop ? (
+            <div className="flex gap-2 px-3 py-2 rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
+              <CarouselPrevious />
+              {`${current} / ${count}`}
+              <CarouselNext />
+            </div>
+          ) : (
+            <div className="px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">{`${current} / ${count}`}</div>
+          )}
         </div>
       </Carousel>
     </div>

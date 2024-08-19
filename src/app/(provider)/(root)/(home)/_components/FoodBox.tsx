@@ -13,13 +13,13 @@ export const FoodBox = ({ item, index }: FoodProps) => {
   return (
     <>
       {/* xs:375 sm:640 md:768 lg:1024 xl:1280 */}
-      <Link href={`/local-food/${item.product_id}`}>
-        <li
-          className={`${index === 0 ? 'translate-y-[10%]' : ''}
-        ${index === 1 ? 'translate-y-[12%]' : ''} 
-        ${index === 2 ? 'absolute' : 'relative'}
-        bottom-0`}
-        >
+
+      <li
+        className={`${index === 0 || index === 1 ? 'translate-y-[20%]' : ''}
+      ${index === 2 ? 'translate-y-[19%]' : ''}
+      `}
+      >
+        <Link href={`/local-food/${item.product_id}`}>
           {title_image ? (
             <Image
               src={title_image[0]}
@@ -43,8 +43,8 @@ export const FoodBox = ({ item, index }: FoodProps) => {
             <p className="text-label-light text-xs leading-4">{description}</p>
             <p className="text-label-light text-sm font-bold mt-2">{`${price?.toLocaleString()}원`}</p>
           </div>
-        </li>
-      </Link>
+        </Link>
+      </li>
     </>
   );
 };

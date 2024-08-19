@@ -6,7 +6,7 @@ import KNostalgiaIcon2 from '../icons/KNostalgiaIcon2';
 const Footer = () => {
   return (
     <div className="h-[108px] bg-normal border-t border-[#C8C8C8]">
-      <div className="max-w-screen-xl mx-auto flex justify-between items-center mt-[22px]">
+      <div className="max-w-screen-xl mx-auto flex justify-between items-center mt-[22px] md:px-3 xl:px-0">
         <div className="cursor-pointer">
           <Link href="https://github.com/Chasyuss/K-nostalgia" className="flex">
             <Image
