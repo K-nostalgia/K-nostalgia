@@ -13,7 +13,7 @@ const SignUpPage = () => {
       </div>
 
       {/* 데스크탑*/}
-      <div className="hidden md:flex w-full min-h-screen bg-primary-20 p-8">
+      <div className="hidden md:flex w-full min-h-screen bg-primary-20 py-8">
         <div className="bg-normal border rounded-[20px] overflow-hidden w-[1280px] mx-auto flex">
           <div className="flex flex-col items-center justify-center w-[556px]">
             <Image
@@ -28,7 +28,7 @@ const SignUpPage = () => {
             </p>
           </div>
 
-          <div className="w-[692px] h-[952px] flex flex-col">
+          <div className="w-[692px] h-[830px] flex flex-col">
             <div className="flex flex-row items-center justify-center pt-[100px] pb-4">
               <TitleLogo />
               <p className="text-2xl ml-2 text-primary-10">
