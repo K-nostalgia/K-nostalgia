@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ChatSendIcon from '../../icons/ChatSendIcon';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
 import { useUser } from '@/hooks/useUser';
@@ -20,6 +20,7 @@ import { Tables } from '@/types/supabase';
 import { GoArrowLeft } from 'react-icons/go';
 import { BsPersonExclamation } from 'react-icons/bs';
 import { debounce, throttle } from 'lodash';
+import ReportAlert from './ReportAlert';
 
 interface chatUserType {
   avatar: string;
@@ -53,6 +54,7 @@ export function SendChat({
   const { data: user } = useUser();
   const messageRef = useRef<HTMLInputElement>(null);
   const scrollDown = useRef<HTMLDivElement | null>(null);
+  const [showReportAlert, setShowReportAlert] = useState<boolean>(false);
 
   // xss 공격 방지
   const encoded = (str: string) => {
@@ -194,27 +196,31 @@ export function SendChat({
     setSelectedChatRoom(null);
   };
 
-  // 채팅 신고
+  // 신고 알럿
+  const onClickReortAlert = () => {
+    setShowReportAlert(true);
+  };
+
   const handleReport = async (item: Tables<'chat'>) => {
-    // TODO confirm 말고 다른 걸로!
-    if (confirm('신고하시겠습니까?')) {
-      console.log(item);
-      // 예일 경우 isReported true 로 업데이트
-      const response = await fetch('/api/chat/chat-send', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(item)
-      });
+    const response = await fetch('/api/chat/chat-send', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8'
+      },
+      body: JSON.stringify(item)
+    });
 
-      queryClient.invalidateQueries({
-        queryKey: ['chatData', selectedChatRoom?.room_id]
-      });
+    queryClient.invalidateQueries({
+      queryKey: ['chatData', selectedChatRoom?.room_id]
+    });
 
-      return response.json();
-    }
+    setShowReportAlert(false);
     // 신고되었습니다 알럿 필요
+    return response.json();
+  };
+
+  const cancelReport = () => {
+    setShowReportAlert(false);
   };
 
   return (
@@ -279,11 +285,17 @@ export function SendChat({
                   <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
                   <div
                     className="flex gap-1 justify-center cursor-pointer"
-                    onClick={() => handleReport(item)}
+                    onClick={onClickReortAlert}
                   >
                     <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
                     <span>신고하기</span>
                   </div>
+                  {showReportAlert && (
+                    <ReportAlert
+                      handleReport={() => handleReport(item)}
+                      cancelReport={cancelReport}
+                    />
+                  )}
                 </div>
               </div>
             );
