@@ -62,6 +62,8 @@ const ReviewForm = ({
           .select('*')
           .eq('product_id', product.id)
           .eq('user_id', user_id as string)
+          .order('created_at', { ascending: false })
+          .limit(1)
           .single();
 
         if (data) {
