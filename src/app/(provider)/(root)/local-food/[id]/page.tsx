@@ -51,7 +51,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       return data;
     };
     fetchReview();
-  }, []);
+  }, [id]);
 
   // top 버튼 눌렀을 때 스크롤 값에 따른 tab활성화
   useEffect(() => {
