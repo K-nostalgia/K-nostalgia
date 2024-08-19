@@ -68,16 +68,18 @@ export const TableDataColumns = ({
 
   const openAlert = (productId: string) => {
     Swal.fire({
-      text: '상품을 삭제하시겠습니까?',
+      title: '상품을 삭제하시겠어요?',
       showCancelButton: true,
-      cancelButtonColor: '#E0DDD9',
-      confirmButtonColor: '#9C6D2E',
+      cancelButtonColor: '#9C6D2E',
+      confirmButtonColor: '#f2f2f2',
       cancelButtonText: '취소하기',
       confirmButtonText: '삭제하기',
       customClass: {
-        popup: 'rounded-[16px] pt-10',
-        actions: 'flex gap-3 mt-8',
-        confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
+        title: 'text-xl mt-10 md:mb-[8px]',
+        popup: 'rounded-[16px]',
+        actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+        confirmButton:
+          'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
         cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
       }
     }).then((result) => {
@@ -106,27 +108,40 @@ export const TableDataColumns = ({
       //전체선택
       id: 'select',
       header: ({ table }) => (
-        <div className="flex items-center whitespace-nowrap md:relative md:top-[-70px] md:z-50 md:left-3">
-          <Checkbox
-            checked={
-              selectedItems.length === cartData?.length && cartData?.length > 0
-            }
-            onCheckedChange={(value) => {
-              //console.log(value);
-              const allSelectedItems = value
-                ? cartData?.map((item) => item.product_id)
-                : [];
-              setSelectedItems(allSelectedItems as string[]);
-              table.toggleAllPageRowsSelected(!!value);
-            }}
-            aria-label="Select all"
-          />
-          <div
-            className={`text-base text-label-strong ml-2 md:ml-0 absolute left-10`}
-          >
-            {`전체 선택 (${selectedItems.length}/${cartData?.length || 0})`}
+        <>
+          <div className="flex items-center whitespace-nowrap md:relative md:top-[-70px] md:z-50 md:left-3">
+            <Checkbox
+              checked={
+                selectedItems.length === cartData?.length &&
+                cartData?.length > 0
+              }
+              onCheckedChange={(value) => {
+                //console.log(value);
+                const allSelectedItems = value
+                  ? cartData?.map((item) => item.product_id)
+                  : [];
+                setSelectedItems(allSelectedItems as string[]);
+                table.toggleAllPageRowsSelected(!!value);
+              }}
+              aria-label="Select all"
+            />
+            <div
+              className={`text-base text-label-strong ml-4 md:ml-0 absolute left-10`}
+            >
+              {`전체 선택 (${selectedItems.length}/${cartData?.length || 0})`}
+            </div>
           </div>
-        </div>
+          <div
+            className={`${
+              isDesktop ? 'absolute top-[-3.5rem] right-0' : 'hidden'
+            }`}
+          >
+            <DeleteButton
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+            />
+          </div>
+        </>
       ),
       //부분선택
       cell: ({ row }) => (
@@ -177,27 +192,59 @@ export const TableDataColumns = ({
               height: 115,
               objectFit: 'cover'
             }}
-            className="translate-x-[-12%] md:translate-x-0"
+            className="md:translate-x-0"
           />
         </Link>
       )
     },
     {
-      //상품 이름
+      //상품 이름 => Pc: hidden / Mo : 상품이름 + 가격 + 수량버튼
       accessorKey: 'product_name',
       header: () => (
         <div className="hidden md:block absolute top-4 left-14 text-left">
           상품정보
         </div>
       ),
-      cell: ({ row }) => (
-        <div className="absolute md:static md:translate-x-0 md:translate-y-0 md:text-left left-[57%] text-label-strong text-base translate-x-[-57%] translate-y-[-250%]">
-          {`${row.getValue('product_name')}`}
-          <p className="hidden md:block mt-1 text-sm text-label-assistive">{`${row.getValue(
-            'description'
-          )}`}</p>
-        </div>
-      )
+      cell: ({ row }) => {
+        const price = row.getValue('product_price') as number;
+        const count = row.getValue('count') as number;
+        const discountRate = row.getValue('discountRate') as number;
+
+        const discountAmount = price - (price * discountRate) / 100;
+        const totalAmount = discountAmount * count;
+
+        return (
+          <>
+            {isDesktop ? (
+              <div className=" text-label-strong text-base text-left ml-4">
+                {`${row.getValue('product_name')}`}
+                <p className="mt-1 text-sm text-label-assistive">{`${row.getValue(
+                  'description'
+                )}`}</p>
+              </div>
+            ) : (
+              <div className="ml-4 text-label-strong">
+                <h2 className="text-base font-medium">{`${row.getValue(
+                  'product_name'
+                )}`}</h2>
+                <div className="font-normal text-label-normal text-sm">
+                  {`${discountRate}%`}
+                  <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
+                    {`${price.toLocaleString()}원`}
+                  </span>
+                </div>
+
+                <h1 className="text-lg font-semibold text-primary-20">{`${totalAmount.toLocaleString()}원`}</h1>
+                <CountButton
+                  product_id={row.getValue('product_id')}
+                  counts={row.getValue('count')}
+                  selectedItems={selectedItems}
+                />
+              </div>
+            )}
+          </>
+        );
+      }
     },
 
     {
@@ -205,7 +252,7 @@ export const TableDataColumns = ({
       accessorKey: 'count',
       header: () => <div className="hidden md:block">수량</div>,
       cell: ({ row }) => (
-        <div className="absolute md:max-w-[84px] md:mx-auto md:static md:translate-x-0 md:translate-y-0 left-[65%] translate-x-[-65%] translate-y-[35%] ">
+        <div className="hidden md:max-w-[84px] md:mx-auto md:block ">
           <CountButton
             product_id={row.getValue('product_id')}
             counts={row.getValue('count')}
@@ -250,7 +297,7 @@ export const TableDataColumns = ({
         const totalAmount = discountAmount * count;
 
         return (
-          <div className="absolute md:static md:translate-x-0 md:translate-y-0 left-[65%] translate-x-[-65%] translate-y-[-70%] text-lg text-primary-strong font-semibold">
+          <div className="hidden md:block text-lg text-primary-strong font-semibold">
             <div className="font-normal text-label-normal text-sm md:hidden">
               {`${discountRate}%`}
               <span className="ml-1 inline-block text-base font-normal text-label-assistive line-through">
@@ -270,7 +317,7 @@ export const TableDataColumns = ({
       cell: ({ row }) => (
         <button
           onClick={() => openAlert(row.getValue('product_id'))}
-          className="translate-x-0 translate-y-[-150%] md:translate-y-0"
+          className="absolute right-4 translate-x-0 translate-y-[-3.6rem] md:translate-y-[-1rem]"
         >
           <CgClose className="text-[#959595] w-7 h-7" />
         </button>
@@ -293,7 +340,7 @@ export const TableDataColumns = ({
           src={'/image/Tiger_Cart.png'}
           width={93}
           height={47}
-          alt="호랑이"
+          alt="장바구니호랑이"
           className="absolute top-[-79%] right-[-30%]"
         />
         장바구니
@@ -302,8 +349,8 @@ export const TableDataColumns = ({
       <div className="relative">
         <div
           className={`${
-            isDesktop && 'absolute top-[-5%] translate-y-[5%]'
-          } fixed z-50 top-[12%] translate-y-[12%] right-4`}
+            isDesktop ? 'hidden' : 'block fixed top-[5rem] right-4 z-50'
+          }`}
         >
           <DeleteButton
             selectedItems={selectedItems}

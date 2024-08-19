@@ -32,7 +32,7 @@ const FixedButtons = ({
 
   return (
     <>
-      <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0 md:hidden">
+      <div className="bg-normal shadow-custom px-4 pt-3 pb-7 fixed bottom-0 left-0 right-0 z-10 md:hidden">
         <div className="flex gap-3">
           <AddCartButton
             food={food}

@@ -46,6 +46,7 @@ export const CartList = () => {
       })
       .filter((item): item is Product[number] => item !== null) || [];
 
+  //선택 상품명
   const selectedOrderNameArr =
     cartData
       ?.map((item) => {
@@ -87,7 +88,16 @@ export const CartList = () => {
         />
       ) : (
         //장바구니 비어있을 경우 디폴트 이미지 표시
-        <DefaultImage text={'장바구니가 비었어요'} />
+        <div>
+          {isDesktop ? (
+            <TableDataColumns
+              selectedItems={selectedItems}
+              setSelectedItems={setSelectedItems}
+            />
+          ) : (
+            <DefaultImage text={'장바구니가 비었어요'} />
+          )}
+        </div>
       )}
 
       <CartFixedButtons data={cartData ?? []} selectedItems={selectedItems} />

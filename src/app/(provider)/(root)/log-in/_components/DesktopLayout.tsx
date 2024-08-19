@@ -5,8 +5,8 @@ import TitleLogo from '@/components/icons/TitleLogo';
 
 const DesktopLoginLayout = () => {
   return (
-    <div className="hidden md:flex bg-primary-20">
-      <div className="bg-normal h-[952px] border mt-16 mb-16 rounded-[20px] overflow-hidden flex w-full">
+    <div className="hidden md:flex bg-primary-20 min-h-screen">
+      <div className="bg-normal h-[870px] border my-[32px] rounded-[20px] overflow-hidden flex w-full">
         <div className="w-1/2 bg-normal p-8 flex flex-col justify-center items-center">
           <Image
             src="/image/Banner2.png"

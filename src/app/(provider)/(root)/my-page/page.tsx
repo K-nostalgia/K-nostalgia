@@ -45,11 +45,11 @@ const Mypage = () => {
         <div className="flex w-full flex-col">
           <div className="w-full flex justify-between items-end mt-10">
             <Image
-              src="/image/like_tiger.png"
+              src="/image/LikeMarket.png"
               alt="관심전통시장 "
               width={141}
               height={88}
-              className="w-[141px] h-[88px] mt-10"
+              className="w-[163px] h-[88px] mt-10"
             />
             <div
               className="items-center flex p-3 gap-2 cursor-pointer"
@@ -69,7 +69,7 @@ const Mypage = () => {
                 alt="마이페이지 쿠폰호랑이 "
                 width={141}
                 height={88}
-                className="w-[141px] h-[88px] mt-10"
+                className="w-[140px] h-[88px] mt-10"
               />
               <div
                 className="items-center flex p-3 gap-2 cursor-pointer"

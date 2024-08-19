@@ -3,6 +3,7 @@
 import { HashLoader } from 'react-spinners';
 import { SlideBanner } from './SlideBanner';
 import { useQuery } from '@tanstack/react-query';
+import { DefaultImage } from '@/components/common/DefaultImage';
 
 export type MainMarket = {
   id: number;
@@ -70,7 +71,7 @@ export const SectionMarket = () => {
   });
 
   return (
-    <div className="bg-[#FFF8EF] pb-40">
+    <div className="bg-[#FFF8EF] pb-40 md:pb-20">
       <div className="flex flex-col justify-center items-center">
         <h2 className="text-2xl text-primary-heavy mt-20 mb-10 mx-10 font-custom">
           유명 전통시장
@@ -79,10 +80,11 @@ export const SectionMarket = () => {
         {isPending ? (
           <div className="flex-col justify-center mt-6">
             <HashLoader color="#A87939" className="mx-auto" />
-            <p className="my-5">데이터를 불러오고 있어요!</p>
+            <p className="my-5">데이터를 불러오고 있어요</p>
           </div>
         ) : (
-          <SlideBanner images={marketImages} />
+          marketImages &&
+          marketImages.length > 0 && <SlideBanner images={marketImages} />
         )}
       </div>
     </div>
