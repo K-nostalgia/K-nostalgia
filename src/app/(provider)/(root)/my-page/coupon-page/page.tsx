@@ -12,11 +12,11 @@ const CouponPage = () => {
     <div className=" p-4 bg-normal">
       <div className="hidden md:mb-[48px] md:flex md:mt-20">
         <Image
-          src="/image/coupon_tiger.png"
+          src="/image/Coupon_Tiger2.png"
           alt="마이페이지 쿠폰호랑이 "
           width={141}
           height={88}
-          className="w-[140px] h-[88px]"
+          className="w-[141px] h-[88px]"
         />
       </div>
 

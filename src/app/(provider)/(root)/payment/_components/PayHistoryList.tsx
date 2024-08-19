@@ -27,7 +27,6 @@ import ReviewProductDetail from './ReviewProductDetail';
 const PayHistoryList = () => {
   const route = useRouter();
   const pathName = usePathname();
-  console.log(pathName);
 
   const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
     queryKey: ['users'],
@@ -110,8 +109,8 @@ const PayHistoryList = () => {
         <NoPayHistory />
       ) : (
         <div
-          className={`mb-[80px] mx-auto bg-normal md:w-[737px] ${
-            pathName === '/payment' && 'pt-[16px] mt-[3.25rem] md:mt-14'
+          className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-[95%] md:p-0  ${
+            pathName === '/payment' && 'pt-[16px] mt-[3.25rem]'
           }`}
         >
           <div
@@ -142,7 +141,7 @@ const PayHistoryList = () => {
               key={date}
               className={`${pathName === '/payment' && 'pt-4 md:pt-7 md:pb-9'}`}
             >
-              <div className="flex gap-[8px] ml-[4px] px-[16px] md:p-0">
+              <div className="flex gap-[8px] ml-[4px] px-[16px] md:p-0 md:text-[18px]">
                 <p className="font-medium">{date}</p>
                 <p className="font-medium">주문</p>
               </div>

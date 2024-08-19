@@ -489,7 +489,7 @@ const DesktopSignUpLayout = () => {
             isFormValid()
               ? 'bg-primary-20 hover:bg-primary-10'
               : 'bg-label-disable'
-          } text-label-light px-4 py-3 mb-[94px]`}
+          } text-label-light px-4 py-3  mb-[32px]`}
           onClick={handleSubmit}
           disabled={!isFormValid()}
         >

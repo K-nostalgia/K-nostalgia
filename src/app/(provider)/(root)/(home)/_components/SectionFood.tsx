@@ -7,6 +7,7 @@ import { Tables } from '@/types/supabase';
 import { HashLoader } from 'react-spinners';
 import { WideFoodBox } from './WideFoodBox';
 import useDeviceSize from '@/hooks/useDeviceSize';
+import { SkeletonCard } from './LoadingSkeleton';
 
 export const SectionFood = () => {
   const { isDesktop } = useDeviceSize();
@@ -26,14 +27,17 @@ export const SectionFood = () => {
   return (
     <div className="bg-secondary-30">
       <div className="flex flex-col justify-center items-center pb-20">
-        <h2 className="text-2xl text-label-light mt-20 mb-5 lg:mb-16 font-custom">
+        <h2 className="text-2xl text-label-light mt-20 lg:mb-16 font-custom">
           지역 특산물
         </h2>
         {isPending ? (
-          <div className="flex-col justify-center mt-6">
-            <HashLoader color="#f2f2f2" className="mx-auto" />
-            <p className="my-5 text-label-light">데이터를 불러오고 있어요!</p>
-          </div>
+          isDesktop ? (
+            <SkeletonCard columns={4} count={4} />
+          ) : (
+            <div className="mt-10">
+              <SkeletonCard columns={2} count={4} />
+            </div>
+          )
         ) : isDesktop ? (
           <ul className="max-w-screen-xl grid grid-cols-4 relative gap-10">
             {localFood?.slice(0, 4).map((item, index) => {
@@ -47,7 +51,7 @@ export const SectionFood = () => {
             })}
           </ul>
         ) : (
-          <ul className="grid grid-cols-2 gap-x-[23px] mx-[10px] relative">
+          <ul className="grid grid-cols-2 gap-x-[23px] gap-y-8  relative">
             {localFood?.slice(0, 4).map((item, index) => {
               return (
                 <FoodBox
