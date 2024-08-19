@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import api from '@/service/service';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from '@/components/ui/use-toast';
 
 interface headerNavType {
   path: string;
@@ -97,6 +98,10 @@ const WebHeader = () => {
     try {
       await api.auth.logOut();
       queryClient.invalidateQueries();
+      toast({
+        variant: 'destructive',
+        description: '로그아웃 되었습니다.'
+      });
       router.push('/log-in');
     } catch (err) {
       console.log('로그아웃 에러');
