@@ -16,6 +16,7 @@ import Swal from 'sweetalert2';
 import { toast } from '@/components/ui/use-toast';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import DefaultWebLayout from '@/components/common/DefaultWebLayout';
+import useDebounce from '@/hooks/useDebounce';
 
 const EditProfilePage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -23,9 +24,87 @@ const EditProfilePage = () => {
   const [editImage, setEditImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isChecking, setIsChecking] = useState(false);
   const router = useRouter();
   const queryClient = useQueryClient();
   const { isDesktop } = useDeviceSize();
+
+  const debounceInput = useDebounce(nickname, 400);
+
+  useEffect(() => {
+    if (user) {
+      setNickname(user.nickname || '닉네임을 입력해주세요');
+      setPreviewImage(user.avatar || '/image/profile.png');
+    }
+  }, [user]);
+
+  // 디바운스된 입력값으로 중복 체크
+  useEffect(() => {
+    const checkNickname = async () => {
+      if (debounceInput === '') {
+        setErrorMessage('');
+        return;
+      }
+
+      if (validateNickName(debounceInput)) {
+        setIsChecking(true);
+        try {
+          const isAvailable = await api.auth.checkDuplicate('', debounceInput);
+          if (!isAvailable) {
+            setErrorMessage('이미 사용 중인 별명입니다.');
+          } else {
+            setErrorMessage('');
+          }
+        } catch (error) {
+          setErrorMessage('이미 사용중인 별명입니다.');
+        } finally {
+          setIsChecking(false);
+        }
+      } else {
+        setErrorMessage('닉네임은 12자 이내로 입력해주세요.');
+      }
+    };
+
+    checkNickname();
+  }, [debounceInput]);
+
+  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // 공백 문자를 제거
+    const newNickname = e.target.value.replace(/\s/g, '');
+    setNickname(newNickname);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setEditImage(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
+  const handleEditClick = async () => {
+    if (!user?.id) {
+      toast({
+        variant: 'destructive',
+        description: '가입되지 않은 사용자 입니다.'
+      });
+      return;
+    }
+
+    if (errorMessage) {
+      toast({
+        variant: 'destructive',
+        description: '변경한 닉네임을 확인해주세요'
+      });
+      return;
+    }
+
+    updateProfile.mutate({
+      userId: user.id,
+      nickname,
+      avatar: user.avatar || '/image/profile.png'
+    });
+  };
 
   const updateProfile = useMutation({
     mutationFn: async ({
@@ -79,52 +158,6 @@ const EditProfilePage = () => {
       });
     }
   });
-
-  useEffect(() => {
-    if (user) {
-      setNickname(user.nickname || '닉네임을 입력해주세요');
-      setPreviewImage(user.avatar || '/image/profile.png');
-    }
-  }, [user]);
-
-  const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNickname = e.target.value;
-    if (newNickname === '') {
-      setNickname('');
-      setErrorMessage('');
-      return;
-    }
-
-    if (validateNickName(newNickname)) {
-      setNickname(newNickname);
-      setErrorMessage('');
-    } else {
-      setErrorMessage('닉네임은 12자 이내로 입력해주세요.');
-    }
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-
-    if (!file) return;
-    if (file) {
-      setEditImage(file);
-      setPreviewImage(URL.createObjectURL(file));
-    }
-  };
-
-  const handleEditClick = async () => {
-    if (!user?.id) {
-      alert('사용자 ID가 없습니다.');
-      return;
-    }
-
-    updateProfile.mutate({
-      userId: user.id,
-      nickname,
-      avatar: user.avatar || '/image/profile.png'
-    });
-  };
 
   if (isLoading) return <Loading />;
   if (error) return <div>Error loading user data</div>;
@@ -182,21 +215,23 @@ const EditProfilePage = () => {
                   value={nickname}
                   onChange={handleNicknameChange}
                 />
-                {nickname && !errorMessage ? (
+                {nickname && !errorMessage && !isChecking ? (
                   <BsCheck2 className="absolute right-3 top-[52%] md:top-[35%] text-[24px] text-[#755428]" />
                 ) : (
                   <CgClose
                     className={`absolute right-3 ${
-                      errorMessage
-                        ? 'top-[42%] md:top-[25%]'
-                        : 'top-[52%] md:top-[35%]'
+                      errorMessage || isChecking
+                        ? 'top-[52%] md:top-[35%]'
+                        : 'top-[50%] md:top-[35%]'
                     } text-[24px] ${
-                      errorMessage ? 'text-red-500' : 'text-label-assistive'
+                      errorMessage || isChecking
+                        ? 'text-red-500'
+                        : 'text-label-assistive'
                     }`}
                   />
                 )}
                 {errorMessage && (
-                  <span className=" text-red-500 text-sm ml-2">
+                  <span className="absolute text-red-500 text-sm ml-2 mt-2">
                     {errorMessage}
                   </span>
                 )}
@@ -205,9 +240,9 @@ const EditProfilePage = () => {
               <button
                 className="hidden md:flex md:border md:border-[#C8C8C8] md:hover:bg-primary-strong md:hover:text-label-light md:px-4 md:py-2 md:rounded md:bg-[#F2F2F2] md:mt-10 md:text-[#AFACA7]"
                 onClick={handleEditClick}
+                disabled={isChecking}
               >
-                {' '}
-                수정 완료{' '}
+                수정 완료
               </button>
             </div>
           </div>
@@ -220,7 +255,6 @@ const EditProfilePage = () => {
           showCart={false}
           showComplete={true}
           onCompleteClick={handleEditClick}
-          headerTitle="프로필 수정"
         >
           <div className="p-6 rounded-lg flex flex-col items-center relative mt-20 md:mt-32">
             <div className="hidden md:flex md:items-center md:justify-center md:absolute md:w-[240px] md:h-[152px] md:-top-9 md:z-10 ">
@@ -271,21 +305,23 @@ const EditProfilePage = () => {
                   value={nickname}
                   onChange={handleNicknameChange}
                 />
-                {nickname && !errorMessage ? (
-                  <BsCheck2 className="absolute right-3 top-[52%] md:top-[35%] text-[24px] text-[#755428]" />
+                {nickname && !errorMessage && !isChecking ? (
+                  <BsCheck2 className="absolute right-3 top-[52%] text-[24px] text-[#755428]" />
                 ) : (
                   <CgClose
                     className={`absolute right-3 ${
-                      errorMessage
-                        ? 'top-[42%] md:top-[25%]'
-                        : 'top-[52%] md:top-[35%]'
+                      errorMessage || isChecking
+                        ? 'top-[52%] md:top-[25%]'
+                        : 'top-[50%] md:top-[35%]'
                     } text-[24px] ${
-                      errorMessage ? 'text-red-500' : 'text-label-assistive'
+                      errorMessage || isChecking
+                        ? 'text-red-500'
+                        : 'text-label-assistive'
                     }`}
                   />
                 )}
                 {errorMessage && (
-                  <span className=" text-red-500 text-sm ml-2">
+                  <span className="absolute text-red-500 text-sm ml-2 mt-2">
                     {errorMessage}
                   </span>
                 )}
@@ -294,9 +330,9 @@ const EditProfilePage = () => {
               <button
                 className="hidden md:flex md:border md:border-[#C8C8C8] md:hover:bg-primary-strong md:hover:text-label-light md:px-4 md:py-2 md:rounded md:bg-[#F2F2F2] md:mt-10 md:text-[#AFACA7]"
                 onClick={handleEditClick}
+                disabled={isChecking}
               >
-                {' '}
-                수정 완료{' '}
+                수정 완료
               </button>
             </div>
           </div>
@@ -305,4 +341,5 @@ const EditProfilePage = () => {
     </>
   );
 };
+
 export default EditProfilePage;
