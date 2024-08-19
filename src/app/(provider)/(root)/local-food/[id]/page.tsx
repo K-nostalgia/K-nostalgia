@@ -97,15 +97,12 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
   if (isPending) return <Loading />;
   if (error) return <div>오류 {error.message}</div>;
 
-  const totalAmount =
-    (food.price ?? 0) - (food.price ?? 0) * ((food.discountRate ?? 0) / 100);
-
   return (
     <div className="max-w-screen-xl mx-auto">
       {/* 슬라이드 - pc / mo */}
       {isDesktop ? (
-        <div className="mt-20 w-[1080px] h-[686px] mx-auto flex justify-center">
-          <div className="float-left !w-[540px] h-[686px] z-0">
+        <div className="mt-20 w-[1080px] h-[730px] mx-auto flex justify-center">
+          <div className="float-left !w-[540px] h-[730px] z-0">
             <ProductSlide images={food.title_image} />
           </div>
           <div className="float-right">
