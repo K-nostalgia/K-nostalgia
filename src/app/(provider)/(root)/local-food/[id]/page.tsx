@@ -105,7 +105,7 @@ const LocalDetailPage = ({ params: { id } }: { params: { id: string } }) => {
       {/* 슬라이드 - pc / mo */}
       {isDesktop ? (
         <div className="mt-20 w-[1080px] h-[686px] mx-auto flex justify-center">
-          <div className="float-left !w-[540px] h-[686px] z-[-1]">
+          <div className="float-left !w-[540px] h-[686px] z-0">
             <ProductSlide images={food.title_image} />
           </div>
           <div className="float-right">

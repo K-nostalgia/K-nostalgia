@@ -133,7 +133,7 @@ export const TableDataColumns = ({
           </div>
           <div
             className={`${
-              isDesktop ? 'absolute top-[-12%] right-0' : 'hidden'
+              isDesktop ? 'absolute top-[-3.5rem] right-0' : 'hidden'
             }`}
           >
             <DeleteButton
