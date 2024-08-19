@@ -11,7 +11,6 @@ interface SlideProps {
 }
 
 export const DetailSlide = ({ images }: SlideProps) => {
-  const text = '이미지가 없습니다.';
   return (
     <Swiper
       // install Swiper modules
@@ -20,6 +19,7 @@ export const DetailSlide = ({ images }: SlideProps) => {
       slidesPerView={'auto'}
       centeredSlides={true}
       pagination={{ clickable: true }}
+      className="detailSwiper"
     >
       {images?.map((img, index) => (
         <SwiperSlide key={index}>
@@ -43,7 +43,7 @@ export const DetailSlide = ({ images }: SlideProps) => {
               />
             </>
           ) : (
-            <DefaultImage text={text} />
+            <DefaultImage text={'이미지가 없습니다'} />
           )}
         </SwiperSlide>
       ))}

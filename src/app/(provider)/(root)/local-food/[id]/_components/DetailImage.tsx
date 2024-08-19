@@ -6,7 +6,7 @@ interface ImageProps {
 
 export const DetailImage = ({ food }: ImageProps) => {
   return (
-    <section>
+    <section className="max-w-[860px] mx-auto">
       {food && (
         <Image
           src={food}
@@ -15,7 +15,7 @@ export const DetailImage = ({ food }: ImageProps) => {
           priority
           style={{ objectFit: 'cover' }}
           alt="상세페이지"
-          className="lg:w-[860px] mx-auto w-[100%]"
+          className="mx-auto w-[100%]"
         />
       )}
     </section>
