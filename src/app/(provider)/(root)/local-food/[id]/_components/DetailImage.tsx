@@ -6,7 +6,7 @@ interface ImageProps {
 
 export const DetailImage = ({ food }: ImageProps) => {
   return (
-    <section className="max-w-[860px] mx-auto">
+    <section className="max-w-[860px] mx-auto mb-[5.5rem] md:mb-0 ">
       {food && (
         <Image
           src={food}

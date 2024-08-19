@@ -82,7 +82,7 @@ const LocalFoodView = () => {
           </FilterButton>
         ))}
       </div>
-      <div className="m-4 md:hidden">
+      <div className="m-4 mt-[6.8rem] md:hidden">
         <Image
           src={
             'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/banner.png'
@@ -165,7 +165,9 @@ const LocalFoodView = () => {
                             priority
                             style={{
                               borderRadius: '4px',
-                              objectFit: 'cover'
+                              objectFit: 'cover',
+                              width: '100%',
+                              height: '100%'
                             }}
                             className="object-cover w-full h-auto"
                           />
