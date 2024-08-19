@@ -4,6 +4,7 @@ import MarketLikes from '../../_components/MarketLikes';
 import Link from 'next/link';
 import { MarketType } from '@/types/Market';
 import { useUser } from '@/hooks/useUser';
+import MarketImage from '../../_components/MarketImage';
 
 interface MarketRecommendPropsType {
   region: string;
@@ -50,12 +51,12 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
                       <p className="text-base font-semibold text-label-strong">
                         {item.시장명}
                       </p>
-                      <p className="w-[272px] text-sm text-label-normal font-normal text-ellipsis overflow-hidden whitespace-nowrap">
+                      <p className="text-sm text-label-normal font-normal text-ellipsis overflow-hidden whitespace-nowrap">
                         {item.도로명주소}
                       </p>
                     </div>
                     <div
-                      className="flex justify-end items-center"
+                      className="flex justify-center items-center w-9 h-9 rounded-full bg-black bg-opacity-40"
                       onClick={(e) => {
                         e.preventDefault();
                         e.stopPropagation();
@@ -80,18 +81,15 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
                             : 'rounded-r-[8px] rounded-l-none'
                         }`}
                       >
-                        <Image
+                        <MarketImage
                           src={imgSrc}
                           alt={`${item.시장명} - 이미지 ${index + 1}`}
-                          fill
                           sizes="(max-width: 768px) 100vw, 343px"
-                          priority
-                          className="absolute w-full h-full rounded-[8px]"
-                          style={{
-                            objectFit: 'cover',
-                            borderRadius:
-                              index === 0 ? '8px 0 0 8px' : '0 8px 8px 0'
-                          }}
+                          className={`absolute w-full h-full ${
+                            index === 0
+                              ? 'rounded-l-[8px] rounded-r-none'
+                              : 'rounded-r-[8px] rounded-l-none'
+                          }`}
                         />
                       </div>
                     ))}
