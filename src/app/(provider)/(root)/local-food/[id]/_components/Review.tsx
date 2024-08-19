@@ -198,56 +198,59 @@ export const Review = ({ productId }: { productId: string }) => {
         )}
       </ul>
 
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationLink
-              onClick={(e) => handlePageChange(e, currentPage - 1)}
-            >
-              <button className="flex items-center gap-[6px] text-label-assistive text-[15px]">
-                <RiArrowLeftDoubleFill />
-                처음
-              </button>
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationPrevious
-              onClick={(e) =>
-                currentPage > 1 && handlePageChange(e, currentPage - 1)
-              }
-            />
-          </PaginationItem>
-          {Array.from({ length: reviewData.totalPages }, (_, index) => (
-            <PaginationItem key={index + 1}>
+      {/* 작성된 리뷰가 없을 경우 페이지네이션 숨김처리 */}
+      {reviewData.reviews && reviewData.reviews.length > 0 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
               <PaginationLink
-                href="#"
-                onClick={(e) => handlePageChange(e, index + 1)}
-                isActive={currentPage === index + 1}
+                onClick={(e) => handlePageChange(e, currentPage - 1)}
               >
-                {index + 1}
+                <button className="hover:text-label-strong transition-all duration-300 ease-in-out flex items-center gap-[6px] text-label-assistive text-[15px]">
+                  <RiArrowLeftDoubleFill />
+                  처음
+                </button>
               </PaginationLink>
             </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext
-              onClick={(e) =>
-                currentPage < reviewData.totalPages &&
-                handlePageChange(e, currentPage + 1)
-              }
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink
-              onClick={(e) => handlePageChange(e, reviewData.totalPages)}
-            >
-              <button className="flex items-center gap-[6px] text-label-assistive text-[15px]">
-                마지막
-                <RiArrowRightDoubleFill />
-              </button>
-            </PaginationLink>
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={(e) =>
+                  currentPage > 1 && handlePageChange(e, currentPage - 1)
+                }
+              />
+            </PaginationItem>
+            {Array.from({ length: reviewData.totalPages }, (_, index) => (
+              <PaginationItem key={index + 1}>
+                <PaginationLink
+                  href="#"
+                  onClick={(e) => handlePageChange(e, index + 1)}
+                  isActive={currentPage === index + 1}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={(e) =>
+                  currentPage < reviewData.totalPages &&
+                  handlePageChange(e, currentPage + 1)
+                }
+              />
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                onClick={(e) => handlePageChange(e, reviewData.totalPages)}
+              >
+                <button className="hover:text-label-strong transition-all duration-300 ease-in-out flex items-center gap-[6px] text-label-assistive text-[15px]">
+                  마지막
+                  <RiArrowRightDoubleFill />
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </section>
   );
 };
