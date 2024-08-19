@@ -54,8 +54,8 @@ export const ProductDetail = ({
   if (error) return <div>오류 {error.message}</div>;
 
   return (
-    <div className="w-[540px] bg-white rounded-tr-[12px] rounded-br-[12px]border border-l-0  border-[#E0E0E0]">
-      <div className="flex px-8 justify-between  py-10">
+    <div className="w-[540px] bg-white rounded-tr-[12px] rounded-br-[12px] border border-l-0 border-[#E0E0E0]">
+      <div className="flex px-8 justify-between py-10">
         <div className="flex-auto">
           <h2 className="font-semibold text-label-strong text-xl">
             {`[${orderData.location}]`} {orderData.food_name}
