@@ -16,9 +16,6 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
-
-  useEffect(() => {
     const guestCookie = Cookies.get('guest') === 'true';
     setIsGuest(guestCookie);
   }, []);
@@ -73,7 +70,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   }
   // 프로필 수정은 UX를 위해 페이지 내에서 처리
   // 마이페이지 - 쿠폰
-  else if (pathName === 'my-page/coupon-page') {
+  else if (pathName === '/my-page/coupon-page') {
     headerTitle = '할인쿠폰';
     showSearch = false;
   }
@@ -116,6 +113,15 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showCart = false;
     showNavigation = false;
   }
+  // 결제 확인
+  else if (pathName === '/check-payment') {
+    showHeader = false;
+    showSearch = false;
+    showCart = false;
+    showNavigation = false;
+    showChat = false;
+  }
+
   /* 모바일 레이아웃 끝 */
 
   /* 데스크탑 레이아웃 */
@@ -124,11 +130,23 @@ export default function Template({ children }: { children: React.ReactNode }) {
   let showWebChat: boolean = true;
   let showWebTopButton: boolean = true;
 
+  // 회원가입, 로그인
   if (pathName === '/log-in' || pathName === '/sign-up') {
     showWebHeader = false;
     showFooter = false;
     showWebChat = false;
     showWebTopButton = false;
+  }
+  // 결제 확인
+  else if (pathName === '/check-payment') {
+    showWebHeader = false;
+    showFooter = false;
+    showWebChat = false;
+    showWebTopButton = false;
+  }
+  // 프로필 에딧
+  else if (pathName === '/profile-edit') {
+    showFooter = false;
   }
   /* 데스크탑 레이아웃 끝*/
 

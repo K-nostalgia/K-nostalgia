@@ -6,6 +6,14 @@ import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import ShowSearchCart from './_component/ShowSearchCart';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import api from '@/service/service';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface headerNavType {
   path: string;
@@ -29,10 +37,18 @@ const WebHeader = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(-1);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
-  // 초기화
+  // 초기화 및 디테일 페이지 포함 경로 설정
   useEffect(() => {
-    const targetNavIndex = HeaderNavPaths.indexOf(pathName);
+    const targetNavIndex = HeaderNavPaths.findIndex((item) => {
+      if (item === '/') {
+        return pathName === '/';
+      } else {
+        return pathName.startsWith(item);
+      }
+    });
+
     setCurrentIndex(targetNavIndex);
     setActiveIndex(targetNavIndex);
   }, [pathName]);
@@ -77,25 +93,35 @@ const WebHeader = () => {
     }
   };
 
+  const handleClickLogOut = async () => {
+    try {
+      await api.auth.logOut();
+      queryClient.invalidateQueries();
+      router.push('/log-in');
+    } catch (err) {
+      console.log('로그아웃 에러');
+    }
+  };
+
   return (
     <div className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-[#C8C8C8] bg-normal">
-      <div className="flex justify-between flex-1 max-w-screen-xl mx-auto">
-        <div className="flex gap-12">
+      <div className="flex justify-between flex-1 max-w-screen-xl mx-auto md:px-3 xl:px-0">
+        <div className="flex gap-2 lg:gap-12">
           <div
-            className="flex items-center justify-center cursor-pointer"
+            className="flex items-center justify-center cursor-pointer pt-[10px] pb-[14px]"
             onClick={() => router.push('/')}
           >
             <TitleLogo />
           </div>
-          <nav className="relative flex items-center gap-5">
+          <nav className="relative flex items-center gap-2 lg:gap-5">
             {HeaderNav.map((item: headerNavType, index: number) => (
               <div
                 key={index}
-                className="flex flex-row justify-center items-center gap-5"
+                className="flex flex-row justify-center items-center gap-2 lg:gap-5"
               >
                 {item.path === 'divider' ? (
                   <div
-                    className={`w-[72px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 ${
+                    className={`w-[50px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 lg:w-[72px] ${
                       index === activeIndex
                         ? 'bg-primary-30'
                         : 'bg-label-alternative'
@@ -131,21 +157,54 @@ const WebHeader = () => {
             <ShowSearchCart showSearch={true} showCart={true} />
           </div>
           {user && user?.avatar ? (
-            <div
-              className="flex items-center gap-2 cursor-pointer"
-              onClick={() => router.push('/my-page')}
-            >
-              <Image
-                src={user.avatar}
-                alt={`${user.nickname} 이미지`}
-                width={36}
-                height={36}
-                className="w-9 h-9 border rounded-full border-primary-10"
-              />
-              <div className="text-label-strong text-base font-semibold leading-[25.6px]">
-                {user.nickname}
-              </div>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="ring-0 focus:ring-0 focus:outline-none">
+                <div className="flex items-center gap-2 cursor-pointer">
+                  <Image
+                    src={user.avatar}
+                    alt={`${user.nickname} 이미지`}
+                    width={36}
+                    height={36}
+                    className="w-9 h-9 border rounded-full border-primary-10"
+                  />
+                  <div className="text-label-strong text-base font-semibold leading-[25.6px] text-nowrap">
+                    {user.nickname}
+                  </div>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="bg-normal">
+                <DropdownMenuItem
+                  onClick={() => router.push('/my-page')}
+                  className="cursor-pointer"
+                >
+                  내 프로필
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push('/my-page/likemarket-page')}
+                  className="cursor-pointer"
+                >
+                  관심 전통시장
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push('/my-page/coupon-page')}
+                  className="cursor-pointer"
+                >
+                  할인쿠폰
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => router.push('/my-page/payment')}
+                  className="cursor-pointer"
+                >
+                  주문 내역
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleClickLogOut}
+                  className="cursor-pointer"
+                >
+                  로그아웃
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <div className="flex gap-3 justify-center items-center">
               <button

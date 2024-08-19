@@ -45,7 +45,7 @@ const DefaultAppLayout = ({
           onCompleteClick={onCompleteClick}
         />
       )}
-      <main className="flex-grow overflow-y-hidden">{children}</main>
+      <main className="flex-grow">{children}</main>
       <div className="flex flex-col fixed bottom-[86px] right-3 z-50 gap-3 pb-4">
         {showChat && <Chat />}
         {showTopButton && <TopButton />}
