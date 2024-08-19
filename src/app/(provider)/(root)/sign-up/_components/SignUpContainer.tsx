@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import SignupForm from './SignUpForm';
 import steps from './Step';
 import Stepper from './Stepper';
+import { toast } from '@/components/ui/use-toast';
 
 type ErrorState = {
   [key: string]: string;
@@ -214,19 +215,19 @@ const SignUpContainer = () => {
 
       if (response) {
         await api.auth.logOut();
-        Swal.fire({
-          icon: 'success',
-          title: '회원가입이 완료 되었습니다.',
-          html: `
-          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 로그인 페이지로 자동으로 넘어갑니다. </div>
-        `
+        toast({
+          variant: 'destructive',
+          description: '회원가입이 완료되었습니다.'
         });
 
         router.push('/log-in');
       }
     } catch (error) {
       console.error('Fetch error:', error);
-      alert(`회원가입 요청 중 오류가 발생했습니다: ${error}`);
+      toast({
+        variant: 'destructive',
+        description: '회원가입이 불가합니다. 다시 확인해주세요.'
+      });
     }
   };
 

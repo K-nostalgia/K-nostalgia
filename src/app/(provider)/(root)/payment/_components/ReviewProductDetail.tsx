@@ -55,7 +55,7 @@ const ReviewProductDetail = ({ order }: Props) => {
     };
 
     fetchReviewStatus();
-  }, [order.products, user_id]);
+  }, [order.products, user_id, isEditing]);
 
   const handleOpenChange = async (open: boolean) => {
     if (!open && isEditing) {
@@ -119,6 +119,7 @@ const ReviewProductDetail = ({ order }: Props) => {
                 payment_date={payment_date}
                 reviewIsOpen={reviewIsOpen}
                 setIsEditing={setIsEditing}
+                isEditing={isEditing}
               />
             ) : (
               <>

@@ -34,6 +34,7 @@ type Props = {
   payment_date: string | null;
   reviewIsOpen: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
+  isEditing: boolean;
 };
 const ReviewForm = ({
   product,
@@ -41,6 +42,7 @@ const ReviewForm = ({
   hasWrittenReview,
   payment_date,
   reviewIsOpen,
+  isEditing,
   setIsEditing
 }: Props) => {
   const [rating, setRating] = useState(0);
@@ -73,10 +75,9 @@ const ReviewForm = ({
       };
       fetchReview();
     }
-  }, [hasWrittenReview, product.id, product.user_id]);
+  }, [hasWrittenReview, product.id, product.user_id, isEditing]);
 
   const submitReview = async () => {
-    setIsEditing(false);
     if (rating === 0) {
       return toast({
         variant: 'destructive',
@@ -116,13 +117,13 @@ const ReviewForm = ({
           ? '리뷰가 수정되었습니다.'
           : '리뷰가 작성되었습니다.'
       });
+      setIsEditing(false);
       onBack();
     }
   };
 
   const DeleteHandler = async () => {
     try {
-      setIsEditing(false);
       const { error } = await supabase
         .from('reviews')
         .delete()
@@ -130,7 +131,7 @@ const ReviewForm = ({
         .eq('user_id', product.user_id as string);
 
       if (error) throw error;
-
+      setIsEditing(false);
       toast({
         description: '리뷰가 삭제되었습니다.'
       });
@@ -247,7 +248,6 @@ const ReviewForm = ({
           placeholder="상품에 대한 솔직한 리뷰를 작성해주세요 :)"
           className="w-full h-[243px] p-4 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
         />
-        {/* bg-[#FAF8F5] */}
       </div>
       <div className="flex -mx-4 w-[calc(100%+2rem)] shadow-custom pt-3 pb-6">
         <button
