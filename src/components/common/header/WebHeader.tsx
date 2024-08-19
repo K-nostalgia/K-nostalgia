@@ -109,7 +109,7 @@ const WebHeader = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-[#C8C8C8] bg-normal">
+    <div className="fixed top-0 left-0 right-0 z-[999] h-14 border-b border-[#C8C8C8] bg-normal">
       <div className="flex justify-between flex-1 max-w-screen-xl mx-auto md:px-3 xl:px-0">
         <div className="flex gap-2 lg:gap-12">
           <div
@@ -197,7 +197,7 @@ const WebHeader = () => {
                   할인쿠폰
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => router.push('/my-page/payment')}
+                  onClick={() => router.push('/payment')}
                   className="cursor-pointer"
                 >
                   주문 내역
