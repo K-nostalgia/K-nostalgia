@@ -12,7 +12,7 @@ const WarningChat = ({
 }) => {
   const { isDesktop } = useDeviceSize();
   return (
-    <div className="fixed inset-0 z-50 bg-normal rounded-2xl px-4 py-6 md:pt-16 md:px-10 md:pb-10 md:gap-10 md:justify-center md:flex md:flex-col md:items-center">
+    <div className="fixed inset-0 z-50 bg-normal rounded-2xl px-4 py-6  md:pt-16 md:px-10 md:pb-10 md:gap-5 md:justify-center md:flex md:flex-col md:items-center">
       <div className="flex px-4 flex-col justify-center items-center gap-8 self-stretch md-2 mt-5 mb-6 md:mb-10 md:mt-0">
         <Image
           src="/image/WargingTiger.png"
@@ -25,7 +25,10 @@ const WarningChat = ({
           채팅방 이용시 주의사항
         </div>
       </div>
-      <ul className="text-label-strong text-sm font-normal mb-20 flex flex-col leading-[29.12px] mb:leading-[31.36px] mb:mb-10">
+      <ul
+        className="text-label-strong text-sm font-normal mb-13 flex flex-col leading-[29.12px] mb:leading-[31.36px]"
+        style={{ marginBottom: '60px' }}
+      >
         <li>· 개인정보를 함부로 유출하지 않도록 주의해야 합니다.</li>
         <li>· 허위 정보를 기재해 다른 사용자에게 혼란을 주지 않아야 합니다.</li>
         <li>

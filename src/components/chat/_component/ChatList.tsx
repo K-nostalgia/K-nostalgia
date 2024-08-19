@@ -57,7 +57,7 @@ const ChatList = ({
         </DialogHeader>
       </div>
 
-      <div className="flex flex-col py-4 h-[527px] flex-1 gap-3 md:gap-4 md:pt-[26px] md:h-[586px] md:pb-0">
+      <div className="flex flex-col py-4 h-[527px] flex-1 gap-3 md:gap-4 md:pt-[26px] md:h-[585px] md:pb-0">
         {data?.map((item) => (
           <div
             key={item.room_id}
