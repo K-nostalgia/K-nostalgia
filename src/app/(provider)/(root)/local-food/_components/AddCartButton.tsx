@@ -68,19 +68,21 @@ export const AddCartButton = ({
     if (!user) {
       Swal.fire({
         title: '로그인 후 이용해주세요',
-        text: '로그인 페이지로 이동할까요?',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">로그인 페이지로 이동할까요?</div>
+      `,
         showCancelButton: true,
-        cancelButtonColor: '#f2f2f2',
-        confirmButtonColor: '#9C6D2E',
+        cancelButtonColor: '#9C6D2E',
+        confirmButtonColor: '#f2f2f2',
         cancelButtonText: '취소하기',
         confirmButtonText: '이동하기',
         customClass: {
-          title: 'text-xl mt-10',
+          title: 'text-xl mt-10 md:mb-[8px]',
           popup: 'rounded-[16px]',
-          actions: 'flex gap-3 mt-8',
-          confirmButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0',
-          cancelButton:
-            'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0'
+          actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+          confirmButton:
+            'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
+          cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
         }
       }).then((result) => {
         if (result.isConfirmed) {
