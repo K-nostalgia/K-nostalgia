@@ -64,7 +64,7 @@ const KaKaomap = () => {
     <div className="border border-secondary-20 rounded-xl overflow-hidden">
       <Map
         center={location}
-        style={{ width: '343px', height: '200px' }}
+        className="w-[343px] h-[200px] md:w-[1280px] md:h-[512px]"
         level={5}
       >
         <MapMarker position={location} />

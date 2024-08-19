@@ -135,7 +135,6 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        // 사용자가 "삭제하기" 버튼을 클릭한 경우
         deleteCommentsMutate(commentId);
       }
     });
@@ -146,12 +145,12 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   }
 
   return (
-    <div className="mt-6 mb-48">
+    <div className="mt-6 mb-48 md:max-w-[860px] px-4 mx-auto">
       <p className="text-label-strong font-semibold text-base pl-1 ml-4 mb-2">
         댓글
       </p>
       <form
-        className="bg-white w-[346px] h-12 mx-4 px-4 py-3 mb-1 border rounded-xl border-primary-20 flex items-center"
+        className="bg-[#fefefe] w-[346px] md:w-full h-12 mx-4 pl-4 py-3 mb-1 border rounded-xl border-primary-20 flex items-center"
         onSubmit={createCommentsMutate}
       >
         <input
@@ -159,99 +158,123 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
           value={comment}
           type="text"
           placeholder="댓글을 입력해 주세요"
-          className="outline-none placeholder:text-[15px] placeholder:text-label-assistive text-[15px] font-normal text-label-strong flex-1 w-[283px] h-auto mr-1 "
+          className="outline-none placeholder:text-[15px] placeholder:text-label-assistive text-[15px] font-normal 
+          text-label-strong bg-[#FEFEFE] flex-1 w-[283px] h-auto mr-1 "
         />
-        <button className="flex w-6 h-6 p-[2px] items-center justify-center">
+        <button className="flex w-6 h-6 p-[2px] items-center justify-center md:hidden">
           <IoSend className="w-5 h-5 text-primary-20" />
+        </button>
+        <button className="hidden md:flex px-5 py-3 bg-primary-20 text-white w-[68px] items-center justify-center rounded-r-xl">
+          등록
         </button>
       </form>
       <div className="flex flex-col p-3 gap-3">
-        {comments?.map((comment) => {
-          return (
-            <div key={comment.id} className="border-b-2 border-[#F2F2F2]">
-              <div className="flex justify-between px-1">
-                <div className="flex items-center gap-2 ">
-                  <Image
-                    src={comment.users.avatar}
-                    alt="user프로필"
-                    width={36}
-                    height={36}
-                    className="rounded-[18px]"
-                  />
-                  <p
-                    className={
-                      userId === comment.user_id
-                        ? 'text-primary-10 text-base font-semibold'
-                        : 'text-label-strong text-base font-semibold'
-                    }
-                  >
-                    {comment.users.nickname}
-                  </p>
-                  <p className="text-sm font-normal text-label-assistive">
-                    {comment.created_at.slice(0, 10).split('-').join('. ')}
-                  </p>
+        {comments?.length ? (
+          comments?.map((comment) => {
+            return (
+              <div key={comment.id} className="border-b-2 border-[#F2F2F2]">
+                <div className="flex justify-between px-1">
+                  <div className="flex items-center gap-2 ">
+                    <div className="relative w-9 h-9 rounded-[18px]">
+                      <Image
+                        src={comment.users.avatar}
+                        alt="user프로필"
+                        width={36}
+                        height={36}
+                        className="object-cover w-full h-full rounded-full absolute"
+                      />
+                    </div>
+                    <p
+                      className={
+                        userId === comment.user_id
+                          ? 'text-primary-10 text-base font-semibold'
+                          : 'text-label-strong text-base font-semibold'
+                      }
+                    >
+                      {comment.users.nickname}
+                    </p>
+                    <p className="text-sm font-normal text-label-assistive">
+                      {comment.created_at.slice(0, 10).split('-').join('. ')}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {userId === comment.user_id &&
+                      (!editMode.includes(comment.id) ? (
+                        <>
+                          <button
+                            onClick={() => {
+                              setEditMode((prev) => [...prev, comment.id]);
+                              setUpdatedComment(comment.content);
+                            }}
+                            className="font-normal text-sm text-label-normal"
+                          >
+                            수정
+                          </button>
+                          <div className="flex justify-center items-center w-[1px] h-3 bg-label-assistive" />
+                        </>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => {
+                              updateCommentsMutate(comment.id);
+                              setEditMode([]);
+                            }}
+                            className="font-normal text-sm text-label-normal"
+                          >
+                            확인
+                          </button>
+                          <div className="flex justify-center items-center w-[1px] h-3 bg-label-assistive" />
+                        </>
+                      ))}
+                    {userId === comment.user_id &&
+                      (!editMode.includes(comment.id) ? (
+                        <button
+                          onClick={() => handleDeleteComment(comment.id)}
+                          className="font-normal text-sm text-label-normal"
+                        >
+                          삭제
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setEditMode([])}
+                          className="font-normal text-sm text-label-normal"
+                        >
+                          취소
+                        </button>
+                      ))}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  {userId === comment.user_id &&
-                    (!editMode.includes(comment.id) ? (
-                      <button
-                        onClick={() => {
-                          setEditMode((prev) => [...prev, comment.id]);
-                          setUpdatedComment(comment.content);
-                        }}
-                        className="font-normal text-sm text-label-normal"
-                      >
-                        수정
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          updateCommentsMutate(comment.id);
-                          setEditMode([]);
-                        }}
-                        className="font-normal text-sm text-label-normal"
-                      >
-                        확인
-                      </button>
-                    ))}
-                  {/* <div className="flex justify-center items-center w-[1px] h-3 bg-label-assistive" /> */}
-                  {userId === comment.user_id &&
-                    (!editMode.includes(comment.id) ? (
-                      <button
-                        onClick={() => handleDeleteComment(comment.id)}
-                        className="font-normal text-sm text-label-normal"
-                      >
-                        삭제
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setEditMode([])}
-                        className="font-normal text-sm text-label-normal"
-                      >
-                        취소
-                      </button>
-                    ))}
-                </div>
+                {editMode.includes(comment.id) ? (
+                  <div className="pl-[38px] pr-1 mb-3">
+                    <input
+                      type="text"
+                      onChange={(e) => setUpdatedComment(e.target.value)}
+                      value={updatedComment}
+                      className="border rounded-[6px] border-[#959595] outline-none w-[309px] h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 "
+                    />
+                  </div>
+                ) : (
+                  <div className="pl-12 pr-1 py-1 mb-3">
+                    <p className="w-[299px] h-auto text-[15px] font-normal text-label-strong">
+                      {comment.content}
+                    </p>
+                  </div>
+                )}
               </div>
-              {editMode.includes(comment.id) ? (
-                <div className="pl-[38px] pr-1 mb-3">
-                  <input
-                    type="text"
-                    onChange={(e) => setUpdatedComment(e.target.value)}
-                    value={updatedComment}
-                    className="border rounded-[6px] border-[#959595] outline-none w-[309px] h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 "
-                  />
-                </div>
-              ) : (
-                <div className="pl-12 pr-1 py-1 mb-3">
-                  <p className="w-[299px] h-auto text-[15px] font-normal text-label-strong">
-                    {comment.content}
-                  </p>
-                </div>
-              )}
-            </div>
-          );
-        })}
+            );
+          })
+        ) : (
+          <div className="w-full flex justify-center items-center mt-16 md:mt-[180px]">
+            <Image
+              src={
+                'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/markets/market-comment.svg'
+              }
+              alt="댓글 기본 이미지"
+              width={190}
+              height={163}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
