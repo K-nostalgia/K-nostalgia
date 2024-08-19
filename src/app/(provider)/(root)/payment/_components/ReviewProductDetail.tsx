@@ -86,9 +86,9 @@ const ReviewProductDetail = ({ order }: Props) => {
           setIsEditing(false);
           setSelectedProduct(null);
         } else {
-          setReviewIsOpen(true); // 취소 시 Dialog를 다시 엽니다
+          setReviewIsOpen(true);
         }
-      }, 100); // 약간의 지연을 줍니다
+      }, 100);
     } else {
       setReviewIsOpen(open);
     }
