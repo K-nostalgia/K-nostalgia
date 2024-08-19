@@ -89,7 +89,7 @@ const ChatList = ({
       </div>
       <div
         onClick={() => setShowWarning(true)}
-        className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer"
+        className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer md:pb-12"
       >
         채팅방 이용시 주의사항
       </div>
