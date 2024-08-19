@@ -6,16 +6,16 @@ import TitleLogo from '@/components/icons/TitleLogo';
 
 const SignUpPage = () => {
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="md:bg-primary-20 md:w-full md:h-screen flex flex-col justify-center">
       {/* 모바일 */}
       <div className="w-full md:hidden">
         <SignUpContainer />
       </div>
 
       {/* 데스크탑*/}
-      <div className="hidden md:flex w-full min-h-screen bg-primary-20 py-8">
-        <div className="bg-normal border rounded-[20px] overflow-hidden w-[1280px] mx-auto flex">
-          <div className="flex flex-col items-center justify-center w-[556px]">
+      <div className="hidden md:flex flex-col items-center flex-1 overflow-hidden py-[72px]">
+        <div className="flex w-[80%] h-full bg-normal rounded-[20px] mx-auto">
+          <div className="flex-1 flex flex-col justify-center items-center">
             <Image
               src="/image/Tigernew.png"
               alt="호랑이 아이콘"
@@ -28,11 +28,12 @@ const SignUpPage = () => {
             </p>
           </div>
 
-          <div className="w-[692px] h-[830px] flex flex-col">
-            <div className="flex flex-row items-center justify-center pt-[90px] pb-4">
+          <div className="flex-1 flex flex-col justify-center items-center pb-24">
+            <div className="flex pt-[100px] pb-4 items-baseline">
               <TitleLogo />
-              <p className="text-2xl ml-2 mt-2 text-primary-10">
-                의 가족이 될 준비 되셨나요?
+              <p className="text-2xl text-primary-10 ml-2 font-semibold">
+                의 <span className="text-primary-20">가족</span>이 될 준비
+                되셨나요?
               </p>
             </div>
             <DesktopSignUpLayout />
