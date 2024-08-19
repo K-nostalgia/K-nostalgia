@@ -276,10 +276,11 @@ export const TableDataColumns = ({
       header: () => <div className="hidden md:block">할인 전 금액</div>,
       cell: ({ row }) => {
         const price = row.getValue('product_price') as number;
+        const isSelected = selectedItems.includes(row.getValue('product_id'));
 
         return (
           <div className="invisible md:visible">
-            {`${price.toLocaleString()}원`}
+            {isSelected ? `${price.toLocaleString()}원` : '0원'}
           </div>
         );
       }
