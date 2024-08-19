@@ -59,7 +59,7 @@ const ReviewProductDetail = ({ order }: Props) => {
 
   const handleOpenChange = async (open: boolean) => {
     if (!open && isEditing) {
-      setReviewIsOpen(false); // Dialog를 먼저 닫습니다
+      setReviewIsOpen(false);
 
       setTimeout(async () => {
         const result = await Swal.fire({
