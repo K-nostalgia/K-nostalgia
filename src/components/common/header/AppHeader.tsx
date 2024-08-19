@@ -21,7 +21,7 @@ const AppHeader = ({
   onCompleteClick
 }: AppHeaderProps) => {
   return (
-    <div className="fixed top-0 left-0 right-0 z-[999] flex justify-between pt-5 pb-2 px-3 bg-normal">
+    <div className="fixed top-0 left-0 right-0 z-50 flex justify-between pt-5 pb-2 px-3 bg-normal">
       <ShowBackLogo showBackButton={showBackButton} showLogo={showLogo} />
       <div className="flex items-center text-lg font-semibold leading-[28.8px] text-nowrap">
         {headerTitle}

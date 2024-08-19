@@ -56,7 +56,18 @@ const WebHeader = () => {
 
   const handleNaviBox = (index: number) => {
     if (isLoading) return;
-    if (index === currentIndex) return;
+
+    // 디테일 페이지에서 전체 보드로 이동/그 외의 경우 return
+    if (index === currentIndex) {
+      // 디테일 페이지일 경우 전체 리스트 페이지로 이동
+      if (pathName.startsWith('/market/')) {
+        router.push('/market');
+      } else if (pathName.startsWith('/local-food/')) {
+        router.push('/local-food');
+      }
+      return;
+    }
+
     setIsLoading(true);
 
     // 홈 = 0 일 때는 무조건 양수 : 4, 2
@@ -109,7 +120,7 @@ const WebHeader = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[999] h-14 border-b border-[#C8C8C8] bg-normal">
+    <div className="fixed top-0 left-0 right-0 z-50 h-14 border-b border-[#C8C8C8] bg-normal">
       <div className="flex justify-between flex-1 max-w-screen-xl mx-auto md:px-3 xl:px-0">
         <div className="flex gap-2 lg:gap-12">
           <div
@@ -128,7 +139,7 @@ const WebHeader = () => {
                   <div
                     className={`w-[50px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 lg:w-[72px] ${
                       index === activeIndex
-                        ? 'bg-primary-30'
+                        ? 'bg-primary-20'
                         : 'bg-label-alternative'
                     }`}
                   >
@@ -140,7 +151,7 @@ const WebHeader = () => {
                     className={`py-[15px] px-[20px] text-nowrap cursor-pointer transition-colors duration-300 
                     ${
                       index === activeIndex
-                        ? 'text-primary-30'
+                        ? 'text-primary-20'
                         : 'text-label-alternative'
                     }
                     ${

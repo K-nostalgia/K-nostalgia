@@ -53,7 +53,7 @@ const Navigation = () => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[999] flex border-t-2 justify-between pt-3 px-5 pb-6 mt-auto bg-normal ">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex border-t-2 justify-between pt-3 px-5 pb-6 mt-auto bg-normal ">
       {naviList.map((item, index) => (
         <div
           key={index}

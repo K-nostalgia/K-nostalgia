@@ -57,14 +57,14 @@ const ChatList = ({
         </DialogHeader>
       </div>
 
-      <div className="flex flex-col py-4 h-[527px] flex-1 gap-3 md:gap-4 md:pt-[26px] md:h-[585px] md:pb-0">
+      <div className="flex flex-col py-4 h-[527px] flex-1 gap-3 md:gap-4 md:pt-6 md:h-[585px] md:pb-0 md:px-2">
         {data?.map((item) => (
           <div
             key={item.room_id}
             className="flex border py-4 pl-4 pr-3 rounded-xl gap-1 cursor-pointer shadow-chatCustom justify-between bg-[#FFF]"
             onClick={() => handleRoom(item)}
           >
-            <div className="flex">
+            <div className="flex md:py-1">
               <Image
                 src={item.room_img}
                 width={48}
@@ -72,7 +72,7 @@ const ChatList = ({
                 alt={item.chat_name}
                 className="w-12 h-12"
               />
-              <div className="ml-2 flex flex-col justify-center">
+              <div className="ml-2 flex flex-col justify-center md:ml-3">
                 <div className="font-medium text-base leading-[22.4px]">
                   {item.chat_name}
                 </div>
