@@ -16,7 +16,7 @@ import supabase from '@/utils/supabase/client';
 import { DialogDescription, DialogTitle } from '@radix-ui/react-dialog';
 import dayjs from 'dayjs';
 import { ChevronLeft } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
 
 type Products = {
@@ -27,17 +27,22 @@ type Products = {
   user_id?: string;
 };
 
+type Props = {
+  product: Products;
+  onBack: () => void;
+  hasWrittenReview?: boolean;
+  payment_date: string | null;
+  reviewIsOpen: boolean;
+  setIsEditing: Dispatch<SetStateAction<boolean>>;
+};
 const ReviewForm = ({
   product,
   onBack,
-  isEditing,
-  payment_date
-}: {
-  product: Products;
-  onBack: () => void;
-  isEditing?: boolean;
-  payment_date: string | null;
-}) => {
+  hasWrittenReview,
+  payment_date,
+  reviewIsOpen,
+  setIsEditing
+}: Props) => {
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState('');
 
@@ -45,13 +50,20 @@ const ReviewForm = ({
   const { name, amount, quantity, id, user_id } = product;
 
   useEffect(() => {
-    if (isEditing) {
+    setIsEditing(true);
+    return () => setIsEditing(false);
+  }, []);
+
+  useEffect(() => {
+    if (hasWrittenReview) {
       const fetchReview = async () => {
         const { data } = await supabase
           .from('reviews')
           .select('*')
           .eq('product_id', product.id)
           .eq('user_id', user_id as string)
+          .order('created_at', { ascending: false })
+          .limit(1)
           .single();
 
         if (data) {
@@ -61,9 +73,10 @@ const ReviewForm = ({
       };
       fetchReview();
     }
-  }, [isEditing, product.id, product.user_id]);
+  }, [hasWrittenReview, product.id, product.user_id]);
 
   const submitReview = async () => {
+    setIsEditing(false);
     if (rating === 0) {
       return toast({
         variant: 'destructive',
@@ -77,7 +90,7 @@ const ReviewForm = ({
       content
     };
     let error;
-    if (isEditing) {
+    if (hasWrittenReview) {
       const { error: updateError } = await supabase
         .from('reviews')
         .update(reviewData)
@@ -99,7 +112,7 @@ const ReviewForm = ({
       });
     } else {
       toast({
-        description: isEditing
+        description: hasWrittenReview
           ? '리뷰가 수정되었습니다.'
           : '리뷰가 작성되었습니다.'
       });
@@ -109,6 +122,7 @@ const ReviewForm = ({
 
   const DeleteHandler = async () => {
     try {
+      setIsEditing(false);
       const { error } = await supabase
         .from('reviews')
         .delete()
@@ -167,23 +181,23 @@ const ReviewForm = ({
               />
             </div>
             <div className="flex flex-col items-start w-full flex-1">
-              {isEditing && (
+              {hasWrittenReview && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <button className="absolute right-0 mr-4 py-1 px-2 text-[12px] text-[#1F1E1E] font-normal leading-[140%] bg-[#F2F2F2] rounded-[6px] md:text-[14px]">
                       삭제
                     </button>
                   </AlertDialogTrigger>
-                  <AlertDialogContent className="">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
+                  <AlertDialogContent className="w-[330px] h-[220px] flex flex-col justify-center gap-1">
+                    <AlertDialogHeader className="flex flex-col  gap-0 justify-center">
+                      <AlertDialogTitle className="flex justify-center ">
                         리뷰를 삭제하시겠어요?
                       </AlertDialogTitle>
-                      <AlertDialogDescription>
+                      <AlertDialogDescription className="flex justify-center ">
                         삭제 후에는 복구나 재작성이 불가해요
                       </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
+                    <AlertDialogFooter className=" pt-6 flex items-end">
                       <AlertDialogAction
                         onClick={DeleteHandler}
                         className="text-[#ED1B18]"
@@ -199,7 +213,7 @@ const ReviewForm = ({
               )}
               <div className="flex flex-col mb-2 md:gap-[6px]">
                 <p className="flex font-medium md:text-[20px]">{name}</p>
-                <div className="flex gap-[4px] items-center text-[#79746D] font-medium">
+                <div className="flex gap-[4px] items-center text-[#79746D] font-medium md:text-[16px]">
                   <p>{amount}원</p>
                   <p>·</p>
                   <p>{quantity}개</p>
@@ -231,16 +245,16 @@ const ReviewForm = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="상품에 대한 솔직한 리뷰를 작성해주세요 :)"
-          className="w-full h-[243px] p-2 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
+          className="w-full h-[243px] p-4 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
         />
         {/* bg-[#FAF8F5] */}
       </div>
       <div className="flex -mx-4 w-[calc(100%+2rem)] shadow-custom pt-3 pb-6">
         <button
           onClick={submitReview}
-          className="mt-4 mx-[16px] bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
+          className="mt-4 mx-[16px] h-12 bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
         >
-          {isEditing ? '리뷰 수정 완료' : '리뷰 작성 완료'}
+          {hasWrittenReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
       </div>
     </div>
