@@ -60,17 +60,40 @@ const PayHistoryList = () => {
 
   //취소 및 db 업데이트
   const cancelPayment = async (order: BaseOrderInPayHistory) => {
-    const { status, payment_id, ...rest } = order;
-    const newHistory = {
-      status: 'CANCELLED',
-      payment_id,
-      ...rest
-    };
-    try {
-      await cancelPaymentMutation.mutateAsync({ payment_id, newHistory });
-    } catch (error) {
-      console.error('주문 취소 중 오류 발생:', error);
-    }
+    Swal.fire({
+      title: '구매 상품을 환불하시겠어요?',
+      html: `
+      <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">환불 후에는 리뷰 작성 및 환불 취소가 불가해요.</div>
+    `,
+      showCancelButton: true,
+      cancelButtonColor: '#9C6D2E',
+      confirmButtonColor: '#f2f2f2',
+      cancelButtonText: '환불 취소',
+      confirmButtonText: '환불하기',
+      customClass: {
+        title: 'text-xl mt-10 md:mb-[8px]',
+        popup: 'rounded-[16px]',
+        actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+        confirmButton:
+          'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
+        cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+      }
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { status, payment_id, ...rest } = order;
+        const newHistory = {
+          status: 'CANCELLED',
+          payment_id,
+          ...rest
+        };
+        try {
+          await cancelPaymentMutation.mutateAsync({ payment_id, newHistory });
+        } catch (error) {
+          console.error('주문 취소 중 오류 발생:', error);
+        }
+      }
+      return;
+    });
   };
 
   const deletePayment = async (order: Order) => {
@@ -109,7 +132,7 @@ const PayHistoryList = () => {
         <NoPayHistory />
       ) : (
         <div
-          className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-[95%] md:p-0  ${
+          className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-[95%] md:p-0 overflow-y-auto  ${
             pathName === '/payment' && 'pt-[16px] mt-[3.25rem]'
           }`}
         >
@@ -183,7 +206,7 @@ const PayHistoryList = () => {
                           onClick={() => route.push(`local-food/${product.id}`)}
                         >
                           <div
-                            className={`flex gap-[12px] pt-[12px] ${
+                            className={`flex gap-[12px] mt-[12px] ${
                               index !== order.products.length - 1
                                 ? 'border-b-2 pb-[12px]'
                                 : ''
