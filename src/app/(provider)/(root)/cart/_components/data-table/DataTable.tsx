@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/table';
 import { CartPriceList } from '../CartPriceList';
 import useSelectedCartStore from '@/zustand/cart/cart.data';
+import Image from 'next/image';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -96,7 +97,19 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  장바구니가 비었어요.
+                  <div className="flex flex-col justify-center items-center h-[50vh]">
+                    <Image
+                      src="/image/StateSad.png"
+                      width={113}
+                      height={96}
+                      priority
+                      alt={`장바구니가 비었어요`}
+                      style={{ width: 113, height: 96 }}
+                    />
+                    <p className="text-label-assistive text-lg mt-4 font-medium">
+                      장바구니가 비었어요
+                    </p>
+                  </div>
                 </TableCell>
               </TableRow>
             )}

@@ -33,11 +33,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div
-      className={`${
-        isDesktop ? 'mt-20 max-w-screen-xl mx-auto' : 'max-w-screen-xl mx-auto'
-      }`}
-    >
+    <div className={` max-w-screen-xl mx-auto ${isDesktop && 'mt-20'}`}>
       <Carousel
         setApi={setApi}
         plugins={[
@@ -50,9 +46,12 @@ export const SectionBanner = () => {
           {(isDesktop ? webBanners : banners).map((img, index) => (
             <CarouselItem
               key={index}
-              className="flex justify-center items-center relative"
+              className="flex justify-center items-center relative w-full"
             >
-              <Link href={index === 1 ? '/my-page/coupon-page' : '#'}>
+              <Link
+                href={index === 1 ? '/my-page/coupon-page' : '#'}
+                className="flex-1"
+              >
                 <Image
                   src={img}
                   width={isDesktop ? 1280 : 375}
@@ -60,7 +59,9 @@ export const SectionBanner = () => {
                   priority
                   alt={`메인 배너 이미지 ${index + 1}`}
                   style={{
-                    height: 'auto',
+                    width: '100%',
+                    height: '100%',
+
                     objectFit: 'cover'
                   }}
                 />
@@ -69,11 +70,8 @@ export const SectionBanner = () => {
           ))}
         </CarouselContent>
         <div
-          className={`${
-            isDesktop
-              ? 'block absolute right-4 translate-x-[-10%] bottom-[5%] translate-y-[-31%] px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium'
-              : 'hidden'
-          }`}
+          className={`absolute right-4 translate-x-[-10%] bottom-[1rem] translate-y-0 px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium 
+        `}
         >
           {`${current} / ${count}`}
         </div>

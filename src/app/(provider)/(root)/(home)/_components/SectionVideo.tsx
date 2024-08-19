@@ -20,7 +20,7 @@ export const SectionVideo = () => {
           <Link
             href={'https://www.youtube.com/watch?v=ym2iQ9HCydM'}
             target="_blank"
-            className="hidden md:flex items-center gap-1 mt-[17%] translate-y-[-17%]"
+            className="hidden md:flex items-center gap-1 mt-[20%] translate-y-[-17%]"
           >
             <p className="underline text-label-normal text-sm font-medium">
               영상보러 가기
