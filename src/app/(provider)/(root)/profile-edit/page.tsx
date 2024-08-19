@@ -25,6 +25,8 @@ const EditProfilePage = () => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [isChecking, setIsChecking] = useState(false);
+  const [hasNicknameChanged, setHasNicknameChanged] = useState(false);
+  const [lengthError, setLengthError] = useState('');
   const router = useRouter();
   const queryClient = useQueryClient();
   const { isDesktop } = useDeviceSize();
@@ -38,10 +40,9 @@ const EditProfilePage = () => {
     }
   }, [user]);
 
-  // 디바운스된 입력값으로 중복 체크
   useEffect(() => {
     const checkNickname = async () => {
-      if (debounceInput === '') {
+      if (debounceInput === '' || !hasNicknameChanged) {
         setErrorMessage('');
         return;
       }
@@ -66,12 +67,18 @@ const EditProfilePage = () => {
     };
 
     checkNickname();
-  }, [debounceInput]);
+  }, [debounceInput, hasNicknameChanged]);
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // 공백 문자를 제거
     const newNickname = e.target.value.replace(/\s/g, '');
-    setNickname(newNickname);
+
+    if (newNickname.length <= 13) {
+      setNickname(newNickname);
+      setHasNicknameChanged(true);
+      setLengthError('');
+    } else {
+      setLengthError('닉네임은 12자 이내로 입력해주세요.');
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +98,7 @@ const EditProfilePage = () => {
       return;
     }
 
-    if (errorMessage) {
+    if (errorMessage || lengthError) {
       toast({
         variant: 'destructive',
         description: '변경한 닉네임을 확인해주세요'
@@ -159,6 +166,9 @@ const EditProfilePage = () => {
     }
   });
 
+  const isButtonActive =
+    !errorMessage && !lengthError && nickname && !isChecking;
+
   if (isLoading) return <Loading />;
   if (error) return <div>Error loading user data</div>;
 
@@ -166,7 +176,7 @@ const EditProfilePage = () => {
     <>
       {isDesktop ? (
         <DefaultWebLayout>
-          <div className="p-6 rounded-lg flex flex-col items-center relative mt-20 md:mt-32 md:h-[80vh]">
+          <div className="p-6 rounded-lg flex flex-col items-center relative mt-20 md:mt-32 md:min-h-screen">
             <div className="hidden md:flex md:items-center md:justify-center md:absolute md:w-[240px] md:h-[152px] md:-top-9 md:z-10 ">
               <Image
                 src="/image/Profile_Adorn.png"
@@ -238,7 +248,11 @@ const EditProfilePage = () => {
               </div>
 
               <button
-                className="hidden md:flex md:border md:border-[#C8C8C8] md:hover:bg-primary-strong md:hover:text-label-light md:px-4 md:py-2 md:rounded md:bg-[#F2F2F2] md:mt-10 md:text-[#AFACA7]"
+                className={`hidden md:flex md:border md:border-[#C8C8C8] ${
+                  isButtonActive
+                    ? 'bg-primary-20 text-label-light'
+                    : 'bg-[#F2F2F2] text-[#AFACA7]'
+                } md:px-4 md:py-2 md:rounded md:mt-10`}
                 onClick={handleEditClick}
                 disabled={isChecking}
               >
@@ -326,14 +340,6 @@ const EditProfilePage = () => {
                   </span>
                 )}
               </div>
-
-              <button
-                className="hidden md:flex md:border md:border-[#C8C8C8] md:hover:bg-primary-strong md:hover:text-label-light md:px-4 md:py-2 md:rounded md:bg-[#F2F2F2] md:mt-10 md:text-[#AFACA7]"
-                onClick={handleEditClick}
-                disabled={isChecking}
-              >
-                수정 완료
-              </button>
             </div>
           </div>
         </DefaultAppLayout>
