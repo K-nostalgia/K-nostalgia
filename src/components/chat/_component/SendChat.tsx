@@ -21,6 +21,7 @@ import { GoArrowLeft } from 'react-icons/go';
 import { BsPersonExclamation } from 'react-icons/bs';
 import { debounce, throttle } from 'lodash';
 import ReportAlert from './ReportAlert';
+import { toast } from '@/components/ui/use-toast';
 
 interface chatUserType {
   avatar: string;
@@ -215,7 +216,10 @@ export function SendChat({
     });
 
     setShowReportAlert(false);
-    // 신고되었습니다 알럿 필요
+    toast({
+      variant: 'destructive',
+      description: '신고가 완료되었습니다.'
+    });
     return response.json();
   };
 
@@ -224,7 +228,7 @@ export function SendChat({
   };
 
   return (
-    <DialogContent className="bg-normal w-[330px] rounded-2xl md:w-[479px] md:h-[710px]">
+    <DialogContent className="bg-normal w-[330px] h-[627px] rounded-2xl md:w-[479px] md:h-[710px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
@@ -239,7 +243,7 @@ export function SendChat({
       </div>
 
       <div
-        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide md:h-[564px]"
+        className="py-4 h-[479px] flex-1 overflow-y-auto scrollbar-hide md:h-[564px]"
         ref={scrollDown}
       >
         {data
@@ -316,7 +320,7 @@ export function SendChat({
                     ? '메시지 보내기...'
                     : '향그리움의 가족만 이용할 수 있어요'
                 }
-                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-5 mb-1 text-base bg-[#FEFEFE]"
+                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base bg-[#FEFEFE]"
                 disabled={!user}
                 aria-label="메시지 입력"
               />
