@@ -26,7 +26,7 @@ const CompletePaymentContent = () => {
   );
 
   return (
-    <div className="bg-normal md:w-[860px] md:mx-auto">
+    <div className="bg-normal pt-10 md:w-[860px] md:mx-auto">
       <div className="m-auto mb-[104px] md:mb-6">
         <div>
           <div className="flex flex-col items-center px-[46.5px] pb-[15px] pt-[8px] md:pt-10">

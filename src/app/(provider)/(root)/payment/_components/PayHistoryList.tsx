@@ -109,7 +109,7 @@ const PayHistoryList = () => {
         <NoPayHistory />
       ) : (
         <div
-          className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-[95%] md:p-0 md:m-0 ${
+          className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-[95%] md:p-0  ${
             pathName === '/payment' && 'pt-[16px] mt-[3.25rem]'
           }`}
         >
