@@ -13,6 +13,7 @@ import DefaultAppLayout from '@/components/common/DefaultAppLayout';
 import { BsChevronRight } from 'react-icons/bs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
+import { toast } from '@/components/ui/use-toast';
 
 const EditProfilePage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -33,25 +34,46 @@ const EditProfilePage = () => {
       nickname: string;
       avatar: string;
     }) => {
-      if (editImage) {
-        avatar = await api.auth.imageUpload(editImage);
+      const result = await Swal.fire({
+        title: '정말로 프로필을 변경하시겠어요?',
+        showCancelButton: true,
+        cancelButtonColor: '#9C6D2E',
+        confirmButtonColor: '#f2f2f2',
+        cancelButtonText: '취소하기',
+        confirmButtonText: '변경하기',
+        customClass: {
+          title: 'text-xl mt-10 md:mb-[8px]',
+          popup: 'rounded-[16px]',
+          actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+          confirmButton:
+            'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0',
+          cancelButton: 'text-white py-3 px-4 rounded-[12px] w-[138px] m-0'
+        }
+      });
+
+      if (result.isConfirmed) {
+        if (editImage) {
+          avatar = await api.auth.imageUpload(editImage);
+        }
+        return api.auth.updateUser(userId, { nickname, avatar });
+      } else {
+        throw new Error();
       }
-      return api.auth.updateUser(userId, { nickname, avatar });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      Swal.fire({
-        icon: 'success',
-        title: '프로필 변경이 완료되었습니다.',
-        html: `
-          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 내 프로필로 넘어갑니다. </div>
-        `
+      toast({
+        variant: 'destructive',
+        description: '프로필 변경이 완료되었습니다.'
       });
       router.push('/my-page');
     },
     onError: (error) => {
       console.error('프로필 업데이트 실패', error);
-      alert('프로필 업데이트 실패');
+      toast({
+        variant: 'destructive',
+        description: '프로필 변경이 취소되었습니다.'
+      });
     }
   });
 
