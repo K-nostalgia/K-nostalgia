@@ -20,6 +20,7 @@ import MarketSearchResult from './MarketSearchResult';
 import LocalFoodSearchResult from './LocalFoodSearchResults';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Swal from 'sweetalert2';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -52,7 +53,6 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     pathName === '/local-food' || pathName.startsWith('/local-food/');
   const homeSide = pathName === '/';
 
-  // TODO 이스터애그 숨기기 예쁘게 알럿 제작하기!
   const handleSearchTerm = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value
       .normalize('NFKC')
@@ -67,18 +67,60 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
     // 검색어 길이 제한 및 이스터애그'-'
     if (event.target.value.length >= 20) {
-      alert('20자 미만으로 검색해주세어흥');
+      Swal.fire({
+        title: '20자 미만으로 써주세어흥!',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">시장이랑 특산물은 20자 이상이 없다어흥!</div>
+      `,
+        confirmButtonColor: '#f2f2f2',
+        confirmButtonText: '네! 알겠어흥!',
+        customClass: {
+          title: 'text-xl mt-10 md:mb-[8px]',
+          popup: 'rounded-[16px]',
+          actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+          confirmButton:
+            'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0'
+        }
+      });
       setSearchTerm('');
       return;
     } else if (inputValue === '향그리움'.trim()) {
-      console.log('향그리움을 입력햇다!!!!');
+      Swal.fire({
+        title: '향그리움에 오신 것을 환영합어흥!',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">더 많은 사랑 부탁드립어흥!</div>
+      `,
+        confirmButtonColor: '#f2f2f2',
+        confirmButtonText: '네! 알겠어흥!',
+        customClass: {
+          title: 'text-xl mt-10 md:mb-[8px]',
+          popup: 'rounded-[16px]',
+          actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+          confirmButton:
+            'text-status-negative py-3 px-4 rounded-[12px] w-[138px] m-0'
+        }
+      });
       return;
     } else if (
       inputValue === '오조사마'.trim() ||
       inputValue === '5JOSAMA'.normalize('NFKC').toLowerCase().trim() ||
       inputValue === 'OJOSAMA'.normalize('NFKC').toLowerCase().trim()
     ) {
-      console.log('오조사마를 입력햇다!!!!');
+      Swal.fire({
+        title: '오조마사를... 검색하셨나요?',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">제출은하셔야죠아가씨조🕴️🕶️ 입니다</div>
+      `,
+        confirmButtonColor: '#f2f2f2',
+        confirmButtonText: '🕶️네! 알겠습니다!🕶️',
+        customClass: {
+          title: 'text-xl mt-10 md:mb-[8px]',
+          popup: 'rounded-[16px]',
+          actions: 'flex gap-3 mb-6 mt-9 md:mt-[40px] md:mb-[28px]',
+          confirmButton:
+            'text-status-negative py-3 px-4 rounded-[12px] w-[170px] m-0'
+        }
+      });
       return;
     }
   };
