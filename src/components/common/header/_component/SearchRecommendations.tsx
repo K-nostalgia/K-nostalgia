@@ -115,7 +115,7 @@ const SearchRecommendations = ({
           <span>
             {marketSide || homeSide
               ? '찾았던 전통시장'
-              : pathName === 'local-food'
+              : localFoodSide
               ? '구매했던 특산물'
               : ''}
           </span>

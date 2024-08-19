@@ -37,17 +37,17 @@ const ChatList = ({
     setSelectedChatRoom(item);
   };
 
+  // 로컬 스토리지에서 세션 스토리지 변경
   useEffect(() => {
-    // hasChater 있는지 확인
-    const hasChater = localStorage.getItem('visitedChat');
+    const hasChater = sessionStorage.getItem('visitedChat');
     if (!hasChater) {
       setShowWarning(true);
-      localStorage.setItem('visitedChat', 'true');
+      sessionStorage.setItem('visitedChat', 'true');
     }
   }, []);
 
   return (
-    <DialogContent className="bg-normal rounded-2xl w-[330px] md:w-[608px] md:h-[840px]">
+    <DialogContent className="bg-normal rounded-2xl w-[330px] h-[627px] md:w-[479px] md:h-[710px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] items-center justify-center">
@@ -57,7 +57,7 @@ const ChatList = ({
         </DialogHeader>
       </div>
 
-      <div className="flex flex-col py-4 h-[472px] flex-1 gap-3 md:gap-4 md:pt-7 md:h-[694px]">
+      <div className="flex flex-col py-4 h-[527px] flex-1 gap-3 md:gap-4 md:pt-[26px] md:h-[586px] md:pb-0">
         {data?.map((item) => (
           <div
             key={item.room_id}
@@ -89,7 +89,7 @@ const ChatList = ({
       </div>
       <div
         onClick={() => setShowWarning(true)}
-        className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer"
+        className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer md:pb-12"
       >
         채팅방 이용시 주의사항
       </div>

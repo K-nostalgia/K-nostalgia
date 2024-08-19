@@ -1,5 +1,6 @@
 'use client';
 import Loading from '@/components/common/Loading';
+import { toast } from '@/components/ui/use-toast';
 import { useUser } from '@/hooks/useUser';
 import api from '@/service/service';
 import { useQueryClient } from '@tanstack/react-query';
@@ -18,13 +19,9 @@ const Logout = () => {
       await api.auth.logOut();
       // 캐시 무효화
       queryClient.invalidateQueries();
-      // console.log('로그아웃 완료');
-      Swal.fire({
-        icon: 'success',
-        title: '로그아웃이 완료 되었습니다.',
-        html: `
-        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 로그인 페이지로 자동으로 넘어갑니다. </div>
-      `
+      toast({
+        variant: 'destructive',
+        description: '로그아웃 되었습니다.'
       });
       router.push('/log-in');
     } catch (err) {
@@ -37,9 +34,12 @@ const Logout = () => {
 
   return (
     <div className="p-4">
-      <div className="flex items-center py-[3px] mb-[98px] cursor-pointer">
+      <div
+        className="flex items-center py-[3px] mb-[98px] cursor-pointer"
+        onClick={handleClickLogOut}
+      >
         <IoIosLogOut className="mr-[8px] text-label-normal text-[20px]" />
-        <div onClick={handleClickLogOut}>로그아웃</div>
+        <div>로그아웃</div>
       </div>
     </div>
   );

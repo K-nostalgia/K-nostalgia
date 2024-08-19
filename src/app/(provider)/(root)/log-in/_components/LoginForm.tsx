@@ -10,6 +10,7 @@ import KaKaoLogin from './KaKaoLogin';
 import GoogleLogin from './GoogleLogin';
 import NoLogin from './NoLogin';
 import Swal from 'sweetalert2';
+import { toast } from '@/components/ui/use-toast';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -51,12 +52,9 @@ const LoginForm = () => {
           { email, password },
           {
             onSuccess: () => {
-              Swal.fire({
-                icon: 'success',
-                title: '로그인이 완료 되었습니다.',
-                html: `
-                <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 환영합니다! </div>
-              `
+              toast({
+                variant: 'destructive',
+                description: '로그인이 완료되었습니다.'
               });
 
               router.push('/');

@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/use-toast';
 import api from '@/service/service';
 import Image from 'next/image';
 import React from 'react';
@@ -8,10 +9,16 @@ const KaKaoLogin = () => {
     try {
       const socialuser = await api.auth.socialLogin('kakao');
 
-      console.log('카카오 로그인 성공', socialuser);
+      toast({
+        variant: 'destructive',
+        description: '로그인 되었습니다.'
+      });
     } catch (error) {
       console.error('카카오 로그인 실패', error);
-      alert('카카오 로그인 실패');
+      toast({
+        variant: 'destructive',
+        description: '로그인 되지 않았습니다. 다시 확인해주세요. '
+      });
     }
   };
   return (

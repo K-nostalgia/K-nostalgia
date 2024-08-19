@@ -1,4 +1,5 @@
 'use client';
+import { toast } from '@/components/ui/use-toast';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -22,18 +23,16 @@ const CancelUser = () => {
         if (result.isConfirmed) {
           try {
             await api.auth.deleteUser();
-            Swal.fire({
-              title: '탈퇴되었습니다.',
-              text: '다음에 다시 만나요!',
-              icon: 'success'
+            toast({
+              variant: 'destructive',
+              description: '탈퇴되었습니다. 다음에 다시 이용해주세요. '
             });
             router.push('/log-in');
           } catch (error) {
             console.error('탈퇴 에러');
-            Swal.fire({
-              title: '에러가 발생했습니다.',
-              text: '다시 시도해주세요.',
-              icon: 'error'
+            toast({
+              variant: 'destructive',
+              description: '탈퇴가 불가능합니다. '
             });
           }
         }
