@@ -19,6 +19,7 @@ import HomeSearchResult from './HomeSearchResult';
 import MarketSearchResult from './MarketSearchResult';
 import LocalFoodSearchResult from './LocalFoodSearchResults';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface SearchBarProps {
   isOpen: boolean;
@@ -28,13 +29,18 @@ interface SearchBarProps {
 type Market = Tables<'markets'>;
 type LocalFood = Tables<'local_food'>;
 
+interface SearchPageResults {
+  name: string | null;
+  link: string;
+}
+
 const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const pathName = usePathname();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [response, setResponse] = useState<
     (Tables<'local_food'> | Tables<'markets'>)[] | null
   >(null);
-  const [results, setResults] = useState<string[]>([]);
+  const [results, setResults] = useState<SearchPageResults[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
@@ -83,34 +89,6 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     setSearchTerm('');
   }, [pathName]);
 
-  // 최근 검색어 저장- 로컬 스토리지
-  // 검색어 말고 실제로 이동한 거만 해야겠다~
-  const recentResults = useCallback(() => {
-    //이미 저장된 검색어
-    const saveResults = localStorage.getItem('recentResults');
-    let currentResults: string[] = [];
-
-    if (saveResults) {
-      const updateResults = JSON.parse(saveResults);
-
-      //같은 거 삭제
-      currentResults = updateResults?.filter(
-        (item: string) => item !== debounceSearchTerm
-      );
-
-      //배열 3개로 유지 + 최신 바로 앞으로 넣기
-      currentResults = [debounceSearchTerm, ...currentResults];
-
-      if (currentResults.length > 3) {
-        currentResults = currentResults.slice(0, 3);
-      }
-    } else {
-      currentResults = [debounceSearchTerm];
-    }
-    localStorage.setItem('recentResults', JSON.stringify(currentResults));
-    setResults(currentResults);
-  }, [debounceSearchTerm]);
-
   //검색어 전송 분기 처리
   const submitSearchTerm = useCallback(async () => {
     if (debounceSearchTerm.trim() === '') {
@@ -144,11 +122,10 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       const data = await response.json();
       setResponse(data);
       setActiveIndex(-1);
-      recentResults();
     } catch (error) {
       console.log(error);
     }
-  }, [debounceSearchTerm, localFoodSide, marketSide, recentResults]);
+  }, [debounceSearchTerm, localFoodSide, marketSide]);
 
   // 계속해서 작동
   useEffect(() => {
@@ -174,9 +151,10 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     // 엔터
     else if (event.key === 'Enter') {
       // 방어 코딩
-      if (activeIndex >= 0 && activeIndex < response.length) {
-        console.log(response[activeIndex]);
-        LinkToItems(response[activeIndex]);
+      if (response && response.length > 0) {
+        // 0일 때 첫번째 항목 선택
+        const newActiveIndex = activeIndex === -1 ? 0 : activeIndex;
+        LinkToItems(response[newActiveIndex]);
       }
     }
   };
@@ -187,18 +165,73 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
     }
   }, [response]);
 
-  // 엔터로 이동하는 함수
+  // 최근 검색어 저장- 로컬 스토리지
+  const recentResults = useCallback((NewItem: SearchPageResults) => {
+    //이미 저장된 검색어
+    const savePageResults = localStorage.getItem('recentPageResults');
+    let currentPageResults: SearchPageResults[] = [];
+
+    if (savePageResults) {
+      const updatePageResults = JSON.parse(savePageResults);
+
+      //같은 거 삭제
+      currentPageResults = updatePageResults?.filter(
+        (item: SearchPageResults) => item.name !== NewItem.name
+      );
+
+      //배열 3개로 유지 + 최신 바로 앞으로 넣기
+      currentPageResults = [NewItem, ...currentPageResults];
+
+      if (currentPageResults.length > 3) {
+        currentPageResults = currentPageResults.slice(0, 3);
+      }
+    } else {
+      currentPageResults = [NewItem];
+    }
+    localStorage.setItem(
+      'recentPageResults',
+      JSON.stringify(currentPageResults)
+    );
+    setResults(currentPageResults);
+  }, []);
+
+  // 엔터로 이동하는 함수 + 최근 검색어 저장
   const LinkToItems = (item: Market | LocalFood) => {
+    let searchResults: SearchPageResults | null = null;
+    let redirectUrl: string | null = null;
+
+    if ('시장명' in item && 'id' in item) {
+      searchResults = {
+        name: item.시장명,
+        link: `/market/${item.id}`
+      };
+      redirectUrl = searchResults.link;
+    } else if ('food_name' in item && 'product_id' in item) {
+      searchResults = {
+        name: item.food_name,
+        link: `/local-food/${item.product_id}`
+      };
+      redirectUrl = searchResults.link;
+    }
+
+    if (searchResults) {
+      recentResults(searchResults);
+    }
+
+    if (redirectUrl) {
+      router.push(redirectUrl);
+    }
+
     setIsOpen(false);
     setActiveIndex(-1);
-    if ('food_name' in item) {
-      router.push(`/local-food/${item.product_id}`);
-    } else if ('시장명' in item) {
-      router.push(`/market/${item.id}`);
-    }
   };
 
-  console.log(results);
+  useEffect(() => {
+    const savedResults = localStorage.getItem('recentPageResults');
+    if (savedResults) {
+      setResults(JSON.parse(savedResults));
+    }
+  }, []);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -282,7 +315,11 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
             최근 검색어
           </div>
           {results?.map((item, index) => (
-            <div key={index}>{item}</div>
+            <Link href={item?.link} key={index}>
+              <div className="cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2]">
+                {item.name}
+              </div>
+            </Link>
           ))}
         </div>
 

@@ -21,7 +21,7 @@ const MarketSearchResult = ({
           <div
             onClick={() => setIsOpen(false)}
             className={`cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2] ${
-              index === activeIndex ? '!bg-[#AFACA7]' : 'bg-[#FEFEFE]'
+              index === activeIndex ? '!bg-[#F2F2F2]' : 'bg-[#FEFEFE]'
             }`}
             tabIndex={0}
           >

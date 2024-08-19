@@ -20,8 +20,8 @@ const LocalFoodSearchResult = ({
         <Link href={`/local-food/${item.product_id}`} key={item.product_id}>
           <div
             onClick={() => setIsOpen(false)}
-            className={`cursor-pointer px-3 py-[6px] text-base hover:bg-[#AFACA7] ${
-              index === activeIndex ? '!bg-[#AFACA7]' : 'bg-[#FEFEFE]'
+            className={`cursor-pointer px-3 py-[6px] text-base hover:bg-[#F2F2F2] ${
+              index === activeIndex ? '!bg-[#F2F2F2]' : 'bg-[#FEFEFE]'
             }`}
             tabIndex={0}
           >

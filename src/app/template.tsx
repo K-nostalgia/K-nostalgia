@@ -130,6 +130,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
   let showWebChat: boolean = true;
   let showWebTopButton: boolean = true;
 
+  // 회원가입, 로그인
   if (pathName === '/log-in' || pathName === '/sign-up') {
     showWebHeader = false;
     showFooter = false;
