@@ -69,7 +69,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            className={`bg-normal pl-[16px] pr-[44px] py-3 mr-2 border rounded-xl focus:outline-none text-primary-20 ${
+            className={`bg-[#FEFEFE] pl-[16px] pr-[44px] py-3 mr-2 border rounded-xl focus:outline-none text-primary-20 ${
               error ? 'border-red-500' : 'border-primary-strong'
             } ${
               name === 'email' || name === 'nickname'

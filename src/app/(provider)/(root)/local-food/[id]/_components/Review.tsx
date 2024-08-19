@@ -184,8 +184,8 @@ export const Review = ({ productId }: { productId: string }) => {
           <>
             <Image
               src={'/image/StateSad.png'}
-              width={100}
-              height={92}
+              width={113}
+              height={96}
               alt="default"
               className="mx-auto"
             />

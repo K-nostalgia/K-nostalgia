@@ -2,17 +2,15 @@
 
 import { Button } from '@/components/ui/button';
 import {
-  Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import ChatSendIcon from '../../icons/ChatSendIcon';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
 import { useUser } from '@/hooks/useUser';
@@ -20,6 +18,8 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
 import { GoArrowLeft } from 'react-icons/go';
+import { BsPersonExclamation } from 'react-icons/bs';
+import { debounce, throttle } from 'lodash';
 
 interface chatUserType {
   avatar: string;
@@ -32,6 +32,7 @@ interface chatMessageType {
   room_id: string;
   user_id: string;
   content: string;
+  isReported: boolean | null;
   users: chatUserType;
 }
 
@@ -115,13 +116,8 @@ export function SendChat({
   });
 
   // 유효성 검사 추가하기
-  const handleSendMessage = () => {
-    if (!user || !selectedChatRoom) {
-      return;
-    }
-
-    if (!messageRef.current?.value.trim()) {
-      console.log('메시지가 비어잇어흥.');
+  const handleSendMessage = useCallback(() => {
+    if (!user || !selectedChatRoom || !messageRef.current?.value.trim()) {
       return;
     }
 
@@ -132,11 +128,17 @@ export function SendChat({
     };
 
     sendMessageMutate.mutate(newMessage);
-  };
+  }, [user, selectedChatRoom, sendMessageMutate]);
+
+  // TODO 쓰로틀링 디바운싱 취사 선택!
+  const throttleSendMessage = useMemo(
+    () => debounce(handleSendMessage, 300),
+    [handleSendMessage]
+  );
 
   const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    handleSendMessage();
+    throttleSendMessage();
   };
 
   useEffect(() => {
@@ -148,7 +150,12 @@ export function SendChat({
       .channel(`room_${selectedChatRoom?.room_id}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat' },
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat',
+          filter: `room_${selectedChatRoom?.room_id}`
+        },
         (payload) => {
           queryClient.invalidateQueries({
             queryKey: ['chatData', selectedChatRoom?.room_id]
@@ -187,9 +194,25 @@ export function SendChat({
     setSelectedChatRoom(null);
   };
 
+  const handleReport = async (item: Tables<'chat'>) => {
+    if (confirm('신고하시겠습니까?')) {
+      console.log(item);
+      // 예일 경우 isReported true 로 업데이트
+      const response = await fetch('/api/chat/chat-send', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(item)
+      });
+
+      return response.json();
+    }
+  };
+
   return (
-    <DialogContent className="bg-normal w-[330px] rounded-[16px]">
-      <div className="border-b-2 w-[calc(100%+33px)] -mx-4">
+    <DialogContent className="bg-normal w-[330px] rounded-[16px] md:w-[608px] md:h-[840px]">
+      <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
             <button onClick={handleBackChatRoom}>
@@ -203,30 +226,24 @@ export function SendChat({
       </div>
 
       <div
-        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide"
+        className="py-4 h-[400px] flex-1 overflow-y-auto scrollbar-hide md:h-[694px]"
         ref={scrollDown}
       >
         {data?.map((item) => {
           return item.user_id === user?.id ? (
             // 나일 경우
             <div key={item.id} className="flex flex-col mb-3 w-full">
-              {item.users?.avatar ? (
-                <Image
-                  src={item.users?.avatar}
-                  alt={`${item.users?.nickname}의 프로필`}
-                  height={36}
-                  width={36}
-                  className="rounded-full ml-auto w-9 h-9"
-                />
-              ) : (
-                <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
-                  X
-                </div>
-              )}
-              <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-white bg-primary-strong w-fit px-3 py-2">
+              <Image
+                src={item.users?.avatar || '/image/profile.png'}
+                alt={`${item.users?.nickname || 'user'}의 프로필`}
+                height={36}
+                width={36}
+                className="rounded-full ml-auto w-9 h-9"
+              />
+              <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-label-light text-sm bg-primary-strong w-fit px-3 py-2 leading-[22.4px]">
                 {encoded(item.content)}
               </div>
-              <div className="text-xs text-label-assistive ml-auto mt-1">
+              <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2px]">
                 {formatDate(item.created_at)}
               </div>
             </div>
@@ -234,35 +251,36 @@ export function SendChat({
             // 다른 사람일 경우
             <div key={item.id} className="flex flex-col mb-3 w-full">
               <div className="flex gap-2">
-                {/* TODO null 일 경우 기본 이미지 태그로 바꾸기 */}
-                {item.users?.avatar ? (
-                  <Image
-                    src={item.users.avatar}
-                    alt={`${item.users.nickname}의 프로필`}
-                    height={36}
-                    width={36}
-                    className="rounded-full w-9 h-9"
-                  />
-                ) : (
-                  <div className="w-9 h-9 border-2 rounded-full flex items-center justify-center">
-                    X
-                  </div>
-                )}
+                <Image
+                  src={item.users.avatar || '/image/profile.png'}
+                  alt={`${item.users.nickname}의 프로필` || 'User의 프로필'}
+                  height={36}
+                  width={36}
+                  className="rounded-full w-9 h-9"
+                />
                 <div className="flex items-center font-semibold mr-auto">
                   {item.users?.nickname}
                 </div>
               </div>
-              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px]">
+              <div className="border border-primary-strong rounded-xl rounded-tl-none w-fit px-3 py-2 mt-[10px] text-sm leading-[22.4px] bg-[#FEFEFE]">
                 {encoded(item.content)}
               </div>
-              <div className="text-xs text-label-assistive mt-1">
-                {formatDate(item.created_at)}
+              <div className="text-xs text-label-assistive mt-1 leading-[19.2px] flex items-center">
+                <div>{formatDate(item.created_at)}</div>
+                <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
+                <div
+                  className="flex gap-1 justify-center cursor-pointer"
+                  onClick={() => handleReport(item)}
+                >
+                  <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
+                  <span>신고하기</span>
+                </div>
               </div>
             </div>
           );
         })}
       </div>
-      <div className="border-t-2 w-[calc(100%+33px)] -mx-4">
+      <div className="border-t-2 w-[calc(100%+32px)] -mx-4">
         <DialogFooter className="flex relative items-center">
           <form
             className="relative w-[90%] mx-auto items-center"
@@ -277,7 +295,7 @@ export function SendChat({
                     ? '메시지 보내기...'
                     : '향그리움의 가족만 이용할 수 있어요'
                 }
-                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base"
+                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-5 mb-1 text-base bg-[#FEFEFE]"
                 disabled={!user}
                 aria-label="메시지 입력"
               />

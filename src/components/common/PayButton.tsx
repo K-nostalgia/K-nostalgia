@@ -83,16 +83,14 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         products: product as any,
         redirectUrl:
           process.env.NODE_ENV === 'production'
-            ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+            ? `https://https://k-nostalgia-flame.vercel.app/check-payment?totalQuantity=${totalQuantity}`
             : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
         appScheme:
           process.env.NODE_ENV === 'production'
-            ? `https://k-nostalgia.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+            ? `https://https://k-nostalgia-flame.vercel.app/check-payment?totalQuantity=${totalQuantity}`
             : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
         noticeUrls: [
-          `https://k-nostalgia.vercel.app/api/payment/webhook`,
-          //TODO 테스트용 URL (추후 제거)
-          'https://134c-118-33-158-132.ngrok-free.app/api/payment/webhook'
+          `https://https://k-nostalgia-flame.vercel.app/api/payment/webhook`
         ],
 
         customer: {
@@ -142,7 +140,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
 
   const ButtonStylesObj: ButtonStylesObj = {
     '바로 구매하기':
-      'min-w-[165px] bg-primary-strong py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7',
+      'min-w-[165px] flex bg-primary-strong py-3 px-4 rounded-xl text-white max-w-[234px] w-screen justify-center items-center leading-7',
     '선택 상품 주문하기':
       'flex flex-1 w-[336px] h-[48px] py-[12px] px-[16px] justify-center items-center rounded-xl text-[#9C6D2E] font-semibold leading-7 border-[1px] border-[#9C6D2E]',
     '전체 상품 주문하기':
@@ -156,7 +154,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
     switch (text) {
       case '바로 구매하기':
         PayButtonStyle =
-          'min-w-[165px] bg-stone-200 py-3 px-4 rounded-xl text-white w-full text-center text-base leading-7';
+          'min-w-[165px] max-w-[234px] w-screen flex justify-center items-center bg-stone-200 py-3 px-4 rounded-xl text-white leading-7';
         break;
       case '선택 상품 주문하기':
         PayButtonStyle =

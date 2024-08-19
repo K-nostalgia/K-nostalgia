@@ -10,15 +10,15 @@ import Cookies from 'js-cookie';
 interface likeProps {
   marketId: number;
   userId: string;
-  className?: string; //
-  isBlack?: boolean; //
+  className?: string;
+  isBlack?: boolean;
 }
 
 export const LikeButton = ({
   marketId,
   userId,
-  className = '', //
-  isBlack = false //
+  className = '',
+  isBlack = false
 }: likeProps) => {
   const queryClient = useQueryClient();
   const { data: userData } = useUser();
@@ -156,14 +156,14 @@ export const LikeButton = ({
         <GoHeartFill
           style={{ color: '#DB3B3B' }}
           className={` transition-transform duration-300 ease-in-out hover:scale-110 ${
-            className ? className : 'w-[22px] h-[22px]' //
+            className ? className : 'w-[22px] h-[22px]'
           }`}
         />
       ) : (
         <GoHeart
           style={{ color: `${isBlack ? '#403D3A' : '#F6F5F3'}` }}
           className={` transition-transform duration-300 ease-in-out hover:scale-110 ${
-            className ? className : 'w-[22px] h-[22px]' //
+            className ? className : 'w-[22px] h-[22px]'
           }`}
         />
       )}

@@ -100,11 +100,11 @@ export function DataTable<TData, TValue>({
                   <div className="flex flex-col justify-center items-center h-[50vh]">
                     <Image
                       src="/image/StateSad.png"
-                      width={100}
-                      height={92}
+                      width={113}
+                      height={96}
                       priority
                       alt={`장바구니가 비었어요`}
-                      style={{ width: 100, height: 92 }}
+                      style={{ width: 113, height: 96 }}
                     />
                     <p className="text-label-assistive text-lg mt-4 font-medium">
                       장바구니가 비었어요

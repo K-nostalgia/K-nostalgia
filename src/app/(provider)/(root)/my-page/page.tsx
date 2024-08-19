@@ -1,17 +1,18 @@
 'use client';
-import { useUser } from '@/hooks/useUser';
-import React, { useEffect } from 'react';
-import Profile from './_components/Profile';
-import LikeMarket from './_components/LikeMarket';
-import OrderList_mypage from './_components/OrderList_mypage';
-import Coupon_mypage from './_components/Coupon_mypage';
-import Logout from './_components/Logout';
 import Loading from '@/components/common/Loading';
-import { useRouter } from 'next/navigation';
-import CancelUser from './_components/CancelUser';
 import useDeviceSize from '@/hooks/useDeviceSize';
-import { BsChevronRight } from 'react-icons/bs';
+import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { BsChevronRight } from 'react-icons/bs';
+import PayHistoryList from '../payment/_components/PayHistoryList';
+import CancelUser from './_components/CancelUser';
+import Coupon_mypage from './_components/Coupon_mypage';
+import LikeMarket from './_components/LikeMarket';
+import Logout from './_components/Logout';
+import OrderList_mypage from './_components/OrderList_mypage';
+import Profile from './_components/Profile';
 
 const Mypage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -41,8 +42,8 @@ const Mypage = () => {
     <div className="md:flex md:flex-row md:max-w-[1280px]">
       {/* 오른쪽 사이드 */}
       {isDesktop ? (
-        <div className="flex flex-col">
-          <div className="w-[749px] flex justify-between items-end">
+        <div className="flex w-full flex-col">
+          <div className="w-full flex justify-between items-end mt-10">
             <Image
               src="/image/like_tiger.png"
               alt="관심전통시장 "
@@ -61,8 +62,8 @@ const Mypage = () => {
           <LikeMarket />
           <div className="border-4 border-[#F2F2F2] mt-4 w-full" />
 
-          <div className="flex flex-col">
-            <div className="w-[749px] flex justify-between items-end">
+          <div className="flex flex-col w-full">
+            <div className="w-full flex justify-between items-end">
               <Image
                 src="/image/coupon_tiger.png"
                 alt="마이페이지 쿠폰호랑이 "
@@ -80,7 +81,7 @@ const Mypage = () => {
             </div>
 
             <Image
-              src={user?.coupon || '쿠폰이 없어요'}
+              src={user?.coupon || '/image/StateSad'}
               alt="profile"
               width={343}
               height={161}
@@ -89,6 +90,9 @@ const Mypage = () => {
             />
 
             <div className="border-4  border-[#F2F2F2] mt-10" />
+          </div>
+          <div>
+            <PayHistoryList />
           </div>
         </div>
       ) : (

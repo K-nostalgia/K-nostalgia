@@ -1,16 +1,8 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog';
-import { useEffect, useRef, useState } from 'react';
+import { Dialog, DialogTrigger } from '@/components/ui/dialog';
+import { useState } from 'react';
 import ChatIcon from '../icons/ChatIcon';
 import ChatList from './_component/ChatList';
 import { Tables } from '@/types/supabase';

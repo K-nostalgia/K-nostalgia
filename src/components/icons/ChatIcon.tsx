@@ -2,7 +2,7 @@ import React from 'react';
 
 const ChatIcon = () => {
   return (
-    <div className="flex items-center justify-center rounded-full bg-primary-60 shadow w-10 h-10 z-50">
+    <div className="flex items-center justify-center rounded-full bg-primary-60 shadow w-10 h-10 z-50 hover:bg-primary-40">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="28"

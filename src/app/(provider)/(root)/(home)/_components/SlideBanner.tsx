@@ -70,8 +70,8 @@ export const SlideBanner = ({ images }: marketProps) => {
                 <>
                   <Image
                     src={'/image/StateSad.png'}
-                    width={100}
-                    height={92}
+                    width={113}
+                    height={96}
                     alt="default"
                     className="mx-auto"
                   />
