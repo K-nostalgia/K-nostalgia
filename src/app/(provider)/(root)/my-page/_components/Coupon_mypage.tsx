@@ -11,8 +11,11 @@ const Coupon_mypage = () => {
   };
 
   return (
-    <div className="p-4">
-      <div className="flex items-center py-[3px]" onClick={handleCouponClick}>
+    <div className="p-4 ">
+      <div
+        className="flex items-center py-[3px] cursor-pointer"
+        onClick={handleCouponClick}
+      >
         <PiTicketLight className="mr-[8px] text-label-normal text-[20px]" />
         <span className="text-[16px]"> 할인 쿠폰 </span>
         <BsChevronRight className="ml-auto text-[#545454] cursor-pointer" />
