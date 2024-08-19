@@ -18,6 +18,7 @@ import {
   PaginationPrevious
 } from '@/components/ui/pagination';
 import { RiArrowLeftDoubleFill, RiArrowRightDoubleFill } from 'react-icons/ri';
+import useDeviceSize from '@/hooks/useDeviceSize';
 
 type UserType = {
   name: string;
@@ -43,6 +44,7 @@ type ReviewDataType = {
 export const Review = ({ productId }: { productId: string }) => {
   const { data: userData } = useUser();
   const queryClient = useQueryClient();
+  const { isDesktop } = useDeviceSize();
   const [currentPage, setCurrentPage] = useState(1);
   const limit = 10;
 
@@ -200,7 +202,11 @@ export const Review = ({ productId }: { productId: string }) => {
 
       {/* 작성된 리뷰가 없을 경우 페이지네이션 숨김처리 */}
       {reviewData.reviews && reviewData.reviews.length > 0 && (
-        <Pagination>
+        <Pagination
+          className={`${
+            isDesktop ? 'mb-0' : 'mb-[5rem]'
+          } max-w-screen-xl mx-auto`}
+        >
           <PaginationContent>
             <PaginationItem>
               <PaginationLink

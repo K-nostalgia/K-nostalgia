@@ -7,7 +7,7 @@ interface SkeletonProps {
 
 export function SkeletonCard({ columns, count }: SkeletonProps) {
   return (
-    <div className={`w-full grid grid-cols-${columns} gap-4`}>
+    <div className={`grid grid-cols-${columns} gap-4 mx-4 md:mx-0`}>
       {Array.from({ length: count }).map((_, index) => (
         <div key={index} className="flex flex-col space-y-3">
           <Skeleton
@@ -19,7 +19,7 @@ export function SkeletonCard({ columns, count }: SkeletonProps) {
           />
           <div
             className={`${
-              columns === 1 ? 'w-[351px]' : 'w-auto'
+              columns === 1 ? 'w-[351px]' : 'w-full'
             } space-y-2 mx-auto`}
           >
             <Skeleton className="h-4 w-full rounded-xl bg-label-disable" />
