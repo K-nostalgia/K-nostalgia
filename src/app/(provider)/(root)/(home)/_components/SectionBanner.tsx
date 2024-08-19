@@ -3,7 +3,9 @@
 import {
   Carousel,
   CarouselContent,
-  CarouselItem
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext
 } from '@/components/ui/carousel';
 import { type CarouselApi } from '@/components/ui/carousel';
 import { banners, webBanners } from '@/lib/banners';
@@ -70,10 +72,17 @@ export const SectionBanner = () => {
           ))}
         </CarouselContent>
         <div
-          className={`absolute right-4 translate-x-[-10%] bottom-[1rem] translate-y-0 px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium 
-        `}
+          className={`absolute right-4 translate-x-[-10%] bottom-[1rem] translate-y-0 `}
         >
-          {`${current} / ${count}`}
+          {isDesktop ? (
+            <div className="flex gap-2 px-3 py-2 rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">
+              <CarouselPrevious />
+              {`${current} / ${count}`}
+              <CarouselNext />
+            </div>
+          ) : (
+            <div className="px-[10px] py-[2px] rounded-[16px] bg-[rgba(0,0,0,.24)] text-center text-label-light text-xs font-medium">{`${current} / ${count}`}</div>
+          )}
         </div>
       </Carousel>
     </div>
