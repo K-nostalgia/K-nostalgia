@@ -42,6 +42,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   >(null);
   const [results, setResults] = useState<SearchPageResults[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
+  console.log('activeIndex', activeIndex);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
 
@@ -93,7 +94,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   const submitSearchTerm = useCallback(async () => {
     if (debounceSearchTerm.trim() === '') {
       setResponse([]);
-      setActiveIndex(-1);
+      // setActiveIndex(-1);
       return;
     }
 
@@ -121,7 +122,7 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
       );
       const data = await response.json();
       setResponse(data);
-      setActiveIndex(-1);
+      // setActiveIndex(-1);
     } catch (error) {
       console.log(error);
     }
@@ -131,39 +132,9 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   useEffect(() => {
     if (debounceSearchTerm) {
       submitSearchTerm();
+      // setActiveIndex(0);
     }
   }, [debounceSearchTerm, submitSearchTerm]);
-
-  // 키보드 키로 검색어 이동
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (response === null || response.length === 0) return;
-
-    // 위 화살표
-    if (event.key === 'ArrowUp') {
-      setActiveIndex((prev) => (prev <= 0 ? prev : prev - 1));
-    }
-    // TODO 아래 화살표 뭔가 뭔가 이상함;;;
-    else if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      setActiveIndex((prev) => (prev >= response.length - 1 ? prev : prev + 1));
-      console.log(activeIndex);
-    }
-    // 엔터
-    else if (event.key === 'Enter') {
-      // 방어 코딩
-      if (response && response.length > 0) {
-        // 0일 때 첫번째 항목 선택
-        const newActiveIndex = activeIndex === -1 ? 0 : activeIndex;
-        LinkToItems(response[newActiveIndex]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    if (response && response.length > 0) {
-      setActiveIndex(-1);
-    }
-  }, [response]);
 
   // 최근 검색어 저장- 로컬 스토리지
   const recentResults = useCallback((NewItem: SearchPageResults) => {
@@ -196,35 +167,78 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   }, []);
 
   // 엔터로 이동하는 함수 + 최근 검색어 저장
-  const LinkToItems = (item: Market | LocalFood) => {
-    let searchResults: SearchPageResults | null = null;
-    let redirectUrl: string | null = null;
+  const LinkToItems = useCallback(
+    (item: Market | LocalFood) => {
+      let searchResults: SearchPageResults | null = null;
+      let redirectUrl: string | null = null;
 
-    if ('시장명' in item && 'id' in item) {
-      searchResults = {
-        name: item.시장명,
-        link: `/market/${item.id}`
-      };
-      redirectUrl = searchResults.link;
-    } else if ('food_name' in item && 'product_id' in item) {
-      searchResults = {
-        name: item.food_name,
-        link: `/local-food/${item.product_id}`
-      };
-      redirectUrl = searchResults.link;
-    }
+      if ('시장명' in item && 'id' in item) {
+        searchResults = {
+          name: item.시장명,
+          link: `/market/${item.id}`
+        };
+        redirectUrl = searchResults.link;
+      } else if ('food_name' in item && 'product_id' in item) {
+        searchResults = {
+          name: item.food_name,
+          link: `/local-food/${item.product_id}`
+        };
+        redirectUrl = searchResults.link;
+      }
 
-    if (searchResults) {
-      recentResults(searchResults);
-    }
+      if (searchResults) {
+        recentResults(searchResults);
+      }
 
-    if (redirectUrl) {
-      router.push(redirectUrl);
-    }
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      }
 
-    setIsOpen(false);
-    setActiveIndex(-1);
-  };
+      setIsOpen(false);
+      setActiveIndex(0);
+    },
+    [recentResults, router, setIsOpen]
+  );
+
+  // 키보드 키로 검색어 이동
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      console.log('함수 호출!');
+      if (response === null || response.length === 0) return;
+
+      // 위 화살표
+      if (event.key === 'ArrowUp') {
+        console.log('up');
+        setActiveIndex((prev) => (prev <= 0 ? prev : prev - 1));
+      }
+      // TODO 아래 화살표
+      else if (event.key === 'ArrowDown') {
+        console.log('down');
+        event.stopPropagation();
+        setActiveIndex((prev) =>
+          prev >= response.length - 1 ? prev : prev + 1
+        );
+      }
+
+      // 엔터
+      else if (event.key === 'Enter') {
+        console.log('enter');
+        // 방어 코딩
+        if (response && response.length > 0) {
+          // 0일 때 첫번째 항목 선택
+          const newActiveIndex = activeIndex === -1 ? 0 : activeIndex;
+          LinkToItems(response[newActiveIndex]);
+        }
+      }
+    },
+    [LinkToItems, activeIndex, response]
+  );
+
+  // useEffect(() => {
+  //   if (response && response.length > 0) {
+  //     setActiveIndex(-1);
+  //   }
+  // }, [response]);
 
   useEffect(() => {
     const savedResults = localStorage.getItem('recentPageResults');

@@ -144,6 +144,10 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showWebChat = false;
     showWebTopButton = false;
   }
+  // 프로필 에딧
+  else if (pathName === '/profile-edit') {
+    showFooter = false;
+  }
   /* 데스크탑 레이아웃 끝*/
 
   return isDesktop ? (
