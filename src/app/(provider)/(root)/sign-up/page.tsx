@@ -29,13 +29,12 @@ const SignUpPage = () => {
           </div>
 
           <div className="w-[692px] h-[830px] flex flex-col">
-            <div className="flex flex-row items-center justify-center pt-[100px] pb-4">
+            <div className="flex flex-row items-center justify-center pt-[90px] pb-4">
               <TitleLogo />
-              <p className="text-2xl ml-2 text-primary-10">
+              <p className="text-2xl ml-2 mt-2 text-primary-10">
                 의 가족이 될 준비 되셨나요?
               </p>
             </div>
-
             <DesktopSignUpLayout />
           </div>
         </div>
