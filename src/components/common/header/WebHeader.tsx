@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import api from '@/service/service';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from '@/components/ui/use-toast';
 
 interface headerNavType {
   path: string;
@@ -55,7 +56,18 @@ const WebHeader = () => {
 
   const handleNaviBox = (index: number) => {
     if (isLoading) return;
-    if (index === currentIndex) return;
+
+    // 디테일 페이지에서 전체 보드로 이동/그 외의 경우 return
+    if (index === currentIndex) {
+      // 디테일 페이지일 경우 전체 리스트 페이지로 이동
+      if (pathName.startsWith('/market/')) {
+        router.push('/market');
+      } else if (pathName.startsWith('/local-food/')) {
+        router.push('/local-food');
+      }
+      return;
+    }
+
     setIsLoading(true);
 
     // 홈 = 0 일 때는 무조건 양수 : 4, 2
@@ -97,6 +109,10 @@ const WebHeader = () => {
     try {
       await api.auth.logOut();
       queryClient.invalidateQueries();
+      toast({
+        variant: 'destructive',
+        description: '로그아웃 되었습니다.'
+      });
       router.push('/log-in');
     } catch (err) {
       console.log('로그아웃 에러');
@@ -192,7 +208,7 @@ const WebHeader = () => {
                   할인쿠폰
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => router.push('/my-page/payment')}
+                  onClick={() => router.push('/payment')}
                   className="cursor-pointer"
                 >
                   주문 내역

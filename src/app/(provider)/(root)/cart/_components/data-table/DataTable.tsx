@@ -97,7 +97,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  <div className="flex flex-col justify-center items-center h-[50vh]">
+                  <div className="flex flex-col justify-center items-center h-[40vh]">
                     <Image
                       src="/image/StateSad.png"
                       width={113}

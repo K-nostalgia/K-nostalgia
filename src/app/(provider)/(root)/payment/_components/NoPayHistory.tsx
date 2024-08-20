@@ -5,7 +5,11 @@ import { usePathname } from 'next/navigation';
 const NoPayHistory = () => {
   const pathName = usePathname();
   return (
-    <div className="w-full md:w-[60vw] flex flex-col  gap-[16px] border-t-4 border-[#FFFFFF] min-w-[375px] max-w-[737px]  md:mt-10">
+    <div
+      className={`w-full md:w-[60vw] flex flex-col  gap-[16px] min-w-[375px] max-w-[737px] ${
+        pathName === '/payment' && 'md:mt-10'
+      }`}
+    >
       <div
         className={`hidden py-10 border-b-8 border-[#F2F2F2] md:flex md:justify-between ${
           pathName === '/my-page' && 'border-none'
@@ -13,13 +17,17 @@ const NoPayHistory = () => {
       >
         <img src="/image/pay_history_tiger.png" alt="복숭아 든 귀여운 호랑이" />
       </div>
-      <div className="py-auto flex justify-center items-center flex-col h-[95vh] md:h-[68vh]">
+      <div
+        className={`my-auto flex justify-center items-center flex-col ${
+          pathName === '/payment' ? 'md:h-[68vh]' : 'mb-[80px]'
+        }`}
+      >
         <Image
           src="/image/StateSad.png"
           alt="주문 내역 없음"
-          width={100}
-          height={100}
-          className="w-[100px] h-[100px] mx-auto"
+          width={114}
+          height={97}
+          className="w-[114px] h-[97px]"
         />
         <p className="text-[18px] text-[#AFACA7] font-medium">
           주문 내역이 없어요

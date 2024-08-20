@@ -14,12 +14,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Autoplay from 'embla-carousel-autoplay';
 import useDeviceSize from '@/hooks/useDeviceSize';
+import Cookies from 'js-cookie';
 
 export const SectionBanner = () => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const { isDesktop } = useDeviceSize();
+  const guestCookie = Cookies.get('guest') === 'true';
 
   useEffect(() => {
     if (!api) {
@@ -35,7 +37,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div className={` max-w-screen-xl mx-auto ${isDesktop && 'mt-20'}`}>
+    <div className={` max-w-screen-xl mx-auto mt-16 ${isDesktop && 'mt-20'}`}>
       <Carousel
         setApi={setApi}
         plugins={[
@@ -51,7 +53,9 @@ export const SectionBanner = () => {
               className="flex justify-center items-center relative w-full"
             >
               <Link
-                href={index === 1 ? '/my-page/coupon-page' : '#'}
+                href={
+                  !guestCookie && index === 1 ? '/my-page/coupon-page' : '#'
+                }
                 className="flex-1"
               >
                 <Image

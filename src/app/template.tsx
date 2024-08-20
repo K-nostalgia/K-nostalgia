@@ -75,7 +75,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showSearch = false;
   }
   // 회원가입
-  else if (pathName === '') {
+  else if (pathName === '/sign-up') {
     showHeader = false;
     showSearch = false;
     showCart = false;

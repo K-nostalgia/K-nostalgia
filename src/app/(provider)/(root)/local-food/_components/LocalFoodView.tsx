@@ -71,7 +71,7 @@ const LocalFoodView = () => {
         </div>
       )}
 
-      <div className="flex gap-2 items-center py-3 px-4 fixed md:static md:py-0 lg:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
+      <div className="flex gap-2 items-center py-3 px-4 fixed md:static md:py-0 md:p-0 top-[52px] bg-normal overflow-x-auto w-full whitespace-nowrap filter-button-container ">
         {categoryList.map((category) => (
           <FilterButton
             key={category}
@@ -109,7 +109,7 @@ const LocalFoodView = () => {
           )}
         </div>
       ) : (
-        <div className="mx-4 mt-4 md:mx-0">
+        <div className="mx-4 mt-9 md:mx-0">
           {filteredFoodData?.length === 0 ? (
             <div className="md:h-[60vh] flex justify-center items-center">
               {isDesktop ? (
