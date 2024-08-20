@@ -1,11 +1,24 @@
 import Link from 'next/link';
 import { BsCheck2 } from 'react-icons/bs';
+import Cookies from 'js-cookie';
+import { toast } from '@/components/ui/use-toast';
 
 interface CartModalProps {
   handleCartModalClose: () => void;
 }
 
 export const CartModal = ({ handleCartModalClose }: CartModalProps) => {
+  const guestCookie = Cookies.get('guest') === 'true';
+
+  const handleGuest = () => {
+    if (guestCookie) {
+      toast({
+        variant: 'destructive',
+        description: '로그인 후 이용해주세요'
+      });
+      return;
+    }
+  };
   return (
     <div className="flex flex-col justify-center items-center text-center fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] rounded-[16px] z-10 bg-normal w-[330px] h-[358px]">
       <div>
@@ -28,8 +41,11 @@ export const CartModal = ({ handleCartModalClose }: CartModalProps) => {
           >
             계속 쇼핑하기
           </button>
-          <Link href={'/cart'}>
-            <button className="text-base font-medium text-label-assistive underline py-2">
+          <Link href={!guestCookie ? '/cart' : ''}>
+            <button
+              onClick={handleGuest}
+              className="text-base font-medium text-label-assistive underline py-2"
+            >
               장바구니로 이동
             </button>
           </Link>
