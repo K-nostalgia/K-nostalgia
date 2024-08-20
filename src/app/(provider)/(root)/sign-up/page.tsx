@@ -6,7 +6,7 @@ import TitleLogo from '@/components/icons/TitleLogo';
 
 const SignUpPage = () => {
   return (
-    <div className="md:bg-primary-20 w-full h-screen flex flex-col justify-center">
+    <div className="md:bg-primary-20 md:w-full md:h-screen flex flex-col justify-center">
       {/* 모바일 */}
       <div className="w-full md:hidden">
         <SignUpContainer />
@@ -14,7 +14,7 @@ const SignUpPage = () => {
 
       {/* 데스크탑*/}
       <div className="hidden md:flex flex-col items-center flex-1 overflow-hidden py-[72px]">
-        <div className="flex w-[60%] h-full bg-normal rounded-[20px] mx-auto">
+        <div className="flex w-[80%] h-full bg-normal rounded-[20px] mx-auto">
           <div className="flex-1 flex flex-col justify-center items-center">
             <Image
               src="/image/Tigernew.png"

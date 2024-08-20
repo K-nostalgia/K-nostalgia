@@ -133,15 +133,14 @@ export function SendChat({
     sendMessageMutate.mutate(newMessage);
   }, [user, selectedChatRoom, sendMessageMutate]);
 
-  // TODO 쓰로틀링 디바운싱 취사 선택!
-  const throttleSendMessage = useMemo(
+  const debounceSendMessage = useMemo(
     () => debounce(handleSendMessage, 300),
     [handleSendMessage]
   );
 
   const handleSubmitMessage = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    throttleSendMessage();
+    debounceSendMessage();
   };
 
   useEffect(() => {
@@ -243,7 +242,7 @@ export function SendChat({
       </div>
 
       <div
-        className="py-4 h-[479px] flex-1 overflow-y-auto scrollbar-hide md:h-[564px]"
+        className="py-4 h-[495px] flex-1 overflow-y-auto scrollbar-hide md:h-[564px] md:px-2"
         ref={scrollDown}
       >
         {data
@@ -320,7 +319,7 @@ export function SendChat({
                     ? '메시지 보내기...'
                     : '향그리움의 가족만 이용할 수 있어요'
                 }
-                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-4 mb-1 text-base bg-[#FEFEFE]"
+                className="pr-12 rounded-xl border border-primary-strong placeholder:text-label-assistive mt-3 mb-1 text-base bg-[#FEFEFE] md:mt-4"
                 disabled={!user}
                 aria-label="메시지 입력"
               />

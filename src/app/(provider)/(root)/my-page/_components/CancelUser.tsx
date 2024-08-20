@@ -13,11 +13,13 @@ const CancelUser = () => {
     try {
       Swal.fire({
         title: '정말 향그리움을 나가시겠습니까?',
-        icon: 'warning',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 탈퇴 시에는 계정 복구가 불가해요</div>
+      `,
         showCancelButton: true,
         confirmButtonColor: '#f2f2f2',
         cancelButtonColor: '#9C6D2E',
-        cancelButtonText: '취소하기',
+        cancelButtonText: '취소',
         confirmButtonText: '탈퇴하기'
       }).then(async (result) => {
         if (result.isConfirmed) {
@@ -43,12 +45,12 @@ const CancelUser = () => {
   };
   return (
     <div className="p-4">
-      <div className="flex items-center py-[3px]">
+      <div
+        className="flex items-center py-[3px] cursor-pointer"
+        onClick={handleDeleteUser}
+      >
         <BsTrash3 className="mr-[8px] text-label-normal text-[20px]" />
-        <div onClick={handleDeleteUser} className="cursor-pointer">
-          {' '}
-          회원탈퇴{' '}
-        </div>
+        <div className="cursor-pointer"> 회원탈퇴 </div>
       </div>
     </div>
   );

@@ -217,7 +217,7 @@ const LikeMarketPage = () => {
                               marketId={market.id}
                               userId={userData?.id}
                               className="w-[20px] h-[20px] ml-auto"
-                              isBlack
+                              isBlack={false}
                             />
                           )}
                         </div>

@@ -41,6 +41,20 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
   }, [id]);
 
   useEffect(() => {
+    if (id) {
+      const storedMarkets = localStorage.getItem('recentMarkets');
+      const recentMarkets = storedMarkets ? JSON.parse(storedMarkets) : [];
+
+      const updatedMarkets = [
+        id,
+        ...recentMarkets.filter((item: number) => item !== id)
+      ].slice(0, 3);
+
+      localStorage.setItem('recentMarkets', JSON.stringify(updatedMarkets));
+    }
+  }, [id]);
+
+  useEffect(() => {
     const fetchImage = async () => {
       setLoading(true);
     };
