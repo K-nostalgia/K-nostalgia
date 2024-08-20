@@ -52,7 +52,7 @@ const LikeMarketPage = () => {
   return (
     <div className="m-4 ">
       {/* 앱버전 */}
-      <div className="mt-20">
+      <div className="mt-20 mb-40">
         <div className="block md:hidden">
           {markets.length > 0 ? (
             markets.map((market, index) => (
@@ -110,16 +110,16 @@ const LikeMarketPage = () => {
       </div>
 
       {/* 웹버전 */}
-      <div className="hidden md:block md:mt-20">
+      <div className="hidden md:block md:mt-10">
         <Image
-          src="/image/like_tiger.png"
+          src="/image/LikeMarket.png"
           alt="관심전통시장 "
-          width={163}
+          width={141}
           height={88}
-          className="w-[163px] h-[88px] mt-10 mb-10"
+          className="w-[163px] h-[88px] mt-10"
         />
 
-        <div className="border-2 border-[#F2F2F2] mb-6 w-full" />
+        <div className="border-2 mt-10 border-[#F2F2F2] mb-6 w-full" />
 
         {markets.length > 0 ? (
           markets.map((market, index) => (

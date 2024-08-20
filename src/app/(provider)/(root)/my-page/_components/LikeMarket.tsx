@@ -74,7 +74,7 @@ const LikeMarket = () => {
         <>
           {/* 앱버전일때 Swiper */}
           <div className="md:hidden">
-            <Swiper spaceBetween={10} slidesPerView={1} className="w-[328px]">
+            <Swiper spaceBetween={10} slidesPerView={1.1} className="w-[328px]">
               {markets.map((market, index) => (
                 <SwiperSlide key={market.id || index}>
                   <div className="border border-secondary-50 rounded-xl mt-1 p-3 flex flex-col w-full h-[204px]">
@@ -99,26 +99,26 @@ const LikeMarket = () => {
                       </div>
                     </div>
 
-                    <div className="mt-2 mb-3 flex gap-2 relative flex-1 ">
+                    <div className="mt-2 mb-3 flex gap-2 relative flex-1">
                       {market.이미지 ? (
                         <>
-                          <div>
-                            <Image
+                          <div className="flex-1">
+                            <MarketImage
                               src={market.이미지[1]}
                               alt={`${market.시장명 || '시장'} 이미지`}
                               width={148}
                               height={130}
-                              className="!w-[148px] !h-[130px] object-cover"
+                              className="w-full !h-[130px] object-cover"
                             />
                           </div>
 
-                          <div>
-                            <Image
+                          <div className="flex-1">
+                            <MarketImage
                               src={market.이미지[2]}
                               alt={`${market.시장명 || '시장'} 이미지`}
                               width={148}
                               height={130}
-                              className="!w-[148px] !h-[130px] object-cover "
+                              className="w-full !h-[130px] object-cover"
                             />
                           </div>
                         </>
