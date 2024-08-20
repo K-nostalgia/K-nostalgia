@@ -37,19 +37,23 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
   if (loading) return <p>로딩중...</p>;
 
   return (
-    <div className="pb-8 w">
+    <div className="pb-8 md:mt-20 md:mb-10">
       <div className="px-4 py-8 text-center">
-        <span className="text-xl font-semibold text-secondary-10">
+        <p className="text-xl font-semibold text-secondary-10 relative md:text-2xl">
           주변 추천 전통시장
-        </span>
-        <span
-          className="bottom-[-1px] h-[10px]"
-          style={{ backgroundColor: 'rgba(183, 203, 174, 0.40)' }}
-        ></span>
+          <span
+            className="absolute left-[50%] translate-x-[-50%] bottom-0 w-[9rem] h-[10px] "
+            style={{ backgroundColor: 'rgba(183, 203, 174, 0.40)' }}
+          ></span>
+        </p>
       </div>
       {isMobile ? (
-        <div className="overflow-x-hidden scrollbar-hide">
-          <Swiper spaceBetween={16} slidesPerView={1.1} className="w-[328px]">
+        <div className="ml-4 overflow-x-hidden scrollbar-hide">
+          <Swiper
+            spaceBetween={16}
+            slidesPerView={1.1}
+            className="w-full max-w-[768px]"
+          >
             {markets.map((market, index) => (
               <SwiperSlide key={market.id || index}>
                 <div
@@ -89,7 +93,7 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
                       {market.이미지.slice(0, 2).map((imgSrc, index) => (
                         <div
                           key={index}
-                          className={`rounded-[8px] relative w-[148px] h-[130px] ${
+                          className={`rounded-[8px] relative w-full h-[130px] ${
                             index === 0
                               ? 'rounded-l-[8px] rounded-r-none'
                               : 'rounded-r-[8px] rounded-l-none'
@@ -122,6 +126,11 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
             spaceBetween={25}
             slidesPerView={3.1}
             className="w-full max-w-[1280px] ml-auto"
+            breakpoints={{
+              640: { slidesPerView: 1.5, spaceBetween: 20 },
+              768: { slidesPerView: 2.5, spaceBetween: 22 },
+              1024: { slidesPerView: 3.1, spaceBetween: 25 }
+            }}
           >
             {markets.map((market, index) => (
               <SwiperSlide key={market.id || index}>
@@ -162,7 +171,7 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
                       {market.이미지.slice(0, 2).map((imgSrc, index) => (
                         <div
                           key={index}
-                          className={`rounded-[8px] relative w-[148px] h-[130px] ${
+                          className={`rounded-[8px] relative w-[185px] h-[175px]  ${
                             index === 0
                               ? 'rounded-l-[8px] rounded-r-none'
                               : 'rounded-r-[8px] rounded-l-none'
