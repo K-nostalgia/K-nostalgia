@@ -84,7 +84,7 @@ const MarketLikes = ({ userId, marketId, pixel }: MarketLikesPropsType) => {
   if (isPending) {
     return (
       <div className={`w-${pixel} h-${pixel}`}>
-        <GoHeart className={`w-full h-full text-[#545454]`} />
+        <GoHeart className={`w-full h-full text-[#545454] md:text-white`} />
       </div>
     );
   }
@@ -92,10 +92,11 @@ const MarketLikes = ({ userId, marketId, pixel }: MarketLikesPropsType) => {
   if (!userId) {
     return (
       <button onClick={() => handleHeart()} className={`w-${pixel} h-${pixel}`}>
-        <GoHeart className={`w-full h-full text-[#545454]`} />
+        <GoHeart className={`w-full h-full text-[#545454] md:text-white`} />
       </button>
     );
   }
+
   return (
     <div className={`w-${pixel} h-${pixel}`}>
       <button onClick={() => handleHeart()} className={`w-full h-full`}>

@@ -8,7 +8,9 @@ import {
 } from '@tanstack/react-query';
 import { LogIn } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { IoIosLogIn } from 'react-icons/io';
 import { IoSend } from 'react-icons/io5';
 import Swal from 'sweetalert2';
 
@@ -30,6 +32,7 @@ type userCommentType = {
 };
 
 const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
+  const router = useRouter();
   const [comment, setComment] = useState('');
   const [updatedComment, setUpdatedComment] = useState('');
   const [editMode, setEditMode] = useState<string[]>([]);
@@ -41,11 +44,16 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
 
   const createComment = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userId) {
+      router.push('log-in');
+      return;
+    }
+    // 유효성 검사 넣어주기 comment가 없을 때 최대 최소 길이
     const response = await fetch(`/api/market/comment/${marketId}`, {
       method: 'POST',
       body: JSON.stringify(newComment)
     });
-    console.log('디테일 response____', response);
+    // console.log('디테일 response____', response);
 
     if (response.ok) {
       setComment('');
@@ -64,7 +72,7 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   const getComments = async () => {
     const response = await fetch(`/api/market/comment/${marketId}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     return data;
   };
 
@@ -95,6 +103,7 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   });
 
   const updateComment = async (commentId: string) => {
+    // 유효성 검사 넣어주기 updatedComment가 없을 때랑 최대 최소 길이
     const response = await fetch(`/api/market/comment/${marketId}`, {
       method: 'PATCH',
       body: JSON.stringify({ comment: updatedComment, commentId })
@@ -145,34 +154,64 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
   }
 
   return (
-    <div className="mt-6 mb-48 md:max-w-[860px] px-4 mx-auto">
-      <p className="text-label-strong font-semibold text-base pl-1 ml-4 mb-2">
+    <div className="mt-6 mb-48 px-3 md:max-w-[860px] md:mx-auto">
+      <p className="text-label-strong font-semibold text-base mx-2 mb-2 md:pl-1">
         댓글
       </p>
       <form
-        className="bg-[#fefefe] w-[346px] md:w-full h-12 mx-4 pl-4 py-3 mb-1 border rounded-xl border-primary-20 flex items-center"
+        className="bg-[#fefefe] w-full md:w-full h-12 mx-1 pl-4 pr-3 py-3 mb-1 border rounded-xl border-primary-20 flex items-center md:pr-0"
         onSubmit={createCommentsMutate}
       >
         <input
           onChange={(e) => setComment(e.target.value)}
           value={comment}
           type="text"
-          placeholder="댓글을 입력해 주세요"
+          placeholder={
+            userId ? '댓글을 입력해 주세요' : '로그인 후 댓글을 입력해주세요'
+          }
           className="outline-none placeholder:text-[15px] placeholder:text-label-assistive text-[15px] font-normal 
-          text-label-strong bg-[#FEFEFE] flex-1 w-[283px] h-auto mr-1 "
+          text-label-strong bg-[#FEFEFE] flex-1 w-90% h-auto mr-1 "
+          disabled={!userId}
         />
-        <button className="flex w-6 h-6 p-[2px] items-center justify-center md:hidden">
-          <IoSend className="w-5 h-5 text-primary-20" />
+        <button
+          className="flex w-6 h-6 p-[2px] items-center justify-center md:hidden"
+          type={userId ? 'submit' : 'button'}
+          onClick={() => {
+            if (!userId) {
+              router.push('/log-in');
+              return;
+            }
+          }}
+        >
+          {userId ? (
+            <IoSend className="w-5 h-5 mr-1 text-primary-20" />
+          ) : (
+            <div className="w-8 h-8 p-1">
+              <IoIosLogIn className="w-6 h-6 text-[#545454]" />
+            </div>
+          )}
         </button>
-        <button className="hidden md:flex px-5 py-3 bg-primary-20 text-white w-[68px] items-center justify-center rounded-r-xl">
-          등록
+        <button
+          className="hidden md:flex px-[14.5px] py-3 bg-primary-20 text-sm text-white w-[68px] h-[48px] items-center justify-center rounded-r-xl"
+          type={userId ? 'submit' : 'button'}
+          onClick={() => {
+            if (!userId) {
+              router.push('/log-in');
+              return;
+            }
+          }}
+        >
+          {userId ? '등록' : '로그인'}
         </button>
       </form>
-      <div className="flex flex-col p-3 gap-3">
+      <div className="flex flex-col py-3 gap-3">
         {comments?.length ? (
           comments?.map((comment) => {
             return (
-              <div key={comment.id} className="border-b-2 border-[#F2F2F2]">
+              <div
+                key={comment.id}
+                className="border-b-2 last:border-none border-[#F2F2F2]"
+              >
                 <div className="flex justify-between px-1">
                   <div className="flex items-center gap-2 ">
                     <div className="relative w-9 h-9 rounded-[18px]">
@@ -250,12 +289,12 @@ const MarketComments = ({ userId, marketId }: MarketCommentsPropsType) => {
                       type="text"
                       onChange={(e) => setUpdatedComment(e.target.value)}
                       value={updatedComment}
-                      className="border rounded-[6px] border-[#959595] outline-none w-[309px] h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 "
+                      className="border rounded-[6px] border-[#959595] outline-none w-full h-auto text-[15px] font-normal text-label-strong px-[10px] py-1 "
                     />
                   </div>
                 ) : (
                   <div className="pl-12 pr-1 py-1 mb-3">
-                    <p className="w-[299px] h-auto text-[15px] font-normal text-label-strong">
+                    <p className="w-full h-auto text-[15px] font-normal text-label-strong">
                       {comment.content}
                     </p>
                   </div>

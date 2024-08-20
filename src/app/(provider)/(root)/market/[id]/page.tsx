@@ -50,12 +50,15 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
   if (!market) return <Loading />;
 
   const images = market.이미지 ?? [];
+  if (!images.length) {
+    return <Loading />;
+  }
 
   return (
     <section>
-      <div className="w-full p-4 bg-normal flex flex-col items-center">
+      <div className="w-full p-4 bg-normal flex flex-col items-center md:p-0">
         {images.length > 0 && (
-          <div className="flex relative w-[343px] h-[230px] md:w-[1280px] md:h-[640px] ">
+          <div className="flex relative w-[343px] h-[230px] md:w-[1280px] md:h-[640px] md:mt-24 md:mb-10 ">
             <Image
               src={images[0]}
               alt={market?.시장명 ?? 'market name'}
@@ -75,7 +78,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         <p className="mb-4 text-sm font-normal text-label-alternative md:text-base md:mb-8">
           {market.도로명주소.split(' ').slice(0, 2).join(' ')}
         </p>
-        <div className="w-full h-1 border-4 border-color-[#F2F2F2] md:max-w-[1280px]" />
+        <div className="w-full h-1 border-4 border-[#F2F2F2] md:max-w-[1280px]" />
       </div>
       <div>
         <ScrollButton />
@@ -170,7 +173,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
       <div id="recommend-section">
         <MarketRecommend region={market.소권역} />
       </div>
-      <div className="w-full h-1 border-4 border-color-[#F2F2F2]" />
+      <div className="w-full h-1 border-4 border-[#F2F2F2] md:max-w-[1280px] md:mx-auto" />
       <div id="comments-section">
         <MarketComments userId={user?.id} marketId={id} />
       </div>
