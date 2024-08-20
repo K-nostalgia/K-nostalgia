@@ -12,8 +12,7 @@ export const POST =async(request: NextRequest)=>{
       },
       body: JSON.stringify({
         storeId: process.env.NEXT_PUBLIC_STORE_ID,
-        reason: "테스트 결제입니다. 즉시 환불 처리 됩니다.",
-        
+        reason: "테스트 결제입니다.",
       })
   })
 
@@ -23,7 +22,6 @@ export const POST =async(request: NextRequest)=>{
     console.error('Error fetching data:', error);
     return NextResponse.json({message: 'Internal Server Error'}, { status: 500});
   }
-
 }
 
 //내역조회
