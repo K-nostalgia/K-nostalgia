@@ -44,7 +44,7 @@ export async function GET(request: Request, {params}: ParamsType) {
     const supabase = createClient()
     
     const {marketId} = params
-    const {data, error} = await supabase.from('comments').select(  `
+    const {data, error} = await supabase.from('comments').select(`
         id,
         market_id,
         user_id,
@@ -53,7 +53,7 @@ export async function GET(request: Request, {params}: ParamsType) {
         users (
           nickname,
           avatar
-        )`).eq('market_id', marketId )
+        )`).eq('market_id', marketId ).order('created_at', {ascending : false})
 
     if (error) {
         return NextResponse.json({ error: '댓글 불러오는 걸 실패했습니다' }, { status: 400 })

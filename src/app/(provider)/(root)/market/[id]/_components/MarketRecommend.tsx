@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import MarketLikes from '../../_components/MarketLikes';
@@ -5,6 +7,8 @@ import Link from 'next/link';
 import { MarketType } from '@/types/Market';
 import { useUser } from '@/hooks/useUser';
 import MarketImage from '../../_components/MarketImage';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import useDeviceSize from '@/hooks/useDeviceSize';
 
 interface MarketRecommendPropsType {
   region: string;
@@ -14,6 +18,7 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
   const { data: user, isLoading, error } = useUser();
   const [markets, setMarkets] = useState<MarketType[]>([]);
   const [loading, setLoading] = useState();
+  const { isMobile } = useDeviceSize();
 
   const getRecommend = async () => {
     try {
@@ -29,77 +34,160 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
     getRecommend();
   }, [region]);
 
+  if (loading) return <p>로딩중...</p>;
+
   return (
     <div className="pb-8 w">
-      <div className="px-4 py-8 text-center text-xl font-semibold text-secondary-10">
-        주변 추천 전통시장
+      <div className="px-4 py-8 text-center">
+        <span className="text-xl font-semibold text-secondary-10">
+          주변 추천 전통시장
+        </span>
+        <span
+          className="bottom-[-1px] h-[10px]"
+          style={{ backgroundColor: 'rgba(183, 203, 174, 0.40)' }}
+        ></span>
       </div>
-      {loading ? (
-        <p>로딩중...</p>
-      ) : (
-        <div className="flex px-4 space-x-4 overflow-x-scroll scrollbar-hide">
-          {markets.map((item, index) => (
-            <div
-              key={index}
-              className="w-[328px] py-3 px-3 rounded-xl border border-solid border-secondary-50
-              bg-normal"
-            >
-              <Link href={`/market/${item.id}`}>
-                <div className="flex flex-col mb-2">
-                  <div className="flex justify-between">
-                    <div className="pl-1">
-                      <p className="text-base font-semibold text-label-strong">
-                        {item.시장명}
-                      </p>
-                      <p className="text-sm text-label-normal font-normal text-ellipsis overflow-hidden whitespace-nowrap">
-                        {item.도로명주소}
-                      </p>
+      {isMobile ? (
+        <div className="overflow-x-hidden scrollbar-hide">
+          <Swiper spaceBetween={16} slidesPerView={1.1} className="w-[328px]">
+            {markets.map((market, index) => (
+              <SwiperSlide key={market.id || index}>
+                <div
+                  className="py-3 px-3 rounded-xl border border-solid border-secondary-50
+              bg-white"
+                >
+                  <Link href={`/market/${market.id}`}>
+                    <div className="flex flex-col mb-2">
+                      <div className="flex justify-between">
+                        <div className="pl-1">
+                          <p className="text-base font-semibold text-label-strong">
+                            {market.시장명}
+                          </p>
+                          <p className="max-w-[250px] text-sm text-label-normal font-normal text-ellipsis overflow-hidden whitespace-nowrap">
+                            {market.도로명주소}
+                          </p>
+                        </div>
+                        <div
+                          className="flex justify-end w-9 h-9 rounded-full bg-white md:bg-black md:bg-opacity-40 md:justify-center md:items-center"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <MarketLikes
+                            pixel={5}
+                            userId={user?.id}
+                            marketId={market.id}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div
-                      className="flex justify-center items-center w-9 h-9 rounded-full bg-black bg-opacity-40"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                      }}
-                    >
-                      <MarketLikes
-                        pixel={5}
-                        userId={user?.id}
-                        marketId={item.id}
-                      />
-                    </div>
-                  </div>
-                </div>
-                {item.이미지 ? (
-                  <div className="relative flex gap-2">
-                    {item.이미지.slice(0, 2).map((imgSrc, index) => (
-                      <div
-                        key={index}
-                        className={`rounded-[8px] relative w-[148px] h-[130px] ${
-                          index === 0
-                            ? 'rounded-l-[8px] rounded-r-none'
-                            : 'rounded-r-[8px] rounded-l-none'
-                        }`}
-                      >
-                        <MarketImage
-                          src={imgSrc}
-                          alt={`${item.시장명} - 이미지 ${index + 1}`}
-                          sizes="(max-width: 768px) 100vw, 343px"
-                          className={`absolute w-full h-full ${
+                  </Link>
+
+                  {market.이미지 ? (
+                    <div className="relative flex gap-2">
+                      {market.이미지.slice(0, 2).map((imgSrc, index) => (
+                        <div
+                          key={index}
+                          className={`rounded-[8px] relative w-[148px] h-[130px] ${
                             index === 0
                               ? 'rounded-l-[8px] rounded-r-none'
                               : 'rounded-r-[8px] rounded-l-none'
                           }`}
-                        />
+                        >
+                          <MarketImage
+                            src={imgSrc}
+                            alt={`${market.시장명} - 이미지 ${index + 1}`}
+                            sizes="(max-width: 768px) 100vw, 343px"
+                            className={`absolute w-full h-full ${
+                              index === 0
+                                ? 'rounded-l-[8px] rounded-r-none'
+                                : 'rounded-r-[8px] rounded-l-none'
+                            }`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p style={{ color: 'red' }}>Error: {market.error}</p>
+                  )}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      ) : (
+        <div className="flex flex-col pl-4 space-x-4 overflow-x-scroll scrollbar-hide ">
+          <Swiper
+            spaceBetween={25}
+            slidesPerView={3.1}
+            className="w-full max-w-[1280px] ml-auto"
+          >
+            {markets.map((market, index) => (
+              <SwiperSlide key={market.id || index}>
+                <div
+                  className="min-w-[328px] max-w-[410px] max-h-[265px] py-3 px-3 rounded-xl border border-solid border-secondary-50
+    bg-white"
+                >
+                  <Link href={`/market/${market.id}`}>
+                    <div className="flex flex-col mb-2">
+                      <div className="flex justify-between">
+                        <div className="pl-1">
+                          <p className="text-base font-semibold text-label-strong">
+                            {market.시장명}
+                          </p>
+                          <p className="max-w-[250px] text-sm text-label-normal font-normal text-ellipsis overflow-hidden whitespace-nowrap">
+                            {market.도로명주소}
+                          </p>
+                        </div>
+                        <div
+                          className="flex justify-end w-9 h-9 rounded-full bg-white md:bg-black md:bg-opacity-40 md:justify-center md:items-center"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <MarketLikes
+                            pixel={5}
+                            userId={user?.id}
+                            marketId={market.id}
+                          />
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p style={{ color: 'red' }}>Error: {item.error}</p>
-                )}
-              </Link>
-            </div>
-          ))}
+                    </div>
+                  </Link>
+
+                  {market.이미지 ? (
+                    <div className="relative flex gap-2">
+                      {market.이미지.slice(0, 2).map((imgSrc, index) => (
+                        <div
+                          key={index}
+                          className={`rounded-[8px] relative w-[148px] h-[130px] ${
+                            index === 0
+                              ? 'rounded-l-[8px] rounded-r-none'
+                              : 'rounded-r-[8px] rounded-l-none'
+                          }`}
+                        >
+                          <MarketImage
+                            src={imgSrc}
+                            alt={`${market.시장명} - 이미지 ${index + 1}`}
+                            sizes="(max-width: 768px) 100vw, 343px"
+                            className={`absolute w-full h-full ${
+                              index === 0
+                                ? 'rounded-l-[8px] rounded-r-none'
+                                : 'rounded-r-[8px] rounded-l-none'
+                            }`}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p style={{ color: 'red' }}>Error: {market.error}</p>
+                  )}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       )}
     </div>

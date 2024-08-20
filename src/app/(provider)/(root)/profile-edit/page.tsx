@@ -197,9 +197,14 @@ const EditProfilePage = () => {
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full rounded-full flex items-center justify-center">
-                  <span>프로필 사진</span>
-                </div>
+                <Image
+                  src={'/image/profile.png'}
+                  alt="profile"
+                  priority
+                  width={120}
+                  height={120}
+                  className="w-full h-full rounded-full object-cover"
+                />
               )}
               <label htmlFor="image-upload" className="cursor-pointer">
                 <PiArrowsLeftRight className="absolute right-0 bottom-0 text-[36px] text-label-light rounded-full bg-primary-20" />
@@ -213,15 +218,18 @@ const EditProfilePage = () => {
               />
             </div>
             <div className="w-full relative mt-4 md:py-3 md:px-4 md:flex md:flex-col md:gap-2 md: items-center md:justify-center">
-              <label htmlFor="nickname" className="block text-label-normal">
-                별명
-              </label>
-              <div className="md:relative">
+              <div className="md:relative w-full mt-4">
+                <label
+                  htmlFor="nickname"
+                  className="block text-label-normal absolute left-3 top-[-18px]"
+                >
+                  별명
+                </label>
                 <input
                   id="nickname"
                   type="text"
                   placeholder="사용할 별명을 입력해주세요"
-                  className="block w-full mt-2 p-3 px-3 border bg-white border-primary-20 focus:outline-none focus:ring-primary-20 rounded-xl text-primary-20 pr-10 md:w-[320px]"
+                  className="block w-full mt-2 p-3 px-3 border bg-white border-primary-20 focus:outline-none focus:ring-primary-20 rounded-xl text-primary-20 pr-10"
                   value={nickname}
                   onChange={handleNicknameChange}
                 />
@@ -246,19 +254,19 @@ const EditProfilePage = () => {
                   </span>
                 )}
               </div>
-
-              <button
-                className={`hidden md:flex md:border md:border-[#C8C8C8] ${
-                  isButtonActive
-                    ? 'bg-primary-20 text-label-light'
-                    : 'bg-[#F2F2F2] text-[#AFACA7]'
-                } md:px-4 md:py-2 md:rounded md:mt-10`}
-                onClick={handleEditClick}
-                disabled={isChecking}
-              >
-                수정 완료
-              </button>
             </div>
+
+            <button
+              className={`hidden md:flex md:border md:border-[#C8C8C8] ${
+                isButtonActive
+                  ? 'bg-primary-20 text-label-light'
+                  : 'bg-[#F2F2F2] text-[#AFACA7]'
+              } md:px-4 md:py-2 md:rounded md:mt-10`}
+              onClick={handleEditClick}
+              disabled={isChecking}
+            >
+              수정 완료
+            </button>
           </div>
         </DefaultWebLayout>
       ) : (
@@ -270,8 +278,8 @@ const EditProfilePage = () => {
           showComplete={true}
           onCompleteClick={handleEditClick}
         >
-          <div className="p-6 rounded-lg flex flex-col items-center relative mt-20 md:mt-32">
-            <div className="hidden md:flex md:items-center md:justify-center md:absolute md:w-[240px] md:h-[152px] md:-top-9 md:z-10 ">
+          <div className="p-6 rounded-lg flex flex-col items-center relative mt-32 md:mt-32">
+            <div className="flex items-center justify-center absolute w-[240px] h-[152px] -top-9 z-20 ">
               <Image
                 src="/image/Profile_Adorn.png"
                 alt="tiger overlay"
@@ -280,7 +288,7 @@ const EditProfilePage = () => {
                 className="rounded-full"
               />
             </div>
-            <div className="relative w-[120px] md:w-[168px] md:h-[168px] h-[120px] rounded-full border border-primary-20 flex items-center justify-center">
+            <div className="relative w-[168px] md:w-[168px] md:h-[168px] h-[168px] rounded-full border border-primary-20 flex items-center justify-center">
               {user?.avatar ? (
                 <Image
                   src={previewImage ?? '/image/profile.png'}
@@ -291,9 +299,17 @@ const EditProfilePage = () => {
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full rounded-full flex items-center justify-center">
-                  <span>프로필 사진</span>
-                </div>
+                <Image
+                  src={'/image/profile.png'}
+                  alt="profile"
+                  priority
+                  width={120}
+                  height={120}
+                  className="w-full h-full rounded-full object-cover"
+                />
+                // <div className="w-full h-full rounded-full flex items-center justify-center">
+                //   <span>프로필 사진</span>
+                // </div>
               )}
               <label htmlFor="image-upload" className="cursor-pointer">
                 <PiArrowsLeftRight className="absolute right-0 bottom-0 text-[36px] text-label-light rounded-full bg-primary-20" />

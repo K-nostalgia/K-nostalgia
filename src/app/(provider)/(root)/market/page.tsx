@@ -101,7 +101,7 @@ const MarketPage = () => {
     <>
       {/* 데스크탑 */}
       <div className="hidden md:block">
-        <div className="max-w-[1280px] w-full mx-auto">
+        <div className="max-w-[1280px] mx-auto">
           <div className="flex justify-center">
             <Image
               src={
@@ -111,23 +111,31 @@ const MarketPage = () => {
               height={280}
               priority
               alt="시장배너이미지"
-              className="w-full h-auto max-w-[1280px] max-h-[280px] my-8 object-cover items-center"
+              className="w-full h-auto max-w-[1280px] max-h-[280px] mt-24 mb-8 object-cover items-center"
               sizes="100vw"
             />
           </div>
           <div className="flex gap-4 border-b-[1px] border-[#E0E0E0]">
             {largeRegions.map((region) => (
-              <button
-                key={region}
-                onClick={() => handleLargeRegionChange(region)}
-                className={`text-nowrap text-base font-medium pt-2 px-4 pb-3 ${
-                  activeFilter === region
-                    ? 'text-primary-20 border-b-4 border-primary-20'
-                    : 'text-label-alternative'
-                }`}
-              >
-                {region}
-              </button>
+              <div key={region} className="flex flex-col">
+                <button
+                  onClick={() => handleLargeRegionChange(region)}
+                  className={`h-[46px] text-nowrap text-base font-medium pt-2 px-4 pb-3 ${
+                    activeFilter === region
+                      ? 'text-primary-20 '
+                      : 'text-label-alternative'
+                  }`}
+                >
+                  {region}
+                </button>
+                <div
+                  className={`flex ${
+                    activeFilter === region
+                      ? 'border-b-4 border-primary-20'
+                      : ''
+                  }`}
+                />
+              </div>
             ))}
           </div>
           {regionWithSmall.includes(selectedLargeRegion) && (
@@ -152,19 +160,25 @@ const MarketPage = () => {
 
       {/* 모바일 */}
       <div className="block md:hidden">
-        <div className="flex overflow-auto scrollbar-hide gap-2 px-4 pt-2 mb-4 border-b-[1px] border-[#E0E0E0]">
+        <div className="flex overflow-auto scrollbar-hide gap-2 px-4 pt-2 mt-16 mb-4 border-b-[1px] border-[#E0E0E0]">
           {largeRegions.map((region) => (
-            <button
-              key={region}
-              onClick={() => handleLargeRegionChange(region)}
-              className={`text-nowrap text-base font-medium pt-2 px-4 pb-3 ${
-                activeFilter === region
-                  ? 'text-primary-20 border-b-4 border-primary-20'
-                  : 'text-label-alternative'
-              }`}
-            >
-              {region}
-            </button>
+            <div key={region} className="flex flex-col">
+              <button
+                onClick={() => handleLargeRegionChange(region)}
+                className={`h-[46px] text-nowrap text-base font-medium pt-2 px-4 pb-3 ${
+                  activeFilter === region
+                    ? 'text-primary-20 '
+                    : 'text-label-alternative'
+                }`}
+              >
+                {region}
+              </button>
+              <div
+                className={`flex ${
+                  activeFilter === region ? 'border-b-4 border-primary-20' : ''
+                }`}
+              />
+            </div>
           ))}
         </div>
         {regionWithSmall.includes(selectedLargeRegion) && (
@@ -200,22 +214,22 @@ const MarketPage = () => {
             className="block md:hidden"
           />
 
-          <div className="flex flex-col mt-4 gap-5 md:m-0 md:gap-0">
+          <div className="flex flex-col mt-4 gap-5 md:m-0 md:gap-0 w-full">
             {loading ? (
               <p>로딩중...</p>
             ) : (
               markets?.map((item, index) => (
                 <div
                   key={index}
-                  className="flex flex-col md:flex-row md:items-center md:border-b md:border-primary-60 md:mb-2"
+                  className="w-full flex flex-col md:flex-row md:items-center md:border-b md:border-primary-60 md:mb-2"
                 >
-                  <div className="py-3 px-3 rounded-xl border border-solid border-secondary-50 bg-normal md:border-none md:p-0">
-                    <Link href={`/market/${item.id}`}>
-                      <div className="flex flex-col md:justify-center md:items-center md:flex-row md:pt-8 md:pb-10">
-                        <div className="hidden md:flex justify-center items-center w-11 h-11 p-1 mr-12  bg-primary-20 text-label-light text-xs rounded-[8px]">
+                  <div className="w-full py-3 px-3 rounded-xl border border-solid border-secondary-50 bg-white md:bg-normal md:border-none md:p-0">
+                    <Link href={`/market/${item.id}`} className="w-full">
+                      <div className="w-full flex flex-col md:justify-center md:items-center md:flex-row md:pt-8 md:pb-10">
+                        <div className="hidden md:flex justify-center items-center w-11 h-11 p-1 mr-12 bg-primary-20 text-label-light text-xs rounded-[8px]">
                           {item.id}
                         </div>
-                        <div className="md:my-[2.5px] md:py-1 md:mr-4 ">
+                        <div className="md:my-[2.5px] md:py-1 md:mr-4">
                           <div className="flex justify-between">
                             <p className="pl-1 text-base font-semibold text-label-strong md:text-xl md:font-semibold md:p-0">
                               {item.시장명}
@@ -292,7 +306,7 @@ const MarketPage = () => {
                                 <div
                                   key={index}
                                   className={
-                                    'gap-2 rounded-[8px] relative w-[156px] h-[130px] md:w-[288px] md:h-[180px] md:gap-3'
+                                    'rounded-[8px] relative w-full h-[130px]'
                                   }
                                 >
                                   <MarketImage
@@ -308,18 +322,18 @@ const MarketPage = () => {
                                 </div>
                               ))}
                             </div>
-                            <div className="hidden relative gap-2 md:flex">
+                            <div className="hidden w-full relative md:flex md:gap-3">
                               {item.이미지.slice(0, 3).map((imgSrc, index) => (
                                 <div
                                   key={index}
                                   className={
-                                    'gap-2 rounded-[8px] relative w-[156px] h-[130px] md:w-[288px] md:h-[180px] md:gap-3'
+                                    'rounded-[8px] relative md:w-1/3 md:h-[180px]'
                                   }
                                 >
                                   <MarketImage
                                     src={imgSrc}
                                     alt={`${item.시장명} - 이미지 ${index + 1}`}
-                                    sizes="(max-width: 768px) 100vw, 343px"
+                                    sizes="(max-width: 1280px) 100vw, 343px"
                                     className={`absolute w-full h-full ${
                                       index === 0
                                         ? 'rounded-l-[8px] rounded-r-none'
@@ -362,6 +376,28 @@ const MarketPage = () => {
       <div className="flex justify-between items-center mb-56 md:max-w-[860px] md:w-full md:mx-auto md:mt-20 md:px">
         <div className="flex flex-row">
           <button
+            onClick={() => setCurrentPage(1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-1 ${
+              currentPage === 1
+                ? 'text-[#AFAFAF] cursor-not-allowed'
+                : 'text-[#545454]'
+            }`}
+          >
+            <div className="hidden md:flex gap-[6px] place-items-center">
+              <BsChevronDoubleLeft className="w-4 h-4 " />
+              <p
+                className={`hidden md:block font-medium text-[15px] ${
+                  currentPage === 1
+                    ? 'text-[#AFAFAF] cursor-not-allowed'
+                    : 'text-[15px] text-label-strong'
+                }`}
+              >
+                처음
+              </p>
+            </div>
+          </button>
+          <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
             className={`px-4 py-1 ${
@@ -371,18 +407,6 @@ const MarketPage = () => {
             }`}
           >
             <div className="flex gap-6 place-items-center font-medium">
-              <div className="hidden md:flex gap-[6px] place-items-center">
-                <BsChevronDoubleLeft className="w-4 h-4 " />
-                <p
-                  className={`hidden md:block font-medium text-[15px] ${
-                    currentPage === 1
-                      ? 'text-[#AFAFAF] cursor-not-allowed'
-                      : 'text-[15px] text-label-strong'
-                  }`}
-                >
-                  처음
-                </p>
-              </div>
               <div className="flex gap-[6px] place-items-center">
                 <BsChevronLeft className="w-4 h-4" />
                 <p
@@ -521,7 +545,7 @@ const MarketPage = () => {
             }`}
           >
             <div className="flex gap-6 place-items-center font-medium">
-              <div className="hidden md:flex gap-[6px] place-items-center">
+              <div className="flex gap-[6px] place-items-center">
                 <p
                   className={`hidden md:block text-[15px] font-medium ${
                     currentPage === totalPages
@@ -535,7 +559,7 @@ const MarketPage = () => {
               </div>
               <div className="hidden md:flex gap-[6px] place-items-center font-medium">
                 <p
-                  className={`hidden md:block font-medium text-[15px]${
+                  className={`hidden md:block font-medium text-[15px] ${
                     currentPage === totalPages
                       ? 'text-[#AFAFAF] cursor-not-allowed'
                       : 'text-[15px] text-label-strong'
