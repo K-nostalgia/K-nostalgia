@@ -18,7 +18,7 @@ function MyPageLayout({ children }: PropsWithChildren) {
             <Profile />
           </div>
 
-          <div className="w-full max-w-[503px] md:mt-6 md:p-10 md:bg-secondary-70 md:rounded-xl">
+          <div className="w-full max-w-[503px] md:mt-6 md:mb-20 md:p-10 md:bg-secondary-70 md:rounded-xl">
             <RecentMarket />
           </div>
 
