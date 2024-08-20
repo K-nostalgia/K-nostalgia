@@ -37,7 +37,7 @@ export const SectionBanner = () => {
   }, [api]);
 
   return (
-    <div className={` max-w-screen-xl mx-auto ${isDesktop && 'mt-20'}`}>
+    <div className={` max-w-screen-xl mx-auto mt-16 ${isDesktop && 'mt-20'}`}>
       <Carousel
         setApi={setApi}
         plugins={[
