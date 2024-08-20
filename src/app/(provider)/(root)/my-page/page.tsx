@@ -94,6 +94,9 @@ const Mypage = () => {
           <div>
             <PayHistoryList />
           </div>
+          <div>
+            <CancelUser />
+          </div>
         </div>
       ) : (
         // 앱버전
