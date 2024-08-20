@@ -58,7 +58,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
     <section>
       <div className="w-full p-4 bg-normal flex flex-col items-center md:p-0">
         {images.length > 0 && (
-          <div className="flex relative w-[343px] h-[230px] md:w-[1280px] md:h-[640px] md:mt-24 md:mb-10 ">
+          <div className="flex relative w-[343px] h-[230px] md:w-[1280px] md:h-[640px] md:mt-24 md:mb-10 mt-[72px] ">
             <Image
               src={images[0]}
               alt={market?.시장명 ?? 'market name'}
