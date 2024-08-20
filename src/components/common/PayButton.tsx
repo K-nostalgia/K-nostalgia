@@ -47,7 +47,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   });
 
   const [lastCallTime, setLastCallTime] = useState(0);
-  const DELAY = 3000;
+  const DELAY = 10000;
 
   const throttledPayRequest = useCallback(async () => {
     if (!users) {
