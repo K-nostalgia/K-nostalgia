@@ -311,7 +311,7 @@ const DesktopSignUpLayout = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+      <div className="flex flex-col gap-2 h-[630px] w-[90%] overflow-y-scroll">
         {/* 이메일 */}
         <div className="py-3 px-6 mt-8">
           <label className="block text-label-normal mb-2">이메일</label>
