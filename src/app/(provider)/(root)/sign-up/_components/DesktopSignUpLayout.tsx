@@ -349,7 +349,7 @@ const DesktopSignUpLayout = () => {
         </div>
 
         <div className="px-7">
-          <div className="h-[2px] bg-[#E0E0E0] my-12" />
+          <div className="h-[2px] bg-[#E0E0E0] my-8" />
         </div>
 
         {/* 비밀번호 */}
@@ -389,7 +389,7 @@ const DesktopSignUpLayout = () => {
         </div>
 
         {/* 비밀번호 확인 */}
-        <div className="mt-8 px-6 py-3">
+        <div className="mt-6 px-6 py-3">
           <label className="block text-label-normal p-2 ">
             비밀번호 재확인
           </label>
@@ -425,7 +425,7 @@ const DesktopSignUpLayout = () => {
         </div>
 
         <div className="px-7">
-          <div className="h-[2px] bg-[#E0E0E0] my-12" />
+          <div className="h-[2px] bg-[#E0E0E0] my-8" />
         </div>
 
         {/* 이름 */}
@@ -447,7 +447,7 @@ const DesktopSignUpLayout = () => {
         </div>
 
         <div className="px-7">
-          <div className="h-[2px] bg-[#E0E0E0] my-12" />
+          <div className="h-[2px] bg-[#E0E0E0] my-8" />
         </div>
 
         {/* 별명 */}
