@@ -110,7 +110,7 @@ const ReviewProductDetail = ({ order }: Props) => {
           리뷰 작성하기
         </DialogTrigger>
         <div className="overflow-hidden">
-          <DialogContent className="bg-[#FAF8F5] min-w-[330px] w-[80%] h-[627px] rounded-2xl md:max-w-[608px] md:h-[840px]">
+          <DialogContent className="bg-[#FAF8F5] min-w-[330px] w-[80%] h-[627px] rounded-2xl md:max-w-[608px] md:max-h-[840px] md:h-[80vh]">
             {selectedProduct ? (
               <ReviewForm
                 product={selectedProduct}
