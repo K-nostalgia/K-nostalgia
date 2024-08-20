@@ -218,7 +218,7 @@ const EditProfilePage = () => {
               />
             </div>
             <div className="w-full relative mt-4 md:py-3 md:px-4 md:flex md:flex-col md:gap-2 md: items-center md:justify-center">
-              <div className="md:relative w-full mt-4">
+              <div className="md:relative w-full md:w-[320px] mt-4 md:items-center md:justify-center">
                 <label
                   htmlFor="nickname"
                   className="block text-label-normal absolute left-3 top-[-18px]"
