@@ -65,7 +65,7 @@ const Mypage = () => {
           <div className="flex flex-col w-full">
             <div className="w-full flex justify-between items-end">
               <Image
-                src="/image/coupon_tiger.png"
+                src="/image/Coupon_Tiger2.png"
                 alt="마이페이지 쿠폰호랑이 "
                 width={141}
                 height={88}
