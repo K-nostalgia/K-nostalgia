@@ -10,7 +10,7 @@ const LoginPage = () => {
         <LoginHeader />
         <LoginForm />
       </div>
-      <div className="hidden md:flex bg-primary-20 md:justify-center md:items-center">
+      <div className="hidden md:flex bg-primary-20 md:min-h-screen md:justify-center md:items-center">
         <DesktopLoginLayout />
       </div>
     </>
