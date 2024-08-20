@@ -7,7 +7,6 @@ export async function generateMetadata({
   params: { id: string };
 }) {
   try {
-    console.log(`${SITE_URL}/api/localfood/${id}`);
     const response = await fetch(`${SITE_URL}/api/localfood/${id}`);
 
     const data = await response.json();
