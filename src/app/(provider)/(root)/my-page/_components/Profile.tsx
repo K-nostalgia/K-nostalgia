@@ -20,7 +20,7 @@ const Profile = () => {
 
   return (
     <div className="p-6 rounded-lg">
-      <div className="flex flex-col items-center relative">
+      <div className="flex flex-col items-center relative mt-20 md:mt-10">
         <div className="hidden md:flex md:items-center md:justify-center md:absolute md:w-[240px] md:h-[152px] md:-top-14 md:z-10 ">
           <Image
             src="/image/Profile_Adorn.png"

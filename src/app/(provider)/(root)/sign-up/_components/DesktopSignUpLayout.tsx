@@ -101,7 +101,7 @@ const DesktopSignUpLayout = () => {
     if (userInfo.name && !validateName(userInfo.name)) {
       setErrors((prev) => ({
         ...prev,
-        name: '정확한 이름을 입력해주세요.'
+        name: '정확한 이름을 입력주세요.'
       }));
     } else {
       setErrors((prev) => ({ ...prev, name: '' }));
@@ -311,7 +311,7 @@ const DesktopSignUpLayout = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+      <div className="flex flex-col gap-2 h-[630px] w-[90%] overflow-y-scroll">
         {/* 이메일 */}
         <div className="py-3 px-6 mt-8">
           <label className="block text-label-normal mb-2">이메일</label>
@@ -348,7 +348,9 @@ const DesktopSignUpLayout = () => {
           )}
         </div>
 
-        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="px-7">
+          <div className="h-[2px] bg-[#E0E0E0] my-8" />
+        </div>
 
         {/* 비밀번호 */}
         <div className="px-6 py-3">
@@ -387,7 +389,7 @@ const DesktopSignUpLayout = () => {
         </div>
 
         {/* 비밀번호 확인 */}
-        <div className="mt-8 px-6 py-3">
+        <div className="mt-6 px-6 py-3">
           <label className="block text-label-normal p-2 ">
             비밀번호 재확인
           </label>
@@ -397,7 +399,7 @@ const DesktopSignUpLayout = () => {
               name="confirmPassword"
               value={userInfo.confirmPassword}
               onChange={handleChange}
-              placeholder="한번 더 입력해주세요"
+              placeholder="한번 더 입력해 주세요"
               className={`bg-[#FEFEFE] border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
                 errors.confirmPassword
                   ? 'border-red-500'
@@ -422,7 +424,9 @@ const DesktopSignUpLayout = () => {
           )}
         </div>
 
-        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="px-7">
+          <div className="h-[2px] bg-[#E0E0E0] my-8" />
+        </div>
 
         {/* 이름 */}
         <div className="px-6 py-3">
@@ -442,7 +446,9 @@ const DesktopSignUpLayout = () => {
           )}
         </div>
 
-        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="px-7">
+          <div className="h-[2px] bg-[#E0E0E0] my-8" />
+        </div>
 
         {/* 별명 */}
         <div className="px-6 py-3 mb-12">
@@ -483,14 +489,14 @@ const DesktopSignUpLayout = () => {
         </div>
       </div>
 
-      <div className="flex-shrink-0 px-4 mt-4">
+      <div className="flex-shrink-0 px-6 mt-8 mb-[32px] w-full">
         <button
           type="button"
           className={`w-full rounded-xl ${
             isFormValid()
               ? 'bg-primary-20 hover:bg-primary-10'
               : 'bg-label-disable'
-          } text-label-light px-4 py-3  mb-[32px]`}
+          } text-label-light px-4 py-3  `}
           onClick={handleSubmit}
           disabled={!isFormValid()}
         >
@@ -500,5 +506,4 @@ const DesktopSignUpLayout = () => {
     </>
   );
 };
-
 export default DesktopSignUpLayout;

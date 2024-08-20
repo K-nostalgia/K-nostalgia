@@ -12,7 +12,10 @@ const OrderList_mypage = () => {
   };
   return (
     <div className="p-4">
-      <div className="flex items-center py-[3px]" onClick={gotoOrderlist}>
+      <div
+        className="flex items-center py-[3px] cursor-pointer"
+        onClick={gotoOrderlist}
+      >
         <BsListUl className="mr-[8px] text-label-normal text-[20px]" />
         <span className="text-[16px]"> 주문 내역</span>
         <BsChevronRight className="ml-auto text-[#545454] cursor-pointer" />

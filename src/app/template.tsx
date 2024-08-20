@@ -75,7 +75,7 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showSearch = false;
   }
   // 회원가입
-  else if (pathName === '') {
+  else if (pathName === '/sign-up') {
     showHeader = false;
     showSearch = false;
     showCart = false;
@@ -120,6 +120,14 @@ export default function Template({ children }: { children: React.ReactNode }) {
     showCart = false;
     showNavigation = false;
     showChat = false;
+  } else if (pathName === '/my-page/likemarket-page') {
+    showHeader = true;
+    headerTitle = '관심 전통마켓';
+    showSearch = false;
+    showCart = false;
+    showNavigation = true;
+    showChat = false;
+    showTopButton = true;
   }
 
   /* 모바일 레이아웃 끝 */
