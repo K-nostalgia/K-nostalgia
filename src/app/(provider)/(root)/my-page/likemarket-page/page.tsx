@@ -52,8 +52,8 @@ const LikeMarketPage = () => {
   return (
     <div className="m-4 ">
       {/* 앱버전 */}
-      <div className="mt-20 mb-40">
-        <div className="block md:hidden">
+      <div className="mt-20">
+        <div className="block md:hidden mb-40">
           {markets.length > 0 ? (
             markets.map((market, index) => (
               <div
