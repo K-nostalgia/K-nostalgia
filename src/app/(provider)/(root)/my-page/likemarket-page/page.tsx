@@ -8,6 +8,7 @@ import Loading from '@/components/common/Loading';
 import { useQuery } from '@tanstack/react-query';
 import { LuDot } from 'react-icons/lu';
 import { LikeButton } from '../../(home)/_components/LikeButton';
+import MarketImage from '../../market/_components/MarketImage';
 
 const LikeMarketPage = () => {
   const { data: userData, isPending } = useUser();
@@ -49,61 +50,63 @@ const LikeMarketPage = () => {
     : [likedMarkets].filter(Boolean);
 
   return (
-    <div className="m-4">
+    <div className="m-4 ">
       {/* 앱버전 */}
-      <div className="block md:hidden">
-        {markets.length > 0 ? (
-          markets.map((market, index) => (
-            <div
-              key={market.id || index}
-              className="border border-secondary-50 rounded-xl mt-1 p-3 flex mb-5"
-            >
-              <div className="mx-auto">
-                <div className="flex justify-between">
-                  <h3 className="text-[16px] text-label-strong font-semibold">
-                    {market.시장명 || '이름 없음'}
-                  </h3>
-                  {userData && (
-                    <LikeButton
-                      marketId={market.id}
-                      userId={userData?.id}
-                      className="w-[20px] h-[20px] ml-auto"
-                      isBlack
-                    />
-                  )}
-                </div>
-                <p className="text-label-normal text-[14px]">
-                  {market.도로명주소 || '주소 없음'}
-                </p>
+      <div className="mt-20">
+        <div className="block md:hidden">
+          {markets.length > 0 ? (
+            markets.map((market, index) => (
+              <div
+                key={market.id || index}
+                className="border border-secondary-50 rounded-xl p-3 flex mb-5"
+              >
+                <div className="mx-auto">
+                  <div className="flex justify-between">
+                    <h3 className="text-[16px] text-label-strong font-semibold">
+                      {market.시장명 || '이름 없음'}
+                    </h3>
+                    {userData && (
+                      <LikeButton
+                        marketId={market.id}
+                        userId={userData?.id}
+                        className="w-[20px] h-[20px] ml-auto"
+                        isBlack
+                      />
+                    )}
+                  </div>
+                  <p className="text-label-normal text-[14px]">
+                    {market.도로명주소 || '주소 없음'}
+                  </p>
 
-                <div className="mt-2 mb-3 flex gap-2">
-                  {market.이미지 ? (
-                    <>
-                      <Image
-                        src={market.이미지[1]}
-                        alt={`${market.시장명 || '시장'} 이미지`}
-                        width={156}
-                        height={130}
-                        className="w-full h-[130px] overflow-hidden"
-                      />
-                      <Image
-                        src={market.이미지[2]}
-                        alt={`${market.시장명 || '시장'} 이미지`}
-                        width={156}
-                        height={130}
-                        className="w-full h-[130px] overflow-hidden"
-                      />
-                    </>
-                  ) : (
-                    '이미지 없음'
-                  )}
+                  <div className="mt-2 mb-3 flex gap-2">
+                    {market.이미지 ? (
+                      <>
+                        <MarketImage
+                          src={market.이미지[1]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={156}
+                          height={130}
+                          className="w-[156px] h-[130px] overflow-hidden"
+                        />
+                        <MarketImage
+                          src={market.이미지[2]}
+                          alt={`${market.시장명 || '시장'} 이미지`}
+                          width={156}
+                          height={130}
+                          className="w-[156px] h-[130px] overflow-hidden"
+                        />
+                      </>
+                    ) : (
+                      '이미지 없음'
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <div className="text-center"> 관심 전통시장이 없습니다. </div>
-        )}
+            ))
+          ) : (
+            <div className="text-center"> 관심 전통시장이 없습니다. </div>
+          )}
+        </div>
       </div>
 
       {/* 웹버전 */}
@@ -184,7 +187,7 @@ const LikeMarketPage = () => {
                   {market.이미지 ? (
                     <>
                       <div className="relative">
-                        <Image
+                        <MarketImage
                           src={market.이미지[1]}
                           alt={`${market.시장명 || '시장'} 이미지`}
                           width={200}
@@ -194,7 +197,7 @@ const LikeMarketPage = () => {
                       </div>
 
                       <div className="relative">
-                        <Image
+                        <MarketImage
                           src={market.이미지[2]}
                           alt={`${market.시장명 || '시장'} 이미지`}
                           width={200}
@@ -204,7 +207,7 @@ const LikeMarketPage = () => {
                       </div>
 
                       <div className="relative">
-                        <Image
+                        <MarketImage
                           src={market.이미지[3]}
                           alt={`${market.시장명 || '시장'} 이미지`}
                           width={200}
@@ -217,7 +220,7 @@ const LikeMarketPage = () => {
                               marketId={market.id}
                               userId={userData?.id}
                               className="w-[20px] h-[20px] ml-auto"
-                              isBlack={false}
+                              isBlack
                             />
                           )}
                         </div>

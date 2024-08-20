@@ -12,6 +12,7 @@ import 'swiper/css/pagination';
 import { useRouter } from 'next/navigation';
 import { LuDot } from 'react-icons/lu';
 import { LikeButton } from '../../(home)/_components/LikeButton';
+import MarketImage from '../../market/_components/MarketImage';
 
 const LikeMarket = () => {
   const router = useRouter();
@@ -98,7 +99,7 @@ const LikeMarket = () => {
                       </div>
                     </div>
 
-                    <div className="mt-2 mb-3 flex gap-2 relative flex-1">
+                    <div className="mt-2 mb-3 flex gap-2 relative flex-1 ">
                       {market.이미지 ? (
                         <>
                           <div>
@@ -200,7 +201,7 @@ const LikeMarket = () => {
                     {market.이미지 ? (
                       <>
                         <div className="relative">
-                          <Image
+                          <MarketImage
                             src={market.이미지[1]}
                             alt={`${market.시장명 || '시장'} 이미지`}
                             width={200}
@@ -210,7 +211,7 @@ const LikeMarket = () => {
                         </div>
 
                         <div className="relative">
-                          <Image
+                          <MarketImage
                             src={market.이미지[2]}
                             alt={`${market.시장명 || '시장'} 이미지`}
                             width={200}
@@ -220,7 +221,7 @@ const LikeMarket = () => {
                         </div>
 
                         <div className="relative">
-                          <Image
+                          <MarketImage
                             src={market.이미지[3]}
                             alt={`${market.시장명 || '시장'} 이미지`}
                             width={200}
