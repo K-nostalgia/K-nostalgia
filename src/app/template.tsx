@@ -5,8 +5,8 @@ import DefaultWebLayout from '@/components/common/DefaultWebLayout';
 import useDeviceSize from '@/hooks/useDeviceSize';
 import React, { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import Loading from '@/components/common/Loading';
 import Cookies from 'js-cookie';
+import FirstLoading from '@/components/common/FirstLoading';
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const { isDesktop } = useDeviceSize();
@@ -20,9 +20,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
     setIsGuest(guestCookie);
   }, []);
 
-  // TODO 로딩 컴포넌트 바꿀 것
   if (!isClient) {
-    return <Loading />;
+    return <FirstLoading />;
   }
 
   /* 모바일 레이아웃 */
