@@ -47,7 +47,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   });
 
   const [lastCallTime, setLastCallTime] = useState(0);
-  const DELAY = 3000;
+  const DELAY = 10000;
 
   const throttledPayRequest = useCallback(async () => {
     if (!users) {
@@ -68,6 +68,12 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         variant: 'destructive',
         description: '가결제입니다. 주문 내역에서 환불 가능합니다.'
       });
+      setTimeout(() => {
+        toast({
+          variant: 'destructive',
+          description: '당일 자정 전에 일괄 환불됩니다.'
+        });
+      }, 1000);
       const { name, email, id } = users;
 
       const requestOrderName = orderNameArr.join(',');
