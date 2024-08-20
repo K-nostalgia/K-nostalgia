@@ -9,8 +9,8 @@ const CouponPage = () => {
   const [activeTab, setActiveTab] = useState('coupons');
 
   return (
-    <div className=" p-4 bg-normal">
-      <div className="hidden md:mb-[48px] md:flex md:mt-20">
+    <div className=" p-4 bg-normal mt-20">
+      <div className="hidden md:mb-[48px] md:flex">
         <Image
           src="/image/Coupon_Tiger2.png"
           alt="마이페이지 쿠폰호랑이 "

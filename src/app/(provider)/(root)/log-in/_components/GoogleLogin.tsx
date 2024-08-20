@@ -1,3 +1,4 @@
+import { toast } from '@/components/ui/use-toast';
 import api from '@/service/service';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
@@ -6,10 +7,16 @@ const GoogleLogin = () => {
   const handleClickGoogleLogin = async () => {
     try {
       const socialuser = await api.auth.socialLogin('google');
-      console.log('구글 로그인 성공', socialuser);
+      toast({
+        variant: 'destructive',
+        description: '로그인 되었습니다.'
+      });
     } catch (error) {
       console.error('구글 로그인 실패', error);
-      alert('구글 로그인 실패');
+      toast({
+        variant: 'destructive',
+        description: '로그인에 실패하였습니다. 다시 로그인 해주세요.'
+      });
     }
   };
   return (

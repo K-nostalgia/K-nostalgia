@@ -12,6 +12,7 @@ import { useUser } from '@/hooks/useUser';
 import MarketRecommend from './_components/MarketRecommend';
 import ScrollButton from './_components/ScrollButton';
 import MarketLikes from '../_components/MarketLikes';
+import MarketImage from '../_components/MarketImage';
 export type ImagesType = {
   title: string;
   link: string;
@@ -40,6 +41,20 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
   }, [id]);
 
   useEffect(() => {
+    if (id) {
+      const storedMarkets = localStorage.getItem('recentMarkets');
+      const recentMarkets = storedMarkets ? JSON.parse(storedMarkets) : [];
+
+      const updatedMarkets = [
+        id,
+        ...recentMarkets.filter((item: number) => item !== id)
+      ].slice(0, 3);
+
+      localStorage.setItem('recentMarkets', JSON.stringify(updatedMarkets));
+    }
+  }, [id]);
+
+  useEffect(() => {
     const fetchImage = async () => {
       setLoading(true);
     };
@@ -54,7 +69,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
     <section>
       <div className="w-full p-4 bg-normal flex flex-col items-center">
         {images.length > 0 && (
-          <div className="flex relative w-[343px] h-[230px] ">
+          <div className="flex relative w-[343px] h-[230px] md:w-[1280px] md:h-[640px] ">
             <Image
               src={images[0]}
               alt={market?.시장명 ?? 'market name'}
@@ -68,13 +83,13 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         )}
       </div>
       <div className="flex flex-col justify-center items-center">
-        <p className="text-xl font-semibold text-label-strong">
+        <p className="text-xl font-semibold text-label-strong md:text-2xl md:font-semibold">
           {market?.시장명}
         </p>
-        <p className="mb-4 text-sm font-normal text-label-alternative">
+        <p className="mb-4 text-sm font-normal text-label-alternative md:text-base md:mb-8">
           {market.도로명주소.split(' ').slice(0, 2).join(' ')}
         </p>
-        <div className="w-full h-1 border-4 border-color-[#F2F2F2]" />
+        <div className="w-full h-1 border-4 border-color-[#F2F2F2] md:max-w-[1280px]" />
       </div>
       <div>
         <ScrollButton />
@@ -88,17 +103,19 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         </div>
         {images.slice(0).map((image, index) => {
           if (index === 0) return null; // 0번째 인덱스는 스킵
+
           return (
             <div key={index}>
-              <div className=" relative w-[343px] h-[280px] border border-primary-90 rounded-xl mb-4 ">
-                <Image
+              <div
+                className={
+                  'relative w-[343px] h-[280px] border border-primary-90 rounded-xl mb-4 md:w-[1280px] md:h-[640px]'
+                }
+              >
+                <MarketImage
                   src={image}
                   alt={market?.시장명 ?? 'market name'}
-                  fill
                   sizes="(max-width: 768px) 100vw, 343px"
-                  priority
                   className="absolute w-full h-full rounded-xl"
-                  style={{ objectFit: 'cover' }}
                 />
               </div>
             </div>
@@ -115,56 +132,52 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         <div>
           <KaKaomap />
         </div>
-        <div className="flex mt-2 mb-8 place-items-center text-primary-10">
-          <PiMapPin className="w-4 h-4" />
-          <p className="text-sm font-normal">{market.도로명주소}</p>
+        <div className="flex mt-2 mb-8 place-items-center text-primary-10 md:gap-1 md:mb-10">
+          <PiMapPin className="w-4 h-4 md:w-5 md:h-5" />
+          <p className="text-sm font-normal md:text-base ">
+            {market.도로명주소}
+          </p>
         </div>
-        <div className="w-full h-1 border-4 border-[#D6A461] border-opacity-40 " />
-        <div className="mx-[60px] mt-8 mb-10 px-9 py-6 border border-secondary-20 rounded-xl bg-primary-90">
+        <div className="w-full h-1 border-4 border-[#D6A461] border-opacity-40 md:max-w-[1280px] " />
+        <div className="mx-[60px] mt-8 mb-10 px-9 py-6 border border-secondary-20 rounded-xl bg-primary-90 md:mt-8 md:px-10 md:py-6 md:mb-20 md:w-[540px] md:h-[320px] md:flex md:flex-col md:justify-center md:items-center md:gap-2">
           <p
             className="text-base font-medium text-primary-10 text-center
-          mb-3"
+    mb-3 md:mb-8 md:text-xl "
           >
             편의시설 보유 여부
           </p>
-          <div className="flex justify-start">
-            <LuDot className="text-primary-20" />
-            <div className="text-sm mr-6 text-label-strong">
-              고객 전용 주차장
+          <div className="flex justify-between md:w-[185px]">
+            <div className="flex items-center">
+              <LuDot className="text-primary-20" />
+              <span className="text-sm mr-6 text-label-strong md:text-base md:mr-5">
+                고객 전용 주차장
+              </span>
             </div>
-            <div className="text-sm text-left text-label-alternative">
-              {market.시장전용고객주차장_보유여부 === 'Y' ? (
-                <div>보유　</div>
-              ) : (
-                '미보유'
-              )}
+            <div className="text-sm text-left text-label-alternative md:text-base">
+              {market.시장전용고객주차장_보유여부 === 'Y' ? '보유　' : '미보유'}
             </div>
           </div>
-          <div className="flex justify-start">
-            <LuDot className="text-primary-20" />
-            <span className="text-sm mr-auto text-label-strong">
-              고객 휴게실
-            </span>
-            <span className="text-sm text-label-alternative">
-              {market.고객휴게실_보유여부 === 'Y' ? (
-                <div>보유　</div>
-              ) : (
-                '미보유'
-              )}
-            </span>
+          <div className="flex justify-between md:w-[185px]">
+            <div className="flex items-center">
+              <LuDot className="text-primary-20" />
+              <span className="text-sm mr-6 text-label-strong md:text-base">
+                고객 휴게실
+              </span>
+            </div>
+            <div className="text-sm text-left text-label-alternative md:text-base">
+              {market.고객휴게실_보유여부 === 'Y' ? '보유　' : '미보유'}
+            </div>
           </div>
-          <div className="flex justify-start">
-            <LuDot className="text-primary-20" />
-            <span className="text-sm mr-auto text-label-strong">
-              물품 보관함
-            </span>
-            <span className="text-sm text-label-alternative">
-              {market.물품보관함_보유여부 === 'Y' ? (
-                <div>보유　</div>
-              ) : (
-                '미보유'
-              )}
-            </span>
+          <div className="flex justify-between md:w-[185px]">
+            <div className="flex items-center">
+              <LuDot className="text-primary-20" />
+              <span className="text-sm mr-6 text-label-strong md:text-base">
+                물품 보관함
+              </span>
+            </div>
+            <div className="text-sm text-left text-label-alternative md:text-base">
+              {market.물품보관함_보유여부 === 'Y' ? '보유　' : '미보유'}
+            </div>
           </div>
         </div>
       </div>
@@ -176,8 +189,8 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         <MarketComments userId={user?.id} marketId={id} />
       </div>
       <div
-        style={{ zIndex: 1000 }} /* 맨 앞으로 나오게 */
-        className="w-full flex items-center justify-start fixed bottom-0 px-4 pt-3 pb-6 gap-3 box bg-normal shadow-custom"
+        style={{ zIndex: 40 }} /* 맨 앞으로 나오게 */
+        className="md:hidden w-full flex items-center justify-start fixed bottom-0 px-4 pt-3 pb-6 gap-3 box bg-normal shadow-custom"
         /* fixed bottom-0 바닥에서 0만큼 떨어진 곳에다가 고정 */
       >
         <MarketLikes pixel={8} userId={user?.id} marketId={id} />

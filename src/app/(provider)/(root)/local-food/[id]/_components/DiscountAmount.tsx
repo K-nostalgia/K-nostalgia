@@ -18,7 +18,7 @@ export const DiscountAmount = ({ food, totalSize }: AmountProps) => {
         {(
           (food.price ?? 0) -
           (food.price ?? 0) * ((food.discountRate ?? 0) / 100)
-        )?.toLocaleString()}{' '}
+        )?.toLocaleString()}
         원
       </p>
     </>

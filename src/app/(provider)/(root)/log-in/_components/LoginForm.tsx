@@ -10,6 +10,7 @@ import KaKaoLogin from './KaKaoLogin';
 import GoogleLogin from './GoogleLogin';
 import NoLogin from './NoLogin';
 import Swal from 'sweetalert2';
+import { toast } from '@/components/ui/use-toast';
 
 const LoginForm = () => {
   const [email, setEmail] = useState<string>('');
@@ -44,42 +45,32 @@ const LoginForm = () => {
     setErrors(checkErrors);
     setLoginError(null);
 
-    //에러 없을때만 로그인
+    // 에러가 없을 때만 로그인 시도
     if (Object.keys(checkErrors).length === 0) {
-      try {
-        login(
-          { email, password },
-          {
-            onSuccess: () => {
-              Swal.fire({
-                icon: 'success',
-                title: '로그인이 완료 되었습니다.',
-                html: `
-                <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 환영합니다! </div>
-              `
-              });
-
-              router.push('/');
-            },
-
-            onError: () => {
-              throw new Error();
-            }
+      login(
+        { email, password },
+        {
+          onSuccess: () => {
+            toast({
+              variant: 'default',
+              description: '로그인이 완료되었습니다.'
+            });
+            router.push('/');
+          },
+          onError: () => {
+            toast({
+              variant: 'destructive',
+              description: '가입되지 않은 아이디에요.'
+            });
+            setLoginError('가입되지 않은 아이디거나 잘못된 비밀번호에요.');
           }
-        );
-      } catch (error) {
-        console.error('로그인 실패', error);
-        setLoginError('가입되지 않은 아이디거나 잘못된 비밀번호에요.');
-      }
+        }
+      );
     }
   };
 
   const handleShowPassword = () => {
     setshowPassword(!showPassword);
-  };
-
-  const handleGoSignup = () => {
-    router.push('/sign-up');
   };
 
   return (
@@ -154,9 +145,9 @@ const LoginForm = () => {
             입장하기
           </button>
 
-          <p className="mt-7 text-center text-base text-label-alternative">
+          <p className="mt-7 text-center text-base text-label-alternative gap-2">
             아직 회원이 아니신가요?{' '}
-            <Link href="/sign-up" className="ml-2 text-label-normal">
+            <Link href="/sign-up" className="text-label-normal">
               회원가입
             </Link>
           </p>

@@ -102,7 +102,7 @@ const MarketLikes = ({ userId, marketId, pixel }: MarketLikesPropsType) => {
         {isLiked ? (
           <GoHeartFill className={`w-full h-full text-[#DB3B3B]`} />
         ) : (
-          <GoHeart className={`w-full h-full text-[#545454]`} />
+          <GoHeart className={`w-full h-full text-[#545454] md:text-white`} />
         )}
       </button>
     </div>

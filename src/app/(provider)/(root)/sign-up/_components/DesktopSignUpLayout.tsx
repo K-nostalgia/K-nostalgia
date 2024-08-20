@@ -10,6 +10,7 @@ import {
 } from '@/utils/validate';
 import { PiEye, PiEyeSlash } from 'react-icons/pi';
 import Swal from 'sweetalert2';
+import { toast } from '@/components/ui/use-toast';
 
 type ErrorState = {
   [key: string]: string;
@@ -100,7 +101,7 @@ const DesktopSignUpLayout = () => {
     if (userInfo.name && !validateName(userInfo.name)) {
       setErrors((prev) => ({
         ...prev,
-        name: '정확한 이름을 입력해주세요.'
+        name: '정확한 이름을 입력주세요.'
       }));
     } else {
       setErrors((prev) => ({ ...prev, name: '' }));
@@ -271,19 +272,19 @@ const DesktopSignUpLayout = () => {
 
       if (response) {
         await api.auth.logOut();
-        Swal.fire({
-          icon: 'success',
-          title: '회원가입이 완료 되었습니다.',
-          html: `
-          <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 로그인 페이지로 자동으로 넘어갑니다. </div>
-        `
+        toast({
+          variant: 'destructive',
+          description: '회원가입이 완료되었습니다.'
         });
 
         router.push('/log-in');
       }
     } catch (error) {
       console.error('Fetch error:', error);
-      alert(`회원가입 요청 중 오류가 발생했습니다: ${error}`);
+      toast({
+        variant: 'destructive',
+        description: '회원가입이 불가합니다.'
+      });
     }
   };
 
@@ -310,7 +311,7 @@ const DesktopSignUpLayout = () => {
 
   return (
     <>
-      <div className="flex flex-col gap-2 flex-1 overflow-y-auto">
+      <div className="flex flex-col gap-2 h-[630px] w-[90%] overflow-y-scroll">
         {/* 이메일 */}
         <div className="py-3 px-6 mt-8">
           <label className="block text-label-normal mb-2">이메일</label>
@@ -347,7 +348,9 @@ const DesktopSignUpLayout = () => {
           )}
         </div>
 
-        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="px-7">
+          <div className="h-[2px] bg-[#E0E0E0] my-12" />
+        </div>
 
         {/* 비밀번호 */}
         <div className="px-6 py-3">
@@ -396,7 +399,7 @@ const DesktopSignUpLayout = () => {
               name="confirmPassword"
               value={userInfo.confirmPassword}
               onChange={handleChange}
-              placeholder="한번 더 입력해주세요"
+              placeholder="한번 더 입력해 주세요"
               className={`bg-[#FEFEFE] border text-primary-20 rounded-xl pl-4 pr-3 py-3 w-full focus:outline-none ${
                 errors.confirmPassword
                   ? 'border-red-500'
@@ -421,7 +424,9 @@ const DesktopSignUpLayout = () => {
           )}
         </div>
 
-        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="px-7">
+          <div className="h-[2px] bg-[#E0E0E0] my-12" />
+        </div>
 
         {/* 이름 */}
         <div className="px-6 py-3">
@@ -441,7 +446,9 @@ const DesktopSignUpLayout = () => {
           )}
         </div>
 
-        <div className="border border-[#E0E0E0] mt-12 mb-12" />
+        <div className="px-7">
+          <div className="h-[2px] bg-[#E0E0E0] my-12" />
+        </div>
 
         {/* 별명 */}
         <div className="px-6 py-3 mb-12">
@@ -482,14 +489,14 @@ const DesktopSignUpLayout = () => {
         </div>
       </div>
 
-      <div className="flex-shrink-0 px-4 mt-4">
+      <div className="flex-shrink-0 px-6 mt-8 mb-[32px] w-full">
         <button
           type="button"
           className={`w-full rounded-xl ${
             isFormValid()
               ? 'bg-primary-20 hover:bg-primary-10'
               : 'bg-label-disable'
-          } text-label-light px-4 py-3  mb-[32px]`}
+          } text-label-light px-4 py-3  `}
           onClick={handleSubmit}
           disabled={!isFormValid()}
         >
@@ -499,5 +506,4 @@ const DesktopSignUpLayout = () => {
     </>
   );
 };
-
 export default DesktopSignUpLayout;

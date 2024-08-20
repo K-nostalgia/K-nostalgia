@@ -1,4 +1,5 @@
 'use client';
+import { toast } from '@/components/ui/use-toast';
 import api from '@/service/service';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -12,28 +13,28 @@ const CancelUser = () => {
     try {
       Swal.fire({
         title: '정말 향그리움을 나가시겠습니까?',
-        icon: 'warning',
+        html: `
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;"> 탈퇴 시에는 계정 복구가 불가해요</div>
+      `,
         showCancelButton: true,
         confirmButtonColor: '#f2f2f2',
         cancelButtonColor: '#9C6D2E',
-        cancelButtonText: '취소하기',
+        cancelButtonText: '취소',
         confirmButtonText: '탈퇴하기'
       }).then(async (result) => {
         if (result.isConfirmed) {
           try {
             await api.auth.deleteUser();
-            Swal.fire({
-              title: '탈퇴되었습니다.',
-              text: '다음에 다시 만나요!',
-              icon: 'success'
+            toast({
+              variant: 'destructive',
+              description: '탈퇴되었습니다. 다음에 다시 이용해주세요. '
             });
             router.push('/log-in');
           } catch (error) {
             console.error('탈퇴 에러');
-            Swal.fire({
-              title: '에러가 발생했습니다.',
-              text: '다시 시도해주세요.',
-              icon: 'error'
+            toast({
+              variant: 'destructive',
+              description: '탈퇴가 불가능합니다. '
             });
           }
         }
@@ -44,12 +45,12 @@ const CancelUser = () => {
   };
   return (
     <div className="p-4">
-      <div className="flex items-center py-[3px]">
+      <div
+        className="flex items-center py-[3px] cursor-pointer"
+        onClick={handleDeleteUser}
+      >
         <BsTrash3 className="mr-[8px] text-label-normal text-[20px]" />
-        <div onClick={handleDeleteUser} className="cursor-pointer">
-          {' '}
-          회원탈퇴{' '}
-        </div>
+        <div className="cursor-pointer"> 회원탈퇴 </div>
       </div>
     </div>
   );
