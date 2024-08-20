@@ -109,7 +109,7 @@ export const TableDataColumns = ({
       id: 'select',
       header: ({ table }) => (
         <>
-          <div className="flex items-center whitespace-nowrap md:relative md:top-[-70px] md:z-50 md:left-3">
+          <div className="flex items-center whitespace-nowrap md:relative md:top-[-70px] md:z-40 md:left-3">
             <Checkbox
               checked={
                 selectedItems.length === cartData?.length &&
@@ -334,7 +334,7 @@ export const TableDataColumns = ({
       <h1
         className={`${
           isDesktop &&
-          'inline-flex relative mb-10 mt-20 text-primary-10 px-4 py-3 border border-r-0 border-l-0 border-t-primary-20 border-b-primary-20'
+          'inline-flex relative mb-10 mt-[8rem] text-primary-10 px-4 py-3 border border-r-0 border-l-0 border-t-primary-20 border-b-primary-20'
         }`}
       >
         <Image
