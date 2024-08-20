@@ -43,7 +43,6 @@ const SearchBar = ({ isOpen, setIsOpen }: SearchBarProps) => {
   >(null);
   const [results, setResults] = useState<SearchPageResults[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
-  console.log(activeIndex);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const debounceSearchTerm = useDebounce(searchTerm, 300);
   const router = useRouter();
