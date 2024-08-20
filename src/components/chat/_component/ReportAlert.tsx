@@ -21,18 +21,18 @@ const ReportAlert = ({ handleReport, cancelReport }: ReportAlertProps) => {
         <div className="text-label-strong text-center text-xl leading-7 font-semibold mb-1">
           해당 채팅을 신고하시겠어요?
         </div>
-        <div className="text-label-assistive text-center text-sm font-medium leading-[25.6px] mb-8 md:text-base">
+        <div className="text-label-assistive text-center text-sm font-medium leading-[25.6px] mb-8 md:text-[15px]">
           신고 후에는 해당 채팅을 확인할 수 없어요
         </div>
         <div className="flex justify-around">
           <button
-            className="bg-[#F2F2F2] rounded-xl text-status-negative text-base text-center font-semibold leading-[22.4px] px-4 py-3 text-nowrap w-[123px] md:w-[143px]"
+            className="bg-[#F2F2F2] rounded-xl text-status-negative text-base text-center font-semibold leading-[22.4px] px-4 py-3 text-nowrap w-[135px] md:w-[143px]"
             onClick={handleReport}
           >
             신고하기
           </button>
           <button
-            className="bg-primary-20 rounded-xl text-label-light text-base text-center font-semibold leading-[22.4px] px-4 py-3 text-nowrap w-[123px] md:w-[143px]"
+            className="bg-primary-20 rounded-xl text-label-light text-base text-center font-semibold leading-[22.4px] px-4 py-3 text-nowrap w-[135px] md:w-[143px]"
             onClick={cancelReport}
           >
             취소하기

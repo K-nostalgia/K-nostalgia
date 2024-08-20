@@ -57,7 +57,7 @@ const ChatList = ({
         </DialogHeader>
       </div>
 
-      <div className="flex flex-col py-4 h-[527px] flex-1 gap-3 md:gap-4 md:pt-6 md:h-[585px] md:pb-0 md:px-2">
+      <div className="flex flex-col pt-4 h-[509px] flex-1 gap-3 md:gap-4 md:pt-6 md:h-[585px] md:px-2">
         {data?.map((item) => (
           <div
             key={item.room_id}
@@ -89,7 +89,7 @@ const ChatList = ({
       </div>
       <div
         onClick={() => setShowWarning(true)}
-        className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer md:pb-12"
+        className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer pb-10 md:pb-12"
       >
         채팅방 이용시 주의사항
       </div>

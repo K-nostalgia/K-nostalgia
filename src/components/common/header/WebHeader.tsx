@@ -139,7 +139,7 @@ const WebHeader = () => {
                   <div
                     className={`w-[50px] h-[1px] bg-label-alternative rounded-[0.5px] transition-colors duration-300 lg:w-[72px] ${
                       index === activeIndex
-                        ? 'bg-primary-20'
+                        ? 'bg-primary-30'
                         : 'bg-label-alternative'
                     }`}
                   >
@@ -151,7 +151,7 @@ const WebHeader = () => {
                     className={`py-[15px] px-[20px] text-nowrap cursor-pointer transition-colors duration-300 
                     ${
                       index === activeIndex
-                        ? 'text-primary-20'
+                        ? 'text-primary-30'
                         : 'text-label-alternative'
                     }
                     ${

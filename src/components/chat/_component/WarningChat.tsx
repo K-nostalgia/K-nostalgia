@@ -45,7 +45,7 @@ const WarningChat = ({
         className="w-full h-12 flex justify-center items-center py-3 px-4 gap-1 bg-primary-20 rounded-xl"
         onClick={() => setShowWarning(false)}
       >
-        <div className="text-nowrap text-base font-semibold leading-[22.4px] text-label-light">
+        <div className="text-nowrap text-base font-semibold leading-[22.4px] text-label-light ml-1">
           확인했어요
         </div>
         <BsCheck2 className="w-6 h-6 shrink text-[#F2F2F2]" />
