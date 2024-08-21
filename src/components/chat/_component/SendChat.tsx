@@ -55,7 +55,7 @@ export function SendChat({
   const { data: user } = useUser();
   const messageRef = useRef<HTMLInputElement>(null);
   const scrollDown = useRef<HTMLDivElement | null>(null);
-  const [showReportAlert, setShowReportAlert] = useState<boolean>(false);
+  const [removeChatId, setRemoveChatId] = useState<number>(0);
 
   // xss 공격 방지
   const encoded = (str: string) => {
@@ -153,10 +153,10 @@ export function SendChat({
       .on(
         'postgres_changes',
         {
-          event: 'INSERT',
+          event: '*',
           schema: 'public',
           table: 'chat',
-          filter: `room_${selectedChatRoom?.room_id}`
+          filter: `room_id=eq.${selectedChatRoom?.room_id}`
         },
         (payload) => {
           queryClient.invalidateQueries({
@@ -197,33 +197,35 @@ export function SendChat({
   };
 
   // 신고 알럿
-  const onClickReortAlert = () => {
-    setShowReportAlert(true);
+  const onClickReortAlert = (itemId: number) => {
+    setRemoveChatId(itemId);
   };
 
-  const handleReport = async (item: Tables<'chat'>) => {
-    const response = await fetch('/api/chat/chat-send', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8'
-      },
-      body: JSON.stringify(item)
-    });
+  const handleReport = async () => {
+    const item = data?.find((x) => x.id === removeChatId);
+    if (item) {
+      const response = await fetch('/api/chat/chat-send', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(item)
+      });
 
-    queryClient.invalidateQueries({
-      queryKey: ['chatData', selectedChatRoom?.room_id]
-    });
+      queryClient.invalidateQueries({
+        queryKey: ['chatData', selectedChatRoom?.room_id]
+      });
 
-    setShowReportAlert(false);
-    toast({
-      variant: 'destructive',
-      description: '신고가 완료되었습니다.'
-    });
-    return response.json();
+      toast({
+        variant: 'destructive',
+        description: '신고가 완료되었습니다.'
+      });
+    }
+    cancelReport();
   };
 
   const cancelReport = () => {
-    setShowReportAlert(false);
+    setRemoveChatId(0);
   };
 
   return (
@@ -288,21 +290,23 @@ export function SendChat({
                   <div className="w-[1px] h-[10px] rounded-[6px] border mx-[6px]" />
                   <div
                     className="flex gap-1 justify-center cursor-pointer"
-                    onClick={onClickReortAlert}
+                    onClick={() => {
+                      onClickReortAlert(item.id);
+                    }}
                   >
                     <BsPersonExclamation className="w-[16px] h-[16px] text-[#AFAFAF]" />
                     <span>신고하기</span>
                   </div>
-                  {showReportAlert && (
-                    <ReportAlert
-                      handleReport={() => handleReport(item)}
-                      cancelReport={cancelReport}
-                    />
-                  )}
                 </div>
               </div>
             );
           })}
+        {removeChatId > 0 && (
+          <ReportAlert
+            handleReport={handleReport}
+            cancelReport={cancelReport}
+          />
+        )}
       </div>
       <div className="border-t-2 w-[calc(100%+32px)] -mx-4">
         <DialogFooter className="flex relative items-center">

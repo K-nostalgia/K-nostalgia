@@ -9,10 +9,11 @@ import Loading from '@/components/common/Loading';
 import KaKaomap from '../_components/KaKaoMap';
 import MarketComments from './_components/MarketComments';
 import { useUser } from '@/hooks/useUser';
-import MarketRecommend from './_components/MarketRecommend';
+
 import ScrollButton from './_components/ScrollButton';
 import MarketLikes from '../_components/MarketLikes';
 import MarketImage from '../_components/MarketImage';
+import MarketRecommend from './_components/MarketRecommend';
 export type ImagesType = {
   title: string;
   link: string;
@@ -97,10 +98,11 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
       <div>
         <ScrollButton />
       </div>
+
       <div className="mt-[1px] w-full p-4 bg-primary-20 flex flex-col items-center">
         <div
           id="photos-section"
-          className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90 relative"
+          className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90 relative md:text-2xl md:mt-20 md:mb-10"
         >
           시장 전체 이미지
           <span
@@ -108,6 +110,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
             style={{ backgroundColor: 'rgba(214, 164, 97, 0.40)' }}
           ></span>
         </div>
+
         {images.slice(0).map((image, index) => {
           if (index === 0) return null; // 0번째 인덱스는 스킵
 
@@ -133,7 +136,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         id="details-section"
         className="w-full bg-primary-70 flex flex-col justify-center items-center"
       >
-        <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10 relative">
+        <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10 relative md:text-2xl md:mt-20 md:mb-10">
           상세정보
           <span
             className="absolute left-[50%] translate-x-[-50%] bottom-0 w-[4.5rem] h-[10px] "
@@ -157,7 +160,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
           >
             편의시설 보유 여부
           </p>
-          <div className="flex justify-between md:w-[185px]">
+          <div className="flex justify-between md:w-[185px] text-nowrap">
             <div className="flex items-center">
               <LuDot className="text-primary-20" />
               <span className="text-sm mr-6 text-label-strong md:text-base md:mr-5">
@@ -168,7 +171,7 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
               {market.시장전용고객주차장_보유여부 === 'Y' ? '보유　' : '미보유'}
             </div>
           </div>
-          <div className="flex justify-between md:w-[185px]">
+          <div className="flex justify-between md:w-[185px] text-nowrap">
             <div className="flex items-center">
               <LuDot className="text-primary-20" />
               <span className="text-sm mr-6 text-label-strong md:text-base">
