@@ -9,10 +9,11 @@ import Loading from '@/components/common/Loading';
 import KaKaomap from '../_components/KaKaoMap';
 import MarketComments from './_components/MarketComments';
 import { useUser } from '@/hooks/useUser';
-import MarketRecommend from './_components/MarketRecommend';
+
 import ScrollButton from './_components/ScrollButton';
 import MarketLikes from '../_components/MarketLikes';
 import MarketImage from '../_components/MarketImage';
+import MarketRecommend from './_components/MarketRecommend';
 export type ImagesType = {
   title: string;
   link: string;

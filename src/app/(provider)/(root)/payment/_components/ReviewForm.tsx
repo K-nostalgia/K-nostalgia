@@ -246,13 +246,13 @@ const ReviewForm = ({
           value={content}
           onChange={(e) => setContent(e.target.value)}
           placeholder="상품에 대한 솔직한 리뷰를 작성해주세요 :)"
-          className="w-full h-[243px] p-4 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[426px]"
+          className="w-full h-[243px] p-4 border rounded focus:outline-none focus:ring-1 focus:ring-[#9C6D2E] resize-none md:h-[420px]"
         />
       </div>
       <div className="flex -mx-4 w-[calc(100%+2rem)] shadow-custom pt-3 pb-6">
         <button
           onClick={submitReview}
-          className="mt-4 mx-[16px] h-12 bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
+          className="my-2 mx-[16px] h-12 bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
         >
           {hasWrittenReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
