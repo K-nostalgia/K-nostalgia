@@ -89,14 +89,14 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         products: product as any,
         redirectUrl:
           process.env.NODE_ENV === 'production'
-            ? `https://https://k-nostalgia-flame.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+            ? `https://https://k-nostalgia-one.vercel.app/check-payment?totalQuantity=${totalQuantity}`
             : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
         appScheme:
           process.env.NODE_ENV === 'production'
-            ? `https://https://k-nostalgia-flame.vercel.app/check-payment?totalQuantity=${totalQuantity}`
+            ? `https://https://k-nostalgia-one.vercel.app/check-payment?totalQuantity=${totalQuantity}`
             : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
         noticeUrls: [
-          `https://https://k-nostalgia-flame.vercel.app/api/payment/webhook`
+          `https://https://k-nostalgia-one.vercel.app/api/payment/webhook`
         ],
 
         customer: {
