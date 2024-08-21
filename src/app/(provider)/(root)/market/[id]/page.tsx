@@ -100,9 +100,13 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
       <div className="mt-[1px] w-full p-4 bg-primary-20 flex flex-col items-center">
         <div
           id="photos-section"
-          className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90"
+          className="mt-4 mb-8 text-center text-xl font-semibold text-primary-90 relative"
         >
           시장 전체 이미지
+          <span
+            className="absolute left-[50%] translate-x-[-50%] bottom-0 w-[8rem] h-[10px] "
+            style={{ backgroundColor: 'rgba(214, 164, 97, 0.40)' }}
+          ></span>
         </div>
         {images.slice(0).map((image, index) => {
           if (index === 0) return null; // 0번째 인덱스는 스킵
@@ -129,8 +133,12 @@ const MarketDetailPage = ({ params }: { params: { id: number } }) => {
         id="details-section"
         className="w-full bg-primary-70 flex flex-col justify-center items-center"
       >
-        <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10">
+        <div className="mt-8 mb-8 text-center text-xl font-semibold text-primary-10 relative">
           상세정보
+          <span
+            className="absolute left-[50%] translate-x-[-50%] bottom-0 w-[4.5rem] h-[10px] "
+            style={{ backgroundColor: 'rgba(214, 164, 97, 0.40)' }}
+          ></span>
         </div>
         <div>
           <KaKaomap />

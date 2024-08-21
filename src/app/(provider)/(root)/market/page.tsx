@@ -227,7 +227,7 @@ const MarketPage = () => {
                     <Link href={`/market/${item.id}`} className="w-full">
                       <div className="w-full flex flex-col md:justify-center md:items-center md:flex-row md:pt-8 md:pb-10">
                         <div className="hidden md:flex justify-center items-center w-11 h-11 p-1 mr-12 bg-primary-20 text-label-light text-xs rounded-[8px]">
-                          {item.id}
+                          <p>{item.id}</p>
                         </div>
                         <div className="md:my-[2.5px] md:py-1 md:mr-4">
                           <div className="flex justify-between">

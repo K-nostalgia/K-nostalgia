@@ -38,14 +38,14 @@ const MarketRecommend = ({ region }: MarketRecommendPropsType) => {
 
   return (
     <div className="pb-8 w">
-      <div className="px-4 py-8 text-center">
-        <span className="text-xl font-semibold text-secondary-10">
+      <div className="px-4 py-8 text-center ">
+        <p className="text-xl font-semibold text-secondary-10 relative">
           주변 추천 전통시장
-        </span>
-        <span
-          className="bottom-[-1px] h-[10px]"
-          style={{ backgroundColor: 'rgba(183, 203, 174, 0.40)' }}
-        ></span>
+          <span
+            className="absolute left-[50%] translate-x-[-50%] bottom-0 w-[9rem] h-[10px] "
+            style={{ backgroundColor: 'rgba(183, 203, 174, 0.40)' }}
+          ></span>
+        </p>
       </div>
       {isMobile ? (
         <div className="overflow-x-hidden scrollbar-hide">
