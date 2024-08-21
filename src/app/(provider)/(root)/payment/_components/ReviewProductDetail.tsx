@@ -110,7 +110,7 @@ const ReviewProductDetail = ({ order }: Props) => {
           리뷰 작성하기
         </DialogTrigger>
         <div className="overflow-hidden">
-          <DialogContent className="bg-[#FAF8F5] min-w-[330px] w-[80%] h-[627px] rounded-2xl md:max-w-[608px] md:max-h-[840px] md:h-[80vh]">
+          <DialogContent className="bg-[#FAF8F5] min-w-[330px] w-[80%] h-[627px] rounded-2xl md:max-w-[608px] md:h-[840px] overflow-y-auto">
             {selectedProduct ? (
               <ReviewForm
                 product={selectedProduct}
@@ -130,7 +130,7 @@ const ReviewProductDetail = ({ order }: Props) => {
                     </p>
                   </DialogTitle>
                   <div className="flex flex-col">
-                    <div>
+                    <div className="flex-shrink-0">
                       {productsWithReviewStatus.map((product: Product) => {
                         const { name, id, amount, quantity, hasReview } =
                           product;
