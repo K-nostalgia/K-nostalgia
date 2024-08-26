@@ -25,7 +25,7 @@ const Footer = () => {
           <KNostalgiaIcon2 width={58.182} height={64} />
         </div>
         <div className="text-base font-medium leading-[25.6px] text-label-normal text-nowrap">
-          ⓒ 5JOSAMA. All rights reserved
+          ⓒ 이혜원. All rights reserved
         </div>
       </div>
     </div>
