@@ -8,9 +8,9 @@ export const metadata: Metadata = {
 
 const PaymentList = () => {
   return (
-    <div>
+    <>
       <PayHistory />
-    </div>
+    </>
   );
 };
 
