@@ -1,4 +1,4 @@
-import PayHistory from '@/app/(provider)/(root)/payment/_components/PayHistoryList';
+import PayHistory from '@/app/(root)/payment/_components/PayHistoryList';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
