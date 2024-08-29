@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { CustomOverlayMap, Map, MapMarker } from 'react-kakao-maps-sdk';
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
 
 const KAKAO_SDK_URL = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services,clusterer&autoload=false`;
 
@@ -60,34 +60,41 @@ const KaKaomap = () => {
     return <div>Loading...</div>;
   }
 
-  // 커스텀 마커 이미지 설정
-  // const markerImage = {
-  //   src: '/image/StateSad.png',
-  //   size: {
-  //     width: 64, // 이미지의 너비
-  //     height: 64 // 이미지의 높이
-  //   },
-  //   options: {
-  //     offset: {
-  //       x: 27, // 앵커 X 위치
-  //       y: 69 // 앵커 Y 위치
-  //     }
-  //   }
-  // };
+  //커스텀 마커 이미지 설정
+  const markerImage = {
+    src: '/image/marker.png',
+    size: {
+      width: 55, // 이미지의 너비
+      height: 64 // 이미지의 높이
+    },
+    options: {
+      offset: {
+        x: 27,
+        y: 69
+      }
+    }
+  };
 
   return (
     <div className="border border-secondary-20 rounded-xl overflow-hidden">
       <Map
         center={location}
-        scrollwheel={false}
-        className="w-[343px] h-[200px] md:w-[1280px] md:h-[512px]"
+        scrollwheel={false} // 스크롤 확대 막기
+        zoomable={false} // 줌 안되게 막기
+        className="w-[343px] h-[200px] md:w-[940px] md:h-[512px]"
         level={5}
+        onCreate={(map) => {
+          const mapTypeControl = new window.kakao.maps.MapTypeControl();
+          map.addControl(
+            mapTypeControl,
+            window.kakao.maps.ControlPosition.TOPRIGHT
+          );
+
+          const zoomControl = new window.kakao.maps.ZoomControl();
+          map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+        }}
       >
-        <MapMarker position={location} />
-        {/* <MapMarker position={location} image={markerImage} />
-        <CustomOverlayMap position={location} yAnchor={1}>
-          {/* <div dangerouslySetInnerHTML={{ __html: overlayContent }} /> */}
-        {/* </CustomOverlayMap> */}
+        <MapMarker position={location} image={markerImage} />
       </Map>
     </div>
   );
