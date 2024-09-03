@@ -60,14 +60,41 @@ const KaKaomap = () => {
     return <div>Loading...</div>;
   }
 
+  //커스텀 마커 이미지 설정
+  const markerImage = {
+    src: '/image/marker.png',
+    size: {
+      width: 55, // 이미지의 너비
+      height: 64 // 이미지의 높이
+    },
+    options: {
+      offset: {
+        x: 27,
+        y: 69
+      }
+    }
+  };
+
   return (
     <div className="border border-secondary-20 rounded-xl overflow-hidden">
       <Map
         center={location}
-        className="w-[343px] h-[200px] md:w-[1280px] md:h-[512px]"
+        scrollwheel={false} // 스크롤 확대 막기
+        zoomable={false} // 줌 안되게 막기
+        className="w-[343px] h-[200px] md:w-[940px] md:h-[512px]"
         level={5}
+        onCreate={(map) => {
+          const mapTypeControl = new window.kakao.maps.MapTypeControl();
+          map.addControl(
+            mapTypeControl,
+            window.kakao.maps.ControlPosition.TOPRIGHT
+          );
+
+          const zoomControl = new window.kakao.maps.ZoomControl();
+          map.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
+        }}
       >
-        <MapMarker position={location} />
+        <MapMarker position={location} image={markerImage} />
       </Map>
     </div>
   );
