@@ -232,7 +232,7 @@ const WebHeader = () => {
               </button>
               <button
                 type="button"
-                className="bg-translate border-2 border-primary-30 text-primary-20 text-nowrap rounded-xl px-4 py-3 w-[120px] h-10 flex justify-center items-center"
+                className="bg-translate border-2 border-primary-20 text-primary-20 text-nowrap rounded-xl px-4 py-3 w-[120px] h-10 flex justify-center items-center"
                 onClick={() => router.push('/sign-up')}
               >
                 회원가입
