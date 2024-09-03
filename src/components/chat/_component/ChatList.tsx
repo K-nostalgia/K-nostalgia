@@ -87,6 +87,27 @@ const ChatList = ({
           </div>
         ))}
       </div>
+      {/* 버튼 느낌 */}
+      <div className="flex border py-4 pl-4 pr-3 rounded-xl gap-1 cursor-pointer shadow-chatCustom justify-between bg-[#FFF]">
+        <div className="flex md:py-1">
+          <div
+            // width={48}
+            // height={48}
+            // alt="QnA버튼"
+            className="w-12 h-12"
+          />
+          <div className="ml-2 flex flex-col justify-center md:ml-3">
+            <div className="font-medium text-base leading-[22.4px]">QnA</div>
+            <div className="font-normal text-sm leading-[19.6px] text-label-alternative overflow-ellipsis">
+              물어볼 것이 있나요?
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center p-3">
+          <BsChevronRight className="w-[22px] h-[22px]" />
+        </div>
+      </div>
+      {/* 이용시 주의사항 */}
       <div
         onClick={() => setShowWarning(true)}
         className="underline text-nowrap text-center text-sm text-label-alternative font-medium leading-[19.6px] cursor-pointer pb-10 md:pb-12"

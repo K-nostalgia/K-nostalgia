@@ -1,15 +1,14 @@
 'use client';
 
-import { GoPerson } from 'react-icons/go';
-import { GoPersonFill } from 'react-icons/go';
-import { BsGrid1X2 } from 'react-icons/bs';
 import { IconType } from 'react-icons/lib';
 import { usePathname, useRouter } from 'next/navigation';
 import KNostalgiaIcon2 from '../icons/KNostalgiaIcon2';
 import KNostalgiaIcon3 from '../icons/KNostalgiaIcon3';
-import { BsShopWindow } from 'react-icons/bs';
+import { TraditionalMarketIcon } from '../icons/TraditionalMarketIcon';
+import { LocalFoodIcon } from '../icons/LocalFoodIcon';
+import { MyProfile1 } from '../icons/MyProfile1';
+import { MyProfile2 } from '../icons/MyProfile2';
 
-// TODO mic 모바일용 md: hidden 적용
 type NaviList = {
   label: string;
   path: string;
@@ -27,20 +26,20 @@ const naviList: NaviList[] = [
   {
     label: '전통 시장',
     path: '/market',
-    icon: BsShopWindow,
-    activeIcon: BsShopWindow
+    icon: TraditionalMarketIcon,
+    activeIcon: TraditionalMarketIcon
   },
   {
     label: '특산물',
     path: '/local-food',
-    icon: BsGrid1X2,
-    activeIcon: BsGrid1X2
+    icon: LocalFoodIcon,
+    activeIcon: LocalFoodIcon
   },
   {
     label: '내 프로필',
     path: '/my-page',
-    icon: GoPerson,
-    activeIcon: GoPersonFill
+    icon: MyProfile1,
+    activeIcon: MyProfile2
   }
 ];
 
@@ -62,23 +61,7 @@ const Navigation = () => {
           }`}
           onClick={() => handleNavigationClick(item.path)}
         >
-          {pathname === item.path ? (
-            <item.activeIcon
-              className={`${
-                item.path === '/local-food'
-                  ? 'w-[22px] h-[28px]'
-                  : 'w-[28px] h-[28px]'
-              }`}
-            />
-          ) : (
-            <item.icon
-              className={`${
-                item.path === '/local-food'
-                  ? 'w-[22px] h-[28px]'
-                  : 'w-[28px] h-[28px]'
-              }`}
-            />
-          )}
+          {pathname === item.path ? <item.activeIcon /> : <item.icon />}
           <div className="text-[12px] text-nowrap flex items-center justify-center">
             {item.label}
           </div>
