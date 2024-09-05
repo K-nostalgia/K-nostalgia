@@ -3,7 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { useState } from 'react';
-import ChatIcon from '../icons/ChatIcon';
+import { ChatIcon } from '../icons/ChatIcon';
 import ChatList from './_component/ChatList';
 import { Tables } from '@/types/supabase';
 import SendChat from './_component/SendChat';
