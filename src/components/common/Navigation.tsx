@@ -3,11 +3,10 @@
 import { IconType } from 'react-icons/lib';
 import { usePathname, useRouter } from 'next/navigation';
 import KNostalgiaIcon2 from '../icons/KNostalgiaIcon2';
-import KNostalgiaIcon3 from '../icons/KNostalgiaIcon3';
+import KNostalgiaIcon1 from '../icons/KNostalgiaIcon1';
 import { TraditionalMarketIcon } from '../icons/TraditionalMarketIcon';
 import { LocalFoodIcon } from '../icons/LocalFoodIcon';
-import { MyProfile1 } from '../icons/MyProfile1';
-import { MyProfile2 } from '../icons/MyProfile2';
+import { MyProfile } from '../icons/MyProfile';
 
 type NaviList = {
   label: string;
@@ -20,7 +19,7 @@ const naviList: NaviList[] = [
   {
     label: '홈',
     path: '/',
-    icon: KNostalgiaIcon3,
+    icon: KNostalgiaIcon1,
     activeIcon: KNostalgiaIcon2 as IconType
   },
   {
@@ -38,8 +37,8 @@ const naviList: NaviList[] = [
   {
     label: '내 프로필',
     path: '/my-page',
-    icon: MyProfile1,
-    activeIcon: MyProfile2
+    icon: MyProfile,
+    activeIcon: MyProfile
   }
 ];
 
@@ -61,7 +60,11 @@ const Navigation = () => {
           }`}
           onClick={() => handleNavigationClick(item.path)}
         >
-          {pathname === item.path ? <item.activeIcon /> : <item.icon />}
+          {pathname === item.path ? (
+            <item.activeIcon fill="#9C6D2E" />
+          ) : (
+            <item.icon />
+          )}
           <div className="text-[12px] text-nowrap flex items-center justify-center">
             {item.label}
           </div>

@@ -1,4 +1,4 @@
-const KNostalgiaIcon3 = () => {
+const KNostalgiaIcon1 = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -41,4 +41,4 @@ const KNostalgiaIcon3 = () => {
   );
 };
 
-export default KNostalgiaIcon3;
+export default KNostalgiaIcon1;
