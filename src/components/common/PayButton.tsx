@@ -27,6 +27,13 @@ type ButtonStylesObj = {
   [key: string]: string;
 };
 
+//TODO pop state 이벤트 -> 발생시 결제 창 닫기
+// localstorage 탭 확인
+
+const preventGoBack = () => {
+  alert('결제 진행중입니다. 결제 창 종료 후 이동해주세요');
+};
+
 const PayButton = ({ orderNameArr, product, text }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
@@ -50,6 +57,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   const DELAY = 10000;
 
   const throttledPayRequest = useCallback(async () => {
+    //TODO 결제 창 종료시 delay 초기화
     if (!users) {
       return toast({
         description: '로그인 후 이용 가능합니다.'
@@ -122,6 +130,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
           variant: 'destructive',
           description: '결제에 실패했습니다. 다시 시도해주세요.'
         });
+        setLastCallTime(0);
         return router.replace(`${pathName}`);
       }
 
