@@ -9,7 +9,6 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import ChatSendIcon from '../../icons/ChatSendIcon';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import supabase from '@/utils/supabase/client';
@@ -17,11 +16,12 @@ import { useUser } from '@/hooks/useUser';
 import Image from 'next/image';
 import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
-import { GoArrowLeft } from 'react-icons/go';
 import { BsPersonExclamation } from 'react-icons/bs';
 import { debounce, throttle } from 'lodash';
 import ReportAlert from './ReportAlert';
 import { toast } from '@/components/ui/use-toast';
+import { BackButton } from '@/components/icons/BackButton';
+import ChatSendIcon from '@/components/icons/ChatSendIcon';
 
 interface chatUserType {
   avatar: string;
@@ -228,13 +228,15 @@ export function SendChat({
     setRemoveChatId(0);
   };
 
+  console.log(ChatSendIcon);
+
   return (
     <DialogContent className="bg-normal w-[330px] h-[627px] rounded-2xl md:w-[479px] md:h-[710px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
         <DialogHeader>
           <DialogTitle className="flex pt-3 px-3 pb-2 font-semibold text-lg leading-[28.8px] justify-between">
             <button onClick={handleBackChatRoom}>
-              <GoArrowLeft className="w-7 h-7" />
+              <BackButton />
             </button>
             <div>{selectedChatRoom?.chat_name}</div>
             <div className="invisible w-7" />

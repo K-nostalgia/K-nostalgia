@@ -6,6 +6,7 @@ import { GoSearch } from 'react-icons/go';
 import { PiShoppingCartSimple } from 'react-icons/pi';
 import SearchBar from './SearchBar';
 import { useUserCartData } from '@/hooks/cart/useUserCartData';
+import { CartIcon } from '@/components/icons/CartIcon';
 
 interface ShowSearchCartProps {
   showSearch: boolean;
@@ -30,12 +31,12 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
           className="cursor-pointer w-7 h-7"
           onClick={handleSearchToggle}
         />
-        <div className="relative w-7 h-9">
-          <PiShoppingCartSimple
-            onClick={() => router.push('/cart')}
-            className="cursor-pointer w-7 h-7"
-          />
-          <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full cursor-pointer">
+        <div
+          className="relative cursor-pointer"
+          onClick={() => router.push('/cart')}
+        >
+          <CartIcon />
+          <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full">
             {cartData?.length}
           </span>
         </div>
@@ -56,12 +57,12 @@ const ShowSearchCart = ({ showSearch, showCart }: ShowSearchCartProps) => {
     return (
       <div className="flex p-1 gap-3 w-[76px] h-9">
         <div className="invisible w-7 h-7" />
-        <div className="relative w-7 h-9">
-          <PiShoppingCartSimple
-            onClick={() => router.push('/cart')}
-            className="cursor-pointer w-7 h-7"
-          />
-          <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full cursor-pointer">
+        <div
+          className="relative cursor-pointer"
+          onClick={() => router.push('/cart')}
+        >
+          <CartIcon />
+          <span className="absolute top-[-5px] right-[-10px] w-[18px] h-[18px] flex items-center font-normal justify-center text-xs bg-primary-strong text-label-light rounded-full">
             {cartData?.length}
           </span>
         </div>
