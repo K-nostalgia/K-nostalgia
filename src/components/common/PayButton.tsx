@@ -6,7 +6,7 @@ import PortOne from '@portone/browser-sdk/v2';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from '../ui/use-toast';
 
@@ -27,16 +27,11 @@ type ButtonStylesObj = {
   [key: string]: string;
 };
 
-//TODO pop state 이벤트 -> 발생시 결제 창 닫기
-// localstorage 탭 확인
-
-const preventGoBack = () => {
-  alert('결제 진행중입니다. 결제 창 종료 후 이동해주세요');
-};
-
 const PayButton = ({ orderNameArr, product, text }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
+  const [isPaymentOpen, setIsPaymentOpen] = useState<boolean>(false);
+  const paymentRef = useRef<any>(null);
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
@@ -56,8 +51,26 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   const [lastCallTime, setLastCallTime] = useState(0);
   const DELAY = 10000;
 
+  useEffect(() => {
+    const handlePopstate = (e: PopStateEvent) => {
+      if (isPaymentOpen) {
+        e.preventDefault();
+        toast({
+          description: '결제창을 먼저 종료해주세요'
+        });
+        window.history.pushState(null, '', window.location.href);
+      }
+    };
+    if (isPaymentOpen) {
+      window.history.pushState(null, '', window.location.href);
+      window.addEventListener('popstate', handlePopstate);
+    }
+    return () => {
+      window.removeEventListener('popstate', handlePopstate);
+    };
+  }, [isPaymentOpen]);
+
   const throttledPayRequest = useCallback(async () => {
-    //TODO 결제 창 종료시 delay 초기화
     if (!users) {
       return toast({
         description: '로그인 후 이용 가능합니다.'
@@ -71,6 +84,8 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
     const now = Date.now();
     if (now - lastCallTime >= DELAY) {
       setLastCallTime(now);
+      setIsPaymentOpen(true);
+      window.history.pushState(null, '', window.location.href);
 
       toast({
         variant: 'destructive',
@@ -133,6 +148,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         setLastCallTime(0);
         return router.replace(`${pathName}`);
       }
+      paymentRef.current = response;
 
       router.push(
         `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
@@ -189,7 +205,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
       <button
         className={PayButtonStyle}
         onClick={throttledPayRequest}
-        disabled={buttonDisabled}
+        disabled={buttonDisabled || isPaymentOpen}
       >
         {text}
       </button>
