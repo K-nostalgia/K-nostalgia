@@ -6,7 +6,7 @@ import PortOne from '@portone/browser-sdk/v2';
 import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import { usePathname, useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from '../ui/use-toast';
 
@@ -31,7 +31,6 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
   const [isPaymentOpen, setIsPaymentOpen] = useState<boolean>(false);
-  const paymentRef = useRef<any>(null);
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
   const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`;
@@ -148,7 +147,6 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         setLastCallTime(0);
         return router.replace(`${pathName}`);
       }
-      paymentRef.current = response;
 
       router.push(
         `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
