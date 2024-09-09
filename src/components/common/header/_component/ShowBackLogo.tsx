@@ -1,8 +1,8 @@
 'use client';
 
+import { BackButton } from '@/components/icons/BackButton';
 import TitleLogo from '@/components/icons/TitleLogo';
 import { useRouter } from 'next/navigation';
-import { GoArrowLeft } from 'react-icons/go';
 
 interface ShowBackLogoProps {
   showBackButton: boolean;
@@ -19,7 +19,7 @@ const ShowBackLogo = ({ showBackButton, showLogo }: ShowBackLogoProps) => {
         onClick={() => router.back()}
         className="flex cursor-pointer items-center w-[76px]"
       >
-        <GoArrowLeft className="w-7 h-7" />
+        <BackButton />
       </div>
     );
   } else if (!showBackButton && showLogo) {
