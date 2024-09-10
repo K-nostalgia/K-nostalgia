@@ -214,6 +214,12 @@ const WebHeader = () => {
                   주문 내역
                 </DropdownMenuItem>
                 <DropdownMenuItem
+                  // onClick={() => router.push('/payment')}
+                  className="cursor-pointer"
+                >
+                  고객센터
+                </DropdownMenuItem>
+                <DropdownMenuItem
                   onClick={handleClickLogOut}
                   className="cursor-pointer"
                 >
