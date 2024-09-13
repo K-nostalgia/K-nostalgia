@@ -1,3 +1,23 @@
+// export const imageSrc = async (name: string) => {
+
+//   const {data, error} = await supabase
+//   .from('local_food')
+//   .select('title_image')
+//   .eq('food_name', name)
+//   .single()
+
+//   if(error){
+//     console.error(error)
+//   }
+//   if(!data?.title_image){
+//     return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/Tiger_Sad.png'
+//   }
+
+
+//   return data.title_image[0]
+// };
+
+//TODO PayHistoryList 의 orderList(product) 가공하는 훅으로 변경 or 제거
 export const imageSrc = (name: string) => {
   switch (name) {
     case '옥천 복숭아':

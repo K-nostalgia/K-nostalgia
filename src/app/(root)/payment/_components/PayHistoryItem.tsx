@@ -52,7 +52,6 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
   };
 
   //취소 및 db 업데이트
-
   const cancelPaymentMutation = usePaymentCancellation();
 
   const cancelPayment = async (order: BaseOrderInPayHistory) => {
