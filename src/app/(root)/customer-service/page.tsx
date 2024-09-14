@@ -6,7 +6,7 @@ const CustomerPage = () => {
   return (
     <div>
       {' '}
-      <CustomerHeader />
+      {/* <CustomerHeader /> */}
       <CustomerContent />
     </div>
   );

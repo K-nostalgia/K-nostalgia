@@ -1,14 +1,24 @@
+'use client';
 import Announcement from '@/components/icons/Announcement';
 import BulkOrder from '@/components/icons/BulkOrder';
 import FAQ from '@/components/icons/FAQ';
 import SellerRegister from '@/components/icons/SellerRegister';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const CustomerCard = () => {
+  const router = useRouter();
+
+  const handleannounceClick = () => {
+    router.push('/customer-service/announcement');
+  };
   return (
     <div className="grid grid-cols-2 gap-3 mt-6">
       {/* 공지사항 */}
-      <div className="cursor-pointer flex flex-col items-center justify-center border border-primary-20 bg-white rounded-[6px] w-[166px] h-[140px]">
+      <div
+        className="cursor-pointer flex flex-col items-center justify-center border border-primary-20 bg-white rounded-[6px] w-[166px] h-[140px]"
+        onClick={handleannounceClick}
+      >
         <Announcement />
         <span className="mt-[10px] text-primary-10 font-medium text-base">
           공지사항
