@@ -144,6 +144,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
           variant: 'destructive',
           description: '결제에 실패했습니다. 다시 시도해주세요.'
         });
+        setIsPaymentOpen(false);
         setLastCallTime(0);
         return router.replace(`${pathName}`);
       }
