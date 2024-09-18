@@ -1,23 +1,3 @@
-// export const imageSrc = async (name: string) => {
-
-//   const {data, error} = await supabase
-//   .from('local_food')
-//   .select('title_image')
-//   .eq('food_name', name)
-//   .single()
-
-//   if(error){
-//     console.error(error)
-//   }
-//   if(!data?.title_image){
-//     return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/Tiger_Sad.png'
-//   }
-
-
-//   return data.title_image[0]
-// };
-
-//TODO PayHistoryList 의 orderList(product) 가공하는 훅으로 변경 or 제거
 export const imageSrc = (name: string) => {
   switch (name) {
     case '옥천 복숭아':
@@ -34,6 +14,21 @@ export const imageSrc = (name: string) => {
 
     case '논산 딸기':
       return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product3.jpg';
+
+    case '영덕 대게':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product6.jepg'
+
+    case '안동 간고등어':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product7.jepg';
+
+    case '이천 도자기 찻잔':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product8.jepg';
+
+    case '해남 배추':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product9.jpeg';
+
+    case '가평 잣':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product10.jpeg';
 
     default:
       return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/Tiger_Sad.png';
