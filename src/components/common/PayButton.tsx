@@ -138,7 +138,8 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         }
       });
       const paymentId = response?.paymentId;
-
+      console.log(response);
+      //TODO 에러 코드에 따라 토스트 다르게 띄우기
       if (response?.code != null) {
         toast({
           variant: 'destructive',
@@ -148,7 +149,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         setLastCallTime(0);
         return router.replace(`${pathName}`);
       }
-
+      setIsPaymentOpen(false);
       router.push(
         `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
       );
