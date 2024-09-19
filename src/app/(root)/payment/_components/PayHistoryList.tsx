@@ -9,6 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import NoPayHistory from './NoPayHistory';
 import PayHistoryItem from './PayHistoryItem';
 import TopIconInDesktop from './TopIconInDesktop';
@@ -23,9 +25,25 @@ const PayHistoryList = () => {
 
   const userId = users?.id;
 
-  const { payHistoryList } = useGetPaymentHistoryWithSupabase(userId);
+  const {
+    payHistoryList,
+    isPending,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useGetPaymentHistoryWithSupabase(userId);
 
-  if (!payHistoryList) {
+  const { ref, inView } = useInView({
+    threshold: 0
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, fetchNextPage]);
+
+  if (!payHistoryList || isPending) {
     return <Loading />;
   }
 
@@ -71,6 +89,7 @@ const PayHistoryList = () => {
               <hr className="border-2 border-[#F2F2F2]" />
             </div>
           ))}
+          {isFetchingNextPage ? <Loading /> : hasNextPage && <div ref={ref} />}
         </div>
       )}
     </>
