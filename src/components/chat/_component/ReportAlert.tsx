@@ -8,7 +8,10 @@ interface ReportAlertProps {
   cancelReport: () => void;
 }
 
-const ReportAlert = ({ handleReport, cancelReport }: ReportAlertProps) => {
+const ReportAlertConfirm = ({
+  handleReport,
+  cancelReport
+}: ReportAlertProps) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[1000]">
       <div className="relative w-[310px] h-[210px] bg-normal border border-[#E0E0E0] shadow-custom pt-14 px-4 pb-6 rounded-2xl md:w-[330px] md:h-[220px]">
@@ -43,4 +46,4 @@ const ReportAlert = ({ handleReport, cancelReport }: ReportAlertProps) => {
   );
 };
 
-export default ReportAlert;
+export default ReportAlertConfirm;

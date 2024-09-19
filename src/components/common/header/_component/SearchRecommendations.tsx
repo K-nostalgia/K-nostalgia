@@ -86,7 +86,6 @@ const SearchRecommendations = ({
 }: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  // TODO 재사용성 고민해보기
   const pathName = usePathname();
   const marketSide = pathName === '/market' || pathName.startsWith('/market');
   const localFoodSide =

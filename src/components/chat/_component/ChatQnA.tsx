@@ -54,6 +54,7 @@ const ChatQnA = ({ setShowQnA }: ChatQnAProps) => {
           버튼 어쩌고 컴포넌트 만들기 #1
         </div>
       </div>
+
       {/* 내가 말할 때... */}
       <div
         className="py-4 h-[495px] flex-1 overflow-y-auto scrollbar-hide md:h-[564px] md:px-2"
@@ -69,9 +70,6 @@ const ChatQnA = ({ setShowQnA }: ChatQnAProps) => {
           />
           <div className="border border-primary-strong rounded-xl rounded-tr-none ml-auto mt-[10px] text-label-light text-sm bg-primary-strong w-fit px-3 py-2 leading-[22.4px]">
             {/* {encoded(item.content)} */}
-          </div>
-          <div className="text-xs text-label-assistive ml-auto mt-1 leading-[19.2px]">
-            {/* {formatDate(item.created_at)} */}
           </div>
         </div>
       </div>

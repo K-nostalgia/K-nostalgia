@@ -22,6 +22,7 @@ import ReportAlert from './ReportAlert';
 import { toast } from '@/components/ui/use-toast';
 import { BackButton } from '@/components/icons/BackButton';
 import ChatSendIcon from '@/components/icons/ChatSendIcon';
+import ReportAlert2 from './ReportAlert2';
 
 interface chatUserType {
   avatar: string;
@@ -304,9 +305,10 @@ export function SendChat({
             );
           })}
         {removeChatId > 0 && (
-          <ReportAlert
+          <ReportAlert2
             handleReport={handleReport}
             cancelReport={cancelReport}
+            setSelectedChatRoom={setSelectedChatRoom}
           />
         )}
       </div>
