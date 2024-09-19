@@ -18,7 +18,7 @@ const NoPayHistory = () => {
         <img src="/image/pay_history_tiger.png" alt="복숭아 든 귀여운 호랑이" />
       </div>
       <div
-        className={`my-auto flex justify-center items-center flex-col ${
+        className={`my-auto flex gap-4 justify-center items-center flex-col ${
           pathName === '/payment' ? 'md:h-[68vh]' : 'mb-[80px]'
         }`}
       >
@@ -33,7 +33,7 @@ const NoPayHistory = () => {
           주문 내역이 없어요
         </p>
         <Link href={'local-food'}>
-          <button className="w-au h-[48px] px-[32px] py-[12px] rounded-[12px] text-white bg-[#9C6D2E] mt-[16px] font-semibold leading-[140%]">
+          <button className="w-au h-[48px] px-[32px] py-[12px] rounded-[12px] text-white bg-[#9C6D2E] mt-[12px] font-semibold leading-[140%]">
             특산물 보러 가기
           </button>
         </Link>
