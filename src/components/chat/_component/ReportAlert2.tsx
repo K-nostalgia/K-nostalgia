@@ -10,7 +10,6 @@ import {
   DialogTitle
 } from '@/components/ui/dialog';
 import Image from 'next/image';
-import CautionsForReporting from './CautionsForReporting';
 import {
   Select,
   SelectContent,
@@ -56,7 +55,7 @@ const ReportAlert2 = ({
       <div className="flex flex-col mb-3 w-full justify-center items-center text-status-negative">
         {/* 아이콘 추가 */}
         <div>! 주의사항</div>
-        <div>
+        <div className='text-[#ED1B18] text-'>
           사용자 신고시 상대방의 모든 메세지가 차단됩니다. 신고 후 취소가
           불가능하니 신중히 판단 후 신고를 접수해 주세요.
           <br />

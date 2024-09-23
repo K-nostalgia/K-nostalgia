@@ -17,8 +17,8 @@ import Image from 'next/image';
 import dayjs from 'dayjs';
 import { Tables } from '@/types/supabase';
 import { BsPersonExclamation } from 'react-icons/bs';
-import { debounce, throttle } from 'lodash';
-import ReportAlert from './ReportAlert';
+import { debounce } from 'lodash';
+// import ReportAlert from './ReportAlert';
 import { toast } from '@/components/ui/use-toast';
 import { BackButton } from '@/components/icons/BackButton';
 import ChatSendIcon from '@/components/icons/ChatSendIcon';
@@ -219,7 +219,7 @@ export function SendChat({
 
       toast({
         variant: 'destructive',
-        description: '신고가 완료되었습니다.'
+        description: '사용자 신고가 접수되었습니다.'
       });
     }
     cancelReport();
@@ -228,8 +228,6 @@ export function SendChat({
   const cancelReport = () => {
     setRemoveChatId(0);
   };
-
-  console.log(ChatSendIcon);
 
   return (
     <DialogContent className="bg-normal w-[330px] h-[627px] rounded-2xl md:w-[479px] md:h-[710px]">

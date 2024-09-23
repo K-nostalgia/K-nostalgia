@@ -39,7 +39,6 @@ const ChatList = ({
     setSelectedChatRoom(item);
   };
 
-  // 로컬 스토리지에서 세션 스토리지 변경
   useEffect(() => {
     const hasChater = sessionStorage.getItem('visitedChat');
     if (!hasChater) {
@@ -101,9 +100,9 @@ const ChatList = ({
               className="w-12 h-12"
             />
             <div className="ml-2 flex flex-col justify-center md:ml-3">
-              <div className="font-medium text-base leading-[22.4px]">QnA</div>
+              <div className="font-medium text-base leading-[22.4px]">챗봇 상담</div>
               <div className="font-normal text-sm leading-[19.6px] text-label-alternative overflow-ellipsis">
-                물어볼 것이 있나요?
+                궁금한 내용이 있으신가요?
               </div>
             </div>
           </div>
