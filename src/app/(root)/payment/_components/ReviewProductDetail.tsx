@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Dialog,
   DialogContent,
@@ -117,7 +119,6 @@ const ReviewProductDetail = ({ order }: Props) => {
                 onBack={() => setSelectedProduct(null)}
                 hasWrittenReview={selectedProduct.hasReview}
                 payment_date={payment_date}
-                reviewIsOpen={reviewIsOpen}
                 setIsEditing={setIsEditing}
                 isEditing={isEditing}
               />

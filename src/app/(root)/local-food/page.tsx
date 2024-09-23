@@ -1,6 +1,5 @@
-import WebHeader from '@/components/common/header/WebHeader';
-import LocalFoodView from './_components/LocalFoodView';
 import { Metadata } from 'next';
+import LocalFoodView from './_components/LocalFoodView';
 
 export const metadata: Metadata = {
   title: '특산물',

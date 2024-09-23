@@ -1,7 +1,5 @@
 import { Tables } from "./supabase";
 
-type ExcludeFromNullable = 'payment_id';
-
 export interface Product {
   amount: number;
   id: string;
@@ -16,8 +14,8 @@ export interface Order extends Omit<Tables<'orderd_list'>, 'products'> {
   products: Product[] | null;
 }
 
-export type NullablePropertiesExcept<T> = {
-  [P in keyof T]: P 
+export type NullablePropertiesExcept<T, K extends keyof T = never> = {
+  [P in keyof T]: P extends K ? T[P] : T[P] | null
 };
 
 export interface BaseOrderInPayHistory {
@@ -32,13 +30,7 @@ export interface BaseOrderInPayHistory {
     pay_provider: string;
     user_name: string;
     phone_number: string;
-    products: 
-        {
-            id: string;
-            name: string;
-            amount: number;
-            quantity: number;
-        }[]
+    products: Product[]
     created_at: string;
     user_email: string;
 }
@@ -84,7 +76,6 @@ export interface PayHistory  {
   version: string;
   scheduleId?: string;
   billingKey?: string;
-  // 웹훅은 사용 안하니 지정 안함
   requestedAt: string;
   updatedAt: string;
   statusChangedAt: string;
