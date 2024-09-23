@@ -1,6 +1,6 @@
 import { PayHistory } from '@/types/payHistory';
 import { Tables } from '@/types/supabase';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 interface Props {
   paymentId: string | null;
@@ -28,24 +28,51 @@ export const useGetPaymentHistory = ({ paymentId }: Props) => {
 };
 
 //supabase 주문내역 리스트 불러오기(특정유저)
+
+interface OrderedList extends Tables<'orderd_list'> {}
+
+async function fetchPaymentHistory(
+  userId: string,
+  page: number
+): Promise<OrderedList[]> {
+  const response = await fetch(
+    `/api/payment/pay-supabase?user_id=${userId}&page=${page}`
+  );
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+  return response.json();
+}
+
 export const useGetPaymentHistoryWithSupabase = (
   userId: string | undefined
 ) => {
-  const { data: payHistoryList } = useQuery<
-    Tables<'orderd_list'>[],
-    Error,
-    Tables<'orderd_list'>[]
-  >({
-    queryKey: ['payHistoryList'],
-    queryFn: async () => {
-      if (!userId) {
-        throw new Error('user ID is required');
-      }
-      const response = await fetch(
-        `/api/payment/pay-supabase?user_id=${userId}`
-      );
-      return response.json();
+  const {
+    data: payHistoryList,
+    isPending,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  } = useInfiniteQuery<Tables<'orderd_list'>[], Error, Tables<'orderd_list'>[]>(
+    {
+      queryKey: ['payHistoryList', userId],
+      initialPageParam: 1,
+      queryFn: ({ pageParam = 1 }) =>
+        fetchPaymentHistory(userId!, pageParam as number),
+      getNextPageParam: (lastPage, allPages) => {
+        return lastPage.length ? allPages.length + 1 : undefined;
+      },
+      select: ({ pages }) => pages.flat()
     }
-  });
-  return { payHistoryList };
+  );
+
+  return {
+    payHistoryList,
+    isPending,
+    isError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage
+  };
 };
