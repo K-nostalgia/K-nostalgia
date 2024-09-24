@@ -14,7 +14,6 @@ export type Products = {
   name: string | null;
   amount: number;
   quantity: number;
-  id?: string;
 }[];
 
 interface Props {
