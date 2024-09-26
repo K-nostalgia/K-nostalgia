@@ -30,7 +30,7 @@ type Products = {
 };
 
 type Props = {
-  product: Products;
+  product: any;
   onBack: () => void;
   hasWrittenReview?: boolean;
   payment_date: string | null;
@@ -45,11 +45,12 @@ const ReviewForm = ({
   isEditing,
   setIsEditing
 }: Props) => {
+  console.log(product);
   const [rating, setRating] = useState(0);
   const [content, setContent] = useState('');
 
   const date = dayjs(payment_date).locale('ko').format('YYYY. MM. DD');
-  const { name, amount, quantity, id, user_id } = product;
+  const { name, amount, quantity, id, user_id, review_id } = product;
 
   useEffect(() => {
     setIsEditing(true);
@@ -64,8 +65,8 @@ const ReviewForm = ({
           .select('*')
           .eq('product_id', product.id)
           .eq('user_id', user_id as string)
+          .eq('review_id', review_id)
           .order('created_at', { ascending: false })
-          .limit(1)
           .single();
 
         if (data) {

@@ -23,9 +23,9 @@ interface Props {
 
 const ReviewProductDetail = ({ order }: Props) => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [productsWithReviewStatus, setProductsWithReviewStatus] = useState<
-    Product[]
-  >([]);
+  const [productsWithReviewStatus, setProductsWithReviewStatus] = useState<any>(
+    []
+  );
 
   const [reviewIsOpen, setReviewIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,7 +40,7 @@ const ReviewProductDetail = ({ order }: Props) => {
           order.products.map(async (product) => {
             const { data, error } = await supabase
               .from('reviews')
-              .select('rating')
+              .select('*')
               .eq('product_id', product.id)
               .eq('user_id', user_id as string)
               .order('created_at', { ascending: false })
@@ -49,7 +49,11 @@ const ReviewProductDetail = ({ order }: Props) => {
             if (error) {
               console.error(error);
             }
-            return { ...product, hasReview: !!data, ...data };
+            return {
+              ...product,
+              hasReview: !!data,
+              ...data
+            };
           })
         );
         setProductsWithReviewStatus(updatedProducts);
