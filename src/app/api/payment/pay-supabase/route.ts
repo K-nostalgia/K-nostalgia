@@ -14,24 +14,29 @@ export const POST = async (request: NextRequest) => {
 };
 
 export const GET = async (request: NextRequest) => {
+
   try {
     const url = new URL(request.url);
     const userId = url.searchParams.get('user_id');
+    const page =  parseInt(url.searchParams.get('page') || '1',10)
 
     if (!userId) {
       return NextResponse.json({ message: '유저 정보를 찾을 수 없습니다' }, { status: 400 });
     }
+    const PAGE_PER_ITEM: number = 3;
 
-    const response = await supabase
+    const start = (page - 1) * PAGE_PER_ITEM
+    const end = start + PAGE_PER_ITEM - 1
+
+    const {data, error} = await supabase
       .from('orderd_list')
       .select('*')
       .order('created_at', { ascending: false })
-      .eq('user_id', userId);
+      .eq('user_id', userId)
+      .range(start,end)
       
-    const { data, error } = response;
     if (error) {
       console.error(error);
-      return NextResponse.json({ message: error.message }, { status: 500 });
     }
 
     return NextResponse.json(data);

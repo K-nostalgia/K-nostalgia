@@ -1,3 +1,5 @@
+'use client';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -32,7 +34,6 @@ type Props = {
   onBack: () => void;
   hasWrittenReview?: boolean;
   payment_date: string | null;
-  reviewIsOpen: boolean;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   isEditing: boolean;
 };
@@ -41,7 +42,6 @@ const ReviewForm = ({
   onBack,
   hasWrittenReview,
   payment_date,
-  reviewIsOpen,
   isEditing,
   setIsEditing
 }: Props) => {
