@@ -9,7 +9,7 @@ const Announcement: React.FC = () => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div className="px-4 py-6 border-b border-[#E0E0E0]">
+    <div className="px-4 py-6 border-b border-[#E0E0E0] md:hidden">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className="text-primary-20 mr-2 text-base font-normal">
