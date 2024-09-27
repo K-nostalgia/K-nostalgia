@@ -12,6 +12,10 @@ const CustomerCard = () => {
   const handleannounceClick = () => {
     router.push('/customer-service/announcement');
   };
+
+  const handlefaqClick = () => {
+    router.push('/customer-service/faq-page');
+  };
   return (
     <div className="grid grid-cols-2 gap-3 mt-6">
       {/* 공지사항 */}
@@ -26,7 +30,10 @@ const CustomerCard = () => {
       </div>
 
       {/* 자주 묻는 질문 */}
-      <div className="cursor-pointer flex flex-col items-center justify-center border border-primary-20 bg-white rounded-[6px] w-[166px] h-[140px]">
+      <div
+        className="cursor-pointer flex flex-col items-center justify-center border border-primary-20 bg-white rounded-[6px] w-[166px] h-[140px]"
+        onClick={handlefaqClick}
+      >
         <FAQ />
         <span className="mt-[10px] text-primary-10 font-medium text-base">
           자주 묻는 질문
