@@ -1,5 +1,3 @@
-'use client';
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,19 +18,12 @@ import dayjs from 'dayjs';
 import { ChevronLeft } from 'lucide-react';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FaStar } from 'react-icons/fa';
-
-type Products = {
-  amount: number;
-  id: string;
-  name: string;
-  quantity: number;
-  user_id?: string;
-};
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
-  product: Products;
+  product: any;
   onBack: () => void;
-  hasWrittenReview?: boolean;
+  hasReview?: boolean;
   payment_date: string | null;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
   isEditing: boolean;
@@ -40,7 +31,7 @@ type Props = {
 const ReviewForm = ({
   product,
   onBack,
-  hasWrittenReview,
+  hasReview,
   payment_date,
   isEditing,
   setIsEditing
@@ -49,7 +40,7 @@ const ReviewForm = ({
   const [content, setContent] = useState('');
 
   const date = dayjs(payment_date).locale('ko').format('YYYY. MM. DD');
-  const { name, amount, quantity, id, user_id } = product;
+  const { name, amount, quantity, id, user_id, review_id } = product;
 
   useEffect(() => {
     setIsEditing(true);
@@ -57,15 +48,15 @@ const ReviewForm = ({
   }, []);
 
   useEffect(() => {
-    if (hasWrittenReview) {
+    if (hasReview) {
       const fetchReview = async () => {
         const { data } = await supabase
           .from('reviews')
           .select('*')
           .eq('product_id', product.id)
           .eq('user_id', user_id as string)
+          .eq('review_id', review_id)
           .order('created_at', { ascending: false })
-          .limit(1)
           .single();
 
         if (data) {
@@ -75,7 +66,7 @@ const ReviewForm = ({
       };
       fetchReview();
     }
-  }, [hasWrittenReview, product.id, product.user_id, isEditing]);
+  }, [hasReview, product.id, product.user_id, isEditing]);
 
   const submitReview = async () => {
     if (rating === 0) {
@@ -85,13 +76,15 @@ const ReviewForm = ({
       });
     }
     const reviewData = {
+      review_id: uuidv4(),
       product_id: product.id,
       user_id: product.user_id,
       rating,
-      content
+      content,
+      payment_id: product.payment_id
     };
     let error;
-    if (hasWrittenReview) {
+    if (hasReview) {
       const { error: updateError } = await supabase
         .from('reviews')
         .update(reviewData)
@@ -113,7 +106,7 @@ const ReviewForm = ({
       });
     } else {
       toast({
-        description: hasWrittenReview
+        description: hasReview
           ? '리뷰가 수정되었습니다.'
           : '리뷰가 작성되었습니다.'
       });
@@ -182,7 +175,7 @@ const ReviewForm = ({
               />
             </div>
             <div className="flex flex-col items-start w-full flex-1">
-              {hasWrittenReview && (
+              {hasReview && (
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <button className="absolute right-0 mr-4 py-1 px-2 text-[12px] text-[#1F1E1E] font-normal leading-[140%] bg-[#F2F2F2] rounded-[6px] md:text-[14px]">
@@ -254,7 +247,7 @@ const ReviewForm = ({
           onClick={submitReview}
           className="my-2 mx-[16px] h-12 bg-[#9C6D2E] text-white px-4 py-2 rounded-[10px] w-full"
         >
-          {hasWrittenReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
+          {hasReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
       </div>
     </div>
