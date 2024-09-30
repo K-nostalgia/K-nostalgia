@@ -54,8 +54,6 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
   //취소 및 db 업데이트
   const cancelPaymentMutation = usePaymentCancellation();
 
-  //TODO 주문 취소시에 해당 건 리뷰 삭제
-
   const cancelPayment = async (order: BaseOrderInPayHistory) => {
     Swal.fire({
       title: '구매 상품을 환불하시겠어요?',
