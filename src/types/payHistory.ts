@@ -18,27 +18,25 @@ export type NullablePropertiesExcept<T, K extends keyof T = never> = {
   [P in keyof T]: P extends K ? T[P] : T[P] | null
 };
 
-export interface BaseOrderInPayHistory {
-    payment_id: string;
-    status: string;
-    order_name: string;
-    amount: number;
-    price: number;
-    user_id: string;
-    payment_date:string;
-    id: string;
-    pay_provider: string;
-    user_name: string;
-    phone_number: string;
-    products: Product[]
-    created_at: string;
-    user_email: string;
+export type BaseOrderInPayHistory = {
+  payment_id: string;
+  status: string | null;
+  order_name: string | null;
+  amount: number | null;
+  price: number | null;
+  user_id: string | null;
+  payment_date: string | null;
+  id: string;
+  pay_provider: string | null;
+  user_name: string | null;
+  phone_number: string | null;
+  products: any;
+  created_at: string | null;
+  user_email: string | null;
 }
 
 export type OrderInPayHistory = NullablePropertiesExcept<BaseOrderInPayHistory>;
-export type OrderListInPayHistory = {
-  [date: string]: OrderInPayHistory[];
-}
+export type OrderListInPayHistory = Record<string,BaseOrderInPayHistory[]>
 
 export interface PayHistory  {
   status: string;
