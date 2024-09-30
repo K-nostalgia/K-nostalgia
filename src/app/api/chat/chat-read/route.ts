@@ -7,7 +7,7 @@ export const POST = async (request:NextRequest) => {
     try{
         const {data:chatData, error:chatError} = await supabase
         .from('chat')
-        .select(`*, users(nickname, avatar)`)
+        .select(`*, users(nickname, avatar, reportedUserId)`)
         // 해당 채팅방만 가져오는 로직
         .eq('room_id', room_id)
         // 오늘만 가져오는 로직
