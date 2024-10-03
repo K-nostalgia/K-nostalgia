@@ -1,6 +1,7 @@
 import supabase from "@/utils/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
+//가져올 때 로직 자체에서 비교할지 고민하기
 export const POST = async (request:NextRequest) => {
     const { room_id } = await request.json();
 
