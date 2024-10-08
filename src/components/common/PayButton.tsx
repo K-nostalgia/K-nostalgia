@@ -116,7 +116,10 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
           process.env.NODE_ENV === 'production'
             ? `https://https://k-nostalgia-one.vercel.app/check-payment?totalQuantity=${totalQuantity}`
             : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
-        noticeUrls: [`https://k-nostalgia-one.vercel.app/api/payment/webhook`],
+        noticeUrls: [
+          `https://k-nostalgia-one.vercel.app/api/payment/webhook`,
+          'https://k-nostalgia-vdpl.vercel.app/api/payment/webhook'
+        ],
 
         customer: {
           customerId: id,
