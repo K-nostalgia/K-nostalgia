@@ -27,6 +27,7 @@ import ReportAlert2 from './ReportAlert2';
 interface chatUserType {
   avatar: string;
   nickname: string;
+  reportedUserId : string[] | null;
 }
 
 interface chatMessageType {
@@ -37,6 +38,7 @@ interface chatMessageType {
   content: string;
   isReported: boolean | null;
   users: chatUserType;
+  reportedUserId : string[] | null;
 }
 
 interface SendChatProps {
@@ -204,9 +206,10 @@ export function SendChat({
 
   const handleReport = async () => {
     const item = data?.find((x) => x.id === removeChatId);
+
     if (item) {
-      const response = await fetch('/api/chat/chat-send', {
-        method: 'PUT',
+      const response = await fetch('/api/chat/admin', {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json; charset=utf-8'
         },
@@ -229,6 +232,8 @@ export function SendChat({
     setRemoveChatId(0);
   };
 
+  console.log(data);
+
   return (
     <DialogContent className="bg-normal w-[330px] h-[627px] rounded-2xl md:w-[479px] md:h-[710px]">
       <div className="border-b-2 w-[calc(100%+32px)] -mx-4">
@@ -250,6 +255,12 @@ export function SendChat({
       >
         {data
           ?.filter((item) => !item.isReported)
+          .filter((item) => {
+            if (user?.id) {
+              return !item.users.reportedUserId?.includes(user.id);
+            }
+            return true;
+          })
           .map((item) => {
             return item.user_id === user?.id ? (
               // 나일 경우
