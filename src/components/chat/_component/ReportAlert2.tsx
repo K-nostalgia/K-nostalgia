@@ -9,7 +9,6 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog';
-import Image from 'next/image';
 import {
   Select,
   SelectContent,
@@ -19,6 +18,7 @@ import {
 } from '@/components/ui/select';
 import { Tables } from '@/types/supabase';
 import { useState } from 'react';
+import ReportConfirmAlert from './ReportConfirmAlert';
 
 interface ReportAlertProps {
   handleReport: () => void;
@@ -33,9 +33,12 @@ const ReportAlert2 = ({
   cancelReport,
   setSelectedChatRoom
 }: ReportAlertProps) => {
-  const [reportValue, setReportValue] = useState('');
-  usest
-  
+  const [reportValue, setReportValue] = useState<string>('');
+  const [reportConfirmAlert, setReportConfirmAlert] = useState<boolean>(false)
+
+  const onClickReortConfirmAlert = () => {
+    setReportConfirmAlert(true);
+  };
 
   return (
     <DialogContent className="bg-normal w-[330px] h-[627px] rounded-2xl md:w-[479px] md:h-[710px]">
@@ -123,9 +126,13 @@ const ReportAlert2 = ({
             } hover:bg-primary-10`}
             disabled={!reportValue}
             aria-label="신고 접수하기"
+            onClick={onClickReortConfirmAlert}
           >
             접수하기
           </Button>
+          {reportConfirmAlert && (
+          <ReportConfirmAlert/>
+        )}
         </DialogFooter>
       </div>
     </DialogContent>
