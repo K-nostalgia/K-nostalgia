@@ -21,14 +21,6 @@ function MyPageLayout({ children }: PropsWithChildren) {
           <div className="w-full max-w-[503px] md:mt-6 md:mb-20 md:p-10 md:bg-secondary-70 md:rounded-xl">
             <RecentMarket />
           </div>
-
-          {/* <Image
-            src="/image/ProfileBanner.png"
-            alt="divider"
-            width={503}
-            height={900}
-            className="w-[503px] h-[900px] mt-6 mb-[485px]"
-          /> */}
         </aside>
       )}
       <main className={`${isDesktop ? 'w-2/3 ' : 'w-full'}`}>{children}</main>
