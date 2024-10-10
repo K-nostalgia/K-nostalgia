@@ -29,6 +29,12 @@ export const imageSrc = (name: string) => {
 
     case '가평 잣':
       return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product10.jpeg';
+    
+    case '청양 고추':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product11.png';
+    
+    case '부여 밤':
+      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product12.png'
 
     default:
       return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/Tiger_Sad.png';

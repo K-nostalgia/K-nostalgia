@@ -2,10 +2,11 @@
 
 import Loading from '@/components/common/Loading';
 import { useGetPaymentHistoryWithSupabase } from '@/hooks/payment/useGetPaymentHistory';
-import api from '@/service/service';
-import { OrderListInPayHistory } from '@/types/payHistory';
-import { Tables } from '@/types/supabase';
-import { useQuery } from '@tanstack/react-query';
+import { useUser } from '@/hooks/useUser';
+import {
+  BaseOrderInPayHistory,
+  OrderListInPayHistory
+} from '@/types/payHistory';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
 import { usePathname } from 'next/navigation';
@@ -17,13 +18,9 @@ import TopIconInDesktop from './TopIconInDesktop';
 
 const PayHistoryList = () => {
   const pathName = usePathname();
+  const { data: user } = useUser();
 
-  const { data: users } = useQuery<Tables<'users'>, Error, Tables<'users'>>({
-    queryKey: ['users'],
-    queryFn: () => api.auth.getUser()
-  });
-
-  const userId = users?.id;
+  const userId = user?.id;
 
   const {
     payHistoryList,
@@ -47,8 +44,9 @@ const PayHistoryList = () => {
     return <Loading />;
   }
 
+  //날짜가 key 값, value가 배열인 객체로 변환
   const orderList = payHistoryList.reduce<OrderListInPayHistory>(
-    (acc, order: any) => {
+    (acc, order: BaseOrderInPayHistory) => {
       const date = dayjs(order.payment_date).format('YYYY. MM. DD');
       if (!acc[date]) {
         acc[date] = [];

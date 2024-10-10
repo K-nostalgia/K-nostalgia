@@ -313,10 +313,32 @@ export type Database = {
           },
         ]
       }
+      reports: {
+        Row: {
+          created_at: string
+          id: number
+          reportedUserId: string[] | null
+          reporterId: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          reportedUserId?: string[] | null
+          reporterId?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          reportedUserId?: string[] | null
+          reporterId?: string | null
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           content: string | null
           created_at: string
+          payment_id: string | null
           product_id: string | null
           rating: number | null
           review_id: string
@@ -325,6 +347,7 @@ export type Database = {
         Insert: {
           content?: string | null
           created_at?: string
+          payment_id?: string | null
           product_id?: string | null
           rating?: number | null
           review_id?: string
@@ -333,6 +356,7 @@ export type Database = {
         Update: {
           content?: string | null
           created_at?: string
+          payment_id?: string | null
           product_id?: string | null
           rating?: number | null
           review_id?: string
@@ -403,6 +427,7 @@ export type Database = {
           name: string | null
           nickname: string | null
           password: string | null
+          reportedUserId: string[] | null
         }
         Insert: {
           avatar?: string | null
@@ -413,6 +438,7 @@ export type Database = {
           name?: string | null
           nickname?: string | null
           password?: string | null
+          reportedUserId?: string[] | null
         }
         Update: {
           avatar?: string | null
@@ -423,6 +449,7 @@ export type Database = {
           name?: string | null
           nickname?: string | null
           password?: string | null
+          reportedUserId?: string[] | null
         }
         Relationships: [
           {

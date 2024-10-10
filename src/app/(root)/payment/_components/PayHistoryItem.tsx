@@ -58,13 +58,13 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
     Swal.fire({
       title: '구매 상품을 환불하시겠어요?',
       html: `
-        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">환불 후에는 리뷰 작성 및 환불 취소가 불가해요.</div>
+        <div id="swal2-html-container" class="swal2-html-container" style=" padding:0 !important; margin:-1rem; font-size:16px;">환불 후에는 리뷰 작성 및 환불 취소가 불가해요</div>
       `,
       showCancelButton: true,
       cancelButtonColor: '#9C6D2E',
       confirmButtonColor: '#f2f2f2',
-      cancelButtonText: '환불 취소',
-      confirmButtonText: '환불하기',
+      cancelButtonText: '취소',
+      confirmButtonText: '환불',
       customClass: {
         title: 'text-xl mt-10 md:mb-[8px]',
         popup: 'rounded-[16px]',

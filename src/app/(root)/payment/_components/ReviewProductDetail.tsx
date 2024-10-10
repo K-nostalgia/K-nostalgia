@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Dialog,
   DialogContent,
@@ -22,41 +20,46 @@ interface Props {
 }
 
 const ReviewProductDetail = ({ order }: Props) => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [productsWithReviewStatus, setProductsWithReviewStatus] = useState<
-    Product[]
-  >([]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); //리뷰 수정에 사용되는 state
+  const [productsWithReviewStatus, setProductsWithReviewStatus] = useState<any>(
+    []
+  ); //리뷰 렌더링에 사용되는 state
 
   const [reviewIsOpen, setReviewIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const isDisabled = order.status === 'CANCELLED';
-  const { user_id, payment_date } = order;
+  const { user_id, payment_date, payment_id } = order;
 
   useEffect(() => {
-    const fetchReviewStatus = async () => {
+    const fetchReview = async () => {
       if (order.products) {
         const updatedProducts = await Promise.all(
           order.products.map(async (product) => {
             const { data, error } = await supabase
               .from('reviews')
-              .select('rating')
+              .select('*')
               .eq('product_id', product.id)
               .eq('user_id', user_id as string)
+              .eq('payment_id', payment_id)
               .order('created_at', { ascending: false })
               .limit(1)
               .maybeSingle();
             if (error) {
               console.error(error);
             }
-            return { ...product, hasReview: !!data, ...data };
+            return {
+              ...product,
+              hasReview: !!data,
+              ...data,
+              payment_id: payment_id
+            };
           })
         );
         setProductsWithReviewStatus(updatedProducts);
       }
     };
 
-    fetchReviewStatus();
+    fetchReview();
   }, [order.products, user_id, isEditing]);
 
   const handleOpenChange = async (open: boolean) => {
@@ -96,6 +99,8 @@ const ReviewProductDetail = ({ order }: Props) => {
     }
   };
 
+  const isDisabled = order.status === 'CANCELLED';
+
   return (
     <div>
       <Dialog open={reviewIsOpen} onOpenChange={handleOpenChange}>
@@ -117,7 +122,7 @@ const ReviewProductDetail = ({ order }: Props) => {
               <ReviewForm
                 product={selectedProduct}
                 onBack={() => setSelectedProduct(null)}
-                hasWrittenReview={selectedProduct.hasReview}
+                hasReview={selectedProduct.hasReview}
                 payment_date={payment_date}
                 setIsEditing={setIsEditing}
                 isEditing={isEditing}
