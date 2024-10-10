@@ -120,7 +120,7 @@ const ReportAlert2 = ({
       <div className="border-t-2 w-[calc(100%+32px)] -mx-4">
         <DialogFooter className="flex items-center">
           <Button
-            type="submit"
+            type="button"
             className={`h-12 px4 py-3 flex justify-center items-center self-stretch rounded-xl text-label-light ${
               reportValue ? 'bg-primary-20' : 'bg-label-disable'
             } hover:bg-primary-10`}
