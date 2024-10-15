@@ -1,3 +1,6 @@
+//주문 내역이 없을 경우 렌더링되는 컴포넌트
+//update : 24.9.5
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

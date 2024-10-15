@@ -1,5 +1,10 @@
 'use client';
 
+//공용 컴포넌트로 작성 (버튼 컴포넌트)
+//결제할 상품 정보를 props로 받아, 결제 창 요청하는 로직이 들어있음
+
+//update : 24.10.10
+
 import { useUser } from '@/hooks/useUser';
 import PortOne from '@portone/browser-sdk/v2';
 import dayjs from 'dayjs';
@@ -16,9 +21,9 @@ type ProductProps = {
 }[];
 
 type Props = {
-  orderNameArr: string[];
-  product: ProductProps;
-  text: string; //버튼 텍스트
+  orderNameArr: string[]; //상품 명 배열
+  product: ProductProps; //상품 정보 obj[]
+  text: string; //버튼 텍스트 - 버튼 비활성화 및 스타일링에 사용
 };
 
 type ButtonStylesObj = {
@@ -28,14 +33,15 @@ type ButtonStylesObj = {
 const PayButton = ({ orderNameArr, product, text }: Props) => {
   const router = useRouter();
   const pathName = usePathname();
-  const [isPaymentOpen, setIsPaymentOpen] = useState<boolean>(false);
+  const [isPaymentOpen, setIsPaymentOpen] = useState<boolean>(false); //결제 창 활성화 여부
 
   const date = dayjs(new Date(Date.now())).locale('ko').format('YYMMDD');
-  const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`; //주문 번호
+  const newPaymentId = `${date}-${uuidv4().slice(0, 13)}`; //주문 번호 생성
 
   const DELIVERY_CHARGE: number = 2500;
   const COUPON_DISCOUNT: number = 2000;
-  const price: number = product.reduce((acc, item) => acc + item.amount, 0);
+
+  const price: number = product.reduce((acc, item) => acc + item.amount, 0); //배송비 및 쿠폰 할인 적용 전 금액
 
   const totalQuantity = product.reduce((acc, item) => acc + item.quantity, 0);
   const totalAmount = price + DELIVERY_CHARGE - COUPON_DISCOUNT;
@@ -46,7 +52,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   const THROTTLE_DELAY = 5000;
 
   useEffect(() => {
-    //결제 창 열려있을 때 PopStateEvent 제한
+    //결제 창 활성화 시 PopStateEvent 제한
     const handlePopstate = (e: PopStateEvent) => {
       if (isPaymentOpen) {
         e.preventDefault();
@@ -65,7 +71,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
     };
   }, [isPaymentOpen]);
 
-  //결제 요청 함수(클릭핸들러)
+  //결제 요청 함수 with throttling
   const onPayButtonClickThrottled = useCallback(async () => {
     if (!user) {
       return toast({
@@ -95,10 +101,11 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
           description: '즉시 환불은 마이페이지에서 가능합니다'
         });
       }, 1500);
-      const { name, email, id } = user;
 
+      const { name, email, id } = user;
       const requestOrderName = orderNameArr.join(',');
 
+      //결제 요청
       const response = await PortOne.requestPayment({
         storeId: process.env.NEXT_PUBLIC_STORE_ID as string,
         channelKey: process.env.NEXT_PUBLIC_INICIS_CHANNEL_KEY,
@@ -117,6 +124,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
             ? `https://https://k-nostalgia-one.vercel.app/check-payment?totalQuantity=${totalQuantity}`
             : `http://localhost:3000/check-payment?totalQuantity=${totalQuantity}`,
         noticeUrls: [
+          //webhook url
           `https://k-nostalgia-one.vercel.app/api/payment/webhook`,
           'https://k-nostalgia-vdpl.vercel.app/api/payment/webhook'
         ],
@@ -140,6 +148,7 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
 
       const paymentId = response?.paymentId;
 
+      //response.code가 존재하면 결제에 실패한 것
       if (response?.code != null) {
         toast({
           variant: 'destructive',
@@ -150,6 +159,10 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
         return router.replace(`${pathName}`);
       }
       setIsPaymentOpen(false);
+
+      //결제 확인 페이지로 이동(check-payment)
+      //paymentId : 내역 조회에 사용
+      //TODO totalQuanity를 PARAMS로 전달하지 않고 response값에는 없는지 확인
       router.push(
         `/check-payment?paymentId=${paymentId}&totalQuantity=${totalQuantity}`
       );

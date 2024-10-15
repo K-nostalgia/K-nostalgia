@@ -1,5 +1,9 @@
 'use client';
 
+//결제 완료 페이지
+
+//update : 24.8.27
+
 import Loading from '@/components/common/Loading';
 import { imageSrc } from '@/hooks/payment/getProductImage';
 import { useGetPaymentHistory } from '@/hooks/payment/useGetPaymentHistory';
@@ -20,6 +24,7 @@ const CompletePaymentContent = () => {
     return <Loading />;
   }
   const { paidAt, products, amount } = payHistory;
+
   const price = products?.reduce(
     (acc: number, item: any) => acc + item.amount,
     0
@@ -69,14 +74,13 @@ const CompletePaymentContent = () => {
             <div className="flex flex-col gap-[16px]">
               {products?.map((product: any) => {
                 const { id, name, amount, quantity } = product;
-                const src = imageSrc(name);
                 return (
                   <div
                     key={id}
                     className="flex gap-[12px] border-b-2 border-[#F2F2F2] pb-[16px] px-[16px]"
                   >
                     <Image
-                      src={src}
+                      src={imageSrc[name]}
                       width={64}
                       height={64}
                       alt={name}

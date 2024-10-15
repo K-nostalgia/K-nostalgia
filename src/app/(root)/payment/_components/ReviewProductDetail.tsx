@@ -1,3 +1,8 @@
+//작성 리뷰 확인 모달
+//작성 리뷰 존재 시 리뷰 수정 , 없을 시 리뷰 작성 버튼 활성화
+
+//update : 24.9.30
+
 import {
   Dialog,
   DialogContent,
@@ -20,10 +25,14 @@ interface Props {
 }
 
 const ReviewProductDetail = ({ order }: Props) => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null); //리뷰 수정에 사용되는 state
+  //selectedProduct : 리뷰 수정에 사용되는 state
+  //186번줄 이벤트 - selectedProduct가 존재할 경우 reviewForm으로 컴포넌트 전환
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+  //리뷰 렌더링에 사용되는 state
   const [productsWithReviewStatus, setProductsWithReviewStatus] = useState<any>(
     []
-  ); //리뷰 렌더링에 사용되는 state
+  );
 
   const [reviewIsOpen, setReviewIsOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -49,9 +58,9 @@ const ReviewProductDetail = ({ order }: Props) => {
             }
             return {
               ...product,
-              hasReview: !!data,
+              hasReview: !!data, //작성 리뷰 존재 여부를 위한 boolean 값
               ...data,
-              payment_id: payment_id
+              payment_id: payment_id //해당 주문건의 리뷰만 불러오기 위해 필요
             };
           })
         );
@@ -120,9 +129,9 @@ const ReviewProductDetail = ({ order }: Props) => {
           <DialogContent className="bg-[#FAF8F5] min-w-[330px] w-[80%] h-[627px] rounded-2xl md:max-w-[608px] md:h-[840px] overflow-y-auto">
             {selectedProduct ? (
               <ReviewForm
-                product={selectedProduct}
-                onBack={() => setSelectedProduct(null)}
-                hasReview={selectedProduct.hasReview}
+                product={selectedProduct} //상품 정보
+                onBack={() => setSelectedProduct(null)} //작성 완료 시, selectedProduct를 비워서 해당 컴포넌트로 복귀
+                hasReview={selectedProduct.hasReview} //<boolean>
                 payment_date={payment_date}
                 setIsEditing={setIsEditing}
                 isEditing={isEditing}
@@ -149,7 +158,7 @@ const ReviewProductDetail = ({ order }: Props) => {
                             <div>
                               <img
                                 className="rounded-[8px] w-[64px] h-[64px] md:w-[88px] md:h-[88px]"
-                                src={imageSrc(name)}
+                                src={imageSrc[name]}
                                 alt={name}
                               />
                             </div>
@@ -175,6 +184,7 @@ const ReviewProductDetail = ({ order }: Props) => {
                                   ) : null}
                                 </div>
                               </div>
+                              {/* 작성 리뷰가 있을 경우, selectedProduct에 담아서 reviewForm으로 전환 */}
                               <button
                                 onClick={() =>
                                   setSelectedProduct({

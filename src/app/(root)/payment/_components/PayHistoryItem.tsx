@@ -1,5 +1,8 @@
 'use client';
 
+//feat : 주문 내역 삭제(db), 주문 취소(환불)
+//update : 24.8.13
+
 import { toast } from '@/components/ui/use-toast';
 import { usePaymentCancellation } from '@/hooks/payment/canclePayWithDbUpdate';
 import { imageSrc } from '@/hooks/payment/getProductImage';
@@ -24,6 +27,7 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
   const route = useRouter();
   const deletePayHistory = useDeletePayHistory();
 
+  //내역 삭제
   const deletePayment = async (order: Order) => {
     const { payment_id } = order;
     Swal.fire({
@@ -51,7 +55,7 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
     });
   };
 
-  //취소 및 db 업데이트
+  //환불
   const cancelPaymentMutation = usePaymentCancellation();
 
   const cancelPayment = async (order: BaseOrderInPayHistory) => {
@@ -135,7 +139,7 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
                   }`}
                 >
                   <img
-                    src={imageSrc(product.name)}
+                    src={imageSrc[product.name]}
                     className="w-[64px] h-[64px] object-cover rounded-[8px] xs:w-[100px] xs:h-[100px]"
                     alt={`${product.name}`}
                   />
