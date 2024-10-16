@@ -111,7 +111,7 @@ const ReviewProductDetail = ({ order }: Props) => {
   const isDisabled = order.status === 'CANCELLED';
 
   return (
-    <div>
+    <>
       <Dialog open={reviewIsOpen} onOpenChange={handleOpenChange}>
         <DialogTrigger
           onClick={(e) => {
@@ -140,9 +140,9 @@ const ReviewProductDetail = ({ order }: Props) => {
               <>
                 <DialogHeader>
                   <DialogTitle className="w-full flex justify-center text-center text-[18px] font-semibold leading-[160%]">
-                    <p className="text-[18px] font-semibold flex justify-center pt-[12px] pb-[8px]">
+                    <h2 className="text-[18px] font-semibold flex justify-center pt-[12px] pb-[8px]">
                       리뷰 작성 가능 상품
-                    </p>
+                    </h2>
                   </DialogTitle>
                   <div className="flex flex-col">
                     <div className="flex-shrink-0">
@@ -211,7 +211,7 @@ const ReviewProductDetail = ({ order }: Props) => {
           </DialogContent>
         </div>
       </Dialog>
-    </div>
+    </>
   );
 };
 

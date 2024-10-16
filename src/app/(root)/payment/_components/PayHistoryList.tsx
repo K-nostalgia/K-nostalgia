@@ -77,7 +77,7 @@ const PayHistoryList = () => {
       {Object.keys(orderList).length === 0 ? (
         <NoPayHistory />
       ) : (
-        <div
+        <main
           className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-full md:p-0 overflow-y-auto  ${
             pathName === '/payment' && 'pt-[16px] mt-[3.25rem]'
           }`}
@@ -97,7 +97,7 @@ const PayHistoryList = () => {
             </div>
           ))}
           {isFetchingNextPage ? <Loading /> : hasNextPage && <div ref={ref} />}
-        </div>
+        </main>
       )}
     </>
   );

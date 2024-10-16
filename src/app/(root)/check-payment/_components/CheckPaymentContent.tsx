@@ -99,12 +99,12 @@ const CheckPaymentContent = () => {
 
   return (
     <div className="bg-normal">
-      <div className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
+      <main className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
         <BeatLoader color="#A87939" />
-        <p className="my-5">
+        <h1 className="my-5">
           {isPaymentHistoryLoaded ? '' : '결제를 확인중입니다'}
-        </p>
-      </div>
+        </h1>
+      </main>
     </div>
   );
 };

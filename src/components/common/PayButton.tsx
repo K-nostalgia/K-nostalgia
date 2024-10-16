@@ -214,15 +214,13 @@ const PayButton = ({ orderNameArr, product, text }: Props) => {
   }
 
   return (
-    <div>
-      <button
-        className={PayButtonStyle}
-        onClick={onPayButtonClickThrottled}
-        disabled={buttonDisabled || isPaymentOpen}
-      >
-        {text}
-      </button>
-    </div>
+    <button
+      className={PayButtonStyle}
+      onClick={onPayButtonClickThrottled}
+      disabled={buttonDisabled || isPaymentOpen}
+    >
+      {text}
+    </button>
   );
 };
 

@@ -148,7 +148,7 @@ const ReviewForm = ({
   };
 
   return (
-    <div>
+    <>
       <div aria-hidden="true">
         <DialogHeader>
           <DialogTitle>
@@ -259,7 +259,7 @@ const ReviewForm = ({
           {hasReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

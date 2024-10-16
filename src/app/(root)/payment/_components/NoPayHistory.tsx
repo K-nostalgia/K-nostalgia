@@ -8,7 +8,7 @@ import { usePathname } from 'next/navigation';
 const NoPayHistory = () => {
   const pathName = usePathname();
   return (
-    <div
+    <main
       className={`w-full md:w-[60vw] flex flex-col  gap-[16px] min-w-[375px] max-w-[737px] ${
         pathName === '/payment' && 'md:mt-10'
       }`}
@@ -27,7 +27,7 @@ const NoPayHistory = () => {
       >
         <Image
           src="/image/StateSad.png"
-          alt="주문 내역 없음"
+          alt="우는 호랑이"
           width={114}
           height={97}
           className="w-[114px] h-[97px]"
@@ -41,7 +41,7 @@ const NoPayHistory = () => {
           </button>
         </Link>
       </div>
-    </div>
+    </main>
   );
 };
 

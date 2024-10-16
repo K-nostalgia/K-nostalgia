@@ -7,7 +7,7 @@ const TopIconInDesktop = () => {
   const pathName = usePathname();
   const route = useRouter();
   return (
-    <div
+    <figure
       className={`hidden py-10 border-b-8 border-[#F2F2F2] md:flex md:justify-between ${
         pathName === '/my-page' && 'border-none'
       }`}
@@ -26,7 +26,7 @@ const TopIconInDesktop = () => {
         </span>
         <BsChevronRight className=" w-4 h-4 text-[#545454] cursor-pointer" />
       </div>
-    </div>
+    </figure>
   );
 };
 
