@@ -86,7 +86,7 @@ const PayHistoryItem = ({ orderList, date }: Props) => {
           ...rest
         };
         try {
-          await cancelPaymentMutation.mutateAsync({ payment_id, newHistory });
+          await cancelPaymentMutation.mutate({ payment_id, newHistory });
         } catch (error) {
           console.error('주문 취소 중 오류 발생:', error);
         }
