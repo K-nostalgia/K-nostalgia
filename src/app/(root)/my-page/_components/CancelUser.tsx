@@ -57,13 +57,15 @@ const CancelUser = () => {
         className="flex items-center py-[3px] cursor-pointer"
         onClick={handleDeleteUser}
       >
-        <BsTrash3 className="mr-[8px] text-label-normal text-[20px] md:hidden " />
-        <div className="cursor-pointer md:hidden"> 회원탈퇴 </div>
+        <div className="cursor-pointer underline text-label-alternative mt-6 md:hidden">
+          {' '}
+          회원탈퇴{' '}
+        </div>
 
-        <div className="md:items-center md:flex md:p-3 md:gap-2 md:cursor-pointer hidden md:mt-20">
+        {/* <div className="md:items-center md:flex md:p-3 md:gap-2 md:cursor-pointer hidden md:mt-20">
           <span className="text-label-alternative"> 회원탈퇴 </span>
           <BsChevronRight className=" w-4 h-4 text-[#838383] cursor-pointer" />
-        </div>
+        </div> */}
       </div>
     </div>
   );

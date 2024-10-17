@@ -1,36 +1,46 @@
-export const imageSrc = (name: string) => {
-  switch (name) {
-    case '옥천 복숭아':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product1.jpg';
+//특산품 이름을 key로, 이미지 url을 value로 갖는 객체
+//상품이 추가될 경우 직접 추가해야함
+//후에 상품이 너무 많아지면 db에서 가져오는 형식으로 바꾸는 게 좋을 것
 
-    case '순천 단감':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product2.jpg';
+//update : 24.9.30
 
-    case '의성 마늘':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product4.jpg';
+type ImageSrc = {
+  [key: string]: string
+}
+export const imageSrc : ImageSrc  = {
+     '옥천 복숭아': 
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product1.jpg',
 
-    case '횡성 한우':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product5.jpg';
+     '순천 단감': 
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product2.jpg',
 
-    case '논산 딸기':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product3.jpg';
+     '의성 마늘': 
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product4.jpg',
 
-    case '영덕 대게':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product6.jepg'
+     '횡성 한우':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product5.jpg',
 
-    case '안동 간고등어':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product7.jepg';
+     '논산 딸기':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product3.jpg',
 
-    case '이천 도자기 찻잔':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product8.jepg';
+     '영덕 대게':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product6.jepg',
 
-    case '해남 배추':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product9.jpeg';
+     '안동 간고등어':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product7.jepg',
 
-    case '가평 잣':
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product10.jpeg';
+     '이천 도자기 찻잔':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product8.jepg',
 
-    default:
-      return 'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/Tiger_Sad.png';
-  }
+     '해남 배추':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product9.jpeg',
+
+     '가평 잣':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product10.jpeg',
+    
+     '청양 고추':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product11.png',
+    
+     '부여 밤':
+       'https://kejbzqdwablccrontqrb.supabase.co/storage/v1/object/public/local-food/product12.png'
 };

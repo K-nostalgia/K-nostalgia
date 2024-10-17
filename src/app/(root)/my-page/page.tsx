@@ -13,6 +13,7 @@ import LikeMarket from './_components/LikeMarket';
 import Logout from './_components/Logout';
 import OrderList_mypage from './_components/OrderList_mypage';
 import Profile from './_components/Profile';
+import GotoCustomer from './_components/GotoCustomer';
 
 const Mypage = () => {
   const { data: user, isLoading, error } = useUser();
@@ -108,9 +109,10 @@ const Mypage = () => {
           <OrderList_mypage />
           <div className="border border-[#F2F2F2]" />
           <Coupon_mypage />
-          <div className="border border-[#F2F2F2]" />
-          <CancelUser />
           <div className="border-4 border-[#F2F2F2]" />
+          {/* <CancelUser /> */}
+          <GotoCustomer />
+          <div className="border border-[#F2F2F2]" />
           <Logout />
         </div>
       )}

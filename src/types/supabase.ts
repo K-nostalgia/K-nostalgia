@@ -338,6 +338,7 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
+          payment_id: string | null
           product_id: string | null
           rating: number | null
           review_id: string
@@ -346,6 +347,7 @@ export type Database = {
         Insert: {
           content?: string | null
           created_at?: string
+          payment_id?: string | null
           product_id?: string | null
           rating?: number | null
           review_id?: string
@@ -354,6 +356,7 @@ export type Database = {
         Update: {
           content?: string | null
           created_at?: string
+          payment_id?: string | null
           product_id?: string | null
           rating?: number | null
           review_id?: string
