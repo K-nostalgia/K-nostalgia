@@ -4,15 +4,15 @@ import React from 'react';
 import { CgClose } from 'react-icons/cg';
 
 interface ReportAlertProps {
-  // handleReport: () => void;
+  handleReport: () => void;
   // cancelReport: () => void;
 }
 
 const ReportConfirmAlert = (
-  // {
-//   handleReport,
+  {
+  handleReport,
 //   cancelReport
-// }: ReportAlertProps
+}: ReportAlertProps
 ) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center z-[1000]">
@@ -32,7 +32,7 @@ const ReportConfirmAlert = (
         <div className="flex justify-around">
           <button
             className="bg-[#F2F2F2] rounded-xl text-status-negative text-base text-center font-semibold leading-[22.4px] px-4 py-3 text-nowrap w-[135px] md:w-[143px]"
-            // onClick={handleReport}
+            onClick={handleReport}
           >
             신고하기
           </button>

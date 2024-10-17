@@ -207,6 +207,8 @@ export function SendChat({
   const handleReport = async () => {
     const item = data?.find((x) => x.id === removeChatId);
 
+    console.log(item);
+
     if (item) {
       const response = await fetch('/api/chat/admin', {
         method: 'POST',
@@ -231,8 +233,6 @@ export function SendChat({
   const cancelReport = () => {
     setRemoveChatId(0);
   };
-
-  console.log(data);
 
   return (
     <DialogContent className="bg-normal w-[330px] h-[627px] rounded-2xl md:w-[479px] md:h-[710px]">

@@ -131,7 +131,7 @@ const ReportAlert2 = ({
             접수하기
           </Button>
           {reportConfirmAlert && (
-          <ReportConfirmAlert/>
+          <ReportConfirmAlert handleReport={handleReport}/>
         )}
         </DialogFooter>
       </div>
