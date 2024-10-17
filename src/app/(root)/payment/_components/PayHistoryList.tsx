@@ -1,5 +1,10 @@
 'use client';
 
+//주문 내역 최상단 component
+//feat : 주문 내역 리스팅 (무한스크롤 + 날짜별 분류(reducing))
+
+//update : 24.9.30
+
 import Loading from '@/components/common/Loading';
 import { useGetPaymentHistoryWithSupabase } from '@/hooks/payment/useGetPaymentHistory';
 import { useUser } from '@/hooks/useUser';
@@ -18,8 +23,8 @@ import TopIconInDesktop from './TopIconInDesktop';
 
 const PayHistoryList = () => {
   const pathName = usePathname();
-  const { data: user } = useUser();
 
+  const { data: user } = useUser();
   const userId = user?.id;
 
   const {
@@ -28,10 +33,10 @@ const PayHistoryList = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage
-  } = useGetPaymentHistoryWithSupabase(userId);
+  } = useGetPaymentHistoryWithSupabase(userId); //get list (query)
 
   const { ref, inView } = useInView({
-    threshold: 0
+    threshold: 0.1
   });
 
   useEffect(() => {
@@ -44,7 +49,8 @@ const PayHistoryList = () => {
     return <Loading />;
   }
 
-  //날짜가 key 값, value가 배열인 객체로 변환
+  //list 기존 형식 : array
+  //[{date : []}] 형식으로 변환 - 날짜별로 묶기
   const orderList = payHistoryList.reduce<OrderListInPayHistory>(
     (acc, order: BaseOrderInPayHistory) => {
       const date = dayjs(order.payment_date).format('YYYY. MM. DD');
@@ -56,10 +62,13 @@ const PayHistoryList = () => {
     },
     {}
   );
+
+  //날짜 최신순 정렬
   const sortedDates = Object.keys(orderList).sort(
     (a, b) => Date.parse(b) - Date.parse(a)
   );
 
+  //마이페이지에선 가장 최근 날짜의 내역만 렌더링
   const datesToRender =
     pathName === '/my-page' ? [sortedDates[0]] : sortedDates;
 
@@ -68,7 +77,7 @@ const PayHistoryList = () => {
       {Object.keys(orderList).length === 0 ? (
         <NoPayHistory />
       ) : (
-        <div
+        <main
           className={`min-w-[375px] mb-[80px] mx-auto bg-normal max-w-[737px] md:w-full md:p-0 overflow-y-auto  ${
             pathName === '/payment' && 'pt-[16px] mt-[3.25rem]'
           }`}
@@ -88,7 +97,7 @@ const PayHistoryList = () => {
             </div>
           ))}
           {isFetchingNextPage ? <Loading /> : hasNextPage && <div ref={ref} />}
-        </div>
+        </main>
       )}
     </>
   );

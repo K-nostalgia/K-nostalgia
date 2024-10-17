@@ -1,8 +1,16 @@
+//feat: supabase 'orderd_list' table 추가(post), 불러오기(get), 수정(put)
+
+//삭제는 hooks/payment/useDeletePayment.tsx 파일에 
+//optimistic update와 함께 적용되어있음(route handler 사용 안했음)
+
+//update: 24.9.19
+
+import { Tables } from "@/types/supabase";
 import supabase from "@/utils/supabase/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (request: NextRequest) => {
-  const response = await request.json();
+  const response :Tables<'orderd_list'>  = await request.json();
 
   const { error } = await supabase.from('orderd_list').insert(response);
 
@@ -14,7 +22,6 @@ export const POST = async (request: NextRequest) => {
 };
 
 export const GET = async (request: NextRequest) => {
-
   try {
     const url = new URL(request.url);
     const userId = url.searchParams.get('user_id');
@@ -23,7 +30,7 @@ export const GET = async (request: NextRequest) => {
     if (!userId) {
       return NextResponse.json({ message: '유저 정보를 찾을 수 없습니다' }, { status: 400 });
     }
-    const PAGE_PER_ITEM: number = 3;
+    const PAGE_PER_ITEM = 3;
 
     const start = (page - 1) * PAGE_PER_ITEM
     const end = start + PAGE_PER_ITEM - 1
@@ -48,7 +55,7 @@ export const GET = async (request: NextRequest) => {
 
 export const PUT = async(request: NextRequest)=>{
   try {
-    const newHistory = await request.json()
+    const newHistory:Tables<'orderd_list'> = await request.json()
     const {payment_id} = newHistory
 
     const {error} = await supabase

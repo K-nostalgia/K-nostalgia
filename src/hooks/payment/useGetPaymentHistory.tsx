@@ -1,3 +1,6 @@
+// feat: 주문 내역 단건 조회, 주문 내역 리스트 불러오기(무한스크롤 적용)
+// update : 24.9.19
+
 import { PayHistory } from '@/types/payHistory';
 import { Tables } from '@/types/supabase';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
@@ -6,7 +9,8 @@ interface Props {
   paymentId: string | null;
 }
 
-//포트원 내역 단건 조회
+//주문 내역 조회(단건)
+//주문 완료 페이지에서 사용 - CompletePaymentContent.tsx
 export const useGetPaymentHistory = ({ paymentId }: Props) => {
   const { data: payHistory, isPending: payHistoryIsPending } = useQuery<
     PayHistory,
@@ -27,14 +31,14 @@ export const useGetPaymentHistory = ({ paymentId }: Props) => {
   return { payHistory, payHistoryIsPending };
 };
 
-//supabase 주문내역 리스트 불러오기(특정유저)
-
+//supabase 주문내역 리스트 불러오기
+//useInfiniteQuery 사용 (무한 스크롤 구현)
 interface OrderedList extends Tables<'orderd_list'> {}
 
-async function fetchPaymentHistory(
+const fetchPaymentHistory = async (
   userId: string,
   page: number
-): Promise<OrderedList[]> {
+): Promise<OrderedList[]> => {
   const response = await fetch(
     `/api/payment/pay-supabase?user_id=${userId}&page=${page}`
   );
@@ -42,7 +46,7 @@ async function fetchPaymentHistory(
     throw new Error('Network response was not ok');
   }
   return response.json();
-}
+};
 
 export const useGetPaymentHistoryWithSupabase = (
   userId: string | undefined

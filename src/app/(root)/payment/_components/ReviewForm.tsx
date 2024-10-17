@@ -1,3 +1,8 @@
+//리뷰 작성 폼 (모달)
+//feat : 리뷰 작성, 수정, 삭제
+
+//update : 24.9.30
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,7 +27,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   product: any;
-  onBack: () => void;
+  onBack: () => void; //리뷰 작성 및 수정 완료 시, selectedProduct state를 비워 컴포넌트 전환하는 함수
   hasReview?: boolean;
   payment_date: string | null;
   setIsEditing: Dispatch<SetStateAction<boolean>>;
@@ -42,11 +47,13 @@ const ReviewForm = ({
   const date = dayjs(payment_date).locale('ko').format('YYYY. MM. DD');
   const { name, amount, quantity, id, user_id, review_id } = product;
 
+  //TODO 해당 useEffect 꼭 필요한지 재확인
   useEffect(() => {
     setIsEditing(true);
     return () => setIsEditing(false);
   }, []);
 
+  //작성 리뷰가 존재할 경우 불러와서 띄우기(별점, 내용)
   useEffect(() => {
     if (hasReview) {
       const fetchReview = async () => {
@@ -68,6 +75,7 @@ const ReviewForm = ({
     }
   }, [hasReview, product.id, product.user_id, isEditing]);
 
+  //리뷰 작성 및 수정
   const submitReview = async () => {
     if (rating === 0) {
       return toast({
@@ -115,6 +123,7 @@ const ReviewForm = ({
     }
   };
 
+  //리뷰 삭제
   const DeleteHandler = async () => {
     try {
       const { error } = await supabase
@@ -139,7 +148,7 @@ const ReviewForm = ({
   };
 
   return (
-    <div>
+    <>
       <div aria-hidden="true">
         <DialogHeader>
           <DialogTitle>
@@ -170,7 +179,7 @@ const ReviewForm = ({
             <div>
               <img
                 className="w-[64px] h-[64px] rounded-[8px] md:w-[88px] md:h-[88px]"
-                src={imageSrc(name)}
+                src={imageSrc[name]}
                 alt={name}
               />
             </div>
@@ -250,7 +259,7 @@ const ReviewForm = ({
           {hasReview ? '리뷰 수정 완료' : '리뷰 작성 완료'}
         </button>
       </div>
-    </div>
+    </>
   );
 };
 

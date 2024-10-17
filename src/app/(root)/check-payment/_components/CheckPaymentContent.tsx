@@ -1,5 +1,9 @@
 'use client';
 
+//feat : 결제 확인 -> 내역 supabase 저장
+
+//update : 24.09.30
+
 import { toast } from '@/components/ui/use-toast';
 import dayjs from 'dayjs';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,8 +12,9 @@ import { BeatLoader } from 'react-spinners';
 import { v4 as uuidv4 } from 'uuid';
 
 const CheckPaymentContent = () => {
-  const searchParams = useSearchParams();
   const router = useRouter();
+
+  const searchParams = useSearchParams();
   const paymentId = searchParams.get('paymentId');
   const code = searchParams.get('code');
   const totalQuantity = searchParams.get('totalQuantity');
@@ -43,13 +48,14 @@ const CheckPaymentContent = () => {
             method,
             customer,
             products
-            //TODO webhooks
+            //TODO webhooks 정보 필요할지 확인 후 필요하면 추가
           } = payHistory;
 
-          const newPaidAt = dayjs(paidAt)
+          const newPaidAt = dayjs(paidAt) //결제 일시 형식 변경(dayjs)
             .locale('ko')
             .format('YYYY-MM-DD HH:MM');
 
+          //status === 'PAID' : 결제 성공
           if (status === 'PAID') {
             setIsPaymentHistoryLoaded(true);
             toast({
@@ -93,12 +99,12 @@ const CheckPaymentContent = () => {
 
   return (
     <div className="bg-normal">
-      <div className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
+      <main className="flex justify-center flex-col items-center text-label-assistive text-sm absolute translate-x-[-50%] translate-y-[-50%] top-[50%] left-[50%]">
         <BeatLoader color="#A87939" />
-        <p className="my-5">
+        <h1 className="my-5">
           {isPaymentHistoryLoaded ? '' : '결제를 확인중입니다'}
-        </p>
-      </div>
+        </h1>
+      </main>
     </div>
   );
 };

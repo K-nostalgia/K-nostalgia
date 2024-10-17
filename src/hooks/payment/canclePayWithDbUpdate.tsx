@@ -1,3 +1,8 @@
+//주문 취소(환불) 이후 db 업데이트하는 hook(optimistic update 적용)
+//tanstack-query useMutation 사용
+
+//update: 24.8.15
+
 import { toast } from '@/components/ui/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -9,6 +14,7 @@ interface Props {
 export const usePaymentCancellation = () => {
   const queryClient = useQueryClient();
 
+  //환불
   const cancelPayment = async (payment_id: string) => {
     const cancelResponse = await fetch('/api/payment/transaction', {
       method: 'POST',
@@ -25,6 +31,7 @@ export const usePaymentCancellation = () => {
     return cancelResponse;
   };
 
+  //db 업데이트
   const updateOrderList = async (newHistory: any) => {
     const historyUpdate = await fetch('/api/payment/pay-supabase', {
       method: 'PUT',
@@ -36,6 +43,7 @@ export const usePaymentCancellation = () => {
     return historyUpdate.json();
   };
 
+  //query를 사용한 optimistic update
   const mutation = useMutation({
     mutationFn: async ({ payment_id, newHistory }: Props) => {
       await cancelPayment(payment_id);
